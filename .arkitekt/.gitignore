@@ -1,0 +1,4 @@
+# Hiding ArkitektNext Credential files from git
+*.json
+*.temp
+cache/
