@@ -116,7 +116,7 @@ pyqt5-stubs = "^5.15.6.0"
 
 
 [tool.poetry.scripts]
-arkitekt_next = "arkitekt_next.cli.main:cli"
+arkitekt-next = "arkitekt_next.cli.main:cli"
 
 
 [build-system]
