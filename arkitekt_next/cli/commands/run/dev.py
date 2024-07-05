@@ -100,6 +100,9 @@ async def run_app(app: App) -> None:
     """
 
     rekuest = app.services.get("rekuest")
+    if not rekuest:
+        raise Exception("No rekuest service found. We need this to run the app.")
+
     async with app:
         await rekuest.run()
 

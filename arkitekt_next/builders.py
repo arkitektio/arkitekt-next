@@ -2,13 +2,20 @@ from typing import List, Optional
 import logging
 import os
 
-from arkitekt_next.apps.service.fakts_next import build_arkitekt_next_fakts_next, build_arkitekt_next_redeem_fakts_next
+from arkitekt_next.apps.service.fakts_next import (
+    build_arkitekt_next_fakts_next,
+    build_arkitekt_next_redeem_fakts_next,
+)
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre
+from arkitekt_next.apps.service.fakts_qt import build_arkitekt_next_qt_fakts
+from arkitekt_next.apps.service.herre_qt import build_arkitekt_next_qt_herre
 from .utils import create_arkitekt_next_folder
 from .model import Manifest
 from .apps.types import App
-from .service_registry import ServiceBuilderRegistry, get_default_service_builder_registry
+from .service_registry import ServiceBuilderRegistry, check_and_import_services
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
+from qtpy import QtWidgets, QtCore
+
 
 def easy(
     identifier: str,
@@ -91,8 +98,7 @@ def easy(
     NextApp
         A built app, that can be used to interact with the ArkitektNext server
     """
-    registry = registry or get_default_service_builder_registry()
-
+    registry = registry or check_and_import_services()
 
     manifest = Manifest(
         version=version,
@@ -101,7 +107,6 @@ def easy(
         logo=logo,
         requirements=registry.get_requirements(),
     )
-
 
     if redeem_token:
         fakts = build_arkitekt_next_redeem_fakts_next(
@@ -124,14 +129,10 @@ def easy(
 
     params = kwargs
 
-
-
     url = os.getenv("FAKTS_URL", url)
     token = os.getenv("FAKTS_TOKEN", token)
 
     create_arkitekt_next_folder(with_cache=True)
-
-    
 
     try:
         from rich.logging import RichHandler
@@ -139,8 +140,6 @@ def easy(
         logging.basicConfig(level=log_level, handlers=[RichHandler()])
     except ImportError:
         logging.basicConfig(level=log_level)
-
-    print(registry.service_builders)
 
     app = App(
         fakts=fakts,
@@ -151,6 +150,100 @@ def easy(
 
     print()
 
-
     return app
 
+
+def publicqt(
+    identifier: str,
+    version: str = "latest",
+    logo: Optional[str] = None,
+    scopes: Optional[List[str]] = None,
+    url: str = "http://localhost:11000",
+    headless: bool = False,
+    log_level: str = "ERROR",
+    token: Optional[str] = None,
+    no_cache: bool = False,
+    instance_id: str = "main",
+    redeem_token: Optional[str] = None,
+    app_kind: str = "desktop",
+    registry: Optional[ServiceBuilderRegistry] = None,
+    parent: Optional[QtWidgets.QWidget] = None,
+    beacon_widget: Optional[QtWidgets.QWidget] = None,
+    login_widget: Optional[QtWidgets.QWidget] = None,
+    settings: Optional[QtCore.QSettings] = None,
+    **kwargs,
+) -> App:
+    """Public QtApp creation
+
+    A simple way to create an Arkitekt app with a public grant (allowing users to sign
+    in with the application ) utlizing a retrieve grant (necessating a previous configuration
+    of the application on the server side)
+
+    Args:
+        identifier (str): The apps identifier
+        version (str, optional): The apps verion. Defaults to "latest".
+        parent (QtWidget, optional): The QtParent (for the login and server select widget). Defaults to None.
+
+    Returns:
+        Arkitekt: The Arkitekt app
+    """
+
+    registry = registry or check_and_import_services()
+
+    manifest = Manifest(
+        version=version,
+        identifier=identifier,
+        scopes=scopes if scopes else ["openid"],
+        logo=logo,
+        requirements=registry.get_requirements(),
+    )
+
+    if redeem_token:
+        fakts = build_arkitekt_next_redeem_fakts_next(
+            manifest=manifest,
+            redeem_token=redeem_token,
+            url=url,
+            no_cache=no_cache,
+            headless=headless,
+        )
+    else:
+        fakts = build_arkitekt_next_qt_fakts(
+            manifest=manifest,
+            url=url,
+            no_cache=no_cache,
+            client_kind=app_kind,
+            beacon_widget=beacon_widget,
+            settings=settings,
+        )
+
+    herre = build_arkitekt_next_qt_herre(
+        manifest=manifest,
+        fakts=fakts,
+        login_widget=login_widget,
+        parent=parent,
+        settings=settings,
+    )
+
+    params = kwargs
+
+    url = os.getenv("FAKTS_URL", url)
+    token = os.getenv("FAKTS_TOKEN", token)
+
+    create_arkitekt_next_folder(with_cache=True)
+
+    try:
+        from rich.logging import RichHandler
+
+        logging.basicConfig(level=log_level, handlers=[RichHandler()])
+    except ImportError:
+        logging.basicConfig(level=log_level)
+
+    app = App(
+        fakts=fakts,
+        herre=herre,
+        manifest=manifest,
+        services=registry.build_service_map(fakts=fakts, herre=herre, params=params),
+    )
+
+    app.enter()
+    return app

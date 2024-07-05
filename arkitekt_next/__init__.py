@@ -8,11 +8,14 @@ def missing_install(name: str, error: Exception):
 
 
 try:
-    from rekuest_next.register import register 
-    from rekuest_next.agents.hooks import background 
-    from rekuest_next.agents.hooks import startup 
+    from rekuest_next.register import register
+    from rekuest_next.agents.hooks import background
+    from rekuest_next.agents.hooks import startup
 except ImportError as e:
-    register_next = missing_install("rekuest_next", e)
+    raise e
+    register = missing_install("rekuest_next", e)
+    background = missing_install("rekuest_next", e)
+    startup = missing_install("rekuest_next", e)
 
 from .builders import easy
 from .apps.types import App

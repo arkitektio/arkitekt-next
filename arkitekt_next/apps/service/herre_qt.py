@@ -7,8 +7,8 @@ from herre.fakts.fakts_qt_store import FaktsQtStore
 from herre.grants.auto_login import AutoLoginGrant
 from herre.grants.qt.auto_login import AutoLoginWidget
 from herre.fakts.fakts_endpoint_fetcher import FaktsUserFetcher
-from arkitekt_next_next.model import Manifest, User
-from arkitekt_next_next.apps.service.grant_registry import ARKITEKT_GRANT_REGISTRY
+from arkitekt_next.model import Manifest, User
+from arkitekt_next.apps.service.grant_registry import ARKITEKT_GRANT_REGISTRY
 
 
 class ArkitektNextAutoLogin(AutoLoginGrant):

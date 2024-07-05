@@ -56,15 +56,21 @@ def construct_app_group(app: App) -> Group:
     panel_header = f"Running App \n\n{app.manifest.identifier}:{app.manifest.version}\n"
 
     actor_tree = Tree("Registered Definitions", style="white not bold")
-    panel_group = Group(panel_header, actor_tree)
+    service_tree = Tree("Depends on services", style="white not bold")
+
+    for key, extension in app.services.items():
+        service_tree.add(key)
 
     rekuest = app.services.get("rekuest")
+    if rekuest is None:
+        return Group(panel_header, service_tree)
 
     for key, extension in rekuest.agent.extensions.items():
         tree = actor_tree.add(key)
         for template in extension.definition_registry.templates.values():
             tree.add(template.interface + "-" + template.definition.name)
 
+    panel_group = Group(panel_header, service_tree, actor_tree)
 
     return panel_group
 

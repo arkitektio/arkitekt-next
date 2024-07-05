@@ -1,4 +1,4 @@
-from arkitekt_next_next import register
+from arkitekt_next import register
 from mikro.api.schema import RepresentationFragment, from_xarray
 
 

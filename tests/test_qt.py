@@ -1,5 +1,5 @@
-from arkitekt_next_next.builders import publicqt
-from arkitekt_next_next.qt.magic_bar import MagicBar
+from arkitekt_next.builders import publicqt
+from arkitekt_next.qt.magic_bar import MagicBar
 import pytest
 from qtpy import QtWidgets, QtCore
 from koil.qt import QtRunner

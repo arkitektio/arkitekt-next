@@ -6,9 +6,12 @@ from importlib import import_module
 from .utils import import_builder
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
+
 async def run_app(app):
+    rekuest = app.services.get("rekuest")
+
     async with app:
-        await app.rekuest.run()
+        await rekuest.run()
 
 
 @click.command("prod")

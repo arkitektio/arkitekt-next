@@ -1,7 +1,8 @@
 from enum import Enum
 from qtpy import QtWidgets, QtGui, QtCore
-from arkitekt_next_next.apps.qt import QtApp
 from koil.qt import async_to_qt
+
+from arkitekt_next.apps.types import App
 from .utils import get_image_path
 from typing import Optional, Callable
 import logging
@@ -168,7 +169,7 @@ class Profile(QtWidgets.QDialog):
 
     def __init__(
         self,
-        app: QtApp,
+        app: App,
         bar: "MagicBar",
         *args,
         dark_mode: bool = False,
@@ -303,7 +304,7 @@ class MagicBar(QtWidgets.QWidget):
 
     def __init__(
         self,
-        app: QtApp,
+        app: App,
         dark_mode: bool = False,
         on_error: Optional[Callable[[Exception], None]] = None,
     ) -> None:

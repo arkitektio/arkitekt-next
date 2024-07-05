@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 import pytest
-from arkitekt_next_next.cli.main import cli
+from arkitekt_next.cli.main import cli
 
 
 @pytest.fixture

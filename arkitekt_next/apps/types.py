@@ -20,9 +20,9 @@ from herre import Herre
 logger = logging.getLogger(__name__)
 
 
-
 class App(Composition):
     """An app that is built with the easy builder"""
+
     fakts: Fakts
     herre: Herre
     manifest: Manifest
@@ -32,22 +32,13 @@ class App(Composition):
         """Run the app"""
         self.services["rekuest"].run()
 
-
     async def __aenter__(self):
         await super().__aenter__()
-        print("Entering")
         for service in self.services.values():
             await service.__aenter__()
 
         return self
 
-
     async def __aexit__(self, exc_type, exc_value, traceback):
         for service in self.services.values():
             await service.__aexit__(exc_type, exc_value, traceback)
-    
-
-    
-
-
-

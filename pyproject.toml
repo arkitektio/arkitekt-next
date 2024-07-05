@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "arkitekt_next"
+name = "arkitekt-next"
 version = "0.7.8"
 description = "client for the arkitekt_next platform"
 authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
@@ -10,16 +10,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.8"
 herre = ">=0.4.3"
-fakts = ">=0.4.2"
-rekuest = { version = ">=0.2.29", optional = true }
-mikro = { version = ">=0.3.95", optional = true }
+fakts = ">=0.5.0"
 mikro-next = { version = ">=0.1.6", python = "^3.10", optional = true }
-unlok = { version = ">=0.1.19", optional = true }
-fluss = { version = ">=0.1.61", optional = true }
-reaktion = { version = ">=0.1.50", python = "^3.8", optional = true }
-omero-ark = { version = ">=0.0.4", python = "^3.8", optional = true }
-kluster = { version = ">=0.0.3", python = "^3.9", optional = true }
-
+kabinet = { version = ">=0.1.19", optional = true }
+fluss-next = { version = ">=0.1.61", optional = true }
+reaktion-next= { version = ">=0.1.50", python = "^3.8", optional = true }
 rich-click = { version = ">=1.6.1", optional = true }
 watchfiles = { version = ">=0.18.1", optional = true }
 turms = { version = ">=0.5.0", python = "^3.9", optional = true }
@@ -29,39 +24,18 @@ koil = ">=0.3.6"
 
 
 [tool.poetry.extras]
-cli = ["rich-click", "watchfiles", "turms", "semver", "rekuest"]
-reaktion = ["reaktion"]
-rekuest = ["rekuest"]
-mikro = ["mikro"]
-mikro-next = ["mikro-next"]
-unlok = ["unlok"]
-fluss = ["fluss"]
+cli = ["rich-click", "watchfiles", "turms", "semver", "rekuest-next"]
 all = [
     "rich-click",
     "watchfiles",
     "turms",
     "semver",
-    "reaktion",
-    "rekuest",
-    "mikro",
-    "unlok",
-    "fluss",
+    "reaktion-next",
+    "rekuest-next",
+    "mikro-next",
+    "kabinet",
+    "fluss-next",
 ]
-next = ["mikro-next"]
-omero = ["omero-ark"]
-kluster = ["kluster"]
-extended = [
-    "rich-click",
-    "watchfiles",
-    "turms",
-    "semver",
-    "reaktion",
-    "rekuest",
-    "mikro",
-    "unlok",
-    "fluss",
-    "kluster", 
-    "omero-ark"]
 
 [tool.mypy]
 exclude = ["venv/"]

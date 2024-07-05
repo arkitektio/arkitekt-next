@@ -1,7 +1,7 @@
 from click.testing import CliRunner
-from arkitekt_next_next.cli.main import cli
+from arkitekt_next.cli.main import cli
 import os
-from arkitekt_next_next.cli.io import load_manifest_yaml
+from arkitekt_next.cli.io import load_manifest_yaml
 import pytest
 
 
