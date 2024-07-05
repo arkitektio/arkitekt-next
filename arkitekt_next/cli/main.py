@@ -17,7 +17,7 @@ from arkitekt_next.cli.texts import *
 from arkitekt_next.cli.commands.run.main import run
 from arkitekt_next.cli.commands.gen.main import gen
 from arkitekt_next.cli.commands.server.main import server
-from arkitekt_next.cli.commands.port.main import port
+from arkitekt_next.cli.commands.kabinet.main import kabinet
 from arkitekt_next.cli.commands.init.main import init
 from arkitekt_next.cli.commands.manifest.main import manifest
 from arkitekt_next.cli.commands.inspect.main import inspect
@@ -73,7 +73,7 @@ def cli(ctx):
 cli.add_command(init, "init")
 cli.add_command(run, "run")
 cli.add_command(gen, "gen")
-cli.add_command(port, "port")
+cli.add_command(kabinet, "kabinet")
 cli.add_command(manifest, "manifest")
 cli.add_command(inspect, "inspect")
 cli.add_command(server, "server")

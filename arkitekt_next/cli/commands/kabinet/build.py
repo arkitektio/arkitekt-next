@@ -10,7 +10,9 @@ from arkitekt_next.cli.types import Flavour, Inspection
 import yaml
 from typing import Dict, Optional
 import json
+from arkitekt_next.model import Requirement
 from arkitekt_next.utils import create_arkitekt_next_folder
+from rekuest_next.api.schema import TemplateInput
 
 
 class InspectionError(Exception):
@@ -89,11 +91,11 @@ def inspect_docker_container(build_id: str) -> Inspection:
         raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
 
 
-def inspect_definitions(build_id: str) -> Inspection:
+def inspect_templates(build_id: str) -> list[TemplateInput]:
     try:
         # Run 'docker inspect' with the container ID or name
         result = subprocess.run(
-            ["docker", "run", build_id, "arkitekt_next", "inspect", "definitions"],
+            ["docker", "run", build_id, "arkitekt-next", "inspect", "templates", "-mr"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=True,
@@ -101,21 +103,55 @@ def inspect_definitions(build_id: str) -> Inspection:
         )
 
         # Parse the JSON output
+        correct_part = result.stdout.split("--START_TEMPLATES--")[1].split(
+            "--END_TEMPLATES--"
+        )[0]
 
         try:
-            output = json.loads(result.stdout)
+            output = json.loads(correct_part)
         except json.decoder.JSONDecodeError as e:
             combined_error = result.stdout + result.stderr
             raise InspectionError(
                 f"Could not decode JSON output of docker inspect. {combined_error}"
             ) from e
 
-        if "definitions" not in output:
+        return list(output.values())
+    except subprocess.CalledProcessError as e:
+        combined_error = e.stdout + e.stderr
+
+        if "No such command" in combined_error:
             raise InspectionError(
-                "Container not found or invalid JSON output for definitions"
+                "Could not find the command `arkitekt_next inspect definitions` in the container. Maybe"
+                + "you forgot to install arkitekt_next in the container? "
             )
 
-        return output["definitions"]
+        raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
+    
+def inspect_requirements(build_id: str) -> Dict[str, Requirement]:
+    try:
+        # Run 'docker inspect' with the container ID or name
+        result = subprocess.run(
+            ["docker", "run", build_id, "arkitekt-next", "inspect", "requirements", "-mr"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+            text=True,
+        )
+
+        # Parse the JSON output
+        correct_part = result.stdout.split("--START_REQUIREMENTS--")[1].split(
+            "--END_REQUIREMENTS--"
+        )[0]
+
+        try:
+            output = json.loads(correct_part)
+        except json.decoder.JSONDecodeError as e:
+            combined_error = result.stdout + result.stderr
+            raise InspectionError(
+                f"Could not decode JSON output of docker inspect. {combined_error}"
+            ) from e
+
+        return output
     except subprocess.CalledProcessError as e:
         combined_error = e.stdout + e.stderr
 
@@ -130,9 +166,10 @@ def inspect_definitions(build_id: str) -> Inspection:
 
 def inspect_build(build_id: str) -> Inspection:
     size, size_root_fs = inspect_docker_container(build_id)
-    definitions = inspect_definitions(build_id)
+    templates = inspect_templates(build_id)
+    requirements = inspect_requirements(build_id)
 
-    return Inspection(size=size, definitions=definitions)
+    return Inspection(size=size, templates=templates , requirements=requirements)
 
 
 def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavour]:

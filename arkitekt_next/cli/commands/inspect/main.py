@@ -3,7 +3,8 @@ import rich_click as click
 
 import rich_click as click
 from .variables import variables
-from .definitions import definitions
+from .templates import templates
+from .requirements import requirements
 
 
 @click.group()
@@ -19,4 +20,5 @@ def inspect(ctx):
 
 
 inspect.add_command(variables, "variables")
-inspect.add_command(definitions, "definitions")
+inspect.add_command(requirements, "requirements")
+inspect.add_command(templates, "templates")

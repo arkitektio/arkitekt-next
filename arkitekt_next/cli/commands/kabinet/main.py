@@ -10,7 +10,7 @@ from click import Context
 
 @click.group()
 @click.pass_context
-def port(ctx: Context) -> None:
+def kabinet(ctx: Context) -> None:
     """Deploy the arkitekt_next app with Port
 
     The port deployer is an arkitekt_next plugin service, which allows you to deploy your arkitekt_next app to
@@ -23,9 +23,9 @@ def port(ctx: Context) -> None:
     pass
 
 
-port.add_command(build, "build")
-port.add_command(init, "init")
-port.add_command(validate, "validate")
-port.add_command(publish, "publish")
-port.add_command(stage, "stage")
-port.add_command(wizard, "wizard")
+kabinet.add_command(build, "build")
+kabinet.add_command(init, "init")
+kabinet.add_command(validate, "validate")
+kabinet.add_command(publish, "publish")
+kabinet.add_command(stage, "stage")
+kabinet.add_command(wizard, "wizard")

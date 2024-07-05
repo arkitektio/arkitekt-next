@@ -1,12 +1,15 @@
 from pydantic import BaseModel, Field, validator
 import datetime
-from typing import List, Optional, Union, Literal
+from typing import List, Optional, Union, Literal, Dict
 from enum import Enum
 import semver
 import uuid
+from arkitekt_next.model import Requirement
 from rekuest.api.schema import DefinitionInput
 from string import Formatter
 import os
+
+from rekuest_next.api.schema import TemplateInput
 
 ALLOWED_BUILDER_KEYS = [
     "tag",
@@ -22,12 +25,6 @@ class Framework(str, Enum):
     PYTORCH = "pytorch"
 
 
-class Requirement(str, Enum):
-    """ """
-
-    GPU = "gpu"
-
-
 class Packager(str, Enum):
     CONDA = "conda"
     POETRY = "poetry"
@@ -41,7 +38,6 @@ class Manifest(BaseModel):
     logo: Optional[str]
     entrypoint: str
     scopes: List[str]
-    requirements: List[Requirement] = Field(default_factory=list)
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
 
     @validator("version", pre=True)
@@ -215,7 +211,8 @@ Selector = Union[
 
 
 class Inspection(BaseModel):
-    definitions: List[DefinitionInput]
+    templates: List[TemplateInput]
+    requirements: Dict[str, Requirement]
     size: int
 
 

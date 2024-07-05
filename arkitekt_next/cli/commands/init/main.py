@@ -126,14 +126,6 @@ def ensure_semver(ctx, param, value):
     callback=check_overwrite_app,
 )
 @click.option(
-    "--requirements",
-    "-r",
-    help="Dedicated hardware requirements for this app. They will be used to inform Plugin Schedulers like port, on which compute resources to put your plugin app, once deployed.You can choose multiple for your app. For a list of requirements, run `arkitekt_next manifest requirements available`",
-    type=click.Choice(compile_requirements()),
-    multiple=True,
-    default=[],
-)
-@click.option(
     "--scopes",
     "-s",
     help="The scopes of the app. You can choose multiple for your app. For a list of scopes, run `arkitekt_next manifest scopes available`",

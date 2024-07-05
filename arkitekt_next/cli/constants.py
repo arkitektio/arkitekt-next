@@ -9,10 +9,6 @@ def compile_scopes() -> List[str]:
     return ["read", "write"]
 
 
-def compile_requirements():
-    """Compile all available requirements"""
-    return [Requirement.GPU.value]
-
 
 def compile_builders():
     return ["arkitekt_next.builders.easy", "arkitekt_next.builders.port"]
