@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arkitekt-next"
-version = "0.7.19"
+version = "0.7.27"
 description = "client for the arkitekt_next platform"
 authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
 license = "MIT"
@@ -12,11 +12,11 @@ python = "^3.8"
 herre = ">=0.4.3"
 fakts = ">=0.5.0"
 mikro-next = { version = ">=0.1.13", python = "^3.10", optional = true }
-kabinet = { version = ">=0.1.5", optional = true,  python = "^3.9" }
-fluss-next = { version = ">=0.1.67", optional = true }
-reaktion-next= { version = ">=0.1.57", python = "^3.8", optional = true }
-rekuest-next= { version = ">=0.2.10", python = "^3.8", optional = true }
-unlok-next= { version = ">=0.1.62", python = "^3.8", optional = true }
+kabinet = { version = ">=0.1.6", optional = true,  python = "^3.9" }
+fluss-next = { version = ">=0.1.68", optional = true }
+reaktion-next= { version = ">=0.1.58", python = "^3.8", optional = true }
+rekuest-next= { version = ">=0.2.12", python = "^3.8", optional = true }
+unlok-next= { version = ">=0.1.63", python = "^3.8", optional = true }
 rich-click = { version = ">=1.6.1", optional = true }
 watchfiles = { version = ">=0.18.1", optional = true }
 turms = { version = ">=0.5.0", python = "^3.9", optional = true }

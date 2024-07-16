@@ -77,3 +77,17 @@ def build_arkitekt_next_redeem_fakts_next(
             claimer=ClaimEndpointClaimer(),
         )
     )
+
+
+def build_arkitekt_next_token_fakts(
+    manifest: Manifest,
+    token: str,
+    url,
+):
+    return ArkitektNextFaktsNext(
+        grant=RemoteGrant(
+            demander=StaticDemander(token=token),
+            discovery=WellKnownDiscovery(url=url, auto_protocols=["https", "http"]),
+            claimer=ClaimEndpointClaimer(),
+        )
+    )

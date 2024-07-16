@@ -329,7 +329,7 @@ class Build(BaseModel):
         default_factory=lambda: ["docker", "run", "-it", "--net", "host"]
     )
     base_arkitekt_next_command: List[str] = Field(
-        default_factory=lambda: ["arkitekt_next", "run", "prod", "--headless"]
+        default_factory=lambda: ["arkitekt-next", "run", "prod", "--headless"]
     )
 
     def build_docker_command(self) -> List[str]:

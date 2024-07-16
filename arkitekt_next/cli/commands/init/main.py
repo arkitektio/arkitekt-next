@@ -142,7 +142,6 @@ def init(
     logo: Optional[str],
     scopes: List[str],
     template: str,
-    requirements: List[Requirement],
     entrypoint: str,
     overwrite_manifest: bool,
     overwrite_app: bool,
@@ -165,7 +164,6 @@ def init(
         identifier=identifier,
         version=version,
         scopes=scopes,
-        requirements=requirements,
         entrypoint=entrypoint,
     )
 

@@ -5,6 +5,7 @@ import os
 from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_fakts_next,
     build_arkitekt_next_redeem_fakts_next,
+    build_arkitekt_next_token_fakts
 )
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre
 from .utils import create_arkitekt_next_folder
@@ -98,6 +99,11 @@ def easy(
     """
     registry = registry or check_and_import_services()
 
+
+    url = os.getenv("FAKTS_URL", url)
+    token = os.getenv("FAKTS_TOKEN", token)
+
+
     manifest = Manifest(
         version=version,
         identifier=identifier,
@@ -105,16 +111,26 @@ def easy(
         logo=logo,
         requirements=registry.get_requirements(),
     )
+    if token:
+        print("Using token")
+        fakts = build_arkitekt_next_token_fakts(
+            manifest=manifest,
+            token=token,
+            url=url,
+        )
 
-    if redeem_token:
+    elif redeem_token:
+        print("Using redeem token")
         fakts = build_arkitekt_next_redeem_fakts_next(
             manifest=manifest,
             redeem_token=redeem_token,
             url=url,
             no_cache=no_cache,
             headless=headless,
+            token=token,
         )
     else:
+        print("Using normal fakts")
         fakts = build_arkitekt_next_fakts_next(
             manifest=manifest,
             url=url,
@@ -126,9 +142,6 @@ def easy(
     herre = build_arkitekt_next_herre(fakts=fakts)
 
     params = kwargs
-
-    url = os.getenv("FAKTS_URL", url)
-    token = os.getenv("FAKTS_TOKEN", token)
 
     create_arkitekt_next_folder(with_cache=True)
 
