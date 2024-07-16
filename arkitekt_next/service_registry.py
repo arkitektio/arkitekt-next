@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from herre import Herre
 from fakts import Fakts
-from .model import Requirement
+from .model import Manifest, Requirement
 from typing import Callable, Dict
 import importlib
 import sys
@@ -40,8 +40,8 @@ class ServiceBuilderRegistry:
         return self.services.get(name)
     
 
-    def build_service_map(self, fakts: Fakts, herre: Herre, params: Params):
-        return {name: builder(fakts, herre, params) for name, builder in self.service_builders.items()}
+    def build_service_map(self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest):
+        return {name: builder(fakts, herre, params, manifest) for name, builder in self.service_builders.items()}
     
     def get_requirements(self):
         return self.requirements

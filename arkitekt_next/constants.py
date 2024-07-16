@@ -3,4 +3,4 @@ REPO_URL = (
 )
 
 
-DEFAULT_ARKITEKT_URL = "http://127.0.0.1:12000"
+DEFAULT_ARKITEKT_URL = "http://127.0.0.1"

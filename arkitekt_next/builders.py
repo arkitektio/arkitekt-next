@@ -143,7 +143,7 @@ def easy(
         fakts=fakts,
         herre=herre,
         manifest=manifest,
-        services=registry.build_service_map(fakts=fakts, herre=herre, params=params),
+        services=registry.build_service_map(fakts=fakts, herre=herre, params=params, manifest=manifest),
     )
 
     print()
