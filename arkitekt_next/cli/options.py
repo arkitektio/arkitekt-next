@@ -21,6 +21,13 @@ with_token = click.option(
     envvar="FAKTS_TOKEN",
     required=False,
 )
+with_redeem_token = click.option(
+    "--redeem-token",
+    "-r",
+    help="The token for the fakts instance",
+    envvar="FAKTS_REDEEM_TOKEN",
+    required=False,
+)
 with_version = click.option(
     "--version",
     "-v",

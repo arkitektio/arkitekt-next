@@ -23,6 +23,7 @@ async def run_app(app):
 )
 @with_builder
 @with_token
+@with_redeem_token
 @with_instance_id
 @with_headless
 @with_log_level

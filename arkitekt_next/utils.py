@@ -1,4 +1,6 @@
 import os
+from arkitekt_next.model import Manifest
+import json 
 
 
 def create_arkitekt_next_folder(with_cache: bool = True) -> str:
@@ -36,3 +38,37 @@ def create_arkitekt_next_folder(with_cache: bool = True) -> str:
             )
 
     return os.path.abspath(".arkitekt_next")
+
+
+
+def create_devcontainer_file(manifest: Manifest, flavour: str, docker_file_path, devcontainer_path=".devcontainer", ) -> None:
+    """Creates a devcontainer.json file in the flavour folder.
+
+    Parameters
+    ----------
+    flavour_folder : str
+        The path to the flavour folder.
+    """
+
+    os.makedirs(devcontainer_path, exist_ok=True)
+
+    flavour_container = os.path.join(devcontainer_path, flavour)
+    os.makedirs(os.path.join(devcontainer_path, flavour), exist_ok=True)
+
+
+
+
+    
+
+
+    devcontainer_file = os.path.join(flavour_container, "devcontainer.json")
+
+    
+    devcontainer_content = {}
+    devcontainer_content["name"] = f"{manifest.identifier} {flavour} Devcontainer"
+    devcontainer_content["build"] = {}
+    devcontainer_content["build"]["dockerfile"] = os.path.join("..", docker_file_path)
+    devcontainer_content["build"]["context"] = "../.." # This is the root of the project
+    devcontainer_content["runArgs"] = ["--network=host"]
+    
+    json.dump(devcontainer_content, open(devcontainer_file, "w"), indent=4)

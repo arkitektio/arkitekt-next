@@ -24,6 +24,7 @@ from arkitekt_next.cli.options import (
     with_instance_id,
     with_headless,
     with_log_level,
+    with_redeem_token,
     with_skip_cache,
 )
 from arkitekt_next.cli.vars import get_console, get_manifest
@@ -330,6 +331,7 @@ async def run_dev(
 @with_builder
 @with_token
 @with_instance_id
+@with_redeem_token
 @with_headless
 @with_log_level
 @with_skip_cache

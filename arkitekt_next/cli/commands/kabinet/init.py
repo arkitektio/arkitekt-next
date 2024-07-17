@@ -4,7 +4,8 @@ from arkitekt_next.cli.utils import build_relative_dir
 import rich_click as click
 from click import Context
 from rich import get_console
-from arkitekt_next.utils import create_arkitekt_next_folder
+from arkitekt_next.cli.vars import get_manifest
+from arkitekt_next.utils import create_arkitekt_next_folder, create_devcontainer_file
 import yaml
 from rich.panel import Panel
 
@@ -38,9 +39,16 @@ import os
     default="vanilla",
     type=click.Choice(compile_dockerfiles()),
 )
+@click.option(
+    "--devcontainer",
+    "-d",
+    help="Shouwld we create a devcontainer.json file?",
+    is_flag=True,
+    default=False,
+)
 @click.pass_context
 def init(
-    ctx: Context, description: str, overwrite: bool, flavour: str, template: str
+    ctx: Context, description: str, overwrite: bool, flavour: str, template: str, devcontainer: bool
 ) -> None:
     """Runs the port wizard to generate a dockerfile to be used with port"""
 
@@ -57,6 +65,8 @@ def init(
     config_file = os.path.join(flavour_folder, "config.yaml")
     dockerfile = os.path.join(flavour_folder, "Dockerfile")
 
+    manifest = get_manifest(ctx)
+
     fl = Flavour(
         selectors=[],
         description=description,
@@ -71,6 +81,11 @@ def init(
 
     with open(dockerfile, "w") as f:
         f.write(dockerfile_content)
+
+
+    if devcontainer or click.confirm("Do you want to create a devcontainer.json file?"):
+        create_devcontainer_file(manifest, flavour, dockerfile)
+
 
     panel = Panel(
         title=f"Created new flavour [bold]{flavour}[/bold]\n",

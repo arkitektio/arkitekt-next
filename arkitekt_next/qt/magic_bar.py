@@ -1,5 +1,6 @@
 from enum import Enum
 from qtpy import QtWidgets, QtGui, QtCore
+from arkitekt_next.qt.types import QtApp
 from koil.qt import async_to_qt
 
 from arkitekt_next.apps.types import App
@@ -304,7 +305,7 @@ class MagicBar(QtWidgets.QWidget):
 
     def __init__(
         self,
-        app: App,
+        app: QtApp,
         dark_mode: bool = False,
         on_error: Optional[Callable[[Exception], None]] = None,
     ) -> None:
@@ -351,7 +352,7 @@ class MagicBar(QtWidgets.QWidget):
         self.refresh_token_task.errored.connect(self.login_errored)
         self.refresh_token_task.returned.connect(self.set_unprovided)
 
-        self.provide_task = async_to_qt(self.app.rekuest.agent.aprovide)
+        self.provide_task = async_to_qt(self.app.services.get("rekuest").agent.aprovide)
         self.provide_task.errored.connect(self.provide_errored)
         self.provide_task.returned.connect(self.set_unprovided)
 

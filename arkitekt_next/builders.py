@@ -127,7 +127,6 @@ def easy(
             url=url,
             no_cache=no_cache,
             headless=headless,
-            token=token,
         )
     else:
         print("Using normal fakts")
@@ -159,7 +158,6 @@ def easy(
         services=registry.build_service_map(fakts=fakts, herre=herre, params=params, manifest=manifest),
     )
 
-    print()
 
     return app
 

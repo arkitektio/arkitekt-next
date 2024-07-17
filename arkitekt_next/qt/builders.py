@@ -20,14 +20,7 @@ def publicqt(
     version: str = "latest",
     logo: Optional[str] = None,
     scopes: Optional[List[str]] = None,
-    url: str = "http://localhost:11000",
-    headless: bool = False,
     log_level: str = "ERROR",
-    token: Optional[str] = None,
-    no_cache: bool = False,
-    instance_id: str = "main",
-    redeem_token: Optional[str] = None,
-    app_kind: str = "desktop",
     registry: Optional[ServiceBuilderRegistry] = None,
     parent: Optional[QtWidgets.QWidget] = None,
     beacon_widget: Optional[QtWidgets.QWidget] = None,
@@ -52,6 +45,9 @@ def publicqt(
 
     registry = registry or check_and_import_services()
 
+    settings = settings or QtCore.QSettings("arkitekt_next", f"{identifier}:{version}")
+
+
     manifest = Manifest(
         version=version,
         identifier=identifier,
@@ -60,38 +56,17 @@ def publicqt(
         requirements=registry.get_requirements(),
     )
 
-    if redeem_token:
-        fakts = build_arkitekt_next_redeem_fakts_next(
-            manifest=manifest,
-            redeem_token=redeem_token,
-            url=url,
-            no_cache=no_cache,
-            headless=headless,
-        )
-    else:
-        fakts = build_arkitekt_next_qt_fakts(
-            manifest=manifest,
-            url=url,
-            no_cache=no_cache,
-            client_kind=app_kind,
-            beacon_widget=beacon_widget,
-            settings=settings,
-        )
-
-    herre = build_arkitekt_next_qt_herre(
+    fakts = build_arkitekt_next_qt_fakts(
         manifest=manifest,
-        fakts=fakts,
-        login_widget=login_widget,
+        beacon_widget=beacon_widget,
         parent=parent,
         settings=settings,
     )
 
+    herre = build_arkitekt_next_qt_herre(manifest, fakts=fakts, login_widget=login_widget, parent=parent, settings=settings)
+
     params = kwargs
 
-    url = os.getenv("FAKTS_URL", url)
-    token = os.getenv("FAKTS_TOKEN", token)
-
-    create_arkitekt_next_folder(with_cache=True)
 
     try:
         from rich.logging import RichHandler
@@ -104,8 +79,9 @@ def publicqt(
         fakts=fakts,
         herre=herre,
         manifest=manifest,
-        services=registry.build_service_map(fakts=fakts, herre=herre, params=params),
+        services=registry.build_service_map(fakts=fakts, herre=herre, params=params, manifest=manifest),
     )
 
     app.enter()
+
     return app

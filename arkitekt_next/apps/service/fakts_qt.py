@@ -2,6 +2,7 @@ from fakts.fakts import Fakts
 from typing import Optional
 from fakts.grants.remote import RemoteGrant
 from fakts.grants.remote.demanders.auto_save import AutoSaveDemander
+from fakts.grants.remote.demanders.device_code import DeviceCodeDemander
 from fakts.grants.remote.discovery.auto_save import AutoSaveDiscovery
 from fakts.grants.remote.discovery.qt.auto_save_endpoint_widget import (
     AutoSaveEndpointWidget,
@@ -57,9 +58,11 @@ def build_arkitekt_next_qt_fakts(
                     settings=settings,
                     save_key="fakts_token",
                 ),
-                demander=RetrieveDemander(
+                demander=DeviceCodeDemander(
                     manifest=manifest,
                     redirect_uri="http://127.0.0.1:6767",
+                    open_browser=True,
+                    requested_client_kind="desktop",
                 ),
             ),
             discovery=AutoSaveDiscovery(
@@ -75,6 +78,7 @@ def build_arkitekt_next_qt_fakts(
                     settings=settings,
                     allow_appending_slash=True,
                     auto_protocols=["http", "https"],
+                    additional_beacons=["http://localhost"]
                 ),
             ),
             claimer=ClaimEndpointClaimer(),
