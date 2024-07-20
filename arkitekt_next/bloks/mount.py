@@ -1,38 +1,34 @@
 from pydantic import BaseModel
 from typing import Dict, Any
-from blok import blok, InitContext, CLIOption, ExecutionContext
+from arkitekt_next.bloks.services.mount import MountService
+from blok import blok, InitContext, Option, ExecutionContext
+
 from blok.tree import YamlFile
 
 
-class AdminCredentials(BaseModel):
-    password: str
-    username: str
-    email: str
-
-
-@blok("live.arkitekt.mount")
+@blok(MountService)
 class MountBlok:
+
     def __init__(self) -> None:
-        self.config_path = "mounts"
+        self.mount_path = "mounts"
         self.registered_configs = {}
 
-    def init(self, init: InitContext):
-        for key, value in init.kwargs.items():
-            setattr(self, key, value)
+    def preflight(self, mount_path: str):
+       self.mount_path = mount_path
 
     def build(self, ex: ExecutionContext):
         for name, file in self.registered_configs.items():
-            ex.file_tree.set_nested(*f"{self.config_path}/{name}".split("/"), file)
+            ex.file_tree.set_nested(*f"{self.mount_path}/{name}".split("/"), file)
 
     def register_mount(self, name: str, file: YamlFile) -> str:
         self.registered_configs[name] = file
-        return f"./{self.config_path}/" + name
+        return f"./{self.mount_path}/" + name
 
     def get_options(self):
-        config_path = CLIOption(
+        config_path = Option(
             subcommand="mount_path",
             help="Which path to use for configs",
-            default=self.config_path,
+            default=self.mount_path,
             show_default=True,
         )
 

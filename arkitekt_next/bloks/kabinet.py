@@ -2,7 +2,7 @@ from typing import Dict, Any
 import secrets
 
 from arkitekt_next.bloks.funcs import create_default_service_yaml
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import Repo, YamlFile
 
 
@@ -32,7 +32,7 @@ class KabinetBlok:
             "live.arkitekt.s3",
         ]
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -44,39 +44,39 @@ class KabinetBlok:
         context.docker_compose.set_nested("services", self.host, self.service)
 
     def get_options(self):
-        with_repo = CLIOption(
+        with_repo = Option(
             subcommand="with_repo",
             help="Which repo should we use when building the service? Only active if build_repo or mount_repo is active",
             default=self.repo,
         )
-        with_command = CLIOption(
+        with_command = Option(
             subcommand="command",
             help="Which command should be run when starting the service",
             default=self.command,
         )
-        mount_repo = CLIOption(
+        mount_repo = Option(
             subcommand="mount_repo",
             help="Should we mount the repo into the container?",
             is_flag=True,
             default=self.mount_repo,
         )
-        build_repo = CLIOption(
+        build_repo = Option(
             subcommand="build_repo",
             help="Should we build the container from the repo?",
             is_flag=True,
             default=self.build_repo,
         )
-        with_host = CLIOption(
+        with_host = Option(
             subcommand="host",
             help="How should the service be named inside the docker-compose file?",
             default=self.host,
         )
-        with_secret_key = CLIOption(
+        with_secret_key = Option(
             subcommand="secret_key",
             help="The secret key to use for the django service",
             default=self.secret_key,
         )
-        with_repos = CLIOption(
+        with_repos = Option(
             subcommand="repos",
             help="The default repos to enable for the service",
             default=self.secret_key,

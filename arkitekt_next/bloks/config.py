@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from typing import Dict, Any
-from blok import blok, InitContext, CLIOption, ExecutionContext
+from blok import blok, InitContext, Option, ExecutionContext
 from blok.tree import YamlFile
-
+from arkitekt_next.bloks.services.config import ConfigService
 
 class AdminCredentials(BaseModel):
     password: str
@@ -10,13 +10,13 @@ class AdminCredentials(BaseModel):
     email: str
 
 
-@blok("live.arkitekt.config")
+@blok(ConfigService)
 class ConfigBlok:
     def __init__(self) -> None:
         self.config_path = "configs"
         self.registered_configs = {}
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -32,7 +32,7 @@ class ConfigBlok:
         return f"./{self.config_path}/" + name
 
     def get_options(self):
-        config_path = CLIOption(
+        config_path = Option(
             subcommand="config_path",
             help="Which path to use for configs",
             default=self.config_path,

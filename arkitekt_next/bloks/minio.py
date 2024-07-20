@@ -1,21 +1,12 @@
 import click
 
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from pydantic import BaseModel
 from typing import Dict, Optional
 import secrets
 from blok import blok, InitContext
-
-
-class S3Credentials(BaseModel):
-    access_key: str
-    buckets: Dict[str, str]
-    host: str
-    port: int
-    secret_key: str
-    protocol: str
-    dependency: Optional[str] = None
+from arkitekt_next.bloks.services.s3 import S3Credentials, S3Service
 
 
 class BucketMapParamType(click.ParamType):
@@ -38,7 +29,7 @@ class BucketMapParamType(click.ParamType):
 TOKEN = BucketMapParamType()
 
 
-@blok("live.arkitekt.s3")
+@blok(S3Service)
 class MinioBlok:
     db_name: str
 
@@ -65,7 +56,7 @@ class MinioBlok:
     def get_dependencies(self):
         return ["live.arkitekt.config", "live.arkitekt.gateway"]
 
-    def retrieve_credentials(self, buckets: list[str]) -> S3Credentials:
+    def create_buckets(self, buckets: list[str]) -> S3Credentials:
         new_access_key = self.preformed_access_keys.pop()
         new_secret_key = self.preformed_secret_keys.pop()
 
@@ -90,7 +81,7 @@ class MinioBlok:
 
         return creds
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -145,34 +136,34 @@ class MinioBlok:
         )
 
     def get_options(self):
-        with_host = CLIOption(
+        with_host = Option(
             subcommand="host",
             help="The fakts url for connection",
             default=self.host,
         )
-        with_username = CLIOption(
+        with_username = Option(
             subcommand="username",
             help="The fakts url for connection",
             default=self.username,
         )
-        with_password = CLIOption(
+        with_password = Option(
             subcommand="password",
             help="The fakts url for connection",
             default=self.password,
         )
-        with_preformed_bucket_names = CLIOption(
+        with_preformed_bucket_names = Option(
             subcommand="preformed_bucket_names",
             help="The fakts url for connection",
             multiple=True,
             default=self.preformed_bucket_names,
         )
-        with_preformed_acces_key = CLIOption(
+        with_preformed_acces_key = Option(
             subcommand="preformed_access_keys",
             help="The fakts url for connection",
             multiple=True,
             default=self.preformed_access_keys,
         )
-        with_preformed_secret_keys = CLIOption(
+        with_preformed_secret_keys = Option(
             subcommand="preformed_secret_keys",
             help="The fakts url for connection",
             multiple=True,

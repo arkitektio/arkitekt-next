@@ -1,6 +1,7 @@
 from typing import Optional
 
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from arkitekt_next.bloks.services.db import DBService, DBCredentials
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from pydantic import BaseModel
 import pydantic
@@ -9,17 +10,9 @@ import secrets
 from blok import blok, InitContext
 
 
-class AccessCredentials(BaseModel):
-    password: str
-    username: str
-    host: str
-    port: int
-    db_name: str
-    engine: str = "django.db.backends.postgresql"
-    dependency: Optional[str] = None
 
 
-@blok("live.arkitekt.postgres")
+@blok(DBService)
 class PostgresBlok(BaseModel):
     host: str = "db"
     port: int = 5432
@@ -28,7 +21,7 @@ class PostgresBlok(BaseModel):
     user: str = pydantic.Field(default_factory=lambda: namegenerator.gen(separator=""))
     image: str = "jhnnsrs/daten:next"
 
-    registered_dbs: dict[str, AccessCredentials] = {}
+    registered_dbs: dict[str, DBCredentials] = {}
 
     def get_dependencies(self):
         return []
@@ -36,11 +29,11 @@ class PostgresBlok(BaseModel):
     def get_identifier(self):
         return "live.arkitekt.postgres"
 
-    def register_db(self, db_name: str) -> AccessCredentials:
+    def register_db(self, db_name: str) -> DBCredentials:
         if db_name in self.registered_dbs:
             return self.registered_dbs[db_name]
         else:
-            access_credentials = AccessCredentials(
+            access_credentials = DBCredentials(
                 password=self.password,
                 username=self.user,
                 host=self.host,
@@ -51,7 +44,7 @@ class PostgresBlok(BaseModel):
             self.registered_dbs[db_name] = access_credentials
             return access_credentials
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -69,22 +62,22 @@ class PostgresBlok(BaseModel):
         context.docker_compose.set_nested(f"services", self.host, db_service)
 
     def get_options(self):
-        with_postgres_password = CLIOption(
+        with_postgres_password = Option(
             subcommand="password",
             help="The postgres password for connection",
             default=self.password,
         )
-        with_user_password = CLIOption(
+        with_user_password = Option(
             subcommand="user",
             help="The postgress user_name",
             default=self.user,
         )
-        skip_build = CLIOption(
+        skip_build = Option(
             subcommand="skip",
             help="Should the service not be created? E.g when pointing outwards?",
             default=self.skip,
         )
-        with_image = CLIOption(
+        with_image = Option(
             subcommand="image",
             help="The image to use for the service",
             default=self.image,

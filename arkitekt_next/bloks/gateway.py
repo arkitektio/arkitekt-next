@@ -1,10 +1,10 @@
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from pydantic import BaseModel
 from typing import Dict, Any
 
 from blok import blok, InitContext
-
+from blok.bloks.services.dns import DnsService
 
 DEFAULT_PUBLIC_URLS = ["127.0.0.1"]
 DEFAULT_PUBLIC_HOSTS = ["localhost"]
@@ -36,17 +36,14 @@ class GatewayBlok:
         self.public_ips = DEFAULT_PUBLIC_URLS
         self.public_hosts = DEFAULT_PUBLIC_HOSTS
 
-    def get_identifier(self):
-        return "live.arkitekt.gateway"
-
-    def get_dependencies(self):
-        return []
-
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext, dns: DnsService):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
-    def build(self, context: ExecutionContext):
+        self.public_ips = dns.get_dns_result().ip_addresses
+        self.public_hosts = dns.get_dns_result().hostnames
+
+    def build(self, context: ExecutionContext,):
         caddyfile = """
 {
     auto_https off
@@ -156,7 +153,7 @@ class GatewayBlok:
         self.exposed_ports[port] = ExposedPort(port=port, host=host, tls=tls)
 
     def get_options(self):
-        with_public_urls = CLIOption(
+        with_public_urls = Option(
             subcommand="public_url",
             help="Which public urls to use",
             type=str,
@@ -164,7 +161,7 @@ class GatewayBlok:
             default=DEFAULT_PUBLIC_URLS,
             show_default=True,
         )
-        with_public_services = CLIOption(
+        with_public_services = Option(
             subcommand="public_hosts",
             help="Which public hosts to use",
             type=str,

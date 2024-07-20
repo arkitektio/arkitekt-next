@@ -1,12 +1,14 @@
 from typing import Dict, Any
 import secrets
 
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from arkitekt_next.bloks.services.gateway import GatewayService
+from arkitekt_next.bloks.services.livekit import LivekitService, LivekitCredentials
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 
 
-@blok("io.livekit.livekit")
-class LiveKitBlok:
+@blok(LivekitService)
+class LocalLiveKitBlok:
     def __init__(self) -> None:
         self.host = "livekit"
         self.command = ["--dev", "--bind", "0.0.0.0"]
@@ -20,12 +22,8 @@ class LiveKitBlok:
         self.api_secret = "secret"
         self.skip = False
 
-    def get_dependencies(self):
-        return [
-            "live.arkitekt.gateway",
-        ]
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext, gateway: GatewayService):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -34,17 +32,17 @@ class LiveKitBlok:
         if self.skip:
             return
 
-        deps["live.arkitekt.gateway"].expose_port(7880, self.host, True)
-        deps["live.arkitekt.gateway"].expose_port(7881, self.host, True)
+        gateway.expose_port(7880, self.host, True)
+        gateway.expose_port(7881, self.host, True)
 
         self.initialized = True
 
-    def retrieve_local_access(self):
-        return {
+    def retrieve_access(self):
+        return LivekitCredentials(**{
             "api_key": self.api_key,
             "api_secret": self.api_secret,
             "api_url": f"http://{self.host}:7880",
-        }
+        })
 
     def build(self, context: ExecutionContext):
         if self.skip:
@@ -64,17 +62,17 @@ class LiveKitBlok:
         context.docker_compose.set_nested("services", self.host, db_service)
 
     def get_options(self):
-        with_command = CLIOption(
+        with_command = Option(
             subcommand="command",
             help="The fakts url for connection",
             default=self.command,
         )
-        with_host = CLIOption(
+        with_host = Option(
             subcommand="host",
             help="The fakts url for connection",
             default=self.host,
         )
-        with_skip = CLIOption(
+        with_skip = Option(
             subcommand="skip",
             help="The fakts url for connection",
             default=False,

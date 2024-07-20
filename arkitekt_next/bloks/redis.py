@@ -1,6 +1,7 @@
 import click
 
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from arkitekt_next.bloks.services.redis import RedisService, RedisConnection
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from pydantic import BaseModel
 from typing import Dict, Any, Optional
@@ -8,13 +9,8 @@ from typing import Dict, Any, Optional
 from blok import blok, InitContext
 
 
-class RedisConnection(BaseModel):
-    host: str
-    port: int
-    dependency: Optional[str] = None
 
-
-@blok("live.arkitekt.redis")
+@blok(RedisService)
 class RedisBlok:
     def __init__(self) -> None:
         self.host = "redis"
@@ -35,7 +31,7 @@ class RedisBlok:
             dependency=self.host if not self.skip else None,
         )
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -52,27 +48,27 @@ class RedisBlok:
         context.docker_compose.set_nested(f"services", self.host, redis_service)
 
     def get_options(self):
-        with_port = CLIOption(
+        with_port = Option(
             subcommand="port",
             help="Which port to use",
             type=int,
             default=self.port,
             show_default=True,
         )
-        with_host = CLIOption(
+        with_host = Option(
             subcommand="host",
             help="Which public hosts to use",
             type=str,
             default=self.host,
             show_default=True,
         )
-        with_skip = CLIOption(
+        with_skip = Option(
             subcommand="skip",
             help="Skip docker creation (if using external redis?)",
             is_flag=True,
             default=self.skip,
         )
-        with_image = CLIOption(
+        with_image = Option(
             subcommand="image",
             help="The image to use for the service",
             default=self.image,

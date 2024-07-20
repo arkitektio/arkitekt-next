@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Dict, Any
-from blok import blok, InitContext, CLIOption, ExecutionContext
+from blok import blok, InitContext, Option, ExecutionContext
 from blok.tree import YamlFile
 
 
@@ -16,7 +16,7 @@ class DockerSocketBlok:
         self.docker_socket = "/var/run/docker.sock"
         self.registered_configs = {}
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -28,7 +28,7 @@ class DockerSocketBlok:
         pass
 
     def get_options(self):
-        config_path = CLIOption(
+        config_path = Option(
             subcommand="docker_socket",
             help="Which docker_socket to use for configs",
             default=self.docker_socket,

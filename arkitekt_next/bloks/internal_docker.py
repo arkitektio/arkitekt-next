@@ -1,7 +1,7 @@
 from typing import Dict, Any
 import secrets
 
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 
 
@@ -18,7 +18,7 @@ class InternalDockerBlok:
     def get_dependencies(self):
         return ["live.arkitekt.docker_socket"]
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -50,17 +50,17 @@ class InternalDockerBlok:
         context.docker_compose.set_nested("services", self.host, db_service)
 
     def get_options(self):
-        with_command = CLIOption(
+        with_command = Option(
             subcommand="command",
             help="The fakts url for connection",
             default=self.command,
         )
-        with_host = CLIOption(
+        with_host = Option(
             subcommand="host",
             help="The fakts url for connection",
             default=self.host,
         )
-        with_skip = CLIOption(
+        with_skip = Option(
             subcommand="skip",
             help="The fakts url for connection",
             default=False,

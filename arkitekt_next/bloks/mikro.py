@@ -5,7 +5,7 @@ import yaml
 import secrets
 from blok import blok, InitContext
 
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from arkitekt_next.bloks.funcs import create_default_service_yaml
 
@@ -31,9 +31,6 @@ class MikroBlok:
         self.buckets = ["media", "zarr", "parquet"]
         self.secret_key = secrets.token_hex(16)
 
-    def get_identifier(self):
-        return "live.arkitekt.mikro"
-
     def get_dependencies(self):
         return [
             "live.arkitekt.mount",
@@ -46,7 +43,7 @@ class MikroBlok:
             "live.arkitekt.s3",
         ]
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -58,34 +55,34 @@ class MikroBlok:
         context.docker_compose.set_nested("services", self.host, self.service)
 
     def get_options(self):
-        with_repo = CLIOption(
+        with_repo = Option(
             subcommand="with_repo",
             help="The fakts url for connection",
             default=self.repo,
         )
-        with_command = CLIOption(
+        with_command = Option(
             subcommand="command",
             help="The fakts url for connection",
             default=self.command,
         )
-        mount_repo = CLIOption(
+        mount_repo = Option(
             subcommand="mount_repo",
             help="The fakts url for connection",
             is_flag=True,
             default=self.mount_repo,
         )
-        build_repo = CLIOption(
+        build_repo = Option(
             subcommand="build_repo",
             help="The fakts url for connection",
             is_flag=True,
             default=self.build_repo,
         )
-        with_host = CLIOption(
+        with_host = Option(
             subcommand="host",
             help="The fakts url for connection",
             default=self.host,
         )
-        with_secret_key = CLIOption(
+        with_secret_key = Option(
             subcommand="secret_key",
             help="The fakts url for connection",
             default=self.secret_key,

@@ -1,8 +1,8 @@
-from blok import blok, InitContext, CLIOption
+from blok import blok, InitContext, Option
 from blok.tree import YamlFile, Repo
 from typing import Protocol
 from blok.utils import check_protocol_compliance
-
+from dataclasses import asdict
 
 class DefaultService(Protocol):
     service_name: str
@@ -30,22 +30,22 @@ def create_default_service_yaml(
     redis_access = deps["live.arkitekt.redis"].register()
     lok_access = deps["live.arkitekt.lok"].retrieve_credentials()
     admin_access = deps["live.arkitekt.admin"].retrieve()
-    minio_access = deps["live.arkitekt.s3"].retrieve_credentials(self.buckets)
+    minio_access = deps["live.arkitekt.s3"].create_buckets(self.buckets)
     lok_access = deps["live.arkitekt.lok"].retrieve_credentials()
     lok_labels = deps["live.arkitekt.lok"].retrieve_labels(self.get_identifier())
 
     configuration = YamlFile(
         **{
-            "db": postgress_access.dict(),
+            "db": asdict(postgress_access),
             "django": {
-                "admin": admin_access.dict(),
+                "admin": asdict(admin_access),
                 "debug": True,
                 "hosts": ["*"],
                 "secret_key": self.secret_key,
             },
-            "redis": redis_access.dict(),
-            "lok": lok_access.dict(),
-            "s3": minio_access.dict(),
+            "redis": asdict(redis_access),
+            "lok": asdict(lok_access),
+            "s3": asdict(minio_access),
             "scopes": self.scopes,
         }
     )

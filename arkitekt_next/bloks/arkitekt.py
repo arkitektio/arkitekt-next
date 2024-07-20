@@ -1,6 +1,13 @@
 from pydantic import BaseModel
 from typing import Dict, Any
 from blok import blok, InitContext, Renderer, Panel
+from .livekit import LocalLiveKitBlok
+from .mikro import MikroBlok
+from .kabinet import KabinetBlok
+from .rekuest import RekuestBlok
+from .fluss import FlussBlok
+from .gateway import GatewayBlok
+from .internal_docker import InternalDockerBlok
 
 
 class AdminCredentials(BaseModel):
@@ -11,20 +18,6 @@ class AdminCredentials(BaseModel):
 
 @blok("live.arkitekt")
 class ArkitektBlok:
-    def __init__(self) -> None:
-        pass
-
-    def get_dependencies(self):
-        return [
-            "live.arkitekt.lok",
-            "live.arkitekt.mikro",
-            "live.arkitekt.kabinet",
-            "live.arkitekt.rekuest",
-            "live.arkitekt.fluss",
-            "live.arkitekt.gateway",
-            "live.arkitekt.internal_engine",
-            "io.livekit.livekit",
-        ]
 
     def entry(self, renderer: Renderer):
         renderer.render(
@@ -36,19 +29,10 @@ class ArkitektBlok:
             )
         )
 
-    def init(self, init: InitContext):
-        for key, value in init.kwargs.items():
-            setattr(self, key, value)
+    def preflight(self, lok: LocalLiveKitBlok, mikro: MikroBlok, kabinet: KabinetBlok, rekuest: RekuestBlok, fluss: FlussBlok, gateway: GatewayBlok, internal_engine: InternalDockerBlok):
+        print (lok, mikro, kabinet, rekuest, fluss, gateway, internal_engine)
+
 
     def build(self, cwd):
         pass
 
-    def retrieve(self):
-        return AdminCredentials(
-            password=self.password,
-            username=self.username,
-            email=self.email,
-        )
-
-    def get_options(self):
-        return []

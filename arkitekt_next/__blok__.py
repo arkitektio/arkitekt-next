@@ -4,7 +4,7 @@ from arkitekt_next.bloks.mikro import MikroBlok
 from arkitekt_next.bloks.fluss import FlussBlok
 from arkitekt_next.bloks.redis import RedisBlok
 from arkitekt_next.bloks.gateway import GatewayBlok
-from arkitekt_next.bloks.livekit import LiveKitBlok
+from arkitekt_next.bloks.livekit import LocalLiveKitBlok
 from arkitekt_next.bloks.postgres import PostgresBlok
 from arkitekt_next.bloks.minio import MinioBlok
 from arkitekt_next.bloks.kabinet import KabinetBlok
@@ -24,7 +24,7 @@ def get_bloks():
         FlussBlok(),
         RedisBlok(),
         GatewayBlok(),
-        LiveKitBlok(),
+        LocalLiveKitBlok(),
         PostgresBlok(),
         MinioBlok(),
         LokBlok(),

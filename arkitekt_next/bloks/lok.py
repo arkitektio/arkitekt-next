@@ -5,21 +5,23 @@ from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from typing import Dict
+from arkitekt_next.bloks.services.admin import AdminService
+from arkitekt_next.bloks.services.db import DBService
+from arkitekt_next.bloks.services.gateway import GatewayService
+from arkitekt_next.bloks.services.livekit import LivekitService
+from arkitekt_next.bloks.services.lok import LokCredentials, LokService
 import yaml
 import secrets
+from dataclasses import asdict
 
-from blok import blok, InitContext, ExecutionContext, CLIOption
+from arkitekt_next.bloks.services.redis import RedisService
+from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from blok import blok, InitContext
 
 
+
 DEFAULT_ARKITEKT_URL = "http://localhost:8000"
-
-
-class LokCredentials(BaseModel):
-    issuer: str
-    key_type: str
-    public_key: str
 
 
 # Define a custom user type that will parse and validate the user input
@@ -110,7 +112,7 @@ class ScopeParamType(click.ParamType):
 SCOPE = ScopeParamType()
 
 
-@blok("live.arkitekt.lok")
+@blok(LokService)
 class LokBlok:
     db_name: str
 
@@ -167,27 +169,24 @@ class LokBlok:
     def register_scopes(self, scopes_dict: Dict[str, str]) -> LokCredentials:
         self.scopes = self.scopes | scopes_dict
 
-    def init(self, init: InitContext):
+    def preflight(self, init: InitContext, gateway: GatewayService, db: DBService, redis: RedisService, admin: AdminService, livekit: LivekitService, scopes: list[Dict[str, str]]):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
         assert self.public_key, "Public key is required"
         assert self.private_key, "Private key is required"
 
-        kwargs = init.kwargs
-        deps = init.dependencies
-        scopes = kwargs.get("scopes", [])
         self.scopes = {scope["scope"]: scope["description"] for scope in scopes}
 
         for i in self.base_routes:
-            gateways = deps["live.arkitekt.gateway"].expose(
+             gateway.expose(
                 i, 80, self.host, strip_prefix=False
             )
 
-        self.postgress_access = deps["live.arkitekt.postgres"].register_db(self.host)
-        self.redis_access = deps["live.arkitekt.redis"].register()
-        self.admin_access = deps["live.arkitekt.admin"].retrieve()
-        self.local_access = deps["io.livekit.livekit"].retrieve_local_access()
+        self.postgress_access = db.register_db(self.host)
+        self.redis_access = redis.register()
+        self.admin_access = admin.retrieve()
+        self.local_access = livekit.retrieve_access()
         self.initialized = True
 
     def build(self, context: ExecutionContext):
@@ -223,23 +222,23 @@ class LokBlok:
 
         configuration = YamlFile(
             **{
-                "db": self.postgress_access.dict(),
+                "db": asdict(self.postgress_access),
                 "users": [user for user in self.users],
                 "django": {
-                    "admin": self.admin_access.dict(),
+                    "admin": asdict(self.admin_access),
                     "debug": True,
                     "hosts": ["*"],
                     "secret_key": self.secret_key,
                 },
-                "redis": self.redis_access.dict(),
-                "lok": self.retrieve_credentials().dict(),
+                "redis":  asdict(self.redis_access),
+                "lok": asdict(self.retrieve_credentials()),
                 "private_key": self.private_key,
                 "public_key": self.public_key,
                 "scopes": self.scopes,
                 "redeem_tokens": [token for token in self.tokens],
                 "groups": [group for group in self.groups],
                 "deployment": {"name": self.deployment_name},
-                "livekit": self.local_access,
+                "livekit": asdict(self.local_access),
                 "token_expire_seconds": self.token_expiry_seconds,
                 "apps": [],
             }
@@ -269,82 +268,82 @@ class LokBlok:
             .decode()
         )
 
-        with_fakts_url = CLIOption(
+        with_fakts_url = Option(
             subcommand="db_name",
             help="The fakts url for connection",
             default="db_name",
         )
-        with_users = CLIOption(
+        with_users = Option(
             subcommand="users",
             help="The fakts url for connection",
             default=["admin:admin"],
             multiple=True,
             type=USER,
         )
-        with_groups = CLIOption(
+        with_groups = Option(
             subcommand="groups",
             help="The fakts url for connection",
             default=["admin:admin_group"],
             multiple=True,
             type=GROUP,
         )
-        with_redeem_token = CLIOption(
+        with_redeem_token = Option(
             subcommand="tokens",
             help="The fakts url for connection",
             default=[],
             multiple=True,
             type=TOKEN,
         )
-        with_scopes = CLIOption(
+        with_scopes = Option(
             subcommand="scopes",
             help="The scopes",
             default=[f"{key}:{value}" for key, value in self.scopes.items()],
             multiple=True,
             type=SCOPE,
         )
-        with_repo = CLIOption(
+        with_repo = Option(
             subcommand="with_repo",
             help="The fakts url for connection",
             default=self.repo,
         )
-        with_repo = CLIOption(
+        with_repo = Option(
             subcommand="command",
             help="The fakts url for connection",
             default=self.command,
         )
-        mount_repo = CLIOption(
+        mount_repo = Option(
             subcommand="mount_repo",
             help="The fakts url for connection",
             is_flag=True,
             default=False,
         )
-        build_repo = CLIOption(
+        build_repo = Option(
             subcommand="build_repo",
             help="The fakts url for connection",
             is_flag=True,
             default=False,
         )
-        with_host = CLIOption(
+        with_host = Option(
             subcommand="host",
             help="The fakts url for connection",
             default=self.host,
         )
         #
-        with_public_key = CLIOption(
+        with_public_key = Option(
             subcommand="public_key",
             help="The fakts url for connection",
             default=public_key,
             required=True,
             callback=validate_public_key,
         )
-        with_private_key = CLIOption(
+        with_private_key = Option(
             subcommand="private_key",
             help="The fakts url for connection",
             default=private_key,
             callback=validate_private_key,
             required=True,
         )
-        with_secret_key = CLIOption(
+        with_secret_key = Option(
             subcommand="secret_key",
             help="The fakts url for connection",
             default=self.secret_key,
