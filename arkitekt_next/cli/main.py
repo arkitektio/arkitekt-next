@@ -16,7 +16,6 @@ from arkitekt_next.cli.constants import *
 from arkitekt_next.cli.texts import *
 from arkitekt_next.cli.commands.run.main import run
 from arkitekt_next.cli.commands.gen.main import gen
-from arkitekt_next.cli.commands.server.main import server
 from arkitekt_next.cli.commands.kabinet.main import kabinet
 from arkitekt_next.cli.commands.init.main import init
 from arkitekt_next.cli.commands.manifest.main import manifest
@@ -76,7 +75,6 @@ cli.add_command(gen, "gen")
 cli.add_command(kabinet, "kabinet")
 cli.add_command(manifest, "manifest")
 cli.add_command(inspect, "inspect")
-cli.add_command(server, "server")
 cli.add_command(call, "call")
 
 if __name__ == "__main__":

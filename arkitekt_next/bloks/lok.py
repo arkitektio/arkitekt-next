@@ -132,7 +132,11 @@ class LokBlok:
         self.tokens = []
         self.groups = []
         self.secret_key = secrets.token_hex(16)
-        self.scopes = {"openid": "The open id connect scope"}
+        self.scopes = {
+            "openid": "The open id connect scope",
+            "read": "A generic read access",
+            "write": "A generic write access",
+        }
         self.key = None
         self.deployment_name = "default"
         self.token_expiry_seconds = 700000
@@ -169,15 +173,12 @@ class LokBlok:
         secrets: SecretBlok,
         livekit: LivekitService,
         dns: DnsService,
-        scopes: list[Dict[str, str]],
     ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
         assert self.public_key, "Public key is required"
         assert self.private_key, "Private key is required"
-
-        self.scopes = {scope["scope"]: scope["description"] for scope in scopes}
 
         gateway.expose("lok", 80, self.host, strip_prefix=False)
         gateway.expose_mapped(".well-known", 80, self.host, "lok")
@@ -302,13 +303,6 @@ class LokBlok:
             type=GROUP,
             show_default=True,
         )
-        with_scopes = Option(
-            subcommand="scopes",
-            help="Additional scopes that should be created (normally handled by the bloks)",
-            default=[f"{key}:{value}" for key, value in self.scopes.items()],
-            multiple=True,
-            type=SCOPE,
-        )
         with_repo = Option(
             subcommand="with_repo",
             help="Which repo should we use when building the service? Only active if build_repo or mount_repo is active",
@@ -371,7 +365,6 @@ class LokBlok:
             with_host,
             with_private_key,
             with_public_key,
-            with_scopes,
             with_secret_key,
         ]
 

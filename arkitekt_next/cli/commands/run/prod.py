@@ -5,6 +5,7 @@ from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
 from .utils import import_builder
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
+import sys
 
 
 async def run_app(app):
@@ -58,4 +59,8 @@ def prod(ctx, entrypoint=None, builder=None, **builder_kwargs):
     panel = construct_run_panel(app)
     console.print(panel)
 
-    asyncio.run(run_app(app))
+    try:
+        asyncio.run(run_app(app))
+    except Exception as e:
+        console.print_exception()
+        sys.exit(1)

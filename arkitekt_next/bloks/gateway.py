@@ -1,3 +1,4 @@
+from arkitekt_next.bloks.services.name import NameService
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from pydantic import BaseModel
@@ -54,12 +55,16 @@ class GatewayBlok:
     def get_http_port(self):
         return 80
 
-    def preflight(self, init: InitContext, dns: DnsService):
+    def retrieve_gateway_network(self):
+        return self.gateway_network
+
+    def preflight(self, init: InitContext, dns: DnsService, name: NameService):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
         self.public_ips = dns.get_dns_result().ip_addresses
         self.public_hosts = dns.get_dns_result().hostnames
+        self.gateway_network = name.retrieve_name().replace("-", "_")
 
     def build(
         self,
@@ -163,6 +168,7 @@ class GatewayBlok:
             ]
             + exposed_ports_strings,
             "depends_on": caddy_depends_on,
+            "networks": [self.gateway_network, "default"],
         }
 
         context.docker_compose.set_nested("services", "caddy", caddy_container)
@@ -178,6 +184,11 @@ class GatewayBlok:
         }
 
         context.docker_compose.set_nested("services", "certer", certer_container)
+        context.docker_compose.set_nested(
+            "networks",
+            self.gateway_network,
+            {"driver": "bridge", "name": self.gateway_network},
+        )
 
     def expose(self, path_name: str, port: int, host: str, strip_prefix: bool = False):
         self.exposed_hosts[path_name] = ExposedHost(

@@ -1,6 +1,6 @@
 from blok import blok, InitContext, Option
 from blok.tree import YamlFile, Repo
-from typing import Protocol
+from typing import Any, Protocol
 from blok.utils import check_protocol_compliance
 from dataclasses import asdict
 from arkitekt_next.bloks.services import (
@@ -50,9 +50,11 @@ def create_default_service_dependencies():
 def create_default_service_yaml(
     init: InitContext,
     self: DefaultService,
+    additional_keys: dict[str, Any] = None,
 ) -> YamlFile:
     check_protocol_compliance(self, DefaultService)
     deps = init.dependencies
+    additional_keys = additional_keys or {}
 
     init.get_service(LokService).register_scopes(self.scopes)
 
@@ -91,6 +93,7 @@ def create_default_service_yaml(
             "scopes": self.scopes,
             "force_script_name": path_name,
             "csrf_trusted_origins": csrf_trusted_origins,
+            **additional_keys,
         }
     )
 

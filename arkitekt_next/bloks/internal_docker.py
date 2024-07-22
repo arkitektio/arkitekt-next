@@ -13,12 +13,17 @@ from blok.tree import YamlFile, Repo
 class InternalDockerBlok:
     def __init__(self) -> None:
         self.host = "internal_docker"
-        
-        self.image = "jhnnsrs/deployer:0.0.1-vanilla"
+
+        self.image = "jhnnsrs/deployer:0.0.8-vanilla"
         self.instance_id = "INTERNAL_DOCKER"
 
-
-    def preflight(self, init: InitContext, gateway: GatewayService, lok: LokBlok, socket: DockerSocketBlok):
+    def preflight(
+        self,
+        init: InitContext,
+        gateway: GatewayService,
+        lok: LokBlok,
+        socket: DockerSocketBlok,
+    ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -33,9 +38,9 @@ class InternalDockerBlok:
 
         self.token = lok.retrieve_token()
 
-        self.command = (
-           f"arkitekt-next run prod --redeem-token={self.token} --url http://{self.gateway_host}:{self.gateway_port}"
-        )
+        self.gateway_network = gateway.retrieve_gateway_network()
+
+        self.command = f"arkitekt-next run prod --redeem-token={self.token} --url http://{self.gateway_host}:{self.gateway_port}"
 
         self.initialized = True
 
@@ -52,6 +57,16 @@ class InternalDockerBlok:
             "volumes": [f"{self._socket}:/var/run/docker.sock"],
             "environment": {
                 "INSTANCE_ID": self.instance_id,
+                "ARKITEKT_GATEWAY": f"http://{self.gateway_host}:{self.gateway_port}",
+                "ARKITEKT_NETWORK": self.gateway_network,
+            },
+            "deploy": {
+                "restart_policy": {
+                    "condition": "on-failure",
+                    "delay": "10s",
+                    "max_attempts": 10,
+                    "window": "300s",
+                },
             },
         }
 
@@ -68,7 +83,6 @@ class InternalDockerBlok:
             help="Should we skip creating this service?",
             default=False,
             type=bool,
-           
         )
 
         return [

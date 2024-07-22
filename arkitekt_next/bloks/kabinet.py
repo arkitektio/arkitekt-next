@@ -23,7 +23,7 @@ class KabinetBlok:
         self.build_repo = False
         self.buckets = ["media"]
         self.secret_key = secrets.token_hex(16)
-        self.ensured_repos = []
+        self.ensured_repos = ["jhnnsrs/ome:main", "jhnnsrs/renderer:main"]
         self.image = "jhnnsrs/kabinet:next"
 
     def get_builder(self):
@@ -36,7 +36,9 @@ class KabinetBlok:
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
-        self.service = create_default_service_yaml(init, self)
+        self.service = create_default_service_yaml(
+            init, self, {"ensured_repos": self.ensured_repos}
+        )
 
         self.initialized = True
 
