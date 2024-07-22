@@ -5,6 +5,7 @@ from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from typing import Dict
+from arkitekt_next.bloks.secret import SecretBlok
 from arkitekt_next.bloks.services.admin import AdminService
 from arkitekt_next.bloks.services.db import DBService
 from arkitekt_next.bloks.services.gateway import GatewayService
@@ -16,9 +17,9 @@ from dataclasses import asdict
 
 from arkitekt_next.bloks.services.redis import RedisService
 from blok import blok, InitContext, ExecutionContext, Option
+from blok.bloks.services.dns import DnsService
 from blok.tree import YamlFile, Repo
 from blok import blok, InitContext
-
 
 
 DEFAULT_ARKITEKT_URL = "http://localhost:8000"
@@ -131,45 +132,45 @@ class LokBlok:
         self.tokens = []
         self.groups = []
         self.secret_key = secrets.token_hex(16)
-        self.scopes = {"hallo": "welt"}
+        self.scopes = {"openid": "The open id connect scope"}
         self.key = None
         self.deployment_name = "default"
-        self.base_routes = [
-            "ht",
-            "o",
-            "graphql",
-            ".well-known",
-            "f",
-            "admin",
-            "static",
-            "accounts",
-        ]
         self.token_expiry_seconds = 700000
-
-    def get_dependencies(self):
-        return [
-            "io.livekit.livekit",
-            "live.arkitekt.postgres",
-            "live.arkitekt.redis",
-            "live.arkitekt.admin",
-            "live.arkitekt.gateway",
-        ]
+        self.preformed_redeem_tokens = [secrets.token_hex(16) for i in range(80)]
+        self.registered_tokens = {}
 
     def retrieve_credentials(self) -> LokCredentials:
         return LokCredentials(
             public_key=self.public_key, key_type="RS256", issuer="lok"
         )
 
-    def retrieve_labels(self, service_name: str) -> list[str]:
+    def retrieve_labels(self, service_name: str, builder_name: str) -> list[str]:
         return [
             f"fakts.service={service_name}",
-            f"fakts.builder=arkitekt.{service_name}",
+            f"fakts.builder={builder_name}",
         ]
+
+    def retrieve_token(self, user: str = "admin") -> str:
+        new_token = self.secret_blok.retrieve_secret()
+        self.registered_tokens[user] = new_token
+
+        return new_token
 
     def register_scopes(self, scopes_dict: Dict[str, str]) -> LokCredentials:
         self.scopes = self.scopes | scopes_dict
 
-    def preflight(self, init: InitContext, gateway: GatewayService, db: DBService, redis: RedisService, admin: AdminService, livekit: LivekitService, scopes: list[Dict[str, str]]):
+    def preflight(
+        self,
+        init: InitContext,
+        gateway: GatewayService,
+        db: DBService,
+        redis: RedisService,
+        admin: AdminService,
+        secrets: SecretBlok,
+        livekit: LivekitService,
+        dns: DnsService,
+        scopes: list[Dict[str, str]],
+    ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -178,15 +179,15 @@ class LokBlok:
 
         self.scopes = {scope["scope"]: scope["description"] for scope in scopes}
 
-        for i in self.base_routes:
-             gateway.expose(
-                i, 80, self.host, strip_prefix=False
-            )
+        gateway.expose("lok", 80, self.host, strip_prefix=False)
+        gateway.expose_mapped(".well-known", 80, self.host, "lok")
 
+        self.secret_blok = secrets
         self.postgress_access = db.register_db(self.host)
         self.redis_access = redis.register()
         self.admin_access = admin.retrieve()
         self.local_access = livekit.retrieve_access()
+        self.dns_result = dns.get_dns_result()
         self.initialized = True
 
     def build(self, context: ExecutionContext):
@@ -220,6 +221,12 @@ class LokBlok:
 
         db_service["command"] = self.command
 
+        trusted_origins = []
+
+        for i in self.dns_result.hostnames:
+            trusted_origins.append(f"http://{i}")
+            trusted_origins.append(f"https://{i}")
+
         configuration = YamlFile(
             **{
                 "db": asdict(self.postgress_access),
@@ -230,17 +237,22 @@ class LokBlok:
                     "hosts": ["*"],
                     "secret_key": self.secret_key,
                 },
-                "redis":  asdict(self.redis_access),
+                "redis": asdict(self.redis_access),
                 "lok": asdict(self.retrieve_credentials()),
                 "private_key": self.private_key,
                 "public_key": self.public_key,
                 "scopes": self.scopes,
-                "redeem_tokens": [token for token in self.tokens],
+                "redeem_tokens": [
+                    {"user": name, "token": token}
+                    for name, token in self.registered_tokens.items()
+                ],
                 "groups": [group for group in self.groups],
                 "deployment": {"name": self.deployment_name},
                 "livekit": asdict(self.local_access),
                 "token_expire_seconds": self.token_expiry_seconds,
                 "apps": [],
+                "force_script_name": "lok",
+                "csrf_trusted_origins": trusted_origins,
             }
         )
 
@@ -270,82 +282,82 @@ class LokBlok:
 
         with_fakts_url = Option(
             subcommand="db_name",
-            help="The fakts url for connection",
+            help="The name of the database",
             default="db_name",
+            show_default=True,
         )
         with_users = Option(
             subcommand="users",
-            help="The fakts url for connection",
+            help="Users that should be greated by default. Format is name:password",
             default=["admin:admin"],
             multiple=True,
             type=USER,
+            show_default=True,
         )
         with_groups = Option(
             subcommand="groups",
-            help="The fakts url for connection",
+            help="Groups that should be greated by default. Format is name:description",
             default=["admin:admin_group"],
             multiple=True,
             type=GROUP,
-        )
-        with_redeem_token = Option(
-            subcommand="tokens",
-            help="The fakts url for connection",
-            default=[],
-            multiple=True,
-            type=TOKEN,
+            show_default=True,
         )
         with_scopes = Option(
             subcommand="scopes",
-            help="The scopes",
+            help="Additional scopes that should be created (normally handled by the bloks)",
             default=[f"{key}:{value}" for key, value in self.scopes.items()],
             multiple=True,
             type=SCOPE,
         )
         with_repo = Option(
             subcommand="with_repo",
-            help="The fakts url for connection",
+            help="Which repo should we use when building the service? Only active if build_repo or mount_repo is active",
             default=self.repo,
+            show_default=True,
         )
         with_repo = Option(
             subcommand="command",
-            help="The fakts url for connection",
+            help="Which command should be run when starting the service?",
             default=self.command,
+            show_default=True,
         )
         mount_repo = Option(
             subcommand="mount_repo",
             help="The fakts url for connection",
-            is_flag=True,
+            type=bool,
             default=False,
         )
         build_repo = Option(
             subcommand="build_repo",
-            help="The fakts url for connection",
-            is_flag=True,
+            help="Should we build the container from the repo?",
+            type=bool,
             default=False,
+            show_default=True,
         )
         with_host = Option(
             subcommand="host",
-            help="The fakts url for connection",
+            help="Which internal hostname should be used",
             default=self.host,
+            show_default=True,
         )
         #
         with_public_key = Option(
             subcommand="public_key",
-            help="The fakts url for connection",
+            help="The public key for the JWT creation",
             default=public_key,
             required=True,
             callback=validate_public_key,
         )
         with_private_key = Option(
             subcommand="private_key",
-            help="The fakts url for connection",
+            help="The corresponding private key for the JWT creation",
             default=private_key,
             callback=validate_private_key,
             required=True,
         )
         with_secret_key = Option(
             subcommand="secret_key",
-            help="The fakts url for connection",
+            help="The secret key to use for the django service",
             default=self.secret_key,
         )
 
@@ -357,7 +369,6 @@ class LokBlok:
             with_groups,
             build_repo,
             with_host,
-            with_redeem_token,
             with_private_key,
             with_public_key,
             with_scopes,

@@ -1,5 +1,9 @@
 import click
 
+from arkitekt_next.bloks.services.config import ConfigService
+from arkitekt_next.bloks.services.gateway import GatewayService
+from arkitekt_next.bloks.services.name import NameService
+from arkitekt_next.bloks.services.secret import SecretService
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from pydantic import BaseModel
@@ -50,24 +54,21 @@ class MinioBlok:
         self.preformed_access_keys = [secrets.token_hex(16) for i in range(100)]
         self.preformed_secret_keys = [secrets.token_hex(16) for i in range(100)]
 
-    def get_identifier(self):
-        return "live.arkitekt.s3"
-
-    def get_dependencies(self):
-        return ["live.arkitekt.config", "live.arkitekt.gateway"]
-
     def create_buckets(self, buckets: list[str]) -> S3Credentials:
-        new_access_key = self.preformed_access_keys.pop()
-        new_secret_key = self.preformed_secret_keys.pop()
+        new_access_key = self.secret_service.retrieve_secret()
+        new_secret_key = self.secret_service.retrieve_secret()
 
         bucket_map = {}
 
         for bucket in buckets:
-            bucket_map[bucket] = self.preformed_bucket_names.pop()
+            bucket_name = self.name_service.retrieve_name()
+            bucket_map[bucket] = bucket_name
+            self.gateway_service.expose(bucket_name, 9000, self.host)
 
         self.buckets.extend(bucket_map.values())
 
         creds = S3Credentials(
+            name=self.name_service.retrieve_name(),
             access_key=new_access_key,
             buckets=bucket_map,
             host=self.host,
@@ -81,21 +82,22 @@ class MinioBlok:
 
         return creds
 
-    def preflight(self, init: InitContext):
+    def preflight(
+        self,
+        init: InitContext,
+        secret: SecretService,
+        name: NameService,
+        gateway: GatewayService,
+        config: ConfigService,
+    ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
-        self.preformed_bucket_names = list(
-            init.kwargs.get("preformed_bucket_names", [])
-        )
-        self.preformed_access_keys = list(init.kwargs.get("preformed_access_keys", []))
-        self.preformed_secret_keys = list(init.kwargs.get("preformed_secret_keys", []))
+        self.secret_service = secret
+        self.name_service = name
+        self.gateway_service = gateway
 
-        init.dependencies["live.arkitekt.gateway"].expose_default(9000, self.host)
-
-        self.config_path = init.dependencies["live.arkitekt.config"].get_path(
-            self.host + ".yaml"
-        )
+        self.config_path = config.get_path(self.host + ".yaml")
 
     def build(self, context: ExecutionContext):
         minio_service_init = {
@@ -107,7 +109,7 @@ class MinioBlok:
             "environment": {
                 "MINIO_ROOT_PASSWORD": self.password,
                 "MINIO_ROOT_USER": self.username,
-                "MINIO_HOST": f"{self.host}:9000",
+                "MINIO_HOST": f"http://{self.host}:9000",
             },
             "image": self.init_image,
             "volumes": [f"{self.config_path}:/workspace/config.yaml"],
@@ -132,7 +134,19 @@ class MinioBlok:
         )
 
         context.file_tree.set_nested(
-            *self.config_path.split("/"), YamlFile(**{"buckets": list(self.buckets)})
+            *self.config_path.split("/"),
+            YamlFile(
+                buckets=[{"name": i} for i in self.buckets],
+                users=[
+                    {
+                        "access_key": i.access_key,
+                        "secret_key": i.secret_key,
+                        "name": i.name,
+                        "policies": ["readwrite"],
+                    }
+                    for i in self.registered_clients
+                ],
+            ),
         )
 
     def get_options(self):
@@ -151,30 +165,9 @@ class MinioBlok:
             help="The fakts url for connection",
             default=self.password,
         )
-        with_preformed_bucket_names = Option(
-            subcommand="preformed_bucket_names",
-            help="The fakts url for connection",
-            multiple=True,
-            default=self.preformed_bucket_names,
-        )
-        with_preformed_acces_key = Option(
-            subcommand="preformed_access_keys",
-            help="The fakts url for connection",
-            multiple=True,
-            default=self.preformed_access_keys,
-        )
-        with_preformed_secret_keys = Option(
-            subcommand="preformed_secret_keys",
-            help="The fakts url for connection",
-            multiple=True,
-            default=self.preformed_secret_keys,
-        )
 
         return [
             with_host,
             with_password,
             with_username,
-            with_preformed_bucket_names,
-            with_preformed_acces_key,
-            with_preformed_secret_keys,
         ]

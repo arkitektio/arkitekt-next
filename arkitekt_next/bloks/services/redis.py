@@ -6,6 +6,7 @@ from typing import Dict, Any, Protocol, Optional
 from blok import blok, InitContext, service
 from dataclasses import dataclass
 
+
 @dataclass
 class RedisConnection:
     host: str
@@ -13,16 +14,6 @@ class RedisConnection:
     dependency: Optional[str] = None
 
 
-
 @blok("live.arkitekt.redis")
 class RedisService(Protocol):
-
-
-     def register(self) -> RedisConnection:
-        return RedisConnection(
-            host=self.host,
-            port=self.port,
-            dependency=self.host if not self.skip else None,
-        )
-
-    
+    def register(self) -> RedisConnection: ...

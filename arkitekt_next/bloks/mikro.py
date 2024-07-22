@@ -7,7 +7,11 @@ from blok import blok, InitContext
 
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
-from arkitekt_next.bloks.funcs import create_default_service_yaml
+from arkitekt_next.bloks.funcs import (
+    create_default_service_dependencies,
+    create_default_service_yaml,
+    DefaultService,
+)
 
 
 class AccessCredentials(BaseModel):
@@ -23,8 +27,11 @@ class MikroBlok:
     def __init__(self) -> None:
         self.host = "mikro"
         self.command = "bash run-debug.sh"
-        self.repo = "https://github.com/jhnnsrs/mikro-server-next"
-        self.scopes = {"read_image": "Read image from the database"}
+        self.repo = "https://github.com/arkitektio/mikro-server-next"
+        self.scopes = {
+            "mikro_read": "Read image from the database",
+            "mikro_write": "Write image to the database",
+        }
         self.image = "jhnnsrs/mikro:next"
         self.mount_repo = False
         self.build_repo = False
@@ -32,16 +39,10 @@ class MikroBlok:
         self.secret_key = secrets.token_hex(16)
 
     def get_dependencies(self):
-        return [
-            "live.arkitekt.mount",
-            "live.arkitekt.config",
-            "live.arkitekt.gateway",
-            "live.arkitekt.postgres",
-            "live.arkitekt.lok",
-            "live.arkitekt.admin",
-            "live.arkitekt.redis",
-            "live.arkitekt.s3",
-        ]
+        return create_default_service_dependencies()
+
+    def get_builder(self):
+        return "arkitekt.generic"
 
     def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
@@ -68,13 +69,13 @@ class MikroBlok:
         mount_repo = Option(
             subcommand="mount_repo",
             help="The fakts url for connection",
-            is_flag=True,
+            type=bool,
             default=self.mount_repo,
         )
         build_repo = Option(
             subcommand="build_repo",
             help="The fakts url for connection",
-            is_flag=True,
+            type=bool,
             default=self.build_repo,
         )
         with_host = Option(

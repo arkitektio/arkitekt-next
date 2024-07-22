@@ -14,6 +14,9 @@ from arkitekt_next.bloks.mount import MountBlok
 from arkitekt_next.bloks.internal_docker import InternalDockerBlok
 from arkitekt_next.bloks.socket import DockerSocketBlok
 from arkitekt_next.bloks.rekuest import RekuestBlok
+from arkitekt_next.bloks.tailscale import TailscaleBlok
+from arkitekt_next.bloks.secret import SecretBlok
+from arkitekt_next.bloks.namegen import PreformedNamesBlok
 
 
 def get_bloks():
@@ -34,4 +37,7 @@ def get_bloks():
         InternalDockerBlok(),
         DockerSocketBlok(),
         RekuestBlok(),
+        TailscaleBlok(),
+        SecretBlok(),
+        PreformedNamesBlok(),
     ]

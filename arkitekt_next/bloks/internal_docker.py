@@ -1,7 +1,11 @@
 from typing import Dict, Any
 import secrets
 
+from arkitekt_next.bloks.lok import LokBlok
+from arkitekt_next.bloks.services.gateway import GatewayService
+from arkitekt_next.bloks.socket import DockerSocketBlok
 from blok import blok, InitContext, ExecutionContext, Option
+from blok.bloks.services.dns import DnsService
 from blok.tree import YamlFile, Repo
 
 
@@ -9,16 +13,12 @@ from blok.tree import YamlFile, Repo
 class InternalDockerBlok:
     def __init__(self) -> None:
         self.host = "internal_docker"
-        self.command = (
-            "arkitekt-next run prod --redeem-token=mylittletoken --url http://caddy:80"
-        )
+        
         self.image = "jhnnsrs/deployer:0.0.1-vanilla"
         self.instance_id = "INTERNAL_DOCKER"
 
-    def get_dependencies(self):
-        return ["live.arkitekt.docker_socket"]
 
-    def preflight(self, init: InitContext):
+    def preflight(self, init: InitContext, gateway: GatewayService, lok: LokBlok, socket: DockerSocketBlok):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -27,7 +27,15 @@ class InternalDockerBlok:
         if self.skip:
             return
 
-        self._socket = deps["live.arkitekt.docker_socket"].register_socket(self.host)
+        self._socket = socket.register_socket(self.host)
+        self.gateway_host = gateway.get_internal_host()
+        self.gateway_port = gateway.get_http_port()
+
+        self.token = lok.retrieve_token()
+
+        self.command = (
+           f"arkitekt-next run prod --redeem-token={self.token} --url http://{self.gateway_host}:{self.gateway_port}"
+        )
 
         self.initialized = True
 
@@ -50,27 +58,21 @@ class InternalDockerBlok:
         context.docker_compose.set_nested("services", self.host, db_service)
 
     def get_options(self):
-        with_command = Option(
-            subcommand="command",
-            help="The fakts url for connection",
-            default=self.command,
-        )
         with_host = Option(
             subcommand="host",
-            help="The fakts url for connection",
+            help="The host of this service",
             default=self.host,
         )
         with_skip = Option(
             subcommand="skip",
-            help="The fakts url for connection",
+            help="Should we skip creating this service?",
             default=False,
             type=bool,
-            is_flag=True,
+           
         )
 
         return [
             with_host,
-            with_command,
             with_skip,
         ]
 

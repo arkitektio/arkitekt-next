@@ -65,7 +65,7 @@ class RedisBlok:
         with_skip = Option(
             subcommand="skip",
             help="Skip docker creation (if using external redis?)",
-            is_flag=True,
+           type=bool,
             default=self.skip,
         )
         with_image = Option(

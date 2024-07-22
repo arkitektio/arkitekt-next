@@ -1,7 +1,10 @@
 from typing import Dict, Any
 import secrets
 
-from arkitekt_next.bloks.funcs import create_default_service_yaml
+from arkitekt_next.bloks.funcs import (
+    create_default_service_dependencies,
+    create_default_service_yaml,
+)
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import Repo, YamlFile
 
@@ -12,7 +15,10 @@ class RekuestBlok:
         self.host = "rekuest"
         self.command = "bash run-debug.sh"
         self.repo = "https://github.com/jhnnsrs/rekuest-server_next"
-        self.scopes = {"read_image": "Read image from the database"}
+        self.scopes = {
+            "rekuest_agent": "Act as an agent",
+            "rekuest_call": "Call other apps with rekuest",
+        }
         self.mount_repo = False
         self.build_repo = False
         self.buckets = ["media"]
@@ -21,16 +27,10 @@ class RekuestBlok:
         self.image = "jhnnsrs/rekuest:next"
 
     def get_dependencies(self):
-        return [
-            "live.arkitekt.mount",
-            "live.arkitekt.config",
-            "live.arkitekt.gateway",
-            "live.arkitekt.postgres",
-            "live.arkitekt.lok",
-            "live.arkitekt.admin",
-            "live.arkitekt.redis",
-            "live.arkitekt.s3",
-        ]
+        return create_default_service_dependencies()
+
+    def get_builder(self):
+        return "arkitekt.rekuest"
 
     def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
@@ -47,23 +47,25 @@ class RekuestBlok:
         with_repo = Option(
             subcommand="with_repo",
             help="Which repo should we use when building the service? Only active if build_repo or mount_repo is active",
+            type=str,
             default=self.repo,
         )
         with_command = Option(
             subcommand="command",
             help="Which command should be run when starting the service",
+            type=str,
             default=self.command,
         )
         mount_repo = Option(
             subcommand="mount_repo",
             help="Should we mount the repo into the container?",
-            is_flag=True,
+            type=bool,
             default=self.mount_repo,
         )
         build_repo = Option(
             subcommand="build_repo",
             help="Should we build the container from the repo?",
-            is_flag=True,
+            type=bool,
             default=self.build_repo,
         )
         with_host = Option(

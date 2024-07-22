@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Dict, Any
+from arkitekt_next.bloks.tailscale import TailscaleBlok
 from blok import blok, InitContext, Renderer, Panel
 from .livekit import LocalLiveKitBlok
 from .mikro import MikroBlok
@@ -29,7 +30,7 @@ class ArkitektBlok:
             )
         )
 
-    def preflight(self, lok: LocalLiveKitBlok, mikro: MikroBlok, kabinet: KabinetBlok, rekuest: RekuestBlok, fluss: FlussBlok, gateway: GatewayBlok, internal_engine: InternalDockerBlok):
+    def preflight(self, lok: LocalLiveKitBlok, mikro: MikroBlok, kabinet: KabinetBlok, rekuest: RekuestBlok, fluss: FlussBlok, gateway: GatewayBlok, internal_engine: InternalDockerBlok, scale: TailscaleBlok):
         print (lok, mikro, kabinet, rekuest, fluss, gateway, internal_engine)
 
 

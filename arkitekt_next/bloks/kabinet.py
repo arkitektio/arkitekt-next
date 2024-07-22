@@ -1,7 +1,10 @@
 from typing import Dict, Any
 import secrets
 
-from arkitekt_next.bloks.funcs import create_default_service_yaml
+from arkitekt_next.bloks.funcs import (
+    create_default_service_yaml,
+    create_default_service_dependencies,
+)
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import Repo, YamlFile
 
@@ -12,7 +15,10 @@ class KabinetBlok:
         self.host = "kabinet"
         self.command = "bash run-debug.sh"
         self.repo = "https://github.com/jhnnsrs/kabinet-server"
-        self.scopes = {"read_image": "Read image from the database"}
+        self.scopes = {
+            "kabinet_deploy": "Deploy containers",
+            "kabinet_add_repo": "Add repositories to the database",
+        }
         self.mount_repo = False
         self.build_repo = False
         self.buckets = ["media"]
@@ -20,17 +26,11 @@ class KabinetBlok:
         self.ensured_repos = []
         self.image = "jhnnsrs/kabinet:next"
 
+    def get_builder(self):
+        return "arkitekt.generic"
+
     def get_dependencies(self):
-        return [
-            "live.arkitekt.mount",
-            "live.arkitekt.config",
-            "live.arkitekt.gateway",
-            "live.arkitekt.postgres",
-            "live.arkitekt.lok",
-            "live.arkitekt.admin",
-            "live.arkitekt.redis",
-            "live.arkitekt.s3",
-        ]
+        return create_default_service_dependencies()
 
     def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
@@ -57,13 +57,13 @@ class KabinetBlok:
         mount_repo = Option(
             subcommand="mount_repo",
             help="Should we mount the repo into the container?",
-            is_flag=True,
+            type=bool,
             default=self.mount_repo,
         )
         build_repo = Option(
             subcommand="build_repo",
             help="Should we build the container from the repo?",
-            is_flag=True,
+            type=bool,
             default=self.build_repo,
         )
         with_host = Option(

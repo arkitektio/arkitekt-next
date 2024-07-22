@@ -3,6 +3,20 @@ from blok.tree import YamlFile, Repo
 from typing import Protocol
 from blok.utils import check_protocol_compliance
 from dataclasses import asdict
+from arkitekt_next.bloks.services import (
+    GatewayService,
+    DBService,
+    RedisService,
+    S3Service,
+    ConfigService,
+    MountService,
+    AdminService,
+    SecretService,
+    LokService,
+)
+
+from blok.bloks.services.dns import DnsService
+
 
 class DefaultService(Protocol):
     service_name: str
@@ -15,6 +29,23 @@ class DefaultService(Protocol):
 
     def get_identifier(self) -> str: ...
 
+    def get_builder(self) -> str: ...
+
+
+def create_default_service_dependencies():
+    return [
+        DnsService,
+        GatewayService,
+        DBService,
+        RedisService,
+        S3Service,
+        ConfigService,
+        MountService,
+        AdminService,
+        SecretService,
+        LokService,
+    ]
+
 
 def create_default_service_yaml(
     init: InitContext,
@@ -22,17 +53,28 @@ def create_default_service_yaml(
 ) -> YamlFile:
     check_protocol_compliance(self, DefaultService)
     deps = init.dependencies
-    deps["live.arkitekt.lok"].register_scopes(self.scopes)
 
-    gateway_access = deps["live.arkitekt.gateway"].expose(self.host, 80, self.host)
+    init.get_service(LokService).register_scopes(self.scopes)
 
-    postgress_access = deps["live.arkitekt.postgres"].register_db(self.host)
-    redis_access = deps["live.arkitekt.redis"].register()
-    lok_access = deps["live.arkitekt.lok"].retrieve_credentials()
-    admin_access = deps["live.arkitekt.admin"].retrieve()
-    minio_access = deps["live.arkitekt.s3"].create_buckets(self.buckets)
-    lok_access = deps["live.arkitekt.lok"].retrieve_credentials()
-    lok_labels = deps["live.arkitekt.lok"].retrieve_labels(self.get_identifier())
+    path_name = self.host
+
+    gateway_access = init.get_service(GatewayService).expose(path_name, 80, self.host)
+
+    postgress_access = init.get_service(DBService).register_db(self.host)
+    redis_access = init.get_service(RedisService).register()
+    lok_access = init.get_service(LokService).retrieve_credentials()
+    admin_access = init.get_service(AdminService).retrieve()
+    minio_access = init.get_service(S3Service).create_buckets(self.buckets)
+    lok_labels = init.get_service(LokService).retrieve_labels(
+        self.get_identifier(), self.get_builder()
+    )
+
+    dns_result = init.get_service(DnsService).get_dns_result()
+
+    csrf_trusted_origins = []
+    for hostname in dns_result.hostnames:
+        csrf_trusted_origins.append(f"http://{hostname}")
+        csrf_trusted_origins.append(f"https://{hostname}")
 
     configuration = YamlFile(
         **{
@@ -47,10 +89,12 @@ def create_default_service_yaml(
             "lok": asdict(lok_access),
             "s3": asdict(minio_access),
             "scopes": self.scopes,
+            "force_script_name": path_name,
+            "csrf_trusted_origins": csrf_trusted_origins,
         }
     )
 
-    config_mount = deps["live.arkitekt.config"].register_config(
+    config_mount = init.get_service(ConfigService).register_config(
         f"{self.host}.yaml", configuration
     )
 
@@ -72,11 +116,15 @@ def create_default_service_yaml(
     }
 
     if self.mount_repo:
-        mount = deps["live.arkitekt.mount"].register_mount(self.host, Repo(self.repo))
+        mount = init.get_service(MountService).register_mount(
+            self.host, Repo(self.repo)
+        )
         service["volumes"].extend([f"{mount}:/workspace"])
 
     if self.build_repo:
-        mount = deps["live.arkitekt.mount"].register_mount(self.host, Repo(self.repo))
+        mount = init.get_service(MountService).register_mount(
+            self.host, Repo(self.repo)
+        )
         service["build"] = mount
     else:
         service["image"] = self.image

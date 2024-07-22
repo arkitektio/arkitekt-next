@@ -22,7 +22,6 @@ class LocalLiveKitBlok:
         self.api_secret = "secret"
         self.skip = False
 
-
     def preflight(self, init: InitContext, gateway: GatewayService):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
@@ -33,16 +32,18 @@ class LocalLiveKitBlok:
             return
 
         gateway.expose_port(7880, self.host, True)
-        gateway.expose_port(7881, self.host, True)
+        gateway.expose_port_to(7882, self.host, 7880, False)
 
         self.initialized = True
 
     def retrieve_access(self):
-        return LivekitCredentials(**{
-            "api_key": self.api_key,
-            "api_secret": self.api_secret,
-            "api_url": f"http://{self.host}:7880",
-        })
+        return LivekitCredentials(
+            **{
+                "api_key": self.api_key,
+                "api_secret": self.api_secret,
+                "api_url": f"http://{self.host}:7880",
+            }
+        )
 
     def build(self, context: ExecutionContext):
         if self.skip:
@@ -55,18 +56,14 @@ class LocalLiveKitBlok:
             "image": self.image,
             "command": self.command,
             "ports": [
-                f"{self.port_range[0]}-{self.port_range[1]}:{self.port_range[0]}-{self.port_range[1]}"
+                f"{self.port_range[0]}-{self.port_range[1]}:{self.port_range[0]}-{self.port_range[1]}",
+                "7881:7881",
             ],
         }
 
         context.docker_compose.set_nested("services", self.host, db_service)
 
     def get_options(self):
-        with_command = Option(
-            subcommand="command",
-            help="The fakts url for connection",
-            default=self.command,
-        )
         with_host = Option(
             subcommand="host",
             help="The fakts url for connection",
@@ -77,12 +74,10 @@ class LocalLiveKitBlok:
             help="The fakts url for connection",
             default=False,
             type=bool,
-            is_flag=True,
         )
 
         return [
             with_host,
-            with_command,
             with_skip,
         ]
 
