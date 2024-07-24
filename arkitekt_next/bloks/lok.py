@@ -5,6 +5,7 @@ from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from typing import Dict
+from arkitekt_next.bloks.funcs import build_default_service_options
 from arkitekt_next.bloks.secret import SecretBlok
 from arkitekt_next.bloks.services.admin import AdminService
 from arkitekt_next.bloks.services.db import DBService
@@ -124,6 +125,7 @@ class LokBlok:
         self.private_key = None
         self.public_key = None
         self.host = "lok"
+        self.dev = False
         self.with_repo = False
         self.command = "bash run-debug.sh"
         self.repo = "https://github.com/jhnnsrs/lok-server-next"
@@ -210,11 +212,11 @@ class LokBlok:
             ],
         }
 
-        if self.mount_repo:
+        if self.mount_repo or self.dev:
             context.file_tree.set_nested("mounts", "lok", Repo(self.repo))
-            db_service["volumes"].append("./mounts/lok:/lok")
+            db_service["volumes"].append("./mounts/lok:/workspace")
 
-        if self.build_repo:
+        if self.build_repo or self.dev:
             context.file_tree.set_nested("mounts", "lok", Repo(self.repo))
             db_service["build"] = "./mounts/lok"
         else:
@@ -281,6 +283,16 @@ class LokBlok:
             .decode()
         )
 
+        def_options = build_default_service_options(self)
+
+        with_dev = Option(
+            subcommand="dev",
+            help="Run the service in development mode",
+            type=bool,
+            default=self.dev,
+            show_default=True,
+        )
+
         with_fakts_url = Option(
             subcommand="db_name",
             help="The name of the database",
@@ -303,38 +315,6 @@ class LokBlok:
             type=GROUP,
             show_default=True,
         )
-        with_repo = Option(
-            subcommand="with_repo",
-            help="Which repo should we use when building the service? Only active if build_repo or mount_repo is active",
-            default=self.repo,
-            show_default=True,
-        )
-        with_repo = Option(
-            subcommand="command",
-            help="Which command should be run when starting the service?",
-            default=self.command,
-            show_default=True,
-        )
-        mount_repo = Option(
-            subcommand="mount_repo",
-            help="The fakts url for connection",
-            type=bool,
-            default=False,
-        )
-        build_repo = Option(
-            subcommand="build_repo",
-            help="Should we build the container from the repo?",
-            type=bool,
-            default=False,
-            show_default=True,
-        )
-        with_host = Option(
-            subcommand="host",
-            help="Which internal hostname should be used",
-            default=self.host,
-            show_default=True,
-        )
-        #
         with_public_key = Option(
             subcommand="public_key",
             help="The public key for the JWT creation",
@@ -349,23 +329,14 @@ class LokBlok:
             callback=validate_private_key,
             required=True,
         )
-        with_secret_key = Option(
-            subcommand="secret_key",
-            help="The secret key to use for the django service",
-            default=self.secret_key,
-        )
 
         return [
+            *def_options,
             with_fakts_url,
             with_users,
-            with_repo,
-            mount_repo,
             with_groups,
-            build_repo,
-            with_host,
             with_private_key,
             with_public_key,
-            with_secret_key,
         ]
 
 

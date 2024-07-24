@@ -10,23 +10,17 @@ from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import Repo, YamlFile
 
 
-@blok("live.arkitekt.kabinet")
-class KabinetBlok:
+@blok("live.arkitekt.orkestrator")
+class OrkestratorBlok:
     def __init__(self) -> None:
         self.dev = False
-        self.host = "kabinet"
-        self.command = "bash run-debug.sh"
-        self.repo = "https://github.com/arkitektio/kabinet-server"
+        self.repo = "https://github.com/arkitektio/orkestrator-next"
         self.scopes = {
             "kabinet_deploy": "Deploy containers",
             "kabinet_add_repo": "Add repositories to the database",
         }
-        self.mount_repo = False
-        self.build_repo = False
-        self.buckets = ["media"]
-        self.secret_key = secrets.token_hex(16)
-        self.ensured_repos = ["jhnnsrs/ome:main", "jhnnsrs/renderer:main"]
-        self.image = "jhnnsrs/kabinet:next"
+        self.build_command = "yarn"
+        self.up_command = "yarn start"
 
     def get_builder(self):
         return "arkitekt.generic"

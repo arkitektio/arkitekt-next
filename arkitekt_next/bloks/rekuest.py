@@ -2,6 +2,7 @@ from typing import Dict, Any
 import secrets
 
 from arkitekt_next.bloks.funcs import (
+    build_default_service_options,
     create_default_service_dependencies,
     create_default_service_yaml,
 )
@@ -12,9 +13,10 @@ from blok.tree import Repo, YamlFile
 @blok("live.arkitekt.rekuest")
 class RekuestBlok:
     def __init__(self) -> None:
+        self.dev = False
         self.host = "rekuest"
         self.command = "bash run-debug.sh"
-        self.repo = "https://github.com/jhnnsrs/rekuest-server_next"
+        self.repo = "https://github.com/jhnnsrs/rekuest-server-next"
         self.scopes = {
             "rekuest_agent": "Act as an agent",
             "rekuest_call": "Call other apps with rekuest",
@@ -44,52 +46,8 @@ class RekuestBlok:
         context.docker_compose.set_nested("services", self.host, self.service)
 
     def get_options(self):
-        with_repo = Option(
-            subcommand="with_repo",
-            help="Which repo should we use when building the service? Only active if build_repo or mount_repo is active",
-            type=str,
-            default=self.repo,
-        )
-        with_command = Option(
-            subcommand="command",
-            help="Which command should be run when starting the service",
-            type=str,
-            default=self.command,
-        )
-        mount_repo = Option(
-            subcommand="mount_repo",
-            help="Should we mount the repo into the container?",
-            type=bool,
-            default=self.mount_repo,
-        )
-        build_repo = Option(
-            subcommand="build_repo",
-            help="Should we build the container from the repo?",
-            type=bool,
-            default=self.build_repo,
-        )
-        with_host = Option(
-            subcommand="host",
-            help="How should the service be named inside the docker-compose file?",
-            default=self.host,
-        )
-        with_secret_key = Option(
-            subcommand="secret_key",
-            help="The secret key to use for the django service",
-            default=self.secret_key,
-        )
-        with_repos = Option(
-            subcommand="repos",
-            help="The default repos to enable for the service",
-            default=self.secret_key,
-        )
+        def_options = build_default_service_options(self)
 
         return [
-            with_repo,
-            mount_repo,
-            build_repo,
-            with_host,
-            with_command,
-            with_secret_key,
-            with_repos,
+            *def_options,
         ]

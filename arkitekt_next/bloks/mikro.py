@@ -8,6 +8,7 @@ from blok import blok, InitContext
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from arkitekt_next.bloks.funcs import (
+    build_default_service_options,
     create_default_service_dependencies,
     create_default_service_yaml,
     DefaultService,
@@ -25,6 +26,7 @@ class AccessCredentials(BaseModel):
 @blok("live.arkitekt.mikro")
 class MikroBlok:
     def __init__(self) -> None:
+        self.dev = False
         self.host = "mikro"
         self.command = "bash run-debug.sh"
         self.repo = "https://github.com/arkitektio/mikro-server-next"
@@ -56,44 +58,8 @@ class MikroBlok:
         context.docker_compose.set_nested("services", self.host, self.service)
 
     def get_options(self):
-        with_repo = Option(
-            subcommand="with_repo",
-            help="The fakts url for connection",
-            default=self.repo,
-        )
-        with_command = Option(
-            subcommand="command",
-            help="The fakts url for connection",
-            default=self.command,
-        )
-        mount_repo = Option(
-            subcommand="mount_repo",
-            help="The fakts url for connection",
-            type=bool,
-            default=self.mount_repo,
-        )
-        build_repo = Option(
-            subcommand="build_repo",
-            help="The fakts url for connection",
-            type=bool,
-            default=self.build_repo,
-        )
-        with_host = Option(
-            subcommand="host",
-            help="The fakts url for connection",
-            default=self.host,
-        )
-        with_secret_key = Option(
-            subcommand="secret_key",
-            help="The fakts url for connection",
-            default=self.secret_key,
-        )
+        def_options = build_default_service_options(self)
 
         return [
-            with_repo,
-            mount_repo,
-            build_repo,
-            with_host,
-            with_command,
-            with_secret_key,
+            *def_options,
         ]
