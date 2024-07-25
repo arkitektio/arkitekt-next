@@ -9,6 +9,7 @@ from .rekuest import RekuestBlok
 from .fluss import FlussBlok
 from .gateway import GatewayBlok
 from .internal_docker import InternalDockerBlok
+from .orkestrator import OrkestratorBlok
 
 
 class AdminCredentials(BaseModel):
@@ -19,7 +20,6 @@ class AdminCredentials(BaseModel):
 
 @blok("live.arkitekt")
 class ArkitektBlok:
-
     def entry(self, renderer: Renderer):
         renderer.render(
             Panel(
@@ -30,10 +30,19 @@ class ArkitektBlok:
             )
         )
 
-    def preflight(self, lok: LocalLiveKitBlok, mikro: MikroBlok, kabinet: KabinetBlok, rekuest: RekuestBlok, fluss: FlussBlok, gateway: GatewayBlok, internal_engine: InternalDockerBlok, scale: TailscaleBlok):
-        print (lok, mikro, kabinet, rekuest, fluss, gateway, internal_engine)
-
+    def preflight(
+        self,
+        lok: LocalLiveKitBlok,
+        mikro: MikroBlok,
+        kabinet: KabinetBlok,
+        rekuest: RekuestBlok,
+        fluss: FlussBlok,
+        gateway: GatewayBlok,
+        internal_engine: InternalDockerBlok,
+        scale: TailscaleBlok,
+        orkestrator: OrkestratorBlok,
+    ):
+        print(lok, mikro, kabinet, rekuest, fluss, gateway, internal_engine)
 
     def build(self, cwd):
         pass
-

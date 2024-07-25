@@ -6,7 +6,8 @@ from arkitekt_next.bloks.funcs import (
     create_default_service_dependencies,
     build_default_service_options,
 )
-from blok import blok, InitContext, ExecutionContext, Option
+from arkitekt_next.bloks.services.mount import MountService
+from blok import blok, InitContext, ExecutionContext, Option, Command
 from blok.tree import Repo, YamlFile
 
 
@@ -14,42 +15,52 @@ from blok.tree import Repo, YamlFile
 class OrkestratorBlok:
     def __init__(self) -> None:
         self.dev = False
+        self.disable = True
         self.repo = "https://github.com/arkitektio/orkestrator-next"
-        self.scopes = {
-            "kabinet_deploy": "Deploy containers",
-            "kabinet_add_repo": "Add repositories to the database",
-        }
-        self.build_command = "yarn"
-        self.up_command = "yarn start"
+        self.build_command = ["yarn"]
+        self.up_command = ["yarn", "start"]
 
-    def get_builder(self):
-        return "arkitekt.generic"
-
-    def get_dependencies(self):
-        return create_default_service_dependencies()
-
-    def preflight(self, init: InitContext):
+    def preflight(self, init: InitContext, mount: MountService):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
-        self.service = create_default_service_yaml(
-            init, self, {"ensured_repos": self.ensured_repos}
-        )
+        if self.disable and not self.dev:
+            return
+        self.mount = mount.register_mount("orkestrator", Repo(self.repo))
 
         self.initialized = True
 
     def build(self, context: ExecutionContext):
-        context.docker_compose.set_nested("services", self.host, self.service)
+        if self.disable and not self.dev:
+            return
+
+        context.install_commands.set_nested(
+            "orkestrator", Command(self.build_command, cwd=self.mount)
+        )
+        context.up_commands.set_nested(
+            "orkestrator", Command(self.up_command, cwd=self.mount)
+        )
+        pass
 
     def get_options(self):
-        def_options = build_default_service_options(self)
         with_repos = Option(
-            subcommand="repos",
-            help="The default repos to enable for the service",
-            default=self.secret_key,
+            subcommand="repo",
+            help="The default repo to use for the orkestrator",
+            default=self.repo,
+        )
+        with_disable = Option(
+            subcommand="disable",
+            help="Should we disable the orkestrator service?",
+            default=self.disable,
+        )
+        with_dev = Option(
+            subcommand="dev",
+            help="Should we mount orkestrator as dev?",
+            default=self.dev,
         )
 
         return [
-            *def_options,
+            with_dev,
             with_repos,
+            with_disable,
         ]

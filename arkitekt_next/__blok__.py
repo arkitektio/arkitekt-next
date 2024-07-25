@@ -2,6 +2,7 @@ from arkitekt_next.bloks.admin import AdminBlok
 from arkitekt_next.bloks.arkitekt import ArkitektBlok
 from arkitekt_next.bloks.mikro import MikroBlok
 from arkitekt_next.bloks.fluss import FlussBlok
+from arkitekt_next.bloks.orkestrator import OrkestratorBlok
 from arkitekt_next.bloks.redis import RedisBlok
 from arkitekt_next.bloks.gateway import GatewayBlok
 from arkitekt_next.bloks.livekit import LocalLiveKitBlok
@@ -40,4 +41,5 @@ def get_bloks():
         TailscaleBlok(),
         SecretBlok(),
         PreformedNamesBlok(),
+        OrkestratorBlok(),
     ]
