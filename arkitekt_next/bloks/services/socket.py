@@ -6,11 +6,8 @@ from typing import Dict, Any, Protocol
 from blok import blok, InitContext, service
 
 
-@blok("live.arkitekt.docker_socket")
+@service("live.arkitekt.docker_socket")
 class DockerSocketService(Protocol):
-
     def register_socket(self, name: str) -> str:
         self.registered_configs[name] = name
         return self.docker_socket
-
-    

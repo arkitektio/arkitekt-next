@@ -6,7 +6,7 @@ from typing import Dict, Any, Protocol
 from blok import blok, InitContext, service
 
 
-@blok("live.arkitekt.gateway")
+@service("live.arkitekt.gateway")
 class GatewayService(Protocol):
     def expose(
         self, path_name: str, port: int, host: str, strip_prefix: bool = True

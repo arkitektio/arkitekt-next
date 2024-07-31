@@ -6,6 +6,7 @@ from typing import Dict, Any, Protocol, Optional
 from blok import blok, InitContext, service
 from dataclasses import dataclass
 
+
 @dataclass
 class DBCredentials:
     password: str
@@ -17,11 +18,6 @@ class DBCredentials:
     dependency: Optional[str] = None
 
 
-
-@blok("live.arkitekt.postgres")
+@service("live.arkitekt.postgres")
 class DBService(Protocol):
-
-
-    def register_db(self, db_name: str) -> DBCredentials:
-        ...
-    
+    def register_db(self, db_name: str) -> DBCredentials: ...

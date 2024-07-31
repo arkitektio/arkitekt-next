@@ -1,13 +1,8 @@
 from typing import Dict, Any
 import secrets
-
-from arkitekt_next.bloks.funcs import (
-    create_default_service_yaml,
-    create_default_service_dependencies,
-    build_default_service_options,
-)
 from arkitekt_next.bloks.services.mount import MountService
 from blok import blok, InitContext, ExecutionContext, Option, Command
+from blok.bloks.services.vscode import VsCodeService
 from blok.tree import Repo, YamlFile
 
 
@@ -20,13 +15,21 @@ class OrkestratorBlok:
         self.build_command = ["yarn"]
         self.up_command = ["yarn", "start"]
 
-    def preflight(self, init: InitContext, mount: MountService):
+    def preflight(self, init: InitContext, mount: MountService, vscode: VsCodeService | None = None) :
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
         if self.disable and not self.dev:
             return
         self.mount = mount.register_mount("orkestrator", Repo(self.repo))
+
+        vscode.register_task(
+            "Run Orkestrator",
+            "shell",
+            "yarn",
+            ["start"],
+            {"cwd": f"{self.mount}"},
+        )
 
         self.initialized = True
 

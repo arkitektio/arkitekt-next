@@ -7,12 +7,7 @@ from blok import blok, InitContext
 
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
-from arkitekt_next.bloks.funcs import (
-    build_default_service_options,
-    create_default_service_dependencies,
-    create_default_service_yaml,
-    DefaultService,
-)
+from arkitekt_next.bloks.base import BaseArkitektService
 
 
 class AccessCredentials(BaseModel):
@@ -24,7 +19,7 @@ class AccessCredentials(BaseModel):
 
 
 @blok("live.arkitekt.mikro")
-class MikroBlok:
+class MikroBlok(BaseArkitektService):
     def __init__(self) -> None:
         self.dev = False
         self.host = "mikro"
@@ -40,26 +35,8 @@ class MikroBlok:
         self.buckets = ["media", "zarr", "parquet"]
         self.secret_key = secrets.token_hex(16)
 
-    def get_dependencies(self):
-        return create_default_service_dependencies()
-
     def get_builder(self):
         return "arkitekt.generic"
 
-    def preflight(self, init: InitContext):
-        for key, value in init.kwargs.items():
-            setattr(self, key, value)
-
-        self.service = create_default_service_yaml(init, self)
-
-        self.initialized = True
-
     def build(self, context: ExecutionContext):
         context.docker_compose.set_nested("services", self.host, self.service)
-
-    def get_options(self):
-        def_options = build_default_service_options(self)
-
-        return [
-            *def_options,
-        ]

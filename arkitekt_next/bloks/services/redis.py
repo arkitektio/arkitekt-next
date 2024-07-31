@@ -14,6 +14,6 @@ class RedisConnection:
     dependency: Optional[str] = None
 
 
-@blok("live.arkitekt.redis")
+@service("live.arkitekt.redis")
 class RedisService(Protocol):
     def register(self) -> RedisConnection: ...

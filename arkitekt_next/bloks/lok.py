@@ -5,7 +5,6 @@ from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from typing import Dict
-from arkitekt_next.bloks.funcs import build_default_service_options
 from arkitekt_next.bloks.secret import SecretBlok
 from arkitekt_next.bloks.services.admin import AdminService
 from arkitekt_next.bloks.services.db import DBService
@@ -283,8 +282,6 @@ class LokBlok:
             .decode()
         )
 
-        def_options = build_default_service_options(self)
-
         with_dev = Option(
             subcommand="dev",
             help="Run the service in development mode",
@@ -331,7 +328,7 @@ class LokBlok:
         )
 
         return [
-            *def_options,
+            with_dev,
             with_fakts_url,
             with_users,
             with_groups,
