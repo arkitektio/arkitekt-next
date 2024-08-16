@@ -42,7 +42,3 @@ class App(Composition):
     async def __aexit__(self, exc_type, exc_value, traceback):
         for service in self.services.values():
             await service.__aexit__(exc_type, exc_value, traceback)
-
-
-
-

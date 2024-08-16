@@ -126,12 +126,21 @@ def inspect_templates(build_id: str) -> list[TemplateInput]:
             )
 
         raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
-    
+
+
 def inspect_requirements(build_id: str) -> Dict[str, Requirement]:
     try:
         # Run 'docker inspect' with the container ID or name
         result = subprocess.run(
-            ["docker", "run", build_id, "arkitekt-next", "inspect", "requirements", "-mr"],
+            [
+                "docker",
+                "run",
+                build_id,
+                "arkitekt-next",
+                "inspect",
+                "requirements",
+                "-mr",
+            ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=True,
@@ -169,7 +178,7 @@ def inspect_build(build_id: str) -> Inspection:
     templates = inspect_templates(build_id)
     requirements = inspect_requirements(build_id)
 
-    return Inspection(size=size, templates=templates , requirements=requirements)
+    return Inspection(size=size, templates=templates, requirements=requirements)
 
 
 def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavour]:

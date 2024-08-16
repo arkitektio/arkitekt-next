@@ -15,7 +15,12 @@ class OrkestratorBlok:
         self.build_command = ["yarn"]
         self.up_command = ["yarn", "start"]
 
-    def preflight(self, init: InitContext, mount: MountService, vscode: VsCodeService | None = None) :
+    def preflight(
+        self,
+        init: InitContext,
+        mount: MountService,
+        vscode: VsCodeService | None = None,
+    ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 

@@ -48,7 +48,12 @@ import os
 )
 @click.pass_context
 def init(
-    ctx: Context, description: str, overwrite: bool, flavour: str, template: str, devcontainer: bool
+    ctx: Context,
+    description: str,
+    overwrite: bool,
+    flavour: str,
+    template: str,
+    devcontainer: bool,
 ) -> None:
     """Runs the port wizard to generate a dockerfile to be used with port"""
 
@@ -82,10 +87,8 @@ def init(
     with open(dockerfile, "w") as f:
         f.write(dockerfile_content)
 
-
     if devcontainer or click.confirm("Do you want to create a devcontainer.json file?"):
         create_devcontainer_file(manifest, flavour, dockerfile)
-
 
     panel = Panel(
         title=f"Created new flavour [bold]{flavour}[/bold]\n",

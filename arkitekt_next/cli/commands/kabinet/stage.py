@@ -10,10 +10,17 @@ from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 @click.option("--build", help="The build to use", type=str, default=None)
 @click.option("--flavour", "-f", help="The flavour to use", default="vanilla")
 @click.option(
-    "--url", "-u", help="The fakts server to use", type=str, default=DEFAULT_ARKITEKT_URL
+    "--url",
+    "-u",
+    help="The fakts server to use",
+    type=str,
+    default=DEFAULT_ARKITEKT_URL,
 )
 @click.option(
-    "--builder", help="The builder to use", type=str, default="arkitekt_next.builders.easy"
+    "--builder",
+    help="The builder to use",
+    type=str,
+    default="arkitekt_next.builders.easy",
 )
 @click.pass_context
 def stage(ctx: Context, build: str, url: str, flavour: str, builder: str) -> None:
@@ -47,8 +54,9 @@ def stage(ctx: Context, build: str, url: str, flavour: str, builder: str) -> Non
     else:
         build_model = list(builds.values())[0]
 
-    command = build_model.build_docker_command() + build_model.build_arkitekt_next_command(
-        url
+    command = (
+        build_model.build_docker_command()
+        + build_model.build_arkitekt_next_command(url)
     )
 
     click.echo(f"Staging build {build} with flavour {flavour} against {url}")

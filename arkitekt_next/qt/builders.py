@@ -1,4 +1,3 @@
-
 from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_redeem_fakts_next,
 )
@@ -7,7 +6,10 @@ from arkitekt_next.apps.service.herre_qt import build_arkitekt_next_qt_herre
 from arkitekt_next.utils import create_arkitekt_next_folder
 from arkitekt_next.model import Manifest
 from arkitekt_next.apps.types import App
-from arkitekt_next.service_registry import ServiceBuilderRegistry, check_and_import_services
+from arkitekt_next.service_registry import (
+    ServiceBuilderRegistry,
+    check_and_import_services,
+)
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from qtpy import QtWidgets, QtCore
 from typing import List, Optional
@@ -47,7 +49,6 @@ def publicqt(
 
     settings = settings or QtCore.QSettings("arkitekt_next", f"{identifier}:{version}")
 
-
     manifest = Manifest(
         version=version,
         identifier=identifier,
@@ -63,10 +64,15 @@ def publicqt(
         settings=settings,
     )
 
-    herre = build_arkitekt_next_qt_herre(manifest, fakts=fakts, login_widget=login_widget, parent=parent, settings=settings)
+    herre = build_arkitekt_next_qt_herre(
+        manifest,
+        fakts=fakts,
+        login_widget=login_widget,
+        parent=parent,
+        settings=settings,
+    )
 
     params = kwargs
-
 
     try:
         from rich.logging import RichHandler
@@ -79,7 +85,9 @@ def publicqt(
         fakts=fakts,
         herre=herre,
         manifest=manifest,
-        services=registry.build_service_map(fakts=fakts, herre=herre, params=params, manifest=manifest),
+        services=registry.build_service_map(
+            fakts=fakts, herre=herre, params=params, manifest=manifest
+        ),
     )
 
     app.enter()

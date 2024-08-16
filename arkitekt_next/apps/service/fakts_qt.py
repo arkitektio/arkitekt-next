@@ -78,7 +78,7 @@ def build_arkitekt_next_qt_fakts(
                     settings=settings,
                     allow_appending_slash=True,
                     auto_protocols=["http", "https"],
-                    additional_beacons=["http://localhost"]
+                    additional_beacons=["http://localhost"],
                 ),
             ),
             claimer=ClaimEndpointClaimer(),

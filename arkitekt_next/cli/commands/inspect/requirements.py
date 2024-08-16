@@ -70,8 +70,7 @@ def requirements(
     )
 
     x = {
-        key: item.dict(by_alias=True)
-        for key, item in app.manifest.requirements.items()
+        key: item.dict(by_alias=True) for key, item in app.manifest.requirements.items()
     }
     if machine_readable:
         print("--START_REQUIREMENTS--" + json.dumps(x) + "--END_REQUIREMENTS--")

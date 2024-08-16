@@ -4,7 +4,6 @@ from blok import service
 from dataclasses import dataclass
 
 
-
 @service("live.arkitekt.names")
 class NameService(Protocol):
 

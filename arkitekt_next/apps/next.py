@@ -37,4 +37,3 @@ def build_next_app(
         )
 
     herre = build_arkitekt_next_herre(fakts=fakts)
-

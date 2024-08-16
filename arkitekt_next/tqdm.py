@@ -38,6 +38,8 @@ class tqdm(_tqdm):
         if self._assignationhelper:
             if self.last_arkitekt_next_perc + 0.05 < self.last_print_n / self.total:
                 self.last_arkitekt_next_perc = self.last_print_n / self.total
-                self._assignationhelper.progress(int(self.last_arkitekt_next_perc * 100))
+                self._assignationhelper.progress(
+                    int(self.last_arkitekt_next_perc * 100)
+                )
 
         return z

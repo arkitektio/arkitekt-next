@@ -7,6 +7,7 @@ from arkitekt_next.bloks.services.secret import SecretService
 import secrets
 import namegenerator
 
+
 @blok(NameService)
 class PreformedNamesBlok:
     def __init__(self) -> None:
@@ -21,7 +22,6 @@ class PreformedNamesBlok:
         name = self.preformed_names.pop()
         self.used_names.append(name)
         return name
-
 
     def get_options(self):
         config_path = Option(

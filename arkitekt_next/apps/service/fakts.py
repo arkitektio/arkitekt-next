@@ -72,6 +72,7 @@ def build_arkitekt_next_token_fakts(
         )
     )
 
+
 def build_arkitekt_next_redeem_fakts(
     manifest: Manifest,
     redeem_token: str,

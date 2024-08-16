@@ -9,7 +9,6 @@ def compile_scopes() -> List[str]:
     return ["read", "write"]
 
 
-
 def compile_builders():
     return ["arkitekt_next.builders.easy", "arkitekt_next.builders.port"]
 

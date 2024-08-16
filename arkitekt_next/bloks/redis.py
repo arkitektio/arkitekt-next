@@ -9,7 +9,6 @@ from typing import Dict, Any, Optional
 from blok import blok, InitContext
 
 
-
 @blok(RedisService)
 class RedisBlok:
     def __init__(self) -> None:
@@ -65,7 +64,7 @@ class RedisBlok:
         with_skip = Option(
             subcommand="skip",
             help="Skip docker creation (if using external redis?)",
-           type=bool,
+            type=bool,
             default=self.skip,
         )
         with_image = Option(

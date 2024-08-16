@@ -19,10 +19,14 @@ def build_arkitekt_next_qt_app(
 
         settings = settings or QtCore.QSettings()
     except ImportError as e:
-        raise InstallModuleException("Please install qtpy to use arkitekt_next_qt") from e
+        raise InstallModuleException(
+            "Please install qtpy to use arkitekt_next_qt"
+        ) from e
 
     try:
-        from arkitekt_next_next.apps.service.fakts_qt import build_arkitekt_next_qt_fakts
+        from arkitekt_next_next.apps.service.fakts_qt import (
+            build_arkitekt_next_qt_fakts,
+        )
 
         fakts = build_arkitekt_next_qt_fakts(
             manifest=manifest,
@@ -35,7 +39,9 @@ def build_arkitekt_next_qt_app(
         fakts = ImportException(import_exception=e, install_library="qtpy")
 
     try:
-        from arkitekt_next_next.apps.service.herre_qt import build_arkitekt_next_qt_herre
+        from arkitekt_next_next.apps.service.herre_qt import (
+            build_arkitekt_next_qt_herre,
+        )
 
         herre = build_arkitekt_next_qt_herre(
             manifest=manifest,

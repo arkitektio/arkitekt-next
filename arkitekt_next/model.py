@@ -83,10 +83,10 @@ class Manifest(BaseModel):
     class Config:
         extra = "forbid"
 
-
     def hash(self):
         """Hash the manifest"""
         return sha256(self.json(sort_keys=True).encode()).hexdigest()
+
 
 class User(BaseModel):
     """A user of ArkitektNext

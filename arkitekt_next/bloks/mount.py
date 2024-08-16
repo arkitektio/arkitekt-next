@@ -14,7 +14,7 @@ class MountBlok:
         self.registered_configs = {}
 
     def preflight(self, mount_path: str):
-       self.mount_path = mount_path
+        self.mount_path = mount_path
 
     def build(self, ex: ExecutionContext):
         for name, file in self.registered_configs.items():

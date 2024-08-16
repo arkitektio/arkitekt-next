@@ -17,13 +17,14 @@ except ImportError as e:
     background = missing_install("rekuest_next", e)
     startup = missing_install("rekuest_next", e)
 
-from .builders import easy
+from .builders import easy, interactive
 from .apps.types import App
 
 __all__ = [
     "App",
     "register",
     "easy",
+    "interactive",
     "publicqt",
     "jupy",
     "log",

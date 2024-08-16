@@ -5,6 +5,7 @@ from blok.tree import YamlFile
 from arkitekt_next.bloks.services.secret import SecretService
 import secrets
 
+
 @blok(SecretService)
 class SecretBlok:
     def __init__(self) -> None:
@@ -18,8 +19,6 @@ class SecretBlok:
         new_secret = self.preformed_secrets.pop()
         self.registered_secrets.append(new_secret)
         return new_secret
-
-
 
     def get_options(self):
         config_path = Option(

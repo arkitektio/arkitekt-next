@@ -10,8 +10,6 @@ import secrets
 from blok import blok, InitContext
 
 
-
-
 @blok(DBService)
 class PostgresBlok(BaseModel):
     host: str = "db"

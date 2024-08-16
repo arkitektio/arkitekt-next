@@ -32,7 +32,9 @@ def build_arkitekt_app(
     herre = build_arkitekt_next_herre(fakts=fakts)
 
     try:
-        from arkitekt_next_next.apps.service.rekuest_next import build_arkitekt_next_rekuest_next
+        from arkitekt_next_next.apps.service.rekuest_next import (
+            build_arkitekt_next_rekuest_next,
+        )
 
         rekuest = build_arkitekt_next_rekuest_next(
             fakts=fakts, herre=herre, instance_id=instance_id
@@ -41,7 +43,9 @@ def build_arkitekt_app(
         rekuest = ImportException(import_exception=e, install_library="rekuest_next")
 
     try:
-        from arkitekt_next_next.apps.service.mikro_next import build_arkitekt_next_mikro_next
+        from arkitekt_next_next.apps.service.mikro_next import (
+            build_arkitekt_next_mikro_next,
+        )
 
         mikro = build_arkitekt_next_mikro_next(fakts=fakts, herre=herre)
     except ImportError as e:
@@ -57,7 +61,9 @@ def build_arkitekt_app(
         fluss = ImportException(import_exception=e, install_library="fluss_next")
 
     try:
-        from arkitekt_next_next.apps.service.unlok_next import build_arkitekt_next_unlok_next
+        from arkitekt_next_next.apps.service.unlok_next import (
+            build_arkitekt_next_unlok_next,
+        )
 
         unlok = build_arkitekt_next_unlok_next(herre=herre, fakts=fakts)
     except ImportError as e:
@@ -65,7 +71,9 @@ def build_arkitekt_app(
         fluss = ImportException(import_exception=e, install_library="fluss_next")
 
     try:
-        from arkitekt_next_next.apps.service.omero_ark import build_arkitekt_next_omero_ark
+        from arkitekt_next_next.apps.service.omero_ark import (
+            build_arkitekt_next_omero_ark,
+        )
 
         omero_ark = build_arkitekt_next_omero_ark(herre=herre, fakts=fakts)
     except ImportError as e:

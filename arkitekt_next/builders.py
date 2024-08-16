@@ -5,7 +5,7 @@ import os
 from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_fakts_next,
     build_arkitekt_next_redeem_fakts_next,
-    build_arkitekt_next_token_fakts
+    build_arkitekt_next_token_fakts,
 )
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre
 from .utils import create_arkitekt_next_folder
@@ -13,7 +13,6 @@ from .model import Manifest
 from .apps.types import App
 from .service_registry import ServiceBuilderRegistry, check_and_import_services
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
-
 
 
 def easy(
@@ -99,10 +98,8 @@ def easy(
     """
     registry = registry or check_and_import_services()
 
-
     url = os.getenv("FAKTS_URL", url)
     token = os.getenv("FAKTS_TOKEN", token)
-
 
     manifest = Manifest(
         version=version,
@@ -155,10 +152,52 @@ def easy(
         fakts=fakts,
         herre=herre,
         manifest=manifest,
-        services=registry.build_service_map(fakts=fakts, herre=herre, params=params, manifest=manifest),
+        services=registry.build_service_map(
+            fakts=fakts, herre=herre, params=params, manifest=manifest
+        ),
     )
-
 
     return app
 
 
+
+def interactive(identifier: str,
+    version: str = "0.0.1",
+    logo: Optional[str] = None,
+    scopes: Optional[List[str]] = None,
+    url: str = DEFAULT_ARKITEKT_URL,
+    headless: bool = False,
+    log_level: str = "ERROR",
+    token: Optional[str] = None,
+    no_cache: bool = False,
+    redeem_token: Optional[str] = None,
+    app_kind: str = "development",
+    registry: Optional[ServiceBuilderRegistry] = None,
+    sync_mode: bool = True,
+    **kwargs):
+    """Creates an interactive jupyter app"""
+
+    app =  easy(identifier=identifier,
+                version=version,
+                logo=logo,
+                scopes=scopes,
+                url=url,
+                headless=headless,
+                log_level=log_level,
+                token=token,
+                no_cache=no_cache,
+                redeem_token=redeem_token,
+                app_kind=app_kind,
+                registry=registry,
+                **kwargs)
+    
+    if sync_mode:
+        # When running in an interactive async enironvment, just like
+        # in a jupyter notebook, we can opt to run the app in sync mode
+        # to avoid having to use await for every call. This is the default
+        # behaviour for the app, but can be overwritten by setting
+        # app.koil.sync_in_async = False
+        app.koil.sync_in_async = True
+        app.enter()
+
+    return app

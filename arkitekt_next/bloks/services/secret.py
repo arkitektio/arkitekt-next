@@ -3,6 +3,7 @@ from blok import blok, InitContext, Option
 from blok import service
 from dataclasses import dataclass
 
+
 @dataclass
 class AdminCredentials:
     password: str

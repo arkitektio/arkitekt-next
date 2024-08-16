@@ -4,6 +4,7 @@ from blok import blok, InitContext, Option, ExecutionContext
 from blok.tree import YamlFile
 from arkitekt_next.bloks.services.config import ConfigService
 
+
 class AdminCredentials(BaseModel):
     password: str
     username: str
