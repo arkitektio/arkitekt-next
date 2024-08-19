@@ -10,7 +10,9 @@ class AdminCredentials(BaseModel):
     email: str
 
 
-@blok("live.arkitekt.docker_socket")
+@blok(
+    "live.arkitekt.docker_socket", description="Hosting the docker socket of the host"
+)
 class DockerSocketBlok:
     def __init__(self) -> None:
         self.docker_socket = "/var/run/docker.sock"

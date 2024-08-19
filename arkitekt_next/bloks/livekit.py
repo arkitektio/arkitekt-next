@@ -7,7 +7,7 @@ from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 
 
-@blok(LivekitService)
+@blok(LivekitService, description="a self-hosted livekit server")
 class LocalLiveKitBlok:
     def __init__(self) -> None:
         self.host = "livekit"

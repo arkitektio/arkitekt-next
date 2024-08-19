@@ -113,7 +113,7 @@ class ScopeParamType(click.ParamType):
 SCOPE = ScopeParamType()
 
 
-@blok(LokService)
+@blok(LokService, description="Lok is an authentication and authorization service")
 class LokBlok:
     db_name: str
 

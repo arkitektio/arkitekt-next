@@ -31,7 +31,9 @@ class ExposedPort(BaseModel):
     to: int
 
 
-@blok("live.arkitekt.gateway")
+@blok(
+    "live.arkitekt.gateway", description="A gateway for exposing services on the host"
+)
 class GatewayBlok:
     def __init__(self) -> None:
         self.exposed_hosts = {}

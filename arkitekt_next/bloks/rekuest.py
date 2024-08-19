@@ -6,7 +6,7 @@ from blok.tree import Repo, YamlFile
 from arkitekt_next.bloks.base import BaseArkitektService
 
 
-@blok("live.arkitekt.rekuest")
+@blok("live.arkitekt.rekuest", description="Rekuest is the RPC and Functionaliy hub")
 class RekuestBlok(BaseArkitektService):
     def __init__(self) -> None:
         self.dev = False

@@ -6,9 +6,8 @@ from blok import blok, InitContext, Option, ExecutionContext
 from blok.tree import YamlFile
 
 
-@blok(MountService)
+@blok(MountService, description="Mounting files into the file tree for use")
 class MountBlok:
-
     def __init__(self) -> None:
         self.mount_path = "mounts"
         self.registered_configs = {}

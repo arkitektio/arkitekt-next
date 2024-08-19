@@ -18,7 +18,7 @@ class AccessCredentials(BaseModel):
     db_name: str
 
 
-@blok("live.arkitekt.mikro")
+@blok("live.arkitekt.mikro", description="Mikro is the bio-image database for arkitekt")
 class MikroBlok(BaseArkitektService):
     def __init__(self) -> None:
         self.dev = False

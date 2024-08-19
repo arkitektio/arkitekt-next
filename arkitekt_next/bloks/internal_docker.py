@@ -9,7 +9,10 @@ from blok.bloks.services.dns import DnsService
 from blok.tree import YamlFile, Repo
 
 
-@blok("live.arkitekt.internal_engine")
+@blok(
+    "live.arkitekt.internal_engine",
+    description="an arktitekt deployer app that uses docker",
+)
 class InternalDockerBlok:
     def __init__(self) -> None:
         self.host = "internal_docker"

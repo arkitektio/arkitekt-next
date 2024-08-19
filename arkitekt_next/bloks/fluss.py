@@ -9,7 +9,9 @@ from typing import List
 DEFAULT_ARKITEKT_URL = "http://localhost:8000"
 
 
-@blok("live.arkitekt.fluss")
+@blok(
+    "live.arkitekt.fluss", description="A service for managing workflows and their data"
+)
 class FlussBlok(BaseArkitektService):
     def __init__(self) -> None:
         self.dev = False

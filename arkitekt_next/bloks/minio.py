@@ -33,7 +33,10 @@ class BucketMapParamType(click.ParamType):
 TOKEN = BucketMapParamType()
 
 
-@blok(S3Service)
+@blok(
+    S3Service,
+    description="Minio is an easy use self-hosted object storage service",
+)
 class MinioBlok:
     db_name: str
 

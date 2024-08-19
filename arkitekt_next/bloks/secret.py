@@ -6,7 +6,7 @@ from arkitekt_next.bloks.services.secret import SecretService
 import secrets
 
 
-@blok(SecretService)
+@blok(SecretService, description="Preformed secrets that will not change")
 class SecretBlok:
     def __init__(self) -> None:
         self.preformed_secrets = [secrets.token_urlsafe(32) for _ in range(100)]

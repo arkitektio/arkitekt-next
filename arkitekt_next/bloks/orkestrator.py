@@ -6,7 +6,10 @@ from blok.bloks.services.vscode import VsCodeService
 from blok.tree import Repo, YamlFile
 
 
-@blok("live.arkitekt.orkestrator")
+@blok(
+    "live.arkitekt.orkestrator",
+    description="Orkestrator is the electron-based UI for arkitekt",
+)
 class OrkestratorBlok:
     def __init__(self) -> None:
         self.dev = False
@@ -28,13 +31,21 @@ class OrkestratorBlok:
             return
         self.mount = mount.register_mount("orkestrator", Repo(self.repo))
 
-        vscode.register_task(
-            "Run Orkestrator",
-            "shell",
-            "yarn",
-            ["start"],
-            {"cwd": f"{self.mount}"},
-        )
+        if vscode is not None:
+            vscode.register_task(
+                "Run Orkestrator",
+                "shell",
+                "yarn",
+                ["start"],
+                {"cwd": f"{self.mount}"},
+            )
+            vscode.register_task(
+                "Build Orkestrator",
+                "shell",
+                "yarn",
+                [],
+                {"cwd": f"{self.mount}"},
+            )
 
         self.initialized = True
 

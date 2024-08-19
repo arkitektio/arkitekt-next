@@ -7,7 +7,7 @@ from blok.bloks.services.dns import DnsService
 from blok.tree import YamlFile
 
 
-@blok("live.arkitekt.tailscale")
+@blok("live.arkitekt.tailscale", description="Tailscale is a zero config VPN")
 class TailscaleBlok:
     def __init__(self, name: str = "arkitekt") -> None:
         self.name = name

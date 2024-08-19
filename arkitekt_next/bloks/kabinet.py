@@ -7,7 +7,7 @@ from blok.tree import Repo, YamlFile
 from arkitekt_next.bloks.base import BaseArkitektService
 
 
-@blok("live.arkitekt.kabinet")
+@blok("live.arkitekt.kabinet", description="a container and app management service")
 class KabinetBlok(BaseArkitektService):
     def __init__(self) -> None:
         self.dev = False

@@ -8,7 +8,7 @@ import secrets
 import namegenerator
 
 
-@blok(NameService)
+@blok(NameService, description="Preformed names that will not change")
 class PreformedNamesBlok:
     def __init__(self) -> None:
         self.preformed_names = [namegenerator.gen() for _ in range(100)]
