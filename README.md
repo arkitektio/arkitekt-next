@@ -25,7 +25,7 @@ To understand the idea behind arkitekt_next, you need to understand the idea beh
 ## Install
 
 ```bash
-pip install arkitekt_next[all]
+pip install arkitekt-next[all]
 ```
 
 This installs all dependencies for the arkitekt_next platform, inlcuding the arkitekt_next CLI, which can be used to develop and create apps, containerize them and deploy t
@@ -42,7 +42,7 @@ type annotations, orchestration of real-time (in memoery) workflows, data hostin
 To get started create a directory and run
 
 ```bash
-arkitekt_next init
+arkitekt-next init
 ```
 
 Which will lead you throught an app creation process.
@@ -66,7 +66,7 @@ And then connected to a local or remote server by running
 Run example:
 
 ```bash
-arkitekt_next run dev
+arkitekt-next run dev
 ```
 
 
