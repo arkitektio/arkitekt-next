@@ -9,7 +9,7 @@ to ArkitektNext, and configure settings.
 """
 
 from .magic_bar import MagicBar
-from .builders import publicqt
+from .builders import publicqt, devqt
 from .types import *
 
-__all__ = ["MagicBar", "publicqt", "QtApp"]
+__all__ = ["MagicBar", "publicqt", "devqt", "QtApp"]

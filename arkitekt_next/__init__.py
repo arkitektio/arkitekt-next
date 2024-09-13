@@ -11,11 +11,15 @@ try:
     from rekuest_next.register import register
     from rekuest_next.agents.hooks import background
     from rekuest_next.agents.hooks import startup
+    from rekuest_next.agents.context import context
+    from rekuest_next.state.state import state
 except ImportError as e:
     raise e
     register = missing_install("rekuest_next", e)
     background = missing_install("rekuest_next", e)
     startup = missing_install("rekuest_next", e)
+    context = missing_install("rekuest_next", e)
+    state = missing_install("rekuest_next", e)
 
 from .builders import easy, interactive
 from .apps.types import App
@@ -38,6 +42,8 @@ __all__ = [
     "useInstanceID",
     "useUser",
     "next",
+    "state",
+    "context",
     "background",
     "startup",
     "register_next",
