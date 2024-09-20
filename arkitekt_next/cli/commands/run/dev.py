@@ -153,7 +153,7 @@ def check_deeps(changes: Set[Tuple[Change, str]]) -> Set[str]:
 def reset_structure() -> None:
     """Resets the default defintiion rgistry and all
     regitered nodes"""
-    get_default_definition_registry().definitions.clear()
+    get_default_definition_registry().actor_builders.clear()
     get_default_hook_registry().reset()
 
 
