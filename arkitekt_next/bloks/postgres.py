@@ -64,20 +64,20 @@ class PostgresBlok(BaseModel):
             "labels": ["fakts.service=live.arkitekt.postgres"],
         }
 
-
         if self.build_repo or self.dev:
-            mount = init.get_service(MountService).register_mount(self.host, Repo(self.repo))
+            mount = init.get_service(MountService).register_mount(
+                self.host, Repo(self.repo)
+            )
             self.build_image["build"] = mount
         else:
             self.build_image["image"] = self.image
 
-            
     def build(self, context: ExecutionContext):
 
         self.build_image["environment"]["POSTGRES_MULTIPLE_DATABASES"] = ",".join(
             self.registered_dbs.keys()
         )
-        
+
         context.docker_compose.set_nested(f"services", self.host, self.build_image)
 
     def get_options(self):
@@ -124,4 +124,13 @@ class PostgresBlok(BaseModel):
             default=self.dev,
         )
 
-        return [with_postgres_password, skip_build, with_user_password, with_image, with_repo, build_repo, mount_repo, dev]
+        return [
+            with_postgres_password,
+            skip_build,
+            with_user_password,
+            with_image,
+            with_repo,
+            build_repo,
+            mount_repo,
+            dev,
+        ]

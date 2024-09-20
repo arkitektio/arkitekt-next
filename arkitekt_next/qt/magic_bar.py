@@ -63,7 +63,7 @@ class Logo(QtWidgets.QWidget):
                     data = await resp.read()
                     return data
                 else:
-                    print(f"Failed to download the image. Status code: {resp.status}")
+                    logger.error(f"Failed to download the image. Status code: {resp.status}")
                     return None
 
 

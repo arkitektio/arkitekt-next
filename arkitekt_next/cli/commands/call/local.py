@@ -3,11 +3,11 @@ from arkitekt_next.cli.options import *
 import asyncio
 from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
-from rekuest.postmans.utils import arkiuse
+from rekuest_next.postmans.utils import arkiuse
 from arkitekt_next.cli.utils import import_builder
-from rekuest.api.schema import (
+from rekuest_next.api.schema import (
     NodeKind,
-    ReserveBindsInput,
+    BindsInput
 )
 from rich.table import Table
 from rich.console import Console
@@ -21,45 +21,7 @@ async def call_app(
     arg: Dict[str, Any],
 ):
     async with app:
-        await app.rekuest.agent.aregister_definitions()
-
-        run_task = asyncio.create_task(app.rekuest.run())
-
-        template = app.rekuest.agent.interface_template_map[template_string]
-
-        async with arkiuse(
-            hash=template.node.hash,
-            binds=ReserveBindsInput(templates=[template.id], clients=[]),
-            postman=app.rekuest.postman,
-        ) as a:
-            if template.node.kind == NodeKind.GENERATOR:
-                async for i in a.astream(kwargs=arg):
-                    table = Table(title=f"Yields of {template.node.name}")
-                    table.add_column("key")
-                    table.add_column("value")
-
-                    for key, value in i.items():
-                        table.add_row(key, value)
-
-                    console.print(table)
-
-            else:
-                i = await a.aassign(kwargs=arg)
-                table = Table(title=f"Returns of {template.node.name}")
-                table.add_column("key")
-                table.add_column("value")
-
-                for key, value in i.items():
-                    table.add_row(key, value)
-
-                console.print(table)
-
-        run_task.cancel()
-
-        try:
-            await run_task
-        except asyncio.CancelledError:
-            pass
+        raise NotImplementedError("Not implemented yet")
 
 
 @click.command("prod")

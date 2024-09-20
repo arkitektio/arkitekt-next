@@ -9,7 +9,6 @@ from arkitekt_next.cli.types import (
     Deployment,
     Flavour,
     DeploymentsConfigFile,
-    DefinitionInput,
 )
 import yaml
 import json
@@ -202,7 +201,6 @@ def generate_deployment(
     deployment_run: str,
     build: Build,
     image: str,
-    definitions: Optional[List[DefinitionInput]] = None,
 ) -> Deployment:
     """Generates a deployment from a build and an image
 

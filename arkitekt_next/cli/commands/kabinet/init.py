@@ -1,3 +1,4 @@
+from importlib.metadata import version
 from arkitekt_next.cli.constants import compile_dockerfiles
 from arkitekt_next.cli.types import Flavour
 from arkitekt_next.cli.utils import build_relative_dir
@@ -46,6 +47,13 @@ import os
     is_flag=True,
     default=False,
 )
+@click.option(
+    "--arkitekt-version",
+    "-av",
+    help="Which Arkitekt-version should we use to mount in the container?",
+    default=None,
+    type=str,
+)
 @click.pass_context
 def init(
     ctx: Context,
@@ -54,6 +62,7 @@ def init(
     flavour: str,
     template: str,
     devcontainer: bool,
+    arkitekt_version: str = None,
 ) -> None:
     """Runs the port wizard to generate a dockerfile to be used with port"""
 
@@ -78,6 +87,15 @@ def init(
         dockerfile="Dockerfile",
     )
 
+
+    try:
+        package_version = arkitekt_version or version('arkitekt_next')
+        print(f"Detected Arkitekt Package version: {package_version}")
+    except:
+        raise click.ClickException("Could not detect the Arkitekt package version (maybe you are running a dev version). Please provide it with the --arkitekt-version flag")
+        
+
+
     with open(config_file, "w") as file:
         yaml.dump(fl.dict(), file)
 
@@ -85,7 +103,7 @@ def init(
         dockerfile_content = f.read()
 
     with open(dockerfile, "w") as f:
-        f.write(dockerfile_content)
+        f.write(dockerfile_content.format(__arkitekt_version__=package_version))
 
     if devcontainer or click.confirm("Do you want to create a devcontainer.json file?"):
         create_devcontainer_file(manifest, flavour, dockerfile)

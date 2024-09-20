@@ -2,7 +2,7 @@
 assignation context"""
 
 from tqdm import tqdm as _tqdm
-from rekuest.actors.vars import current_assignation_helper
+from rekuest_next.actors.vars import current_assignation_helper
 
 
 class tqdm(_tqdm):

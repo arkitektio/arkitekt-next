@@ -1,3 +1,4 @@
+from importlib.metadata import version
 from pydantic import BaseModel, Field, validator
 import datetime
 from typing import List, Optional, Union, Literal, Dict
@@ -5,7 +6,6 @@ from enum import Enum
 import semver
 import uuid
 from arkitekt_next.model import Requirement
-from rekuest.api.schema import DefinitionInput
 from string import Formatter
 import os
 
@@ -14,6 +14,7 @@ from rekuest_next.api.schema import TemplateInput
 ALLOWED_BUILDER_KEYS = [
     "tag",
     "dockerfile",
+    "package_version",
 ]
 
 
@@ -35,7 +36,7 @@ class Manifest(BaseModel):
     identifier: str
     version: str
     author: str
-    logo: Optional[str]
+    logo: Optional[str] = None
     entrypoint: str
     scopes: List[str]
     created_at: datetime.datetime = Field(default_factory=datetime.datetime.now)
@@ -245,6 +246,7 @@ class Flavour(BaseModel):
 
     def generate_build_command(self, tag: str, relative_dir: str):
         """Generates the build command for this flavour"""
+
 
         dockerfile = os.path.join(relative_dir, self.dockerfile)
 

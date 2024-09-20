@@ -85,7 +85,7 @@ class Manifest(BaseModel):
 
     def hash(self):
         """Hash the manifest"""
-        return sha256(self.json(sort_keys=True).encode()).hexdigest()
+        return sha256(self.model_dump_json().encode()).hexdigest()
 
 
 class User(BaseModel):

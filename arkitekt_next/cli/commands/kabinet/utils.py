@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 import os
 import yaml
@@ -42,6 +43,6 @@ def validate_flavours(flavours_folder: str, only: Optional[str]):
                 )
 
         else:
-            print(
+            logging.info(
                 f"Found file {dir_name} in flavours folder. Not a valid flavour. Ignoring"
             )

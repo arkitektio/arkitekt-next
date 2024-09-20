@@ -130,7 +130,6 @@ def devqt(
         requirements=registry.get_requirements(),
     )
     if token:
-        print("Using token")
         fakts = build_arkitekt_next_token_fakts(
             manifest=manifest,
             token=token,
@@ -138,7 +137,6 @@ def devqt(
         )
 
     elif redeem_token:
-        print("Using redeem token")
         fakts = build_arkitekt_next_redeem_fakts_next(
             manifest=manifest,
             redeem_token=redeem_token,
@@ -147,7 +145,6 @@ def devqt(
             headless=headless,
         )
     else:
-        print("Using normal fakts")
         fakts = build_arkitekt_next_fakts_next(
             manifest=manifest,
             url=url,

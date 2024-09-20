@@ -43,17 +43,7 @@ class ArkitektBlok:
         scale: Optional[TailscaleBlok] = None,
         orkestrator: Optional[OrkestratorBlok] = None,
     ):
-        print(
-            gateway,
-            mikro,
-            kabinet,
-            rekuest,
-            fluss,
-            gateway,
-            internal_engine,
-            scale,
-            orkestrator,
-        )
+        pass
 
     def build(self, cwd):
         pass

@@ -36,13 +36,10 @@ def requirements(
     machine_readable: bool,
     builder: str = "arkitekt_next.builders.easy",
 ):
-    """Runs the app in production mode
+    """Checks the requirements of the app
 
     \n
-    You can specify the builder to use with the --builder flag. By default, the easy builder is used, which is designed to be easy to use and to get started with.
-
     """
-    from rekuest.definition.registry import get_default_definition_registry
 
     manifest = get_manifest(ctx)
     console = get_console(ctx)
@@ -70,7 +67,7 @@ def requirements(
     )
 
     x = {
-        key: item.dict(by_alias=True) for key, item in app.manifest.requirements.items()
+        key: item.model_dump(by_alias=True) for key, item in app.manifest.requirements.items()
     }
     if machine_readable:
         print("--START_REQUIREMENTS--" + json.dumps(x) + "--END_REQUIREMENTS--")

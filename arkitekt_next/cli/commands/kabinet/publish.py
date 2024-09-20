@@ -87,7 +87,6 @@ def publish(ctx: Context, build: str, tag: str) -> None:
             deployment_run,
             build_model,
             tag,
-            definitions=[],
         )
 
         md = Panel(

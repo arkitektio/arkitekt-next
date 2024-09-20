@@ -8,8 +8,8 @@ from watchfiles.filters import PythonFilter
 import os
 import sys
 import inspect
-from rekuest.definition.registry import get_default_definition_registry
-from rekuest.agents.hooks import get_default_hook_registry
+from rekuest_next.definition.registry import get_default_definition_registry
+from rekuest_next.agents.hooks import get_default_hook_registry
 from typing import MutableSet, Tuple, Any, Set
 from arkitekt_next.cli.ui import construct_changes_group, construct_app_group
 from arkitekt_next.cli.commands.run.utils import import_builder

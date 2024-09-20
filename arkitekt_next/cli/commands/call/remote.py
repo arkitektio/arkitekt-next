@@ -3,7 +3,6 @@ from arkitekt_next.cli.options import *
 import asyncio
 from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
-from rekuest.postmans.utils import arkiuse
 import rich_click as click
 from arkitekt_next.cli.options import *
 import asyncio
@@ -19,12 +18,7 @@ async def call_app(
     arg,
 ):
     async with app:
-        async with arkiuse(
-            hash=hash,
-            postman=app.rekuest.postman,
-        ) as a:
-            print(arg)
-            print(await a.aassign(kwargs=arg))
+        raise NotImplementedError("This is not implemented yet")
 
 
 @click.command("prod")

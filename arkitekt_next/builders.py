@@ -109,7 +109,6 @@ def easy(
         requirements=registry.get_requirements(),
     )
     if token:
-        print("Using token")
         fakts = build_arkitekt_next_token_fakts(
             manifest=manifest,
             token=token,
@@ -117,7 +116,6 @@ def easy(
         )
 
     elif redeem_token:
-        print("Using redeem token")
         fakts = build_arkitekt_next_redeem_fakts_next(
             manifest=manifest,
             redeem_token=redeem_token,
@@ -126,7 +124,6 @@ def easy(
             headless=headless,
         )
     else:
-        print("Using normal fakts")
         fakts = build_arkitekt_next_fakts_next(
             manifest=manifest,
             url=url,
@@ -160,8 +157,8 @@ def easy(
     return app
 
 
-
-def interactive(identifier: str,
+def interactive(
+    identifier: str,
     version: str = "0.0.1",
     logo: Optional[str] = None,
     scopes: Optional[List[str]] = None,
@@ -174,23 +171,26 @@ def interactive(identifier: str,
     app_kind: str = "development",
     registry: Optional[ServiceBuilderRegistry] = None,
     sync_mode: bool = True,
-    **kwargs):
+    **kwargs,
+):
     """Creates an interactive jupyter app"""
 
-    app =  easy(identifier=identifier,
-                version=version,
-                logo=logo,
-                scopes=scopes,
-                url=url,
-                headless=headless,
-                log_level=log_level,
-                token=token,
-                no_cache=no_cache,
-                redeem_token=redeem_token,
-                app_kind=app_kind,
-                registry=registry,
-                **kwargs)
-    
+    app = easy(
+        identifier=identifier,
+        version=version,
+        logo=logo,
+        scopes=scopes,
+        url=url,
+        headless=headless,
+        log_level=log_level,
+        token=token,
+        no_cache=no_cache,
+        redeem_token=redeem_token,
+        app_kind=app_kind,
+        registry=registry,
+        **kwargs,
+    )
+
     if sync_mode:
         # When running in an interactive async enironvment, just like
         # in a jupyter notebook, we can opt to run the app in sync mode
