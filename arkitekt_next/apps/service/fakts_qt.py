@@ -52,7 +52,7 @@ def build_arkitekt_next_qt_fakts(
     )
 
     return ArkitektNextFaktsQt(
-        grant=RemoteGrant(
+        grant=ArkitektNextFaktsQtRemoteGrant(
             demander=AutoSaveDemander(
                 store=QTSettingTokenStore(
                     settings=settings,
@@ -65,7 +65,7 @@ def build_arkitekt_next_qt_fakts(
                     requested_client_kind="desktop",
                 ),
             ),
-            discovery=AutoSaveDiscovery(
+            discovery=ArkitektNextFaktsAutoSaveDiscovery(
                 store=QtSettingsEndpointStore(
                     settings=settings,
                     save_key="fakts_endpoint",

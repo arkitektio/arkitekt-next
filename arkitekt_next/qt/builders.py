@@ -18,7 +18,7 @@ import logging
 from typing import List, Optional
 import logging
 import os
-
+from arkitekt_next.qt.types import QtApp
 from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_fakts_next,
     build_arkitekt_next_redeem_fakts_next,
@@ -50,7 +50,7 @@ def devqt(
     app_kind: str = "development",
     registry: Optional[ServiceBuilderRegistry] = None,
     **kwargs,
-) -> App:
+) -> QtApp:
     """Creates a next app
 
     A simple way to create an ArkitektNext Next app, ArkitektNext next apps are
@@ -166,7 +166,7 @@ def devqt(
     except ImportError:
         logging.basicConfig(level=log_level)
 
-    app = App(
+    app = QtApp(
         fakts=fakts,
         herre=herre,
         manifest=manifest,
@@ -192,7 +192,7 @@ def publicqt(
     login_widget: Optional[QtWidgets.QWidget] = None,
     settings: Optional[QtCore.QSettings] = None,
     **kwargs,
-) -> App:
+) -> QtApp:
     """Public QtApp creation
 
     A simple way to create an Arkitekt app with a public grant (allowing users to sign
@@ -244,7 +244,7 @@ def publicqt(
     except ImportError:
         logging.basicConfig(level=log_level)
 
-    app = App(
+    app = QtApp(
         fakts=fakts,
         herre=herre,
         manifest=manifest,
