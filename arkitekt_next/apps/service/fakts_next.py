@@ -11,7 +11,7 @@ from fakts.grants.remote.demanders.device_code import DeviceCodeDemander
 from fakts.grants.remote.claimers.post import ClaimEndpointClaimer
 from fakts.grants.remote.demanders.redeem import RedeemDemander
 
-from arkitekt_next.model import Manifest
+from arkitekt_next.base_models import Manifest
 
 
 class ArkitektNextFaktsQt(Fakts):

@@ -2,7 +2,6 @@ from arkitekt_next.apps.types import App, Fakts, Herre, Manifest
 from typing import List, Callable, Dict, Any
 
 
-
 class QtApp(App):
     """An app that is built with the easy builder"""
 
@@ -25,36 +24,35 @@ class QtApp(App):
         """Register a hook"""
         self.hooks[hook_name].append(hook)
 
-
     def register(self, *args, **kwargs):
-        """ Register a function with the app (not in the Qt event loop)
+        """Register a function with the app (not in the Qt event loop)
 
         This is useful for functions that do not need access to the Qt event loop
         and can be run in a separate thread. This is the default behavior for
         functions registered with the app.
-        
-        
+
+
         """
         self.services["rekuest"].register(*args, **kwargs)
 
-
-
     def register_in_qt_loop(self, function: Callable, **kwargs):
         """Register a function in the Qt event loop
-         
+
         This is useful for functions that need to be resolved in the Qt event loop and are
         able to block the main thread (e.g. when prompting a necessary user input, or
         when displaying a blocking dialog).
-         
+
         """
 
         from rekuest_next.qt.builders import qtinloopactifier
-       
-        return self.services["rekuest"].register(function, actifier=qtinloopactifier, **kwargs)
-    
+
+        return self.services["rekuest"].register(
+            function, actifier=qtinloopactifier, **kwargs
+        )
+
     def register_with_qt_future(self, function: Callable, **kwargs):
-        """ Register a function with a future that can be resolved in the Qt event loop
-        
+        """Register a function with a future that can be resolved in the Qt event loop
+
         This is useful for functions that need to be resolved in the Qt event loop, but
         might cause a blocking call if they are run in the same thread.
 
@@ -63,7 +61,7 @@ class QtApp(App):
         ```python
 
             class MyWidget(QtWidgets.QWidget):
-            
+
                 def __init__(self, app: QtApp):
                     super().__init__()
                     self.my_widget = QtWidgets.QWidget()
@@ -93,16 +91,21 @@ class QtApp(App):
 
                 def on_reject(self):
                     self.current_future.set_result(False)
-        
-        
+
+
         """
         from rekuest_next.qt.builders import qtwithfutureactifier
-        return self.services["rekuest"].register(function, actifier=qtwithfutureactifier, **kwargs)
+
+        return self.services["rekuest"].register(
+            function, actifier=qtwithfutureactifier, **kwargs
+        )
 
     def register_with_qt_generator(self, function: Callable, **kwargs):
         from rekuest_next.qt.builders import qtwithgeneratoractifier
-        return self.services["rekuest"].register(function, actifier=qtwithgeneratoractifier, **kwargs)
-        
+
+        return self.services["rekuest"].register(
+            function, actifier=qtwithgeneratoractifier, **kwargs
+        )
 
     def run(self):
         """Run the app"""

@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from herre import Herre
 from fakts import Fakts
-from .model import Manifest, Requirement
+from .base_models import Manifest, Requirement
 from typing import Callable, Dict
 import importlib
 import sys

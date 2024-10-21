@@ -5,7 +5,7 @@ from typing import List, Optional, Union, Literal, Dict
 from enum import Enum
 import semver
 import uuid
-from arkitekt_next.model import Requirement
+from arkitekt_next.base_models import Requirement
 from string import Formatter
 import os
 
@@ -246,7 +246,6 @@ class Flavour(BaseModel):
 
     def generate_build_command(self, tag: str, relative_dir: str):
         """Generates the build command for this flavour"""
-
 
         dockerfile = os.path.join(relative_dir, self.dockerfile)
 

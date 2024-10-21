@@ -42,7 +42,6 @@ def templates(
     You can specify the builder to use with the --builder flag. By default, the easy builder is used, which is designed to be easy to use and to get started with.
 
     """
-    
 
     manifest = get_manifest(ctx)
     console = get_console(ctx)

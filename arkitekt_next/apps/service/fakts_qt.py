@@ -18,7 +18,7 @@ from fakts.grants.remote.discovery.qt.selectable_beacon import (
     SelectBeaconWidget,
     QtSelectableDiscovery,
 )
-from arkitekt_next.model import Manifest
+from arkitekt_next.base_models import Manifest
 from qtpy import QtCore, QtWidgets
 
 

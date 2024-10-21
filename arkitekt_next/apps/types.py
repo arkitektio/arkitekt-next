@@ -12,7 +12,7 @@ an import exception to the app.
 
 import logging
 from typing import TYPE_CHECKING, Any, Dict
-from arkitekt_next.model import Manifest
+from arkitekt_next.base_models import Manifest
 from koil.composition import Composition
 from fakts import Fakts
 from herre import Herre
@@ -35,7 +35,6 @@ class App(Composition):
     def register(self, *args, **kwargs):
         """Register a service"""
         self.services["rekuest"].register(*args, **kwargs)
-
 
     async def __aenter__(self):
         await super().__aenter__()

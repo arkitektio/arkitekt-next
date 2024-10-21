@@ -87,14 +87,13 @@ def init(
         dockerfile="Dockerfile",
     )
 
-
     try:
-        package_version = arkitekt_version or version('arkitekt_next')
+        package_version = arkitekt_version or version("arkitekt_next")
         print(f"Detected Arkitekt Package version: {package_version}")
     except:
-        raise click.ClickException("Could not detect the Arkitekt package version (maybe you are running a dev version). Please provide it with the --arkitekt-version flag")
-        
-
+        raise click.ClickException(
+            "Could not detect the Arkitekt package version (maybe you are running a dev version). Please provide it with the --arkitekt-version flag"
+        )
 
     with open(config_file, "w") as file:
         yaml.dump(fl.dict(), file)

@@ -1,5 +1,5 @@
 import os
-from arkitekt_next.model import Manifest
+from arkitekt_next.base_models import Manifest
 import json
 
 

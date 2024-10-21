@@ -10,7 +10,7 @@ from arkitekt_next.cli.types import Flavour, Inspection
 import yaml
 from typing import Dict, Optional
 import json
-from arkitekt_next.model import Requirement
+from arkitekt_next.base_models import Requirement
 from arkitekt_next.utils import create_arkitekt_next_folder
 from rekuest_next.api.schema import TemplateInput
 

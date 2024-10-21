@@ -9,7 +9,7 @@ from arkitekt_next.apps.service.fakts_next import (
 )
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre
 from .utils import create_arkitekt_next_folder
-from .model import Manifest
+from .base_models import Manifest
 from .apps.types import App
 from .service_registry import ServiceBuilderRegistry, check_and_import_services
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL

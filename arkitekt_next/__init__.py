@@ -15,6 +15,9 @@ try:
     from rekuest_next.state.state import state
     from rekuest_next.actors.reactive.api import progress, aprogress
     from rekuest_next.actors.reactive.api import log, alog
+    from rekuest_next.register import test, benchmark
+    from rekuest_next.structures.model import model
+    from rekuest_next.define import define
 except ImportError as e:
     raise e
     register = missing_install("rekuest_next", e)

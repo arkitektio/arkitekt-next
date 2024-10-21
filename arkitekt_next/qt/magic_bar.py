@@ -63,7 +63,9 @@ class Logo(QtWidgets.QWidget):
                     data = await resp.read()
                     return data
                 else:
-                    logger.error(f"Failed to download the image. Status code: {resp.status}")
+                    logger.error(
+                        f"Failed to download the image. Status code: {resp.status}"
+                    )
                     return None
 
 
@@ -154,8 +156,6 @@ class ArkitektNextLogs(QtWidgets.QDialog):
     def log_level(self) -> str:
         """The log level in use."""
         return self.settings.value(self.log_level_key, "INFO", str)
-    
-
 
 
 class Profile(QtWidgets.QDialog):
