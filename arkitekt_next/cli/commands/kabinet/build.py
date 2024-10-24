@@ -6,7 +6,7 @@ import subprocess
 import uuid
 from arkitekt_next.cli.io import generate_build
 from click import Context
-from arkitekt_next.cli.types import Flavour, Inspection
+from arkitekt_next.cli.types import Flavour, InspectionInput
 import yaml
 from typing import Dict, Optional
 import json
@@ -51,7 +51,7 @@ def build_flavour(flavour_name: str, flavour: Flavour) -> str:
     return build_id
 
 
-def inspect_docker_container(build_id: str) -> Inspection:
+def inspect_docker_container(build_id: str) -> InspectionInput:
     try:
         # Run 'docker inspect' with the container ID or name
         result = subprocess.run(
@@ -173,12 +173,12 @@ def inspect_requirements(build_id: str) -> Dict[str, Requirement]:
         raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
 
 
-def inspect_build(build_id: str) -> Inspection:
+def inspect_build(build_id: str) -> InspectionInput:
     size, size_root_fs = inspect_docker_container(build_id)
     templates = inspect_templates(build_id)
     requirements = inspect_requirements(build_id)
 
-    return Inspection(size=size, templates=templates, requirements=requirements)
+    return InspectionInput(size=size, templates=templates, requirements=requirements)
 
 
 def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavour]:
@@ -205,7 +205,7 @@ def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavou
                 with open(os.path.join(dir, "config.yaml")) as f:
                     valued = yaml.load(f, Loader=yaml.SafeLoader)
                 try:
-                    flavour = Flavour(**valued)
+                    flavour = Flavour.model_validate(valued)
                     flavour.check_relative_paths(dir)
                     flavours[dir_name] = flavour
 

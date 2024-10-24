@@ -23,11 +23,11 @@ def check_if_build_already_deployed(build: Build) -> None:
         A click exception if the manifest has already been deployed
     """
     config = get_deployments()
-    for deployment in config.deployments:
+    for deployment in config.app_images:
         if (
             deployment.manifest.identifier == build.manifest.identifier
             and deployment.manifest.version == build.manifest.version
-            and deployment.flavour == build.flavour
+            and deployment.flavour_name == build.flavour
         ):
             raise click.ClickException(
                 f"Deployment of {build.manifest.identifier}/{build.manifest.version} in the {build.flavour} flavour already exists."

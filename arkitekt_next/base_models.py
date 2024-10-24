@@ -6,6 +6,7 @@ from typing import List, Optional
 
 
 class Requirement(BaseModel):
+    key: str
     service: str
     """ The service is the service that will be used to fill the key, it will be used to find the correct instance. It needs to fullfill
     the reverse domain naming scheme"""
@@ -15,41 +16,48 @@ class Requirement(BaseModel):
     """ The description is a human readable description of the requirement. Will be show to the user when asking for the requirement."""
 
 
-def build_default_requirements() -> dict[str, Requirement]:
-    return {
-        "lok": Requirement(
+def build_default_requirements() -> List[Requirement]:
+    return [
+        Requirement(
+            key="lok",
             service="live.arkitekt_next.lok",
             description="An instance of ArkitektNext Lok to authenticate the user",
         ),
-        "rekuest": Requirement(
+        Requirement(
+            key="rekuest",
             service="live.arkitekt_next.rekuest",
             description="An instance of ArkitektNext Rekuest to assign to nodes",
         ),
-        "kabinet": Requirement(
+        Requirement(
+            key="kabinet",
             service="live.arkitekt_next.kabinet",
             description="An instance of ArkitektNext Kabinet to retrieve nodes from",
         ),
-        "mikro": Requirement(
+        Requirement(
+            key="mikro",
             service="live.arkitekt_next.mikro",
             description="An instance of ArkitektNext Mikro to make requests to the user's data",
             optional=True,
         ),
-        "fluss": Requirement(
+        Requirement(
+            key="fluss",
             service="live.arkitekt_next.fluss",
             description="An instance of ArkitektNext Fluss to make requests to the user's data",
             optional=False,
         ),
-        "port": Requirement(
+        Requirement(
+            key="port",
             service="live.arkitekt_next.port",
             description="An instance of ArkitektNext Fluss to make requests to the user's data",
             optional=True,
         ),
-        "datalayer": Requirement(
+        Requirement(
+            key="datalayer",
             service="live.arkitekt_next.datalayer",
             description="An instance of ArkitektNext Datalayer to make requests to the user's data",
             optional=False,
         ),
-    }
+    ]
 
 
 class Manifest(BaseModel):
@@ -75,7 +83,7 @@ class Manifest(BaseModel):
     """ Scopes that this app should request from the user """
     logo: Optional[str]
     """ A URL to the logo of the app TODO: We should enforce this to be a http URL as local paths won't work """
-    requirements: Optional[dict[str, Requirement]] = Field(
+    requirements: Optional[List[Requirement]] = Field(
         default_factory=build_default_requirements
     )
     """ Requirements that this app has TODO: What are the requirements? """

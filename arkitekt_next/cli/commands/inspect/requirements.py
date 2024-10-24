@@ -66,10 +66,10 @@ def requirements(
         logo=manifest.logo,
     )
 
-    x = {
-        key: item.model_dump(by_alias=True)
-        for key, item in app.manifest.requirements.items()
-    }
+    x = [
+        item.model_dump(by_alias=True)
+        for item in app.manifest.requirements
+    ]
     if machine_readable:
         print("--START_REQUIREMENTS--" + json.dumps(x) + "--END_REQUIREMENTS--")
 

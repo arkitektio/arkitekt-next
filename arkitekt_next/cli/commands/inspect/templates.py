@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 import rich_click as click
 from importlib import import_module
 from arkitekt_next.apps.types import App
@@ -72,9 +73,9 @@ def templates(
     if rekuest is None:
         console.print("No rekuest service found in app")
         return
-
+    
     x = {
-        key: item.dict(by_alias=True)
+        key: item.model_dump(by_alias=True)
         for key, item in rekuest.agent.extensions[
             "default"
         ].definition_registry.templates.items()

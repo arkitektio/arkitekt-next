@@ -13,7 +13,7 @@ streaming analysis for mikroscopy
 
 arkitekt_next is the python client for the arkitekt_next platform. It allows you to utilize the full extent of the platform from your python code.
 To understand the idea behind arkitekt_next, you need to understand the idea behind the arkitekt_next platform.
-(More on this in the [documentation](https://arkitekt_next.live))
+(More on this in the [documentation](https://arkitekt.live))
 
 ## Features
 
@@ -30,14 +30,12 @@ pip install arkitekt-next[all]
 
 This installs all dependencies for the arkitekt_next platform, inlcuding the arkitekt_next CLI, which can be used to develop and create apps, containerize them and deploy t
 
-
 arkitekt_next is relying heavily on asyncio patters and therfore supports python 3.8 and above. It also relies on the pydantic stack for serialization.
 
-
-## App 
+## App
 
 You can use the cli to create python based apps for the arkitekt_next platform, profiting from a battery of features like easy GUI creation based on
-type annotations, orchestration of real-time (in memoery) workflows, data hosting,  easy packaging and distribution in docker containers, etc...
+type annotations, orchestration of real-time (in memoery) workflows, data hosting, easy packaging and distribution in docker containers, etc...
 
 To get started create a directory and run
 
@@ -69,8 +67,7 @@ Run example:
 arkitekt-next run dev
 ```
 
-
-For more details on how to create an app follow the tutorials on https://arkitekt_next.live.
+For more details on how to create an app follow the tutorials on https://arkitekt.live.
 
 ## Usage with complex Datastructures
 
@@ -117,7 +114,4 @@ def complex_call(x: ComplexStrucuture) -> int:
 
 ```
 
-
-
-Check out the arkitekt_next [documentation](https://arkitekt_next.live) for usage of this libary
-
+Check out the arkitekt_next [documentation](https://arkitekt.live) for usage of this libary

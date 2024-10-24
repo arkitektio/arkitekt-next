@@ -52,7 +52,7 @@ def cli(ctx):
 
     This is the CLI for the ArkitektNext Python SDK. It allows you to create and deploy ArkitektNext Apps from your python code
     as well as to run them locally for testing and development. For more information about ArkitektNext, please visit
-    [link=https://arkitekt_next.live]https://arkitekt_next.live[/link]
+    [link=https://arkitekt.live]https://arkitekt.live[/link]
     """
     sys.path.append(os.getcwd())
 

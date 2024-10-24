@@ -19,12 +19,11 @@ class Registration(BaseModel):
     builder: Callable[[Herre, Fakts, Params], object]
 
 
-basic_requirements = {
-    "lok": Requirement(
+basic_requirements = [Requirement(
+        key="lok",
         service="live.arkitekt.lok",
         description="An instance of ArkitektNext Lok to authenticate the user",
-    ),
-}
+    )]
 
 
 class ServiceBuilderRegistry:
@@ -39,7 +38,7 @@ class ServiceBuilderRegistry:
         requirement: Requirement,
     ):
         self.service_builders[name] = service_builder
-        self.requirements[name] = requirement
+        self.requirements.append(requirement)
 
     def get(self, name):
         return self.services.get(name)

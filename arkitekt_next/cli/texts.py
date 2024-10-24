@@ -6,7 +6,7 @@ WELCOME_MESSAGE = (
 )
 
 
-LOGO = """
+LOGO = r"""
             _    _ _       _    _   
   __ _ _ __| | _(_) |_ ___| | _| |_ 
  / _` | '__| |/ / | __/ _ \ |/ / __|
@@ -15,4 +15,4 @@ LOGO = """
                                                                    
 """
 
-ERROR_EPILOGUE = "To find out more, visit [link=https://arkitekt_next.live]https://arkitekt_next.live[/link]"
+ERROR_EPILOGUE = "To find out more, visit [link=https://arkitekt.live]https://arkitekt.live[/link]"

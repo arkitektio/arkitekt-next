@@ -1,15 +1,17 @@
+import datetime
+import uuid
 from arkitekt_next.utils import create_arkitekt_next_folder
 import os
 from typing import Optional, List, Dict
 from arkitekt_next.cli.types import (
-    Inspection,
     Manifest,
     Build,
     BuildsConfigFile,
-    Deployment,
     Flavour,
     DeploymentsConfigFile,
 )
+from kabinet.api.schema import InspectionInput, AppImageInput, DockerImageInput, ManifestInput
+
 import yaml
 import json
 import rich_click as click
@@ -114,13 +116,25 @@ def get_builds(selected_run: Optional[str] = None) -> Dict[str, Build]:
         )
 
 
+
+
+def manifest_to_input(manifest: Manifest) -> ManifestInput:
+
+    return ManifestInput(**manifest.model_dump(by_alias=True))
+
+
+
+
+
+
+
 def generate_build(
     build_run: str,
     build_id: str,
     flavour_name: str,
     flavour: Flavour,
     manifest: Manifest,
-    inspection: Optional[Inspection],
+    inspection: Optional[InspectionInput],
 ) -> Build:
     """Generates a build from a builder, build_id and manifest
 
@@ -147,7 +161,7 @@ def generate_build(
     config_file = os.path.join(path, "builds.yaml")
 
     build = Build(
-        manifest=manifest,
+        manifest=manifest_to_input(manifest),
         flavour=flavour_name,
         selectors=flavour.selectors,
         build_id=build_id,
@@ -201,7 +215,7 @@ def generate_deployment(
     deployment_run: str,
     build: Build,
     image: str,
-) -> Deployment:
+) -> AppImageInput:
     """Generates a deployment from a build and an image
 
     Parameters
@@ -225,29 +239,29 @@ def generate_deployment(
 
     config_file = os.path.join(path, "deployments.yaml")
 
-    deployment = Deployment(
-        build_id=build.build_id,
+    app_image = AppImageInput(
+        appImageId=uuid.uuid4().hex,
         manifest=build.manifest,
-        flavour=build.flavour,
+        flavourName=build.flavour,
         selectors=build.selectors,
         inspection=build.inspection,
-        image=image,
+        image=DockerImageInput(imageString=image, buildAt=datetime.datetime.now()),
+
     )
 
     if os.path.exists(config_file):
         with open(config_file, "r") as file:
             config = DeploymentsConfigFile(**yaml.safe_load(file))
-            config.deployments.append(deployment)
-            config.latest_deployment_run = deployment_run
+            config.app_images.append(app_image)
+            config.latest_app_image = app_image.app_image_id
     else:
-        config = DeploymentsConfigFile(deployments=[deployment])
-        config.latest_deployment_run = deployment_run
+        config = DeploymentsConfigFile(app_images=[app_image], latest_app_image=app_image.app_image_id)
 
     with open(config_file, "w") as file:
         yaml.safe_dump(
-            json.loads(config.json(exclude_none=True, by_alias=True)),
+            json.loads(config.model_dump_json(exclude_none=True, by_alias=True)),
             file,
             sort_keys=True,
         )
 
-    return deployment
+    return app_image

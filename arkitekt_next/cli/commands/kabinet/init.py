@@ -110,7 +110,7 @@ def init(
     panel = Panel(
         title=f"Created new flavour [bold]{flavour}[/bold]\n",
         renderable="You can now edit the Dockerfile and add selectors to the config.yaml file\n"
-        + "To learn more about selectors and how flavours work, please visit [link=https://arkitekt_next.live]https://arkitekt_next.live[/link]",
+        + "To learn more about selectors and how flavours work, please visit [link=https://arkitekt.live]https://arkitekt.live[/link]",
         style="green",
     )
 
