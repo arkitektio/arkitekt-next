@@ -4,11 +4,6 @@ from typing import List, Callable, Dict, Any
 
 class QtApp(App):
     """An app that is built with the easy builder"""
-
-    fakts: Fakts
-    herre: Herre
-    manifest: Manifest
-    services: Dict[str, Any]
     hooks: Dict[str, List[Callable]] = {
         "on_start": [],
         "on_stop": [],

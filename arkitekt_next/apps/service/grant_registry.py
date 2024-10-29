@@ -1,8 +1,8 @@
-from herre.fakts.grant import FaktsGrant
-from herre.fakts.registry import GrantRegistry, GrantType
-from herre.grants.oauth2.authorization_code import AuthorizationCodeGrant
-from herre.grants.oauth2.redirecters.aiohttp_server import AioHttpServerRedirecter
-from herre.grants.oauth2.client_credentials import ClientCredentialsGrant
+from herre_next.fakts.grant import FaktsGrant
+from herre_next.fakts.registry import GrantRegistry, GrantType
+from herre_next.grants.oauth2.authorization_code import AuthorizationCodeGrant
+from herre_next.grants.oauth2.redirecters.aiohttp_server import AioHttpServerRedirecter
+from herre_next.grants.oauth2.client_credentials import ClientCredentialsGrant
 
 
 ARKITEKT_GRANT_REGISTRY = GrantRegistry()

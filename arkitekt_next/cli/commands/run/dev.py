@@ -18,7 +18,7 @@ from arkitekt_next.apps.types import App
 import rich_click as click
 import os
 from arkitekt_next.cli.options import (
-    with_fakts_url,
+    with_fakts_next_url,
     with_builder,
     with_token,
     with_instance_id,
@@ -327,7 +327,7 @@ async def run_dev(
 
 
 @click.command()
-@with_fakts_url
+@with_fakts_next_url
 @with_builder
 @with_token
 @with_instance_id

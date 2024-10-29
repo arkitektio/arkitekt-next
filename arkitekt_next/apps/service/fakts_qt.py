@@ -1,37 +1,21 @@
-from fakts.fakts import Fakts
+from fakts_next.fakts import Fakts
 from typing import Optional
-from fakts.grants.remote import RemoteGrant
-from fakts.grants.remote.demanders.auto_save import AutoSaveDemander
-from fakts.grants.remote.demanders.device_code import DeviceCodeDemander
-from fakts.grants.remote.discovery.auto_save import AutoSaveDiscovery
-from fakts.grants.remote.discovery.qt.auto_save_endpoint_widget import (
-    AutoSaveEndpointWidget,
-)
-from fakts.grants.remote.discovery.qt.qt_settings_endpoint_store import (
-    QtSettingsEndpointStore,
-)
-from fakts.grants.remote.demanders.qt.qt_settings_token_store import QTSettingTokenStore
+from fakts_next.grants.remote import RemoteGrant
+from fakts_next.grants.remote.demanders.device_code import DeviceCodeDemander
 
-from fakts.grants.remote.demanders.retrieve import RetrieveDemander
-from fakts.grants.remote.claimers.post import ClaimEndpointClaimer
-from fakts.grants.remote.discovery.qt.selectable_beacon import (
+from fakts_next.grants.remote.claimers.post import ClaimEndpointClaimer
+from fakts_next.grants.remote.discovery.qt.selectable_beacon import (
     SelectBeaconWidget,
     QtSelectableDiscovery,
 )
 from arkitekt_next.base_models import Manifest
 from qtpy import QtCore, QtWidgets
-
-
-class ArkitektNextFaktsAutoSaveDiscovery(AutoSaveDiscovery):
-    """An ArkitektNext Fakts discovery that uses Qt widgets for token and endpoint storage"""
-
-    discovery: QtSelectableDiscovery
-
+from fakts_next.cache.qt.settings import QtSettingsCache
 
 class ArkitektNextFaktsQtRemoteGrant(RemoteGrant):
     """An ArkitektNext Fakts grant that uses Qt widgets for token and endpoint storage"""
 
-    discovery: ArkitektNextFaktsAutoSaveDiscovery
+    discovery: QtSelectableDiscovery
 
 
 class ArkitektNextFaktsQt(Fakts):
@@ -40,7 +24,7 @@ class ArkitektNextFaktsQt(Fakts):
     grant: ArkitektNextFaktsQtRemoteGrant
 
 
-def build_arkitekt_next_qt_fakts(
+def build_arkitekt_next_qt_fakts_next(
     manifest: Manifest,
     no_cache: Optional[bool] = False,
     beacon_widget: Optional[QtWidgets.QWidget] = None,
@@ -53,34 +37,20 @@ def build_arkitekt_next_qt_fakts(
 
     return ArkitektNextFaktsQt(
         grant=ArkitektNextFaktsQtRemoteGrant(
-            demander=AutoSaveDemander(
-                store=QTSettingTokenStore(
-                    settings=settings,
-                    save_key="fakts_token",
-                ),
-                demander=DeviceCodeDemander(
+            demander=DeviceCodeDemander(
                     manifest=manifest,
                     redirect_uri="http://127.0.0.1:6767",
                     open_browser=True,
                     requested_client_kind="desktop",
                 ),
-            ),
-            discovery=ArkitektNextFaktsAutoSaveDiscovery(
-                store=QtSettingsEndpointStore(
-                    settings=settings,
-                    save_key="fakts_endpoint",
-                ),
-                decider=AutoSaveEndpointWidget(
-                    parent=parent,
-                ),
-                discovery=QtSelectableDiscovery(
+            discovery=QtSelectableDiscovery(
                     widget=beacon_widget,
                     settings=settings,
                     allow_appending_slash=True,
                     auto_protocols=["http", "https"],
                     additional_beacons=["http://localhost"],
                 ),
-            ),
-            claimer=ClaimEndpointClaimer(),
-        )
+            claimer=ClaimEndpointClaimer()
+        ),
+        cache=QtSettingsCache(settings=settings)
     )

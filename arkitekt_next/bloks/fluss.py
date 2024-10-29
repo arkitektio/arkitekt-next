@@ -17,7 +17,7 @@ class FlussBlok(BaseArkitektService):
         self.dev = False
         self.host = "fluss"
         self.command = "bash run-debug.sh"
-        self.image = "jhnnsrs/fluss:next"
+        self.image = "jhnnsrs/fluss_next:nightly"
         self.repo = "https://github.com/jhnnsrs/fluss-server-next"
         self.scopes = {"read_image": "Read image from the database"}
         self.mount_repo = False

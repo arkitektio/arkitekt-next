@@ -128,7 +128,7 @@ class LokBlok:
         self.with_repo = False
         self.command = "bash run-debug.sh"
         self.repo = "https://github.com/jhnnsrs/lok-server-next"
-        self.image = "jhnnsrs/lok:next"
+        self.image = "jhnnsrs/lok_next:nightly"
         self.users = []
         self.tokens = []
         self.groups = []
@@ -202,7 +202,7 @@ class LokBlok:
             depends_on.append(self.postgress_access.dependency)
 
         db_service = {
-            "labels": ["fakts.service=live.arkitekt.lok", "fakts.builder=arkitekt.lok"],
+            "labels": ["fakts_next.service=live.arkitekt.lok", "fakts_next.builder=arkitekt.lok"],
             "depends_on": depends_on,
             "volumes": [
                 "/var/run/docker.sock:/var/run/docker.sock",

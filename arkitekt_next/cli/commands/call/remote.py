@@ -24,7 +24,7 @@ async def call_app(
 @click.command("prod")
 @click.option(
     "--url",
-    help="The fakts url for connection",
+    help="The fakts_next url for connection",
     default=DEFAULT_ARKITEKT_URL,
     envvar="FAKTS_URL",
 )

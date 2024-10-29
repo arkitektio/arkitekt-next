@@ -1,12 +1,12 @@
-from herre.herre import Herre
-from fakts import Fakts
-from herre.grants.oauth2.refresh import RefreshGrant
-from herre.fakts.grant import FaktsGrant
-from herre.fakts.fakts_qt_store import FaktsQtStore
+from herre_next.herre import Herre
+from fakts_next import Fakts
+from herre_next.grants.oauth2.refresh import RefreshGrant
+from herre_next.fakts.grant import FaktsGrant
+from herre_next.fakts.fakts_qt_store import FaktsQtStore
 
-from herre.grants.auto_login import AutoLoginGrant
-from herre.grants.qt.auto_login import AutoLoginWidget
-from herre.fakts.fakts_endpoint_fetcher import FaktsUserFetcher
+from herre_next.grants.auto_login import AutoLoginGrant
+from herre_next.grants.qt.auto_login import AutoLoginWidget
+from herre_next.fakts.fakts_endpoint_fetcher import FaktsUserFetcher
 from arkitekt_next.base_models import Manifest, User
 from arkitekt_next.apps.service.grant_registry import ARKITEKT_GRANT_REGISTRY
 
@@ -25,7 +25,7 @@ class ArkitektNextHerreQt(Herre):
     grant: ArkitektNextRefreshGrant
 
 
-def build_arkitekt_next_qt_herre(
+def build_arkitekt_next_qt_herre_next(
     manifest: Manifest,
     fakts: Fakts,
     login_widget=None,

@@ -1,7 +1,8 @@
 """Models for ArkitektNext. Thiese include extensiosn for the Fakts Manifest and the User model."""
 
 from hashlib import sha256
-from pydantic import BaseModel, Field
+import json
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional
 
 
@@ -92,17 +93,50 @@ class Manifest(BaseModel):
         extra = "forbid"
 
     def hash(self):
-        """Hash the manifest"""
-        return sha256(self.model_dump_json().encode()).hexdigest()
+        """Hash the manifest
+        
+        A manifest describes all the  metadata of an app. This method
+        hashes the manifest to create a unique hash for the current configuration of the app.
+        This hash can be used to check if the app has changed since the last time it was run,
+        and can be used to invalidate caches.
+
+        Returns:
+            str: The hash of the manifest
+        
+        """
+
+        unsorted_dict = self.model_dump()
+
+        # sort the requirements
+        unsorted_dict["requirements"] = sorted(
+            unsorted_dict["requirements"], key=lambda x: x["key"]
+        )
+        # sort the scopes
+        unsorted_dict["scopes"] = sorted(unsorted_dict["scopes"])
+
+        # JSON encode the dictionary
+        json_dd = json.dumps(unsorted_dict, sort_keys=True)
+        print(json_dd)
+
+        # Hash the JSON encoded dictionary
+        return sha256(json_dd.encode()).hexdigest()
+    
+
+    @field_validator("identifier")
+    def check_identifier(cls, v):
+        assert "/" not in v, "The identifier should not contain a /"
+        assert len(v) > 0, "The identifier should not be empty"
+        assert len(v) < 256, "The identifier should not be longer than 256 characters"
+        return v
 
 
 class User(BaseModel):
     """A user of ArkitektNext
 
-    This model represents a user on ArkitektNext. As herre is acgnostic to the
+    This model represents a user on ArkitektNext. As herre_next is acgnostic to the
     user model, we need to provide a model that can be used to represent
     the ArkitektNext user. This model is used by the
-    :class:`herre.fakts.fakts_endpoint_fetcher.FaktsUserFetcher` to
+    :class:`herre_next.fakts.fakts_endpoint_fetcher.FaktsUserFetcher` to
     fetch the user from the associated ArkitektNext Lok instance. This model
     is closely mimicking the OIDC user model, and is therefore compatible
     to represent OIDC users.

@@ -12,7 +12,7 @@ from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 @click.option(
     "--url",
     "-u",
-    help="The fakts server to use",
+    help="The fakts_next server to use",
     type=str,
     default=DEFAULT_ARKITEKT_URL,
 )

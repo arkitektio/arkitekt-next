@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
-from herre import Herre
-from fakts import Fakts
+from herre_next import Herre
+from fakts_next import Fakts
 from .base_models import Manifest, Requirement
 from typing import Callable, Dict
 import importlib
@@ -19,17 +19,17 @@ class Registration(BaseModel):
     builder: Callable[[Herre, Fakts, Params], object]
 
 
-basic_requirements = [Requirement(
+basic_requirements =  {"lok": Requirement(
         key="lok",
         service="live.arkitekt.lok",
         description="An instance of ArkitektNext Lok to authenticate the user",
-    )]
+    )}
 
 
 class ServiceBuilderRegistry:
     def __init__(self):
         self.service_builders = {}
-        self.requirements = basic_requirements
+        self.requirements_map = basic_requirements
 
     def register(
         self,
@@ -37,8 +37,11 @@ class ServiceBuilderRegistry:
         service_builder: Callable[[Herre, Fakts], object],
         requirement: Requirement,
     ):
-        self.service_builders[name] = service_builder
-        self.requirements.append(requirement)
+        if name not in self.service_builders:
+            self.service_builders[name] = service_builder
+        
+        if name not in self.requirements_map:
+            self.requirements_map[name] = requirement
 
     def get(self, name):
         return self.services.get(name)
@@ -52,7 +55,7 @@ class ServiceBuilderRegistry:
         }
 
     def get_requirements(self):
-        return self.requirements
+        return self.requirements_map.values()
 
 
 class SetupInfo:

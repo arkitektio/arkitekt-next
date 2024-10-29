@@ -155,17 +155,17 @@ class MinioBlok:
     def get_options(self):
         with_host = Option(
             subcommand="host",
-            help="The fakts url for connection",
+            help="The fakts_next url for connection",
             default=self.host,
         )
         with_username = Option(
             subcommand="username",
-            help="The fakts url for connection",
+            help="The fakts_next url for connection",
             default=self.username,
         )
         with_password = Option(
             subcommand="password",
-            help="The fakts url for connection",
+            help="The fakts_next url for connection",
             default=self.password,
         )
 

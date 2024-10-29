@@ -14,8 +14,8 @@ import logging
 from typing import TYPE_CHECKING, Any, Dict
 from arkitekt_next.base_models import Manifest
 from koil.composition import Composition
-from fakts import Fakts
-from herre import Herre
+from fakts_next import Fakts
+from herre_next import Herre
 
 logger = logging.getLogger(__name__)
 

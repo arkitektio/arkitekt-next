@@ -71,7 +71,7 @@ class LocalLiveKitBlok:
         )
         with_skip = Option(
             subcommand="skip",
-            help="The fakts url for connection",
+            help="The fakts_next url for connection",
             default=False,
             type=bool,
         )

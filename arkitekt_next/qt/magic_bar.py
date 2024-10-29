@@ -213,28 +213,15 @@ class Profile(QtWidgets.QDialog):
         self.infobar.addWidget(QtWidgets.QLabel(self.app.manifest.identifier))
         self.infobar.addWidget(QtWidgets.QLabel(self.app.manifest.version))
 
-        self.logout_button = QtWidgets.QPushButton("Change User")
-        self.logout_button.clicked.connect(
-            lambda: self.bar.refresh_token_task.run(
-                allow_cache=False,
-                allow_refresh=False,
-                allow_auto_login=False,
-                delete_active=True,
-            )
-        )
 
-        self.unkonfigure_button = QtWidgets.QPushButton("Change Server")
+        self.unkonfigure_button = QtWidgets.QPushButton("Reconnect")
         self.unkonfigure_button.clicked.connect(
             lambda: self.bar.refresh_task.run(
-                allow_auto_demand=False,
-                allow_auto_discover=False,
-                delete_active=True,
             )
         )
 
         button_bar = QtWidgets.QHBoxLayout()
         self.infobar.addLayout(button_bar)
-        button_bar.addWidget(self.logout_button)
         button_bar.addWidget(self.unkonfigure_button)
 
         self.logs = ArkitektNextLogs(self.settings, parent=self)
@@ -464,7 +451,6 @@ class MagicBar(QtWidgets.QWidget):
         self.app_state_changed.emit()
         self.set_button_movie("pink pulse.gif")
         self.profile.unkonfigure_button.setDisabled(True)
-        self.profile.logout_button.setDisabled(True)
         self.magicb.setDisabled(False)
         self.magicb.setText("Konfigure App")
 
@@ -476,7 +462,6 @@ class MagicBar(QtWidgets.QWidget):
         self.app_state_changed.emit()
         self.set_button_movie("orange pulse.gif")
         self.profile.unkonfigure_button.setDisabled(False)
-        self.profile.logout_button.setDisabled(True)
         self.magicb.setDisabled(False)
         self.magicb.setText("Login")
 
@@ -488,7 +473,6 @@ class MagicBar(QtWidgets.QWidget):
         self.app_state_changed.emit()
         self.set_button_movie("green pulse.gif")
         self.profile.unkonfigure_button.setDisabled(False)
-        self.profile.logout_button.setDisabled(False)
         self.magicb.setDisabled(False)
         self.magicb.setText("Provide")
 
@@ -500,7 +484,6 @@ class MagicBar(QtWidgets.QWidget):
         self.app_state_changed.emit()
         self.set_button_movie("red pulse.gif")
         self.profile.unkonfigure_button.setDisabled(False)
-        self.profile.logout_button.setDisabled(False)
         self.magicb.setDisabled(False)
         self.magicb.setText("Cancel Provide..")
 

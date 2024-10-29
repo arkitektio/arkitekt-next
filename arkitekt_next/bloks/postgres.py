@@ -21,7 +21,7 @@ class PostgresBlok(BaseModel):
     skip: bool = False
     password: str = pydantic.Field(default_factory=lambda: secrets.token_hex(16))
     user: str = pydantic.Field(default_factory=lambda: namegenerator.gen(separator=""))
-    image: str = "jhnnsrs/daten:next"
+    image: str = "jhnnsrs/daten_next:nightly"
     mount_repo: bool = False
     build_repo: bool = False
     repo: str = "https://github.com/arkitektio/daten-server"

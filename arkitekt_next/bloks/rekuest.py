@@ -21,7 +21,7 @@ class RekuestBlok(BaseArkitektService):
         self.build_repo = False
         self.buckets = ["media"]
         self.secret_key = secrets.token_hex(16)
-        self.image = "jhnnsrs/rekuest:next"
+        self.image = "jhnnsrs/rekuest_next:nightly"
 
     def get_builder(self):
         return "arkitekt.rekuest"

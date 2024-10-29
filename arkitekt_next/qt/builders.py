@@ -1,8 +1,8 @@
 from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_redeem_fakts_next,
 )
-from arkitekt_next.apps.service.fakts_qt import build_arkitekt_next_qt_fakts
-from arkitekt_next.apps.service.herre_qt import build_arkitekt_next_qt_herre
+from arkitekt_next.apps.service.fakts_qt import build_arkitekt_next_qt_fakts_next
+from arkitekt_next.apps.service.herre_qt import build_arkitekt_next_qt_herre_next
 from arkitekt_next.utils import create_arkitekt_next_folder
 from arkitekt_next.base_models import Manifest
 from arkitekt_next.apps.types import App
@@ -22,9 +22,9 @@ from arkitekt_next.qt.types import QtApp
 from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_fakts_next,
     build_arkitekt_next_redeem_fakts_next,
-    build_arkitekt_next_token_fakts,
+    build_arkitekt_next_token_fakts_next,
 )
-from arkitekt_next.apps.service.herre import build_arkitekt_next_herre
+from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from arkitekt_next.utils import create_arkitekt_next_folder
 from arkitekt_next.base_models import Manifest
 from arkitekt_next.apps.types import App
@@ -69,7 +69,7 @@ def devqt(
             which means that they will be authenticated with the ArkitektNext server on
             a per user basis. If you want to create a "desktop" app, which multiple users
             can use, you should set the `app_kind` to "desktop" TODO: Currently not implemented (use next app for this)
-        -  The Next builder can also be used in plugin apps, and when provided with a fakts token
+        -  The Next builder can also be used in plugin apps, and when provided with a fakts_next token
            will be able to connect to the ArkitektNext server without any user interaction.
 
 
@@ -84,7 +84,7 @@ def devqt(
     scopes : List[str], optional
         The scopes, that this apps requires, will default to standard scopes, by default None
     url : str, optional
-        The fakts server that will be used to configure this app, in a default ArkitektNext deployment this
+        The fakts_next server that will be used to configure this app, in a default ArkitektNext deployment this
         is the address of the "Lok Service" (which provides the Fakts API), by default DEFAULT_ARKITEKT_URL
         Will be overwritten by the FAKTS_URL environment variable
     headless : bool, optional
@@ -93,7 +93,7 @@ def devqt(
     log_level : str, optional
         The log-level to use, by default "ERROR"
     token : str, optional
-        A fakts token to use, by default None
+        A fakts_next token to use, by default None
         Will be overwritten by the FAKTS_TOKEN environment variable
     no_cache : bool, optional
         Should we skip caching token, acess-token, by default False
@@ -130,14 +130,14 @@ def devqt(
         requirements=registry.get_requirements(),
     )
     if token:
-        fakts = build_arkitekt_next_token_fakts(
+        fakts_next = build_arkitekt_next_token_fakts_next(
             manifest=manifest,
             token=token,
             url=url,
         )
 
     elif redeem_token:
-        fakts = build_arkitekt_next_redeem_fakts_next(
+        fakts_next = build_arkitekt_next_redeem_fakts_next(
             manifest=manifest,
             redeem_token=redeem_token,
             url=url,
@@ -145,7 +145,7 @@ def devqt(
             headless=headless,
         )
     else:
-        fakts = build_arkitekt_next_fakts_next(
+        fakts_next = build_arkitekt_next_fakts_next(
             manifest=manifest,
             url=url,
             no_cache=no_cache,
@@ -153,7 +153,7 @@ def devqt(
             client_kind=app_kind,
         )
 
-    herre = build_arkitekt_next_herre(fakts=fakts)
+    herre_next = build_arkitekt_next_herre_next(fakts_next=fakts_next)
 
     params = kwargs
 
@@ -167,11 +167,11 @@ def devqt(
         logging.basicConfig(level=log_level)
 
     app = QtApp(
-        fakts=fakts,
-        herre=herre,
+        fakts=fakts_next,
+        herre=herre_next,
         manifest=manifest,
         services=registry.build_service_map(
-            fakts=fakts, herre=herre, params=params, manifest=manifest
+            fakts=fakts_next, herre=herre_next, params=params, manifest=manifest
         ),
     )
 
@@ -220,16 +220,16 @@ def publicqt(
         requirements=registry.get_requirements(),
     )
 
-    fakts = build_arkitekt_next_qt_fakts(
+    fakts_next = build_arkitekt_next_qt_fakts_next(
         manifest=manifest,
         beacon_widget=beacon_widget,
         parent=parent,
         settings=settings,
     )
 
-    herre = build_arkitekt_next_qt_herre(
+    herre_next = build_arkitekt_next_qt_herre_next(
         manifest,
-        fakts=fakts,
+        fakts=fakts_next,
         login_widget=login_widget,
         parent=parent,
         settings=settings,
@@ -245,11 +245,11 @@ def publicqt(
         logging.basicConfig(level=log_level)
 
     app = QtApp(
-        fakts=fakts,
-        herre=herre,
+        fakts=fakts_next,
+        herre=herre_next,
         manifest=manifest,
         services=registry.build_service_map(
-            fakts=fakts, herre=herre, params=params, manifest=manifest
+            fakts=fakts_next, herre=herre_next, params=params, manifest=manifest
         ),
     )
 

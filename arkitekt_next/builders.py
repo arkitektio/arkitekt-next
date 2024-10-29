@@ -5,9 +5,9 @@ import os
 from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_fakts_next,
     build_arkitekt_next_redeem_fakts_next,
-    build_arkitekt_next_token_fakts,
+    build_arkitekt_next_token_fakts_next,
 )
-from arkitekt_next.apps.service.herre import build_arkitekt_next_herre
+from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from .utils import create_arkitekt_next_folder
 from .base_models import Manifest
 from .apps.types import App
@@ -16,7 +16,7 @@ from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 
 def easy(
-    identifier: str,
+    identifier: str = None,
     version: str = "0.0.1",
     logo: Optional[str] = None,
     scopes: Optional[List[str]] = None,
@@ -48,7 +48,7 @@ def easy(
             which means that they will be authenticated with the ArkitektNext server on
             a per user basis. If you want to create a "desktop" app, which multiple users
             can use, you should set the `app_kind` to "desktop" TODO: Currently not implemented (use next app for this)
-        -  The Next builder can also be used in plugin apps, and when provided with a fakts token
+        -  The Next builder can also be used in plugin apps, and when provided with a fakts_next token
            will be able to connect to the ArkitektNext server without any user interaction.
 
 
@@ -63,7 +63,7 @@ def easy(
     scopes : List[str], optional
         The scopes, that this apps requires, will default to standard scopes, by default None
     url : str, optional
-        The fakts server that will be used to configure this app, in a default ArkitektNext deployment this
+        The fakts_next server that will be used to configure this app, in a default ArkitektNext deployment this
         is the address of the "Lok Service" (which provides the Fakts API), by default DEFAULT_ARKITEKT_URL
         Will be overwritten by the FAKTS_URL environment variable
     headless : bool, optional
@@ -72,7 +72,7 @@ def easy(
     log_level : str, optional
         The log-level to use, by default "ERROR"
     token : str, optional
-        A fakts token to use, by default None
+        A fakts_next token to use, by default None
         Will be overwritten by the FAKTS_TOKEN environment variable
     no_cache : bool, optional
         Should we skip caching token, acess-token, by default False
@@ -98,6 +98,10 @@ def easy(
     """
     registry = registry or check_and_import_services()
 
+
+    if identifier is None:
+        identifier = __file__.split("/")[-1].replace(".py", "")
+
     url = os.getenv("FAKTS_URL", url)
     token = os.getenv("FAKTS_TOKEN", token)
 
@@ -109,14 +113,14 @@ def easy(
         requirements=registry.get_requirements(),
     )
     if token:
-        fakts = build_arkitekt_next_token_fakts(
+        fakts_next = build_arkitekt_next_token_fakts_next(
             manifest=manifest,
             token=token,
             url=url,
         )
 
     elif redeem_token:
-        fakts = build_arkitekt_next_redeem_fakts_next(
+        fakts_next = build_arkitekt_next_redeem_fakts_next(
             manifest=manifest,
             redeem_token=redeem_token,
             url=url,
@@ -124,7 +128,7 @@ def easy(
             headless=headless,
         )
     else:
-        fakts = build_arkitekt_next_fakts_next(
+        fakts_next = build_arkitekt_next_fakts_next(
             manifest=manifest,
             url=url,
             no_cache=no_cache,
@@ -132,7 +136,7 @@ def easy(
             client_kind=app_kind,
         )
 
-    herre = build_arkitekt_next_herre(fakts=fakts)
+    herre_next = build_arkitekt_next_herre_next(fakts_next=fakts_next)
 
     params = kwargs
 
@@ -146,11 +150,11 @@ def easy(
         logging.basicConfig(level=log_level)
 
     app = App(
-        fakts=fakts,
-        herre=herre,
+        fakts=fakts_next,
+        herre=herre_next,
         manifest=manifest,
         services=registry.build_service_map(
-            fakts=fakts, herre=herre, params=params, manifest=manifest
+            fakts=fakts_next, herre=herre_next, params=params, manifest=manifest
         ),
     )
 

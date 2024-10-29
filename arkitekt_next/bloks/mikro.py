@@ -29,7 +29,7 @@ class MikroBlok(BaseArkitektService):
             "mikro_read": "Read image from the database",
             "mikro_write": "Write image to the database",
         }
-        self.image = "jhnnsrs/mikro:next"
+        self.image = "jhnnsrs/mikro_next:nightly"
         self.mount_repo = False
         self.build_repo = False
         self.buckets = ["media", "zarr", "parquet"]

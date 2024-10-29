@@ -23,7 +23,7 @@ class KabinetBlok(BaseArkitektService):
         self.buckets = ["media"]
         self.secret_key = secrets.token_hex(16)
         self.ensured_repos = ["jhnnsrs/ome:main", "jhnnsrs/renderer:main"]
-        self.image = "jhnnsrs/kabinet:next"
+        self.image = "jhnnsrs/kabinet:nightly"
 
     def get_additional_config(self):
         return {"ensured_repos": self.ensured_repos}

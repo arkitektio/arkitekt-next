@@ -163,7 +163,7 @@ class Build(BaseModel):
 
         return base_command
 
-    def build_arkitekt_next_command(self, fakts_url: str):
+    def build_arkitekt_next_command(self, fakts_next_url: str):
         """Builds the arkitekt_next command for this build"""
 
         base_command = self.base_arkitekt_next_command
@@ -171,7 +171,7 @@ class Build(BaseModel):
         for selector in self.selectors:
             base_command = base_command + selector.build_arkitekt_next_params()
 
-        base_command = base_command + ["--url", fakts_url]
+        base_command = base_command + ["--url", fakts_next_url]
 
         return base_command
 

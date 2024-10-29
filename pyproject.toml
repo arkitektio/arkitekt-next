@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arkitekt-next"
-version = "0.8.19"
+version = "0.8.26"
 description = "client for the arkitekt_next platform"
 authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
 license = "MIT"
@@ -9,15 +9,15 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-herre = ">=1.0.0"
-fakts = ">=1.0.0"
-mikro-next = { version = ">=0.1.43", python = "^3.10", optional = true }
-kabinet = { version = ">=0.1.30", optional = true,  python = "^3.9" }
-fluss-next = { version = ">=0.1.87", optional = true }
-reaktion-next= { version = ">=0.1.77", python = "^3.8", optional = true }
-rekuest-next= { version = ">=0.2.35", python = "^3.8", optional = true }
-unlok-next= { version = ">=0.1.81", python = "^3.8", optional = true }
-lovekit = { version = ">=0.1.13", python = "^3.10", optional = true }
+herre-next = ">=1.0.2"
+fakts-next = ">=1.0.2"
+mikro-next = { version = ">=0.1.45", python = "^3.10", optional = true }
+kabinet = { version = ">=0.1.36", optional = true,  python = "^3.9" }
+fluss-next = { version = ">=0.1.89", optional = true }
+reaktion-next= { version = ">=0.1.79", python = "^3.8", optional = true }
+rekuest-next= { version = ">=0.2.38", python = "^3.8", optional = true }
+unlok-next= { version = ">=0.1.83", python = "^3.8", optional = true }
+lovekit = { version = ">=0.1.15", python = "^3.10", optional = true }
 rich-click = { version = ">=1.6.1", optional = true }
 watchfiles = { version = ">=0.18.1", optional = true }
 turms = { version = ">=0.6.0", python = "^3.9", optional = true }

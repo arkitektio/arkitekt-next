@@ -6,10 +6,10 @@ from .types import *
 from .vars import *
 from .ui import *
 
-with_fakts_url = click.option(
+with_fakts_next_url = click.option(
     "--url",
     "-u",
-    help="The fakts url for connection",
+    help="The fakts_next url for connection",
     default=DEFAULT_ARKITEKT_URL,
     envvar="FAKTS_URL",
 )
@@ -17,14 +17,14 @@ with_fakts_url = click.option(
 with_token = click.option(
     "--token",
     "-t",
-    help="The token for the fakts instance",
+    help="The token for the fakts_next instance",
     envvar="FAKTS_TOKEN",
     required=False,
 )
 with_redeem_token = click.option(
     "--redeem-token",
     "-r",
-    help="The token for the fakts instance",
+    help="The token for the fakts_next instance",
     envvar="FAKTS_REDEEM_TOKEN",
     required=False,
 )
@@ -57,7 +57,7 @@ with_instance_id = click.option(
     "--instance-id",
     "-i",
     default="main",
-    help="The token for the fakts instance",
+    help="The token for the fakts_next instance",
     envvar="REKUEST_INSTANCE",
 )
 
@@ -65,7 +65,7 @@ with_log_level = click.option(
     "--log-level",
     "-l",
     default="ERROR",
-    help="The token for the fakts instance",
+    help="The token for the fakts_next instance",
     envvar="ARKITEKT_LOG_LEVEL",
 )
 
