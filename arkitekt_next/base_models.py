@@ -116,8 +116,6 @@ class Manifest(BaseModel):
 
         # JSON encode the dictionary
         json_dd = json.dumps(unsorted_dict, sort_keys=True)
-        print(json_dd)
-
         # Hash the JSON encoded dictionary
         return sha256(json_dd.encode()).hexdigest()
     
