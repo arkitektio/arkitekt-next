@@ -16,6 +16,7 @@ from arkitekt_next.base_models import Manifest
 from koil.composition import Composition
 from fakts_next import Fakts
 from herre_next import Herre
+from koil.helpers import KoilTask
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +31,11 @@ class App(Composition):
 
     def run(self):
         """Run the app"""
-        self.services["rekuest"].run()
+        return self.services["rekuest"].run()
+
+    def run_detached(self) -> KoilTask:
+        """Run the app detached"""
+        return self.services["rekuest"].run_detached()
 
     def register(self, *args, **kwargs):
         """Register a service"""
