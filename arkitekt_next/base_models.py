@@ -17,48 +17,6 @@ class Requirement(BaseModel):
     """ The description is a human readable description of the requirement. Will be show to the user when asking for the requirement."""
 
 
-def build_default_requirements() -> List[Requirement]:
-    return [
-        Requirement(
-            key="lok",
-            service="live.arkitekt_next.lok",
-            description="An instance of ArkitektNext Lok to authenticate the user",
-        ),
-        Requirement(
-            key="rekuest",
-            service="live.arkitekt_next.rekuest",
-            description="An instance of ArkitektNext Rekuest to assign to nodes",
-        ),
-        Requirement(
-            key="kabinet",
-            service="live.arkitekt_next.kabinet",
-            description="An instance of ArkitektNext Kabinet to retrieve nodes from",
-        ),
-        Requirement(
-            key="mikro",
-            service="live.arkitekt_next.mikro",
-            description="An instance of ArkitektNext Mikro to make requests to the user's data",
-            optional=True,
-        ),
-        Requirement(
-            key="fluss",
-            service="live.arkitekt_next.fluss",
-            description="An instance of ArkitektNext Fluss to make requests to the user's data",
-            optional=False,
-        ),
-        Requirement(
-            key="port",
-            service="live.arkitekt_next.port",
-            description="An instance of ArkitektNext Fluss to make requests to the user's data",
-            optional=True,
-        ),
-        Requirement(
-            key="datalayer",
-            service="live.arkitekt_next.datalayer",
-            description="An instance of ArkitektNext Datalayer to make requests to the user's data",
-            optional=False,
-        ),
-    ]
 
 
 class Manifest(BaseModel):
@@ -85,7 +43,7 @@ class Manifest(BaseModel):
     logo: Optional[str]
     """ A URL to the logo of the app TODO: We should enforce this to be a http URL as local paths won't work """
     requirements: Optional[List[Requirement]] = Field(
-        default_factory=build_default_requirements
+        default_factory=list
     )
     """ Requirements that this app has TODO: What are the requirements? """
 

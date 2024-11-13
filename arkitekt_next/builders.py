@@ -112,6 +112,7 @@ def easy(
         logo=logo,
         requirements=registry.get_requirements(),
     )
+
     if token:
         fakts_next = build_arkitekt_next_token_fakts_next(
             manifest=manifest,

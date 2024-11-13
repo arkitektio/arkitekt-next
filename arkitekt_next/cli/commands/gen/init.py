@@ -1,5 +1,6 @@
 import os
 import shutil
+from click import ClickException
 import rich_click as click
 from arkitekt_next.cli.options import (
     with_documents,
@@ -13,6 +14,7 @@ from arkitekt_next.cli.options import (
 import yaml
 from arkitekt_next.cli.utils import build_relative_dir
 from arkitekt_next.cli.vars import get_console, get_manifest
+from arkitekt_next.service_registry import check_and_import_services
 
 
 @click.command()
@@ -38,75 +40,68 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
     app_directory = os.getcwd()
 
     app_api_path = os.path.join(app_directory, path)
-    app_documents = os.path.join(app_directory, "graphql", "documents")
+    app_documents = os.path.join(app_directory, "documents")
 
-    app_schemas = os.path.join(app_directory, "graphql", "schemas")
+    app_schemas = os.path.join(app_directory, "schemas")
 
-    if documents:
-        os.makedirs(app_documents, exist_ok=True)
-    if schemas:
-        os.makedirs(app_schemas, exist_ok=True)
-    if path:
-        os.makedirs(app_api_path, exist_ok=True)
+    os.makedirs(app_documents, exist_ok=True)
+    os.makedirs(app_schemas, exist_ok=True)
+    os.makedirs(app_api_path, exist_ok=True)
 
     # Initializing the config
     projects = {}
+
+
+    registry = check_and_import_services()
 
     base_config = yaml.load(
         open(build_relative_dir("configs", "base.yaml"), "r"), Loader=yaml.FullLoader
     )
 
-    for service in services:
-        schema_path = build_relative_dir("schemas", f"{service}.schema.graphql")
-
-        if documents:
-            os.makedirs(os.path.join(app_documents, service), exist_ok=True)
-            if seperate_doc_dirs:
-                os.makedirs(
-                    os.path.join(app_documents, service, "queries"), exist_ok=True
-                )
-                os.makedirs(
-                    os.path.join(app_documents, service, "mutations"), exist_ok=True
-                )
-                os.makedirs(
-                    os.path.join(app_documents, service, "subscriptions"), exist_ok=True
-                )
-
-        if schemas:
-            if os.path.exists(schema_path):
-                try:
-                    shutil.copyfile(
-                        schema_path,
-                        os.path.join(app_schemas, service + ".graphql"),
-                    )
-                except FileExistsError:
-                    if click.confirm(
-                        f"Schema for {service} already exist. Do you want to overwrite them?"
-                    ):
-                        shutil.copyfile(
-                            schema_path,
-                            os.path.join(app_schemas, service + ".graphql"),
-                        )
-            else:
-                get_console(ctx).print(f"[red]No schema found for {service} [/]")
-
+    for key, service in registry.service_builders.items():
         try:
-            project = base_config["projects"][service]
-        except KeyError:
-            get_console(ctx).print(f"[red]No config found for {service} [/]")
-            continue
 
-        if schemas:
-            project["schema"] = os.path.join(app_schemas, service + ".graphql")
-        if documents:
-            project["documents"] = (
-                os.path.join(app_documents, service) + "/**/*.graphql"
-            )
+            schema, project = service.get_graphql_schema(), service.get_turms_project()
 
-        project["extensions"]["turms"]["out_dir"] = path
-        project["extensions"]["turms"]["generated_name"] = f"{service}.py"
+            if not schema or not project:
+                get_console(ctx).print(f"[red]No schema or project found for {key} [/]")
+                continue
 
-        projects[service] = project
+            if documents:
+                os.makedirs(os.path.join(app_documents, key), exist_ok=True)
+                if seperate_doc_dirs:
+                    os.makedirs(
+                        os.path.join(app_documents, key, "queries"), exist_ok=True
+                    )
+                    os.makedirs(
+                        os.path.join(app_documents, key, "mutations"), exist_ok=True
+                    )
+                    os.makedirs(
+                        os.path.join(app_documents, key, "subscriptions"), exist_ok=True
+                    )
+
+            if schemas:
+                out_path = os.path.join(app_schemas, key + ".schema.graphql")
+                with open(out_path, "w") as f:
+                    f.write(schema)
+                    
+
+
+            if schemas:
+                project["schema"] = os.path.join(app_schemas, key + ".schema.graphql")
+            if documents:
+                project["documents"] = (
+                    os.path.join(app_documents, key) + "/**/*.graphql"
+                )
+
+            project["extensions"]["turms"]["out_dir"] = path
+            project["extensions"]["turms"]["generated_name"] = f"{key}.py"
+            del project["extensions"]["turms"]["documents"] 
+
+            projects[key] = project
+
+        except Exception as e:
+            raise ClickException(f"Failed to initialize project for {key}. Error: {e}") from e
 
     if os.path.exists(config):
         if not click.confirm(

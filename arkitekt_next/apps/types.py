@@ -35,11 +35,13 @@ class App(Composition):
 
     def run_detached(self) -> KoilTask:
         """Run the app detached"""
+
         return self.services["rekuest"].run_detached()
 
     def register(self, *args, **kwargs):
         """Register a service"""
         self.services["rekuest"].register(*args, **kwargs)
+
 
     async def __aenter__(self):
         await super().__aenter__()
