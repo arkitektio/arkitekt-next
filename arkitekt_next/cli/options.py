@@ -117,7 +117,7 @@ with_choose_services = click.option(
     help="The services to create the codegen for",
     multiple=True,
     type=click.Choice(compile_services()),
-    default=["mikro"],
+    default=[],
 )
 with_graphql_config = click.option(
     "--config",

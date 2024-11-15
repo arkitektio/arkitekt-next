@@ -51,14 +51,41 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
     # Initializing the config
     projects = {}
 
-
     registry = check_and_import_services()
 
-    base_config = yaml.load(
-        open(build_relative_dir("configs", "base.yaml"), "r"), Loader=yaml.FullLoader
-    )
+    chosen_services = registry.service_builders
 
-    for key, service in registry.service_builders.items():
+
+    if services:
+        chosen_services = {
+            key: service
+            for key, service in registry.service_builders.items()
+            if key in services
+        }
+    else:
+        service = click.prompt(
+            "Choose a service to initialize the project for",
+            type=click.Choice(list(chosen_services.keys())),
+        )
+
+        chosen_services = {service: chosen_services[service]}
+
+
+    
+
+    if os.path.exists(config):
+        if click.confirm(
+            f"GraphQL Config file already exists. Do you want to merge your choices?"
+        ):
+            file = yaml.load(open(config, "r"), Loader=yaml.FullLoader)
+            projects = file.get("projects", {})
+            click.echo(f"Merging {','.join(chosen_services.keys())} in {','.join(projects.keys())}...")
+
+
+    has_done_something = False
+
+
+    for key, service in chosen_services.items():
         try:
 
             schema, project = service.get_graphql_schema(), service.get_turms_project()
@@ -66,6 +93,13 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
             if not schema or not project:
                 get_console(ctx).print(f"[red]No schema or project found for {key} [/]")
                 continue
+
+            if key in projects:
+                get_console(ctx).print(f"[red]Project {key} already exists [/]")
+                if not click.confirm("Do you want to overwrite it?"):
+                    continue
+
+            has_done_something = True
 
             if documents:
                 os.makedirs(os.path.join(app_documents, key), exist_ok=True)
@@ -94,24 +128,25 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
                     os.path.join(app_documents, key) + "/**/*.graphql"
                 )
 
+
+
             project["extensions"]["turms"]["out_dir"] = path
             project["extensions"]["turms"]["generated_name"] = f"{key}.py"
             del project["extensions"]["turms"]["documents"] 
+            del project["schema_url"]
 
             projects[key] = project
 
         except Exception as e:
             raise ClickException(f"Failed to initialize project for {key}. Error: {e}") from e
 
-    if os.path.exists(config):
-        if not click.confirm(
-            f"GraphQL Config file already exists. Do you want to overwrite?"
-        ):
-            click.echo("Aborting...")
-            ctx.abort()
 
-    graph_config_path = os.path.join(app_directory, config)
-    yaml.safe_dump(
-        {"projects": projects}, open(graph_config_path, "w"), sort_keys=False
-    )
-    get_console(ctx).print(f"Config file written to {graph_config_path}")
+    if has_done_something:
+        graph_config_path = os.path.join(app_directory, config)
+        yaml.safe_dump(
+            {"projects": projects}, open(graph_config_path, "w"), sort_keys=False
+        )
+        get_console(ctx).print(f"Config file written to {graph_config_path}")
+    else:
+        get_console(ctx).print("No projects initialized")
+        get_console(ctx).print("Exiting...")
