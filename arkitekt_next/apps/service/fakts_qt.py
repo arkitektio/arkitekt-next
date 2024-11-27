@@ -12,6 +12,7 @@ from arkitekt_next.base_models import Manifest
 from qtpy import QtCore, QtWidgets
 from fakts_next.cache.qt.settings import QtSettingsCache
 
+
 class ArkitektNextFaktsQtRemoteGrant(RemoteGrant):
     """An ArkitektNext Fakts grant that uses Qt widgets for token and endpoint storage"""
 
@@ -38,19 +39,19 @@ def build_arkitekt_next_qt_fakts_next(
     return ArkitektNextFaktsQt(
         grant=ArkitektNextFaktsQtRemoteGrant(
             demander=DeviceCodeDemander(
-                    manifest=manifest,
-                    redirect_uri="http://127.0.0.1:6767",
-                    open_browser=True,
-                    requested_client_kind="desktop",
-                ),
+                manifest=manifest,
+                redirect_uri="http://127.0.0.1:6767",
+                open_browser=True,
+                requested_client_kind="desktop",
+            ),
             discovery=QtSelectableDiscovery(
-                    widget=beacon_widget,
-                    settings=settings,
-                    allow_appending_slash=True,
-                    auto_protocols=["http", "https"],
-                    additional_beacons=["http://localhost"],
-                ),
-            claimer=ClaimEndpointClaimer()
+                widget=beacon_widget,
+                settings=settings,
+                allow_appending_slash=True,
+                auto_protocols=["http", "https"],
+                additional_beacons=["http://localhost"],
+            ),
+            claimer=ClaimEndpointClaimer(),
         ),
-        cache=QtSettingsCache(settings=settings)
+        cache=QtSettingsCache(settings=settings),
     )

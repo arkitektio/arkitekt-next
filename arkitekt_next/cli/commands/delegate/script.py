@@ -77,18 +77,14 @@ def script(
 
     builder = import_builder(builder)
 
-    
-
     app = builder(
         **manifest.to_builder_dict(),
         **builder_kwargs,
     )
 
-
     rekuest: RekuestNext = app.services.get("rekuest")
 
     rekuest.agent.register_extension("cli", CLIExtension(" ".join(script_name)))
-
 
     panel = construct_run_panel(app)
     console.print(panel)

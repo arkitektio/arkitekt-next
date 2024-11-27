@@ -30,7 +30,9 @@ class QtArkitektNextWidget(QtWidgets.QWidget):
 
 
 @pytest.mark.qt
-@pytest.mark.skip(reason="This test is not working. Without user interaction, the test will not work.")
+@pytest.mark.skip(
+    reason="This test is not working. Without user interaction, the test will not work."
+)
 def test_qteasy(qtbot):
     widget = QtArkitektNextWidget()
     qtbot.addWidget(widget)

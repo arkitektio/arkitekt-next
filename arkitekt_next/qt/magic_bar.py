@@ -213,12 +213,8 @@ class Profile(QtWidgets.QDialog):
         self.infobar.addWidget(QtWidgets.QLabel(self.app.manifest.identifier))
         self.infobar.addWidget(QtWidgets.QLabel(self.app.manifest.version))
 
-
         self.unkonfigure_button = QtWidgets.QPushButton("Reconnect")
-        self.unkonfigure_button.clicked.connect(
-            lambda: self.bar.refresh_task.run(
-            )
-        )
+        self.unkonfigure_button.clicked.connect(lambda: self.bar.refresh_task.run())
 
         button_bar = QtWidgets.QHBoxLayout()
         self.infobar.addLayout(button_bar)

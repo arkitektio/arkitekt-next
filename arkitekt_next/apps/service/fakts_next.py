@@ -37,7 +37,6 @@ def build_arkitekt_next_fakts_next(
         requested_client_kind=client_kind,
     )
 
-
     return ArkitektNextFaktsNext(
         grant=RemoteGrant(
             demander=demander,
@@ -45,10 +44,10 @@ def build_arkitekt_next_fakts_next(
             claimer=ClaimEndpointClaimer(),
         ),
         cache=FileCache(
-                cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
-                hash=manifest.hash() + url,
-                skip_cache=no_cache,
-            ),
+            cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
+            hash=manifest.hash() + url,
+            skip_cache=no_cache,
+        ),
     )
 
 
@@ -62,7 +61,6 @@ def build_arkitekt_next_redeem_fakts_next(
     identifier = manifest.identifier
     version = manifest.version
 
-
     return ArkitektNextFaktsNext(
         grant=RemoteGrant(
             demander=RedeemDemander(token=redeem_token, manifest=manifest),
@@ -70,9 +68,9 @@ def build_arkitekt_next_redeem_fakts_next(
             claimer=ClaimEndpointClaimer(),
         ),
         cache=FileCache(
-                cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
-                hash=manifest.hash() + url,
-            ),
+            cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
+            hash=manifest.hash() + url,
+        ),
     )
 
 
@@ -91,7 +89,7 @@ def build_arkitekt_next_token_fakts_next(
             claimer=ClaimEndpointClaimer(),
         ),
         cache=FileCache(
-                cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
-                hash=manifest.hash() + url,
-            ),
+            cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
+            hash=manifest.hash() + url,
+        ),
     )

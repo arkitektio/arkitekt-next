@@ -42,7 +42,6 @@ class App(Composition):
         """Register a service"""
         self.services["rekuest"].register(*args, **kwargs)
 
-
     async def __aenter__(self):
         await super().__aenter__()
         for service in self.services.values():

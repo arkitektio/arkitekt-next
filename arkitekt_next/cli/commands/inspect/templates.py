@@ -73,7 +73,7 @@ def templates(
     if rekuest is None:
         console.print("No rekuest service found in app")
         return
-    
+
     x = {
         key: item.model_dump(by_alias=True)
         for key, item in rekuest.agent.extensions[

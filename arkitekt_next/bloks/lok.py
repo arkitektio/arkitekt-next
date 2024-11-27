@@ -202,7 +202,10 @@ class LokBlok:
             depends_on.append(self.postgress_access.dependency)
 
         db_service = {
-            "labels": ["fakts_next.service=live.arkitekt.lok", "fakts_next.builder=arkitekt.lok"],
+            "labels": [
+                "fakts_next.service=live.arkitekt.lok",
+                "fakts_next.builder=arkitekt.lok",
+            ],
             "depends_on": depends_on,
             "volumes": [
                 "/var/run/docker.sock:/var/run/docker.sock",

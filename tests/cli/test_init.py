@@ -60,7 +60,9 @@ def test_init():
         assert os.path.exists(arkitekt_next_folder)
         assert os.path.exists(os.path.join(arkitekt_next_folder, "manifest.yaml"))
 
-        manifest = load_manifest_yaml(os.path.join(arkitekt_next_folder, "manifest.yaml"))
+        manifest = load_manifest_yaml(
+            os.path.join(arkitekt_next_folder, "manifest.yaml")
+        )
         assert manifest.identifier == "arkitekt_next"
         assert manifest.version == "0.0.1"
         assert manifest.author == "arkitek"

@@ -98,7 +98,6 @@ def easy(
     """
     registry = registry or check_and_import_services()
 
-
     if identifier is None:
         identifier = __file__.split("/")[-1].replace(".py", "")
 

@@ -20,14 +20,6 @@ def compile(projects, config):
     """
     app_directory = os.getcwd()
 
-
-
-
-
-
-
-    
-
     from turms.run import scan_folder_for_single_config, load_projects_from_configpath
     from turms.cli.main import generate_projects
 

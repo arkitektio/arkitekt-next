@@ -10,7 +10,12 @@ from arkitekt_next.cli.types import (
     Flavour,
     DeploymentsConfigFile,
 )
-from kabinet.api.schema import InspectionInput, AppImageInput, DockerImageInput, ManifestInput
+from kabinet.api.schema import (
+    InspectionInput,
+    AppImageInput,
+    DockerImageInput,
+    ManifestInput,
+)
 
 import yaml
 import json
@@ -116,16 +121,9 @@ def get_builds(selected_run: Optional[str] = None) -> Dict[str, Build]:
         )
 
 
-
-
 def manifest_to_input(manifest: Manifest) -> ManifestInput:
 
     return ManifestInput(**manifest.model_dump(by_alias=True))
-
-
-
-
-
 
 
 def generate_build(
@@ -246,7 +244,6 @@ def generate_deployment(
         selectors=build.selectors,
         inspection=build.inspection,
         image=DockerImageInput(imageString=image, buildAt=datetime.datetime.now()),
-
     )
 
     if os.path.exists(config_file):
@@ -255,7 +252,9 @@ def generate_deployment(
             config.app_images.append(app_image)
             config.latest_app_image = app_image.app_image_id
     else:
-        config = DeploymentsConfigFile(app_images=[app_image], latest_app_image=app_image.app_image_id)
+        config = DeploymentsConfigFile(
+            app_images=[app_image], latest_app_image=app_image.app_image_id
+        )
 
     with open(config_file, "w") as file:
         yaml.safe_dump(

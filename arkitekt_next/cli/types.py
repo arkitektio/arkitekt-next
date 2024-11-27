@@ -9,7 +9,12 @@ from arkitekt_next.base_models import Requirement
 from string import Formatter
 import os
 
-from kabinet.api.schema import AppImageInput, InspectionInput, SelectorInput, ManifestInput
+from kabinet.api.schema import (
+    AppImageInput,
+    InspectionInput,
+    SelectorInput,
+    ManifestInput,
+)
 from rekuest_next.api.schema import TemplateInput
 
 ALLOWED_BUILDER_KEYS = [
@@ -94,7 +99,9 @@ class Flavour(BaseModel):
         """Checks that the build_command templates are valid"""
 
         for v in value:
-            for literal_text, field_name, format_spec, conversion in Formatter().parse(v):
+            for literal_text, field_name, format_spec, conversion in Formatter().parse(
+                v
+            ):
                 if field_name is not None:
                     assert (
                         field_name in ALLOWED_BUILDER_KEYS
@@ -118,7 +125,6 @@ class Flavour(BaseModel):
             raise Exception(
                 f"Could not find Dockerfile {self.dockerfile} in flavour {flavour_folder}"
             )
-
 
 
 class DeploymentsConfigFile(BaseModel):

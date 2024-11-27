@@ -51,5 +51,3 @@ def test_advailable_scopes(initialized_app_cli_runner):
     assert result.exit_code == 0
     assert "read" in result.output
     assert "write" in result.output
-
-

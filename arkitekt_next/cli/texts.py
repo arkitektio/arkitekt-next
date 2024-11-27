@@ -15,4 +15,6 @@ LOGO = r"""
                                                                    
 """
 
-ERROR_EPILOGUE = "To find out more, visit [link=https://arkitekt.live]https://arkitekt.live[/link]"
+ERROR_EPILOGUE = (
+    "To find out more, visit [link=https://arkitekt.live]https://arkitekt.live[/link]"
+)

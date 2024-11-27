@@ -4,6 +4,7 @@ from typing import List, Callable, Dict, Any
 
 class QtApp(App):
     """An app that is built with the easy builder"""
+
     hooks: Dict[str, List[Callable]] = {
         "on_start": [],
         "on_stop": [],

@@ -55,7 +55,6 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
 
     chosen_services = registry.service_builders
 
-
     if services:
         chosen_services = {
             key: service
@@ -70,20 +69,17 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
 
         chosen_services = {service: chosen_services[service]}
 
-
-    
-
     if os.path.exists(config):
         if click.confirm(
             f"GraphQL Config file already exists. Do you want to merge your choices?"
         ):
             file = yaml.load(open(config, "r"), Loader=yaml.FullLoader)
             projects = file.get("projects", {})
-            click.echo(f"Merging {','.join(chosen_services.keys())} in {','.join(projects.keys())}...")
-
+            click.echo(
+                f"Merging {','.join(chosen_services.keys())} in {','.join(projects.keys())}..."
+            )
 
     has_done_something = False
-
 
     for key, service in chosen_services.items():
         try:
@@ -118,8 +114,6 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
                 out_path = os.path.join(app_schemas, key + ".schema.graphql")
                 with open(out_path, "w") as f:
                     f.write(schema)
-                    
-
 
             if schemas:
                 project["schema"] = os.path.join(app_schemas, key + ".schema.graphql")
@@ -128,18 +122,17 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
                     os.path.join(app_documents, key) + "/**/*.graphql"
                 )
 
-
-
             project["extensions"]["turms"]["out_dir"] = path
             project["extensions"]["turms"]["generated_name"] = f"{key}.py"
-            del project["extensions"]["turms"]["documents"] 
+            del project["extensions"]["turms"]["documents"]
             del project["schema_url"]
 
             projects[key] = project
 
         except Exception as e:
-            raise ClickException(f"Failed to initialize project for {key}. Error: {e}") from e
-
+            raise ClickException(
+                f"Failed to initialize project for {key}. Error: {e}"
+            ) from e
 
     if has_done_something:
         graph_config_path = os.path.join(app_directory, config)

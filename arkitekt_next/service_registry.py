@@ -14,10 +14,6 @@ from typing import runtime_checkable
 Params = Dict[str, str]
 
 
-
-
-
-
 class Registration(BaseModel):
     name: str
     requirement: Requirement
@@ -28,52 +24,51 @@ class Registration(BaseModel):
 @runtime_checkable
 class ArkitektService(Protocol):
 
-
     def get_service_name(self):
         pass
 
-
-    def build_service(self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest):
+    def build_service(
+        self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
+    ):
         pass
-
 
     def get_requirements(self):
         pass
-
 
     def get_graphql_schema(self):
         pass
 
     def get_turms_project(self):
         pass
-
 
 
 class BaseArkitektService:
 
-
     def get_service_name(self):
         raise NotImplementedError("get_service_name not implemented")
-    
-    def build_service(self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest):
+
+    def build_service(
+        self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
+    ):
         raise NotImplementedError("build_service not implemented")
-    
+
     def get_requirements(self):
         raise NotImplementedError("get_requirements not implemented")
-    
+
     def get_graphql_schema(self):
         return None
-    
+
     def get_turms_project(self):
         return None
-    
 
 
-basic_requirements =  [Requirement(
+basic_requirements = [
+    Requirement(
         key="lok",
         service="live.arkitekt.lok",
         description="An instance of ArkitektNext Lok to authenticate the user",
-    )]
+    )
+]
 
 
 class ServiceBuilderRegistry:
@@ -84,14 +79,13 @@ class ServiceBuilderRegistry:
         self,
         service: ArkitektService,
     ):
-        
+
         name = service.get_service_name()
 
         if name not in self.service_builders:
             self.service_builders[name] = service
         else:
             raise ValueError(f"Service {name} already registered")
-        
 
     def get(self, name):
         return self.services.get(name)
@@ -101,34 +95,31 @@ class ServiceBuilderRegistry:
     ):
         potentially_needed_services = {
             name: service.build_service(fakts, herre, params, manifest)
-            for name, service in self.service_builders.items() 
+            for name, service in self.service_builders.items()
         }
 
-
-
-        return {key: value for key, value in potentially_needed_services.items() if value is not None}
-
-
+        return {
+            key: value
+            for key, value in potentially_needed_services.items()
+            if value is not None
+        }
 
     def get_requirements(self):
 
-        requirements = [Requirement(
-        key="lok",
-        service="live.arkitekt.lok",
-        description="An instance of ArkitektNext Lok to authenticate the user",
-    )]   
+        requirements = [
+            Requirement(
+                key="lok",
+                service="live.arkitekt.lok",
+                description="An instance of ArkitektNext Lok to authenticate the user",
+            )
+        ]
         taken_requirements = set()
-
 
         for service in self.service_builders.values():
             for requirement in service.get_requirements():
                 if requirement.key not in taken_requirements:
                     taken_requirements.add(requirement.key)
                     requirements.append(requirement)
-
-
-
-        
 
         sorted_requirements = sorted(requirements, key=lambda x: x.key)
 
@@ -144,6 +135,7 @@ import importlib.util
 import pkgutil
 import traceback
 import logging
+
 
 def check_and_import_services() -> ServiceBuilderRegistry:
     service_builder_registry = ServiceBuilderRegistry()
@@ -164,10 +156,14 @@ def check_and_import_services() -> ServiceBuilderRegistry:
                     try:
                         service_builder_registry.register(service)
                     except ValueError as e:
-                        print(f"Failed to register service {service}: Another service with the same name is already registered {service_builder_registry.service_builders}")
+                        print(
+                            f"Failed to register service {service}: Another service with the same name is already registered {service_builder_registry.service_builders}"
+                        )
                 logging.info(f"Called build_services function from {module_name}")
             else:
-                print(f"Discovered Arkitekt-like module (containing __arkitekt__) that doesn't conform with the __arkitekt__ spec. No build_services function in {module_name}.__arkitekt__")
+                print(
+                    f"Discovered Arkitekt-like module (containing __arkitekt__) that doesn't conform with the __arkitekt__ spec. No build_services function in {module_name}.__arkitekt__"
+                )
             processed_modules.add(module_name)  # Mark this module as processed
         except Exception as e:
             print(f"Failed to call init_services for {module_name}: {e}")

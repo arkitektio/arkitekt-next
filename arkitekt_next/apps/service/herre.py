@@ -15,7 +15,9 @@ def build_arkitekt_next_herre_next(fakts_next: Fakts) -> ArkitektNextHerre:
     return ArkitektNextHerre(
         grant=RefreshGrant(
             grant=FaktsGrant(
-                fakts=fakts_next, fakts_group="lok", grant_registry=ARKITEKT_GRANT_REGISTRY
+                fakts=fakts_next,
+                fakts_group="lok",
+                grant_registry=ARKITEKT_GRANT_REGISTRY,
             ),
         ),
         fetcher=FaktsUserFetcher(

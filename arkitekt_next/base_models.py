@@ -17,8 +17,6 @@ class Requirement(BaseModel):
     """ The description is a human readable description of the requirement. Will be show to the user when asking for the requirement."""
 
 
-
-
 class Manifest(BaseModel):
     """A manifest for an app that can be installed in ArkitektNext
 
@@ -42,9 +40,7 @@ class Manifest(BaseModel):
     """ Scopes that this app should request from the user """
     logo: Optional[str]
     """ A URL to the logo of the app TODO: We should enforce this to be a http URL as local paths won't work """
-    requirements: Optional[List[Requirement]] = Field(
-        default_factory=list
-    )
+    requirements: Optional[List[Requirement]] = Field(default_factory=list)
     """ Requirements that this app has TODO: What are the requirements? """
 
     class Config:
@@ -52,7 +48,7 @@ class Manifest(BaseModel):
 
     def hash(self):
         """Hash the manifest
-        
+
         A manifest describes all the  metadata of an app. This method
         hashes the manifest to create a unique hash for the current configuration of the app.
         This hash can be used to check if the app has changed since the last time it was run,
@@ -60,7 +56,7 @@ class Manifest(BaseModel):
 
         Returns:
             str: The hash of the manifest
-        
+
         """
 
         unsorted_dict = self.model_dump()
@@ -76,7 +72,6 @@ class Manifest(BaseModel):
         json_dd = json.dumps(unsorted_dict, sort_keys=True)
         # Hash the JSON encoded dictionary
         return sha256(json_dd.encode()).hexdigest()
-    
 
     @field_validator("identifier")
     def check_identifier(cls, v):
