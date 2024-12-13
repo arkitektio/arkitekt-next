@@ -2,7 +2,7 @@ import rich_click as click
 from arkitekt_next.cli.vars import get_manifest
 import subprocess
 from click import Context
-from arkitekt_next.cli.io import get_builds
+from .io import get_builds
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 

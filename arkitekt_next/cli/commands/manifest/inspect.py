@@ -17,25 +17,21 @@ def inspect(ctx) -> None:
     """
     manifest = get_manifest(ctx)
 
-    table = Table.grid()
+    table = Table.grid(padding=(0,3))
     table.add_column()
-    table.add_column()
+    table.add_column(justify="right")
     table.add_row("Identifier", manifest.identifier)
     table.add_row("Version", manifest.version)
     table.add_row("Author", manifest.author)
     table.add_row("Logo", manifest.logo or "-")
     table.add_row("Entrypoint", manifest.entrypoint)
     table.add_row("Scopes", ", ".join(manifest.scopes) if manifest.scopes else "-")
-    table.add_row(
-        "Requirements",
-        ", ".join(manifest.requirements) if manifest.requirements else "-",
-    )
-    table.add_row("Created at", str(manifest.created_at.strftime("%Y/%m/%d %H:%M")))
 
     panel = Panel(
         Group("[bold green]Manifest[/]", table),
         title_align="center",
         border_style="green",
+        
         style="white",
     )
 

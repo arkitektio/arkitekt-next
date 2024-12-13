@@ -5,12 +5,6 @@ from herre_next import Herre
 from fakts_next import Fakts
 from .base_models import Manifest, Requirement
 from typing import Callable, Dict, Optional, Protocol, TypeVar, overload
-import importlib
-import sys
-import os
-import traceback
-import logging
-import pkgutil
 from typing import runtime_checkable
 
 Params = Dict[str, str]
@@ -94,8 +88,6 @@ class ServiceBuilderRegistry:
     def __init__(self, import_services=True):
         self.service_builders: Dict[str, ArkitektService] = {}
         self.additional_requirements: Dict[str, Requirement] = {}
-        if import_services:
-            check_and_import_services(self)
 
     def register(
         self,
@@ -168,72 +160,7 @@ import pkgutil
 import traceback
 import logging
 
-
-def check_and_import_services(
-    service_registry: ServiceBuilderRegistry,
-) -> ServiceBuilderRegistry:
-    processed_modules = set()  # Track modules that have already been processed
-
-    # Function to load and call init_extensions from __rekuest__.py
-    def load_and_call_init_extensions(module_name, rekuest_path):
-        if module_name in processed_modules:
-            return  # Skip if module has already been processed
-        try:
-            spec = importlib.util.spec_from_file_location(
-                f"{module_name}.__arkitekt__", rekuest_path
-            )
-            rekuest_module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(rekuest_module)
-            if hasattr(rekuest_module, "build_services"):
-                for service in rekuest_module.build_services():
-                    try:
-                        service_registry.register(service)
-                    except ValueError as e:
-                        print(
-                            f"Failed to register service {service}: Another service with the same name is already registered {service_registry.service_builders}"
-                        )
-                logging.info(f"Called build_services function from {module_name}")
-            else:
-                print(
-                    f"Discovered Arkitekt-like module (containing __arkitekt__) that doesn't conform with the __arkitekt__ spec. No build_services function in {module_name}.__arkitekt__"
-                )
-            processed_modules.add(module_name)  # Mark this module as processed
-        except Exception as e:
-            print(f"Failed to call init_services for {module_name}: {e}")
-            traceback.print_exc()
-
-    # Check local modules in the current working directory
-    current_directory = os.getcwd()
-    for item in os.listdir(current_directory):
-        item_path = os.path.join(current_directory, item)
-        if os.path.isdir(item_path) and os.path.isfile(
-            os.path.join(item_path, "__init__.py")
-        ):
-            rekuest_path = os.path.join(item_path, "__arkitekt__.py")
-            if os.path.isfile(rekuest_path):
-                load_and_call_init_extensions(item, rekuest_path)
-
-    # Check installed packages
-    for _, module_name, _ in pkgutil.iter_modules():
-        try:
-            module_spec = importlib.util.find_spec(module_name)
-            if module_spec and module_spec.origin:
-                rekuest_path = os.path.join(
-                    os.path.dirname(module_spec.origin), "__arkitekt__.py"
-                )
-                if os.path.isfile(rekuest_path):
-                    load_and_call_init_extensions(module_name, rekuest_path)
-        except Exception as e:
-            print(
-                f"Failed to call init_extensions for installed package {module_name}: {e}"
-            )
-            traceback.print_exc()
-
-    return service_registry
-
-
 T = TypeVar("T")
-
 
 @overload
 def require(

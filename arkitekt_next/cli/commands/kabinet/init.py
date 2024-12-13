@@ -1,6 +1,6 @@
 from importlib.metadata import version
 from arkitekt_next.cli.constants import compile_dockerfiles
-from arkitekt_next.cli.types import Flavour
+from .types import Flavour
 from arkitekt_next.cli.utils import build_relative_dir
 import rich_click as click
 from click import Context

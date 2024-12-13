@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 import os
 import yaml
-from arkitekt_next.cli.types import Flavour
+from .types import Flavour
 from arkitekt_next.cli.vars import get_console
 import rich_click as click
 

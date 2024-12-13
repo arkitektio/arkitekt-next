@@ -5,9 +5,9 @@ import os
 from rich.panel import Panel
 import subprocess
 import uuid
-from arkitekt_next.cli.io import generate_build
+from .io import generate_build
 from click import Context
-from arkitekt_next.cli.types import Flavour, InspectionInput
+from .types import Flavour, InspectionInput
 import yaml
 from typing import Dict, Optional
 import json

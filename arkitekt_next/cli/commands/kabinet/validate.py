@@ -1,4 +1,4 @@
-from arkitekt_next.cli.types import Flavour
+from .types import Flavour
 import rich_click as click
 from click import Context
 from rich import get_console

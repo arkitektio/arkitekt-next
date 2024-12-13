@@ -2,9 +2,9 @@ import rich_click as click
 import subprocess
 from .utils import search_username_in_docker_info
 from arkitekt_next.cli.vars import get_console
-from arkitekt_next.cli.types import Build
+from .types import Build
 from rich.panel import Panel
-from arkitekt_next.cli.io import get_builds, get_deployments, generate_deployment
+from .io import get_builds, get_deployments, generate_deployment
 from click import Context
 import uuid
 

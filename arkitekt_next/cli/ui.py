@@ -65,7 +65,7 @@ def construct_app_group(app: App) -> Group:
     if rekuest is None:
         return Group(panel_header, service_tree)
 
-    for key, extension in rekuest.agent.extensions.items():
+    for key, extension in rekuest.agent.extension_registry.agent_extensions.items():
         tree = actor_tree.add(key)
         for template in extension.definition_registry.templates.values():
             tree.add(template.interface + "-" + template.definition.name)

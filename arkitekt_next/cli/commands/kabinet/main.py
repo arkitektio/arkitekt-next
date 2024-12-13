@@ -1,14 +1,38 @@
 import rich_click as click
-from .build import build
-from .publish import publish
-from .stage import stage
-from .init import init
-from .wizard import wizard
-from .validate import validate
+
 from click import Context
 
 
-@click.group()
+
+
+
+class LazyGroup(click.Group):
+
+
+    def list_commands(self, ctx):
+        return ["build", "init", "validate", "publish", "stage", "wizard"]
+
+    def get_command(self, ctx, cmd_name):
+        from .build import build
+        from .publish import publish
+        from .stage import stage
+        from .init import init
+        from .validate import validate
+
+        if cmd_name == "build":
+            return build
+        elif cmd_name == "init":
+            return init
+        elif cmd_name == "validate":
+            return validate
+        elif cmd_name == "publish":
+            return publish
+        elif cmd_name == "stage":
+            return stage
+        return None
+
+
+@click.group(cls=LazyGroup)
 @click.pass_context
 def kabinet(ctx: Context) -> None:
     """Deploy the arkitekt_next app with Port
@@ -21,11 +45,3 @@ def kabinet(ctx: Context) -> None:
     """
 
     pass
-
-
-kabinet.add_command(build, "build")
-kabinet.add_command(init, "init")
-kabinet.add_command(validate, "validate")
-kabinet.add_command(publish, "publish")
-kabinet.add_command(stage, "stage")
-kabinet.add_command(wizard, "wizard")

@@ -14,7 +14,7 @@ from arkitekt_next.cli.options import (
 import yaml
 from arkitekt_next.cli.utils import build_relative_dir
 from arkitekt_next.cli.vars import get_console, get_manifest
-from arkitekt_next.service_registry import check_and_import_services
+from arkitekt_next.service_registry import get_default_service_registry
 
 
 @click.command()
@@ -51,7 +51,7 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
     # Initializing the config
     projects = {}
 
-    registry = check_and_import_services()
+    registry = get_default_service_registry()
 
     chosen_services = registry.service_builders
 
