@@ -61,11 +61,12 @@ def create_devcontainer_file(
 
     devcontainer_file = os.path.join(flavour_container, "devcontainer.json")
 
-
     devcontainer_content = {}
     devcontainer_content["name"] = f"{manifest.identifier} {flavour} Devcontainer"
     devcontainer_content["build"] = {}
-    devcontainer_content["build"]["dockerfile"] = os.path.relpath(docker_file_path, flavour_container)
+    devcontainer_content["build"]["dockerfile"] = os.path.relpath(
+        docker_file_path, flavour_container
+    )
     devcontainer_content["build"][
         "context"
     ] = "../.."  # This is the root of the project

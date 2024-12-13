@@ -11,7 +11,8 @@ from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from .utils import create_arkitekt_next_folder
 from .base_models import Manifest
 from .apps.types import App
-from .service_registry import ServiceBuilderRegistry, check_and_import_services
+from .service_registry import ServiceBuilderRegistry, get_current_service_registry
+from .init_registry import InitHookRegisty, get_current_init_hook_registry
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 
@@ -27,7 +28,8 @@ def easy(
     no_cache: bool = False,
     redeem_token: Optional[str] = None,
     app_kind: str = "development",
-    registry: Optional[ServiceBuilderRegistry] = None,
+    service_registry: Optional[ServiceBuilderRegistry] = None,
+    init_hook_registry: Optional[InitHookRegisty] = None,
     **kwargs,
 ) -> App:
     """Creates a next app
@@ -96,7 +98,8 @@ def easy(
     NextApp
         A built app, that can be used to interact with the ArkitektNext server
     """
-    registry = registry or check_and_import_services()
+    service_registry = service_registry or get_current_service_registry()
+    init_hook_registry = init_hook_registry or get_current_init_hook_registry()
 
     if identifier is None:
         identifier = __file__.split("/")[-1].replace(".py", "")
@@ -109,7 +112,7 @@ def easy(
         identifier=identifier,
         scopes=scopes if scopes else ["openid"],
         logo=logo,
-        requirements=registry.get_requirements(),
+        requirements=service_registry.get_requirements(),
     )
 
     if token:
@@ -153,10 +156,12 @@ def easy(
         fakts=fakts_next,
         herre=herre_next,
         manifest=manifest,
-        services=registry.build_service_map(
+        services=service_registry.build_service_map(
             fakts=fakts_next, herre=herre_next, params=params, manifest=manifest
         ),
     )
+
+    init_hook_registry.run_all(app)
 
     return app
 

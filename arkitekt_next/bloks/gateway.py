@@ -1,8 +1,9 @@
+from arkitekt_next.bloks.services.certer import CerterService
 from arkitekt_next.bloks.services.name import NameService
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 from pydantic import BaseModel
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from blok import blok, InitContext
 from blok.bloks.services.dns import DnsService
@@ -32,9 +33,10 @@ class ExposedPort(BaseModel):
 
 
 @blok(
-    "live.arkitekt.gateway", description="A gateway for exposing services on the host"
+    "live.arkitekt.gateway",
+    description="A gateway for exposing services on the host",
 )
-class GatewayBlok:
+class CaddyBlok:
     def __init__(self) -> None:
         self.exposed_hosts = {}
         self.exposed_to_hosts = {}
@@ -47,6 +49,8 @@ class GatewayBlok:
         self.https_port = 443
         self.public_ips = DEFAULT_PUBLIC_URLS
         self.public_hosts = DEFAULT_PUBLIC_HOSTS
+        self.cert_mount = None
+        self.depends_on = []
 
     def get_internal_host(self):
         return "caddy"
@@ -60,13 +64,22 @@ class GatewayBlok:
     def retrieve_gateway_network(self):
         return self.gateway_network
 
-    def preflight(self, init: InitContext, dns: DnsService, name: NameService):
+    def preflight(
+        self,
+        init: InitContext,
+        dns: DnsService,
+        name: NameService,
+        certer: CerterService,
+    ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
         self.public_ips = dns.get_dns_result().ip_addresses
         self.public_hosts = dns.get_dns_result().hostnames
         self.gateway_network = name.retrieve_name().replace("-", "_")
+
+        self.cert_mount = certer.retrieve_certs_mount()
+        self.depends_on = certer.retrieve_depends_on()
 
     def build(
         self,
@@ -101,7 +114,7 @@ class GatewayBlok:
                 """
     tls /certs/caddy.crt /certs/caddy.key
     """
-                if protocol == "https"
+                if protocol == "https" and self.cert_mount
                 else ""
             )
             caddyfile += """
@@ -153,39 +166,30 @@ class GatewayBlok:
 
         context.file_tree.set_nested("configs", "Caddyfile", caddyfile)
 
-        caddy_depends_on = []
-        if self.with_certer:
-            caddy_depends_on.append("certer")
+        caddy_depends_on = self.depends_on
 
         exposed_ports_strings = [
             f"{port.port}:{port.port}" for port in self.exposed_ports.values()
         ]
 
+        volumes = ["./configs/Caddyfile:/etc/caddy/Caddyfile"]
+        if self.cert_mount:
+            volumes.append(f"{self.cert_mount}:/certs")
+
         caddy_container = {
             "image": "caddy:latest",
-            "volumes": ["./configs/Caddyfile:/etc/caddy/Caddyfile", "./certs:/certs"],
             "ports": [
                 f"{self.http_port}:80",
                 f"{self.https_port}:443",
             ]
             + exposed_ports_strings,
+            "volumes": volumes,
             "depends_on": caddy_depends_on,
             "networks": [self.gateway_network, "default"],
         }
 
         context.docker_compose.set_nested("services", "caddy", caddy_container)
 
-        context.file_tree.set_nested("certs", {})
-        certer_container = {
-            "image": self.certer_image,
-            "volumes": ["./certs:/certs"],
-            "environment": {
-                "DOMAIN_NAMES": ",".join(self.public_hosts),
-                "IP_ADDRESSED": ",".join(self.public_ips),
-            },
-        }
-
-        context.docker_compose.set_nested("services", "certer", certer_container)
         context.docker_compose.set_nested(
             "networks",
             self.gateway_network,

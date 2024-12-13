@@ -1,8 +1,10 @@
+import contextvars
+from functools import wraps
 from pydantic import BaseModel, Field
 from herre_next import Herre
 from fakts_next import Fakts
 from .base_models import Manifest, Requirement
-from typing import Callable, Dict, Protocol
+from typing import Callable, Dict, Optional, Protocol, TypeVar, overload
 import importlib
 import sys
 import os
@@ -12,6 +14,23 @@ import pkgutil
 from typing import runtime_checkable
 
 Params = Dict[str, str]
+
+
+current_service_registry = contextvars.ContextVar(
+    "current_service_registry", default=None
+)
+GLOBAL_SERVICE_REGISTRY = None
+
+
+def get_default_service_registry():
+    global GLOBAL_SERVICE_REGISTRY
+    if GLOBAL_SERVICE_REGISTRY is None:
+        GLOBAL_SERVICE_REGISTRY = ServiceBuilderRegistry()
+    return GLOBAL_SERVICE_REGISTRY
+
+
+def get_current_service_registry(allow_global=True):
+    return current_service_registry.get(get_default_service_registry())
 
 
 class Registration(BaseModel):
@@ -72,8 +91,11 @@ basic_requirements = [
 
 
 class ServiceBuilderRegistry:
-    def __init__(self):
+    def __init__(self, import_services=True):
         self.service_builders: Dict[str, ArkitektService] = {}
+        self.additional_requirements: Dict[str, Requirement] = {}
+        if import_services:
+            check_and_import_services(self)
 
     def register(
         self,
@@ -86,6 +108,11 @@ class ServiceBuilderRegistry:
             self.service_builders[name] = service
         else:
             raise ValueError(f"Service {name} already registered")
+
+    def register_requirement(self, requirement: Requirement):
+        if requirement.key in self.additional_requirements:
+            raise ValueError(f"Requirement {requirement.key} already registered)")
+        self.additional_requirements[requirement.key] = requirement
 
     def get(self, name):
         return self.services.get(name)
@@ -121,6 +148,11 @@ class ServiceBuilderRegistry:
                     taken_requirements.add(requirement.key)
                     requirements.append(requirement)
 
+        for requirement in self.additional_requirements.values():
+            if requirement.key not in taken_requirements:
+                taken_requirements.add(requirement.key)
+                requirements.append(requirement)
+
         sorted_requirements = sorted(requirements, key=lambda x: x.key)
 
         return sorted_requirements
@@ -137,8 +169,9 @@ import traceback
 import logging
 
 
-def check_and_import_services() -> ServiceBuilderRegistry:
-    service_builder_registry = ServiceBuilderRegistry()
+def check_and_import_services(
+    service_registry: ServiceBuilderRegistry,
+) -> ServiceBuilderRegistry:
     processed_modules = set()  # Track modules that have already been processed
 
     # Function to load and call init_extensions from __rekuest__.py
@@ -154,10 +187,10 @@ def check_and_import_services() -> ServiceBuilderRegistry:
             if hasattr(rekuest_module, "build_services"):
                 for service in rekuest_module.build_services():
                     try:
-                        service_builder_registry.register(service)
+                        service_registry.register(service)
                     except ValueError as e:
                         print(
-                            f"Failed to register service {service}: Another service with the same name is already registered {service_builder_registry.service_builders}"
+                            f"Failed to register service {service}: Another service with the same name is already registered {service_registry.service_builders}"
                         )
                 logging.info(f"Called build_services function from {module_name}")
             else:
@@ -196,4 +229,30 @@ def check_and_import_services() -> ServiceBuilderRegistry:
             )
             traceback.print_exc()
 
-    return service_builder_registry
+    return service_registry
+
+
+T = TypeVar("T")
+
+
+@overload
+def require(
+    key: str,
+    service: str = None,
+    description: str = None,
+) -> Callable[[T], T]: ...
+
+
+def require(
+    key: str,
+    service: str = None,
+    description: str = None,
+    service_registry: Optional[ServiceBuilderRegistry] = None,
+):
+    """Register a requirement with the service registry"""
+    service_hook_registry = service_registry or get_current_service_registry()
+
+    requirement = Requirement(key=key, service=service, description=description)
+    service_hook_registry.register_requirement(requirement)
+
+    return requirement

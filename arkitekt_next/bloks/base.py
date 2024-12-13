@@ -94,7 +94,9 @@ class BaseArkitektService:
             self.get_blok_meta().service_identifier, self.get_builder()
         )
 
-        dns_result = init.get_service(DnsService).get_dns_result()
+        django_secret = secret.retrieve_secret()
+
+        dns_result = dns.get_dns_result()
 
         csrf_trusted_origins = []
         for hostname in dns_result.hostnames:
@@ -108,7 +110,7 @@ class BaseArkitektService:
                     "admin": asdict(admin_access),
                     "debug": True,
                     "hosts": ["*"],
-                    "secret_key": self.secret_key,
+                    "secret_key": django_secret,
                 },
                 "redis": asdict(redis_access),
                 "lok": asdict(lok_access),

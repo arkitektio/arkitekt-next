@@ -11,13 +11,13 @@ from blok.tree import YamlFile, Repo
 
 @blok(
     "live.arkitekt.internal_engine",
-    description="an arktitekt deployer app that uses docker",
+    description="An Arkitekt plugin engine running inside a docker container",
 )
 class InternalDockerBlok:
     def __init__(self) -> None:
         self.host = "internal_docker"
 
-        self.image = "jhnnsrs/deployer:0.0.8-vanilla"
+        self.image = "jhnnsrs/deployer:nightly"
         self.instance_id = "INTERNAL_DOCKER"
 
     def preflight(
@@ -51,10 +51,6 @@ class InternalDockerBlok:
         if self.skip:
             return
         db_service = {
-            "labels": [
-                "fakts.service=io.livekit.livekit",
-                "fakts.builder=livekitio.livekit",
-            ],
             "image": self.image,
             "command": self.command,
             "volumes": [f"{self._socket}:/var/run/docker.sock"],

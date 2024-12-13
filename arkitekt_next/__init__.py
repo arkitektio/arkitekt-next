@@ -8,7 +8,7 @@ def missing_install(name: str, error: Exception):
 
 
 try:
-    from rekuest_next.register import register
+    from rekuest_next.register import register, register_structure
     from rekuest_next.agents.hooks import background
     from rekuest_next.agents.hooks import startup
     from rekuest_next.agents.context import context
@@ -19,7 +19,7 @@ try:
     from rekuest_next.structures.model import model
     from rekuest_next.define import define
 except ImportError as e:
-    raise e
+    register_structure = missing_install("rekuest_next", e)
     register = missing_install("rekuest_next", e)
     background = missing_install("rekuest_next", e)
     startup = missing_install("rekuest_next", e)
@@ -32,20 +32,34 @@ except ImportError as e:
 
 from .builders import easy, interactive
 from .apps.types import App
+from fakts_next.helpers import afakt, fakt
+from .init_registry import init, InitHookRegisty, get_current_init_hook_registry
+from .service_registry import (
+    require,
+    ServiceBuilderRegistry,
+    get_current_service_registry,
+)
+
 
 __all__ = [
     "App",
-    "register",
+    "require",
     "easy",
     "interactive",
     "publicqt",
     "jupy",
     "log",
     "alog",
+    "afakt",
+    "fakt",
     "progress",
     "aprogress",
     "scheduler",
     "register_structure",
+    "requirement",
+    "ServiceBuilderRegistry",
+    "get_current_service_registry",
+    "register",
     "group",
     "useGuardian",
     "useInstanceID",
@@ -56,4 +70,7 @@ __all__ = [
     "background",
     "startup",
     "register_next",
+    "init",
+    "InitHookRegisty",
+    "get_current_init_hook_registry",
 ]

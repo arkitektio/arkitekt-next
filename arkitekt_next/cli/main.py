@@ -21,7 +21,6 @@ from arkitekt_next.cli.commands.init.main import init
 from arkitekt_next.cli.commands.manifest.main import manifest
 from arkitekt_next.cli.commands.inspect.main import inspect
 from arkitekt_next.cli.commands.call.main import call
-from arkitekt_next.cli.commands.delegate.main import delegate
 from arkitekt_next.cli.io import load_manifest
 from arkitekt_next.utils import create_arkitekt_next_folder
 
@@ -77,7 +76,6 @@ cli.add_command(kabinet, "kabinet")
 cli.add_command(manifest, "manifest")
 cli.add_command(inspect, "inspect")
 cli.add_command(call, "call")
-cli.add_command(delegate, "delegate")
 
 if __name__ == "__main__":
     cli()

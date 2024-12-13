@@ -4,7 +4,7 @@ from arkitekt_next.bloks.mikro import MikroBlok
 from arkitekt_next.bloks.fluss import FlussBlok
 from arkitekt_next.bloks.orkestrator import OrkestratorBlok
 from arkitekt_next.bloks.redis import RedisBlok
-from arkitekt_next.bloks.gateway import GatewayBlok
+from arkitekt_next.bloks.gateway import CaddyBlok
 from arkitekt_next.bloks.livekit import LocalLiveKitBlok
 from arkitekt_next.bloks.postgres import PostgresBlok
 from arkitekt_next.bloks.minio import MinioBlok
@@ -18,6 +18,9 @@ from arkitekt_next.bloks.rekuest import RekuestBlok
 from arkitekt_next.bloks.tailscale import TailscaleBlok
 from arkitekt_next.bloks.secret import SecretBlok
 from arkitekt_next.bloks.namegen import PreformedNamesBlok
+from arkitekt_next.bloks.ollama import OllamaBlok
+from arkitekt_next.bloks.self_signed import SelfSignedBlok
+from arkitekt_next.bloks.kraph import KraphBlok
 
 
 def get_bloks():
@@ -27,14 +30,17 @@ def get_bloks():
         MikroBlok(),
         FlussBlok(),
         RedisBlok(),
-        GatewayBlok(),
+        CaddyBlok(),
         LocalLiveKitBlok(),
         PostgresBlok(),
         MinioBlok(),
+        OllamaBlok(),
         LokBlok(),
+        SelfSignedBlok(),
         KabinetBlok(),
         MountBlok(),
         ConfigBlok(),
+        KraphBlok(),
         InternalDockerBlok(),
         DockerSocketBlok(),
         RekuestBlok(),

@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
-from typing import Dict
+from typing import Dict, Optional
 from arkitekt_next.bloks.secret import SecretBlok
 from arkitekt_next.bloks.services.admin import AdminService
 from arkitekt_next.bloks.services.db import DBService
@@ -143,6 +143,7 @@ class LokBlok:
         self.token_expiry_seconds = 700000
         self.preformed_redeem_tokens = [secrets.token_hex(16) for i in range(80)]
         self.registered_tokens = {}
+        self.local_access = None
 
     def retrieve_credentials(self) -> LokCredentials:
         return LokCredentials(
@@ -172,8 +173,8 @@ class LokBlok:
         redis: RedisService,
         admin: AdminService,
         secrets: SecretBlok,
-        livekit: LivekitService,
         dns: DnsService,
+        livekit: Optional[LivekitService] = None,
     ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
@@ -188,7 +189,8 @@ class LokBlok:
         self.postgress_access = db.register_db(self.host)
         self.redis_access = redis.register()
         self.admin_access = admin.retrieve()
-        self.local_access = livekit.retrieve_access()
+        if livekit:
+            self.local_access = livekit.retrieve_access()
         self.dns_result = dns.get_dns_result()
         self.initialized = True
 
@@ -203,8 +205,8 @@ class LokBlok:
 
         db_service = {
             "labels": [
-                "fakts_next.service=live.arkitekt.lok",
-                "fakts_next.builder=arkitekt.lok",
+                "fakts.service=live.arkitekt.lok",
+                "fakts.builder=arkitekt.lok",
             ],
             "depends_on": depends_on,
             "volumes": [
@@ -253,7 +255,11 @@ class LokBlok:
                 ],
                 "groups": [group for group in self.groups],
                 "deployment": {"name": self.deployment_name},
-                "livekit": asdict(self.local_access),
+                "livekit": (
+                    asdict(self.local_access)
+                    if self.local_access
+                    else {"api_key": "dev", "api_secret": "secret", "api_url": None}
+                ),
                 "token_expire_seconds": self.token_expiry_seconds,
                 "apps": [],
                 "force_script_name": "lok",

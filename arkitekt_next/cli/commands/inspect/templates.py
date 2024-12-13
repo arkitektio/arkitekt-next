@@ -1,3 +1,4 @@
+import asyncio
 from pydantic import BaseModel
 import rich_click as click
 from importlib import import_module
@@ -8,10 +9,12 @@ from arkitekt_next.cli.options import with_builder
 import json
 import os
 
+from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
-async def run_app(app):
+
+async def run_app_inspection(app):
     async with app:
-        await app.rekuest.run()
+        return await app.services.get("rekuest").agent.adump_registry()
 
 
 @click.command("prod")
@@ -30,12 +33,20 @@ async def run_app(app):
     is_flag=True,
     default=False,
 )
+@click.option(
+    "--url",
+    "-u",
+    help="The fakts_next server to use",
+    type=str,
+    default=DEFAULT_ARKITEKT_URL,
+)
 @with_builder
 def templates(
     ctx,
     pretty: bool,
     machine_readable: bool,
     builder: str = "arkitekt_next.builders.easy",
+    url: str = DEFAULT_ARKITEKT_URL,
 ):
     """Runs the app in production mode
 
@@ -67,6 +78,8 @@ def templates(
         identifier=identifier,
         version="dev",
         logo=manifest.logo,
+        url=url,
+        headless=True,
     )
 
     rekuest = app.services.get("rekuest")
@@ -74,12 +87,8 @@ def templates(
         console.print("No rekuest service found in app")
         return
 
-    x = {
-        key: item.model_dump(by_alias=True)
-        for key, item in rekuest.agent.extensions[
-            "default"
-        ].definition_registry.templates.items()
-    }
+    x = asyncio.run(run_app_inspection(app))
+
     if machine_readable:
         print("--START_TEMPLATES--" + json.dumps(x) + "--END_TEMPLATES--")
 
