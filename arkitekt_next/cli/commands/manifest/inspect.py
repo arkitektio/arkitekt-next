@@ -17,7 +17,7 @@ def inspect(ctx) -> None:
     """
     manifest = get_manifest(ctx)
 
-    table = Table.grid(padding=(0,3))
+    table = Table.grid(padding=(0, 3))
     table.add_column()
     table.add_column(justify="right")
     table.add_row("Identifier", manifest.identifier)
@@ -31,7 +31,6 @@ def inspect(ctx) -> None:
         Group("[bold green]Manifest[/]", table),
         title_align="center",
         border_style="green",
-        
         style="white",
     )
 

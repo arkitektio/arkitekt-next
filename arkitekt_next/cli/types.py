@@ -41,5 +41,3 @@ class Manifest(BaseModel):
 
     class Config:
         validate_assignment = True
-
-

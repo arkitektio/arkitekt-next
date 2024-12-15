@@ -3,11 +3,7 @@ import rich_click as click
 from click import Context
 
 
-
-
-
 class LazyGroup(click.Group):
-
 
     def list_commands(self, ctx):
         return ["build", "init", "validate", "publish", "stage", "wizard"]

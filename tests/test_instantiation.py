@@ -1,4 +1,4 @@
-from arkitekt_next.builders import easy
+from arkitekt_next import easy
 
 
 def test_easy():

@@ -1,12 +1,14 @@
-from click.testing import CliRunner
-from arkitekt_next.cli.main import cli
 import os
-from arkitekt_next.cli.io import load_manifest_yaml
 import pytest
 
 
 @pytest.fixture
 def initialized_app_cli_runner():
+
+    from arkitekt_next.cli.io import load_manifest_yaml
+    from arkitekt_next.cli.main import cli
+    from click.testing import CliRunner
+
     runner = CliRunner()
     with runner.isolated_filesystem():
         result = runner.invoke(
@@ -14,7 +16,7 @@ def initialized_app_cli_runner():
             [
                 "init",
                 "--identifier",
-                "arkitekt_next",
+                "arkitekt-next",
                 "--version",
                 "0.0.1",
                 "--author",

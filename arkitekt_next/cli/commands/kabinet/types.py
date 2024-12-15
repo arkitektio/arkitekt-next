@@ -1,4 +1,3 @@
-
 from importlib.metadata import version
 from pydantic import BaseModel, Field, field_validator
 import datetime
@@ -22,7 +21,6 @@ ALLOWED_BUILDER_KEYS = [
     "dockerfile",
     "package_version",
 ]
-
 
 
 class SelectorType(str, Enum):

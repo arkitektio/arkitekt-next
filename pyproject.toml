@@ -11,14 +11,15 @@ readme = "README.md"
 python = "^3.8"
 herre-next = ">=1.0.2"
 fakts-next = ">=1.0.4"
-kraph = { version = ">=0.1.100", python = "^3.8", optional = true }
-mikro-next = { version = ">=0.1.50", python = "^3.10", optional = true }
-kabinet = { version = ">=0.1.45", optional = true,  python = "^3.9" }
-fluss-next = { version = ">=0.1.95", optional = true }
-reaktion-next= { version = ">=0.1.86", python = "^3.8", optional = true }
+kraph = { version = ">=0.1.101", python = "^3.8", optional = true }
+mikro-next = { version = ">=0.1.53", python = "^3.10", optional = true }
+kabinet = { version = ">=0.1.46", optional = true,  python = "^3.9" }
+fluss-next = { version = ">=0.1.96", optional = true }
+reaktion-next= { version = ">=0.1.87", python = "^3.8", optional = true }
+alpaka = { version = ">=0.1.17", python = "^3.10", optional = true }
 rekuest-next= { version = ">=0.2.58", python = "^3.8", optional = true }
-unlok-next= { version = ">=0.1.87", python = "^3.8", optional = true }
-lovekit = { version = ">=0.1.18", python = "^3.10", optional = true }
+unlok-next= { version = ">=0.1.89", python = "^3.8", optional = true }
+lovekit = { version = ">=0.1.19", python = "^3.10", optional = true }
 rich-click = { version = ">=1.6.1", optional = true }
 watchfiles = { version = ">=0.18.1", optional = true }
 turms = { version = ">=0.8.2", python = "^3.9", optional = true }
@@ -33,6 +34,15 @@ namegenerator = { version = ">=1.0.6", python = "^3.8", optional = true }
 
 [tool.poetry.extras]
 cli = ["rich-click", "watchfiles", "turms", "semver", "rekuest-next"]
+alpaka = ["alpaka"]
+kraph = ["kraph"]
+mikro = ["mikro-next"]
+kabinet = ["kabinet"]
+fluss = ["fluss-next"]
+reaktion = ["reaktion-next"]
+lovekit = ["lovekit"]
+rekuest = ["rekuest-next"]
+unlok = ["unlok-next"]
 all = [
     "rich-click",
     "watchfiles",
@@ -45,7 +55,7 @@ all = [
     "fluss-next",
 ]
 stream = ["lovekit"]
-extended = ["kraph"]
+extended = ["kraph","alpaka"]
 blok = ["netifaces", "blok", "cryptography", "namegenerator", "rich-click"]
 
 [tool.mypy]

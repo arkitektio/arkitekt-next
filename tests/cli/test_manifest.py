@@ -1,11 +1,12 @@
-from arkitekt_next.cli.main import cli
 import os
-from arkitekt_next.cli.io import load_manifest_yaml
 import pytest
 
 
 @pytest.mark.cli
 def test_add_scopes(initialized_app_cli_runner):
+    from arkitekt_next.cli.main import cli
+    from arkitekt_next.cli.io import load_manifest_yaml
+
     result = initialized_app_cli_runner.invoke(
         cli,
         [
@@ -24,6 +25,9 @@ def test_add_scopes(initialized_app_cli_runner):
 
 @pytest.mark.cli
 def test_list_scopes(initialized_app_cli_runner):
+    from arkitekt_next.cli.main import cli
+    from arkitekt_next.cli.io import load_manifest_yaml
+
     result = initialized_app_cli_runner.invoke(
         cli,
         [
@@ -39,6 +43,8 @@ def test_list_scopes(initialized_app_cli_runner):
 
 @pytest.mark.cli
 def test_advailable_scopes(initialized_app_cli_runner):
+    from arkitekt_next.cli.main import cli
+
     result = initialized_app_cli_runner.invoke(
         cli,
         [

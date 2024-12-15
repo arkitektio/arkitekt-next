@@ -72,4 +72,3 @@ def write_manifest(manifest: Manifest):
             file,
             sort_keys=True,
         )
-
