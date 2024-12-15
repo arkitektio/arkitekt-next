@@ -1,5 +1,5 @@
 from importlib.metadata import version
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 import datetime
 from typing import List, Optional, Union, Literal, Dict
 from enum import Enum
@@ -17,6 +17,7 @@ class Manifest(BaseModel):
     logo: Optional[str] = None
     entrypoint: str
     scopes: List[str]
+    model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
     @field_validator("version", mode="before")
     def version_must_be_semver(cls, v) -> str:
@@ -39,5 +40,3 @@ class Manifest(BaseModel):
             "scopes": self.scopes,
         }
 
-    class Config:
-        validate_assignment = True

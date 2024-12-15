@@ -2,7 +2,7 @@
 
 from hashlib import sha256
 import json
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 from typing import List, Optional
 
 
@@ -42,9 +42,7 @@ class Manifest(BaseModel):
     """ A URL to the logo of the app TODO: We should enforce this to be a http URL as local paths won't work """
     requirements: Optional[List[Requirement]] = Field(default_factory=list)
     """ Requirements that this app has TODO: What are the requirements? """
-
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     def hash(self):
         """Hash the manifest
