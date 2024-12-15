@@ -12,7 +12,7 @@ jobs:
         extra: ["alpaka", "kraph", "mikro", "kabinet", "fluss", "reaktion", "lovekit", "rekuest", "unlok"]
         python-version: ["3.11"]
         poetry-version: [1.8]
-        os: [macos-latest, windows-latest, linux]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
