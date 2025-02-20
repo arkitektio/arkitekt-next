@@ -21,6 +21,7 @@ from arkitekt_next.bloks.namegen import PreformedNamesBlok
 from arkitekt_next.bloks.ollama import OllamaBlok
 from arkitekt_next.bloks.self_signed import SelfSignedBlok
 from arkitekt_next.bloks.kraph import KraphBlok
+from arkitekt_next.bloks.local_sign import LocalSignBlok
 
 
 def get_bloks():
@@ -48,4 +49,6 @@ def get_bloks():
         SecretBlok(),
         PreformedNamesBlok(),
         OrkestratorBlok(),
+        LocalSignBlok(),
     ]
+

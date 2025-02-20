@@ -1,6 +1,6 @@
 from blok import blok, InitContext, Option
 from blok.tree import YamlFile, Repo
-from typing import Any, Protocol
+from typing import Any, Optional, Protocol
 from blok.utils import check_protocol_compliance
 from dataclasses import asdict
 from arkitekt_next.bloks.services import (
@@ -58,15 +58,15 @@ class BaseArkitektService:
         self,
         init: InitContext,
         lok: LokService,
-        dns: DnsService,
         db: DBService,
-        gateway: GatewayService,
         redis: RedisService,
         s3: S3Service,
         config: ConfigService,
         mount: MountService,
         admin: AdminService,
         secret: SecretService,
+        gateway: Optional[GatewayService] = None,
+        dns: DnsService = None,
         mount_repo: bool = False,
         host: str = "",
         image: str = "",
@@ -83,7 +83,9 @@ class BaseArkitektService:
 
         path_name = self.host
 
-        gateway_access = gateway.expose(path_name, 80, self.host)
+        if gateway:
+            print("Registering gateway access")
+            gateway_access = gateway.expose(path_name, 80, self.host)
 
         postgress_access = db.register_db(self.host)
         redis_access = redis.register()

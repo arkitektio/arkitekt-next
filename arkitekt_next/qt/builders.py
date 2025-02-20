@@ -8,7 +8,7 @@ from arkitekt_next.base_models import Manifest
 from arkitekt_next.apps.types import App
 from arkitekt_next.service_registry import (
     ServiceBuilderRegistry,
-    check_and_import_services,
+    get_default_service_registry,
 )
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from qtpy import QtWidgets, QtCore
@@ -30,7 +30,6 @@ from arkitekt_next.base_models import Manifest
 from arkitekt_next.apps.types import App
 from arkitekt_next.service_registry import (
     ServiceBuilderRegistry,
-    check_and_import_services,
 )
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
@@ -117,7 +116,7 @@ def devqt(
     NextApp
         A built app, that can be used to interact with the ArkitektNext server
     """
-    registry = registry or check_and_import_services()
+    registry = registry or get_default_service_registry()
 
     url = os.getenv("FAKTS_URL", url)
     token = os.getenv("FAKTS_TOKEN", token)
