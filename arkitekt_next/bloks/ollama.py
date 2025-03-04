@@ -85,5 +85,5 @@ class OllamaBlok:
 
     def __str__(self) -> str:
         return (
-            f"LiveKitBlok(host={self.host}, command={self.command}, image={self.image})"
+            f"Ollama(host={self.host}, command={self.command}, image={self.image})"
         )

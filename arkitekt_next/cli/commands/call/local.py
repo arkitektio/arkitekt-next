@@ -1,9 +1,12 @@
+import json
 import rich_click as click
 from arkitekt_next.cli.options import *
 import asyncio
 from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
 from arkitekt_next.cli.utils import import_builder
+from rekuest_next.messages import Provide
+from rekuest_next.rekuest import RekuestNext
 from rekuest_next.api.schema import NodeKind, BindsInput
 from rich.table import Table
 from rich.console import Console
@@ -16,7 +19,24 @@ async def call_app(
     template_string: str,
     arg: Dict[str, Any],
 ):
+    
+
+
     async with app:
+
+        rekuest: RekuestNext = app.services["rekuest"]
+
+        registry = await rekuest.agent.extension_registry.get("default").aretrieve_registry()
+
+        x = await rekuest.agent.aspawn_actor_from_provision(
+            provide_message=Provide(
+                
+            )
+        )
+        
+        the_builder = registry.get_builder_for_interface(template_string)
+
+
         raise NotImplementedError("Not implemented yet")
 
 
@@ -48,13 +68,16 @@ async def call_app(
     "template",
     help="The template to run",
     type=str,
+    required=True,
 )
+@click.option("--fakts", "-f", "fakts", type=(str, str), multiple=True)
 def local(
     ctx,
     entrypoint=None,
     builder=None,
     args=None,
     template: str = None,
+    fakts: str = None,
     **builder_kwargs,
 ):
     """Runs the app in production mode
@@ -68,6 +91,8 @@ def local(
     console = get_console(ctx)
     entrypoint = entrypoint or manifest.entrypoint
 
+
+    fakts = dict(fakts) if fakts else None
     kwargs = dict(args or [])
 
     builder = import_builder(builder)
@@ -82,6 +107,7 @@ def local(
     app = builder(
         **manifest.to_builder_dict(),
         **builder_kwargs,
+        fakts=fakts,
     )
 
     panel = construct_run_panel(app)

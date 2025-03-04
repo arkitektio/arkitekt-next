@@ -1,7 +1,6 @@
 from typing import Optional
 
 from fakts_next.fakts import Fakts
-from fakts_next.grants.hard import HardFakts
 from fakts_next.grants.remote import RemoteGrant
 from fakts_next.grants.remote.discovery.well_known import WellKnownDiscovery
 from fakts_next.grants.remote import RemoteGrant
@@ -93,15 +92,4 @@ def build_arkitekt_next_token_fakts_next(
             cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
             hash=manifest.hash() + url,
         ),
-    )
-
-
-def build_local_fakts(manifest, fakts):
-
-    identifier = manifest.identifier
-    version = manifest.version
-
-    return ArkitektNextFaktsNext(
-        grant=HardFakts(fakts=fakts),
-
     )

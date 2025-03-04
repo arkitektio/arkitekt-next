@@ -6,6 +6,7 @@ from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_fakts_next,
     build_arkitekt_next_redeem_fakts_next,
     build_arkitekt_next_token_fakts_next,
+    build_local_fakts,
 )
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from .utils import create_arkitekt_next_folder
@@ -30,6 +31,7 @@ def easy(
     app_kind: str = "development",
     service_registry: Optional[ServiceBuilderRegistry] = None,
     init_hook_registry: Optional[InitHookRegisty] = None,
+    fakts: Optional[str] = None,
     **kwargs,
 ) -> App:
     """Creates a next app
@@ -115,7 +117,13 @@ def easy(
         requirements=service_registry.get_requirements(),
     )
 
-    if token:
+    if fakts:
+        fakts_next = build_local_fakts(
+            manifest=manifest,
+            fakts=fakts,
+        )
+
+    elif token:
         fakts_next = build_arkitekt_next_token_fakts_next(
             manifest=manifest,
             token=token,

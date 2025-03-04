@@ -14,6 +14,7 @@ from .mikro import MikroBlok
 from .orkestrator import OrkestratorBlok
 from .rekuest import RekuestBlok
 from .ollama import OllamaBlok
+from .elektro import ElektroBlok
 
 
 class AdminCredentials(BaseModel):
@@ -35,6 +36,7 @@ class AdminCredentials(BaseModel):
         KraphBlok.as_dependency(True, False),
         TailscaleBlok.as_dependency(True, False),
         OllamaBlok.as_dependency(True, False),
+        ElektroBlok.as_dependency(True, False),
     ],
 )
 class ArkitektBlok:

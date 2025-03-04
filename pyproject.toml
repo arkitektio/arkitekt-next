@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arkitekt-next"
-version = "0.8.65"
+version = "0.8.73"
 description = "client for the arkitekt_next platform"
 authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
 license = "MIT"
@@ -10,16 +10,17 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
 herre-next = ">=1.0.2"
-fakts-next = ">=1.0.4"
-kraph = { version = ">=0.1.102", python = ">=3.9", optional = true }
-mikro-next = { version = ">=0.1.58", python = "^3.11", optional = true }
-kabinet = { version = ">=0.1.46", optional = true,  python = "^3.9" }
+fakts-next = ">=1.0.5"
+kraph = { version = ">=0.1.104", python = ">=3.9", optional = true }
+mikro-next = { version = ">=0.1.60", python = "^3.11", optional = true }
+kabinet = { version = ">=0.1.48", optional = true,  python = "^3.9" }
 fluss-next = { version = ">=0.1.96", optional = true, python = ">=3.9" }
 reaktion-next= { version = ">=0.1.87", python = ">=3.9", optional = true }
-alpaka = { version = ">=0.1.18", python = "^3.10", optional = true }
-rekuest-next= { version = ">=0.2.65", python = ">=3.9", optional = true }
-unlok-next= { version = ">=0.1.89", python = ">=3.9", optional = true }
-lovekit = { version = ">=0.1.19",python = ">=3.10" , optional = true }
+alpaka = { version = ">=0.1.21", python = "^3.10", optional = true }
+rekuest-next= { version = ">=0.2.70", python = ">=3.9", optional = true }
+unlok-next= { version = ">=0.1.90", python = ">=3.9", optional = true }
+lovekit = { version = ">=0.1.19",python = ">=3.10",  optional = true }
+elektro = { version = ">=0.4.1", python = ">=3.9", optional = true }
 rich-click = { version = ">=1.6.1", optional = true }
 watchfiles = { version = ">=0.18.1", optional = true }
 turms = { version = ">=0.8.2", python = ">=3.9", optional = true }
@@ -38,6 +39,7 @@ alpaka = ["alpaka"]
 kraph = ["kraph"]
 mikro = ["mikro-next"]
 kabinet = ["kabinet"]
+elektro = ["elektro"]
 fluss = ["fluss-next"]
 reaktion = ["reaktion-next"]
 lovekit = ["lovekit"]
@@ -53,6 +55,7 @@ all = [
     "mikro-next",
     "kabinet",
     "fluss-next",
+    "unlok-next",
 ]
 stream = ["lovekit"]
 extended = ["kraph","alpaka"]

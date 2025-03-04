@@ -22,6 +22,7 @@ from arkitekt_next.bloks.ollama import OllamaBlok
 from arkitekt_next.bloks.self_signed import SelfSignedBlok
 from arkitekt_next.bloks.kraph import KraphBlok
 from arkitekt_next.bloks.local_sign import LocalSignBlok
+from arkitekt_next.bloks.elektro import ElektroBlok
 
 
 def get_bloks():
@@ -50,5 +51,6 @@ def get_bloks():
         PreformedNamesBlok(),
         OrkestratorBlok(),
         LocalSignBlok(),
+        ElektroBlok(),
     ]
 
