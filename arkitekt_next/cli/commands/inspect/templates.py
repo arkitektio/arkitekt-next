@@ -11,10 +11,8 @@ import os
 
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
+from rekuest_next.agents.registry import get_default_extension_registry
 
-async def run_app_inspection(app):
-    async with app:
-        return await app.services.get("rekuest").agent.adump_registry()
 
 
 @click.command("prod")
@@ -33,14 +31,6 @@ async def run_app_inspection(app):
     is_flag=True,
     default=False,
 )
-@click.option(
-    "--url",
-    "-u",
-    help="The fakts_next server to use",
-    type=str,
-    default=DEFAULT_ARKITEKT_URL,
-)
-@with_builder
 def templates(
     ctx,
     pretty: bool,
@@ -83,17 +73,35 @@ def templates(
     )
 
     rekuest = app.services.get("rekuest")
+    
+    registry =  get_default_extension_registry()
+    
+    global_list = []
+    
+    for extension in registry.agent_extensions.values():
+        
+        definition_registry = extension.get_definition_registry()
+        
+        to_be_created_templates = tuple(
+            x.model_dump() for x in definition_registry.templates.values()
+        )
+        global_list.extend(to_be_created_templates)
+    
+    
+    
+    
+
+    console.print(f"Templates to be created: {len(global_list)}")
+
     if rekuest is None:
         console.print("No rekuest service found in app")
         return
 
-    x = asyncio.run(run_app_inspection(app))
-
     if machine_readable:
-        print("--START_TEMPLATES--" + json.dumps(x) + "--END_TEMPLATES--")
+        print("--START_TEMPLATES--" + json.dumps(global_list) + "--END_TEMPLATES--")
 
     else:
         if pretty:
-            console.print(json.dumps(x, indent=2))
+            console.print(json.dumps(global_list, indent=2))
         else:
-            print(json.dumps(x))
+            print(json.dumps(global_list))

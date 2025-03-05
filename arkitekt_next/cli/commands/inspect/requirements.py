@@ -1,3 +1,4 @@
+from arkitekt_next import get_current_service_registry
 import rich_click as click
 from importlib import import_module
 from arkitekt_next.apps.types import App
@@ -29,12 +30,10 @@ async def run_app(app):
     is_flag=True,
     default=False,
 )
-@with_builder
 def requirements(
     ctx,
     pretty: bool,
     machine_readable: bool,
-    builder: str = "arkitekt_next.builders.easy",
 ):
     """Checks the requirements of the app
 
@@ -49,7 +48,6 @@ def requirements(
     entrypoint_file = f"{manifest.entrypoint}.py"
     os.path.realpath(entrypoint_file)
 
-    builder_func = import_builder(builder)
 
     entrypoint = manifest.entrypoint
 
@@ -60,13 +58,14 @@ def requirements(
             console.print(f"Could not find entrypoint module {entrypoint}")
             raise e
 
-    app: App = builder_func(
-        identifier=identifier,
-        version="dev",
-        logo=manifest.logo,
-    )
 
-    x = [item.model_dump(by_alias=True) for item in app.manifest.requirements]
+    service_registry = get_current_service_registry()
+    
+    
+
+    x = [item.model_dump(by_alias=True) for item in service_registry.get_requirements()]
+    
+
     if machine_readable:
         print("--START_REQUIREMENTS--" + json.dumps(x) + "--END_REQUIREMENTS--")
 

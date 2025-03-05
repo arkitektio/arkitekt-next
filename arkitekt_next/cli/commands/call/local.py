@@ -11,6 +11,7 @@ from rekuest_next.api.schema import NodeKind, BindsInput
 from rich.table import Table
 from rich.console import Console
 from typing import Dict, Any
+import asyncio
 
 
 async def call_app(
@@ -25,19 +26,15 @@ async def call_app(
     async with app:
 
         rekuest: RekuestNext = app.services["rekuest"]
-
-        registry = await rekuest.agent.extension_registry.get("default").aretrieve_registry()
-
-        x = await rekuest.agent.aspawn_actor_from_provision(
-            provide_message=Provide(
-                
-            )
-        )
         
-        the_builder = registry.get_builder_for_interface(template_string)
-
-
+        
         raise NotImplementedError("Not implemented yet")
+
+
+        t = asyncio.create_task(rekuest.arun())
+        
+        await t
+
 
 
 @click.command("prod")
@@ -109,6 +106,7 @@ def local(
         **builder_kwargs,
         fakts=fakts,
     )
+    
 
     panel = construct_run_panel(app)
     console.print(panel)

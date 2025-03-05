@@ -109,8 +109,6 @@ def inspect_templates(build_id: str, url: str) -> list[TemplateInput]:
                     "inspect",
                     "templates",
                     "-mr",
-                    "--url",
-                    url,
                 ]
             ),
             shell=True,

@@ -1,3 +1,4 @@
+from importlib import import_module
 import os
 import shutil
 from click import ClickException
@@ -37,6 +38,20 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
     generate the code.
 
     """
+    manifest = get_manifest(ctx)
+    console = get_console(ctx)
+    
+    entrypoint = manifest.entrypoint
+
+    with console.status("Loading entrypoint module..."):
+        try:
+            import_module(entrypoint)
+        except ModuleNotFoundError as e:
+            console.print(f"Could not find entrypoint module {entrypoint}")
+            raise e
+
+    
+    
     app_directory = os.getcwd()
 
     app_api_path = os.path.join(app_directory, path)

@@ -53,7 +53,7 @@ def scan_module(module_path):
 
 @click.command()
 @click.pass_context
-def variables(ctx, entrypoint):
+def variables(ctx):
     """Scans your arkitekt_next app for unsafe variables
 
     When designing an ArkitektNext app, you should not have variables in your
@@ -66,10 +66,8 @@ def variables(ctx, entrypoint):
     """
 
     console = get_console(ctx)
-
-    if not entrypoint:
-        manifest = get_manifest(ctx)
-        entrypoint = manifest.entrypoint
+    manifest = get_manifest(ctx)
+    entrypoint = manifest.entrypoint
 
     variables = scan_module(entrypoint)
 
