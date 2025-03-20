@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arkitekt-next"
-version = "0.8.80"
+version = "0.8.81"
 description = "client for the arkitekt_next platform"
 authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
 license = "MIT"
@@ -17,7 +17,7 @@ kabinet = { version = ">=0.1.50", optional = true,  python = "^3.9" }
 fluss-next = { version = ">=0.1.97", optional = true, python = ">=3.9" }
 reaktion-next= { version = ">=0.1.88", python = ">=3.9", optional = true }
 alpaka = { version = ">=0.1.21", python = "^3.10", optional = true }
-rekuest-next= { version = ">=0.2.73", python = ">=3.9", optional = true }
+rekuest-next= { version = ">=0.2.74", python = ">=3.9", optional = true }
 unlok-next= { version = ">=0.1.90", python = ">=3.9", optional = true }
 lovekit = { version = ">=0.1.19",python = ">=3.10",  optional = true }
 elektro = { version = ">=0.4.1", python = ">=3.9", optional = true }

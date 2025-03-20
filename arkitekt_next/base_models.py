@@ -43,6 +43,9 @@ class Manifest(BaseModel):
     requirements: Optional[List[Requirement]] = Field(default_factory=list)
     """ Requirements that this app has TODO: What are the requirements? """
     model_config = ConfigDict(extra="forbid")
+    
+    description: Optional[str] = None
+    """ A human readable description of the app """
 
     def hash(self):
         """Hash the manifest

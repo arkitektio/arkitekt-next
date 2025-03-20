@@ -48,6 +48,7 @@ def devqt(
     redeem_token: Optional[str] = None,
     app_kind: str = "development",
     registry: Optional[ServiceBuilderRegistry] = None,
+    description: Optional[str] = None,
     **kwargs,
 ) -> QtApp:
     """Creates a next app
@@ -127,6 +128,7 @@ def devqt(
         scopes=scopes if scopes else ["openid"],
         logo=logo,
         requirements=registry.get_requirements(),
+        description=description,
     )
     if token:
         fakts_next = build_arkitekt_next_token_fakts_next(
