@@ -6,6 +6,13 @@ from typing import MutableSet, Tuple, Any, Dict
 import os
 from .texts import LOGO, WELCOME_MESSAGE
 
+try:
+    from rekuest_next.definition.registry import get_default_definition_registry
+except ImportError:
+    get_default_definition_registry = lambda: None
+    pass
+    
+
 
 def construct_codegen_welcome_panel() -> Panel:
     md = Panel(
@@ -64,11 +71,12 @@ def construct_app_group(app: App) -> Group:
     rekuest = app.services.get("rekuest")
     if rekuest is None:
         return Group(panel_header, service_tree)
-
-    for key, extension in rekuest.agent.extension_registry.agent_extensions.items():
-        tree = actor_tree.add(key)
-        for template in extension.definition_registry.templates.values():
-            tree.add(template.interface + "-" + template.definition.name)
+    
+    default = get_default_definition_registry()
+    if default is not None:
+        for key, template in default.templates.items():
+            actor_tree.add(key + "-" + template.definition.name)
+    
 
     panel_group = Group(panel_header, service_tree, actor_tree)
 

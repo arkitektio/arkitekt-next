@@ -11,7 +11,11 @@ import os
 
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
-from rekuest_next.agents.registry import get_default_extension_registry
+try:
+    from rekuest_next.definition.registry import get_default_definition_registry
+except ImportError:
+    get_default_definition_registry = lambda: None
+    pass
 
 
 
@@ -74,23 +78,16 @@ def templates(
 
     rekuest = app.services.get("rekuest")
     
-    registry =  get_default_extension_registry()
-    
+    registry =  get_default_definition_registry()
     global_list = []
+    if registry is None:
+        raise Exception("No default registry found")
     
-    for extension in registry.agent_extensions.values():
+    to_be_created_templates = tuple(
+            x.model_dump() for x in registry.templates.values()
+    )
+    global_list.extend(to_be_created_templates)
         
-        definition_registry = extension.get_definition_registry()
-        
-        to_be_created_templates = tuple(
-            x.model_dump() for x in definition_registry.templates.values()
-        )
-        global_list.extend(to_be_created_templates)
-    
-    
-    
-    
-
     console.print(f"Templates to be created: {len(global_list)}")
 
     if rekuest is None:
