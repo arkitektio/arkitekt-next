@@ -50,7 +50,7 @@ class MinioBlok:
         self.skip = False
         self.scopes = {}
         self.init_image = "jhnnsrs/init:paper"
-        self.minio_image = "minio/minio:RELEASE.2023-02-10T18-48-39Z"
+        self.minio_image = "minio/minio:RELEASE.2025-02-18T16-25-55Z"
         self.buckets = []
         self.registered_clients = []
         self.preformed_bucket_names = [secrets.token_hex(16) for i in range(100)]

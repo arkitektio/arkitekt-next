@@ -8,6 +8,7 @@ from typing import Dict, Optional
 from arkitekt_next.bloks.secret import SecretBlok
 from arkitekt_next.bloks.services.admin import AdminService
 from arkitekt_next.bloks.services.db import DBService
+from arkitekt_next.bloks.services.s3 import S3Service
 from arkitekt_next.bloks.services.gateway import GatewayService
 from arkitekt_next.bloks.services.livekit import LivekitService
 from arkitekt_next.bloks.services.lok import LokCredentials, LokService
@@ -138,6 +139,7 @@ class LokBlok:
             "read": "A generic read access",
             "write": "A generic write access",
         }
+        self.buckets = ["media"]
         self.key = None
         self.deployment_name = "default"
         self.token_expiry_seconds = 700000
@@ -173,6 +175,7 @@ class LokBlok:
         redis: RedisService,
         admin: AdminService,
         secrets: SecretBlok,
+        s3: S3Service,
         dns: DnsService,
         livekit: Optional[LivekitService] = None,
     ):
@@ -189,6 +192,7 @@ class LokBlok:
         self.postgress_access = db.register_db(self.host)
         self.redis_access = redis.register()
         self.admin_access = admin.retrieve()
+        self.s3_access = s3.create_buckets(self.buckets)
         if livekit:
             self.local_access = livekit.retrieve_access()
         self.dns_result = dns.get_dns_result()
@@ -202,6 +206,9 @@ class LokBlok:
 
         if self.postgress_access.dependency:
             depends_on.append(self.postgress_access.dependency)
+            
+        if self.s3_access.dependency:
+            depends_on.append(self.s3_access.dependency)
 
         db_service = {
             "labels": [
@@ -260,6 +267,7 @@ class LokBlok:
                     if self.local_access
                     else {"api_key": "dev", "api_secret": "secret", "api_url": None}
                 ),
+                "s3": asdict(self.s3_access),
                 "token_expire_seconds": self.token_expiry_seconds,
                 "apps": [],
                 "force_script_name": "lok",

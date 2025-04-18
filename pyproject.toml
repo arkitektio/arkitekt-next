@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arkitekt-next"
-version = "0.8.81"
+version = "0.9.1"
 description = "client for the arkitekt_next platform"
 authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
 license = "MIT"
@@ -9,18 +9,18 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
-herre-next = ">=1.0.2"
-fakts-next = ">=1.0.5"
-kraph = { version = ">=0.1.104", python = ">=3.9", optional = true }
-mikro-next = { version = ">=0.1.61", python = "^3.11", optional = true }
-kabinet = { version = ">=0.1.50", optional = true,  python = "^3.9" }
-fluss-next = { version = ">=0.1.97", optional = true, python = ">=3.9" }
-reaktion-next= { version = ">=0.1.88", python = ">=3.9", optional = true }
-alpaka = { version = ">=0.1.21", python = "^3.10", optional = true }
-rekuest-next= { version = ">=0.2.74", python = ">=3.9", optional = true }
-unlok-next= { version = ">=0.1.90", python = ">=3.9", optional = true }
-lovekit = { version = ">=0.1.19",python = ">=3.10",  optional = true }
-elektro = { version = ">=0.4.1", python = ">=3.9", optional = true }
+herre-next = ">=1.1.0"
+fakts-next = ">=1.1.0"
+kraph = { version = ">=0.2.0", python = ">=3.9", optional = true }
+mikro-next = { version = ">=0.2.0", python = "^3.11", optional = true }
+kabinet = { version = ">=0.2.0", optional = true,  python = "^3.9" }
+fluss-next = { version = ">=0.2.0", optional = true, python = ">=3.9" }
+reaktion-next= { version = ">=0.2.0", python = ">=3.9", optional = true }
+alpaka = { version = ">=0.2.0", python = "^3.10", optional = true }
+rekuest-next= { version = ">=0.3.0", python = ">=3.9", optional = true }
+unlok-next= { version = ">=0.2.0", python = ">=3.9", optional = true }
+lovekit = { version = ">=0.2.0",python = ">=3.10",  optional = true }
+elektro = { version = ">=0.5.0", python = ">=3.9", optional = true }
 rich-click = { version = ">=1.6.1", optional = true }
 watchfiles = { version = ">=0.18.1", optional = true }
 turms = { version = ">=0.8.2", python = ">=3.9", optional = true }
@@ -28,7 +28,7 @@ semver = { version = ">=3.0.1", optional = true }
 dokker = ">=1.0.0"
 koil = ">=1.0.3"
 netifaces = { version = ">=0.11.0", python = ">=3.9", optional = true }
-blok = { version = ">=0.0.22", python = "^3.9", optional = true }
+blok = { version = ">=0.1.0", python = "^3.9", optional = true }
 cryptography = { version = ">=40.0.8", python = ">=3.9", optional = true }
 namegenerator = { version = ">=1.0.6", python = ">=3.9", optional = true }
 

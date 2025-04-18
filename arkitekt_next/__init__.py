@@ -13,15 +13,20 @@ try:
     from rekuest_next.agents.hooks import startup
     from rekuest_next.agents.context import context
     from rekuest_next.state.state import state
+    from rekuest_next.actors.reactive.api import abreakpoint, breakpoint
     from rekuest_next.actors.reactive.api import progress, aprogress
     from rekuest_next.actors.reactive.api import log, alog
     from rekuest_next.register import test, benchmark
     from rekuest_next.structures.model import model
+    from rekuest_next.utils import call, call_raw, acall, acall_raw, find, afind
     from rekuest_next.define import define
 except ImportError as e:
+    raise e
     register_structure = missing_install("rekuest_next", e)
     register = missing_install("rekuest_next", e)
     background = missing_install("rekuest_next", e)
+    abreakpoint = missing_install("rekuest_next", e)
+    breakpoint = missing_install("rekuest_next", e)
     startup = missing_install("rekuest_next", e)
     context = missing_install("rekuest_next", e)
     state = missing_install("rekuest_next", e)
@@ -29,6 +34,12 @@ except ImportError as e:
     aprogress = missing_install("rekuest_next", e)
     log = missing_install("rekuest_next", e)
     alog = missing_install("rekuest_next", e)
+    call = missing_install("rekuest_next", e)
+    call_raw = missing_install("rekuest_next", e)
+    acall = missing_install("rekuest_next", e)
+    acall_raw = missing_install("rekuest_next", e)
+    find = missing_install("rekuest_next", e)
+    afind = missing_install("rekuest_next", e)
 
 from .builders import easy, interactive
 from .apps.types import App
@@ -63,6 +74,15 @@ __all__ = [
     "group",
     "useGuardian",
     "useInstanceID",
+    "find",
+    "afind",
+    "call",
+    "call_raw",
+    "acall",
+    "acall_raw",
+    "model",
+    "test",
+    "benchmark",
     "useUser",
     "next",
     "state",

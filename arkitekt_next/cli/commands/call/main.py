@@ -3,7 +3,6 @@ import rich_click as click
 
 import rich_click as click
 from .remote import remote
-from .local import local
 
 
 @click.group()
@@ -18,5 +17,4 @@ def call(ctx):
     """
 
 
-call.add_command(local, "local")
 call.add_command(remote, "remote")
