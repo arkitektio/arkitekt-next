@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.10.2 (2025-05-13)
+
+
 ## v0.10.1 (2025-05-13)
+
+### Bug Fixes
+
+- Added rekuest-next as always required
+  ([`ca29ef2`](https://github.com/arkitektio/arkitekt-next/commit/ca29ef277f9360c79607fe0a87c36f94ebfd3bdf))
 
 
 ## v0.10.0 (2025-05-13)
