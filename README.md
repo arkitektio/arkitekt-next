@@ -1,4 +1,4 @@
-# arkitekt_next
+# arkitekt-next
 
 [![codecov](https://codecov.io/gh/jhnnsrs/arkitekt_next/branch/master/graph/badge.svg?token=UGXEA2THBV)](https://codecov.io/gh/jhnnsrs/arkitekt_next)
 [![PyPI version](https://badge.fury.io/py/arkitekt_next.svg)](https://pypi.org/project/arkitekt_next/)
@@ -11,7 +11,7 @@ streaming analysis for mikroscopy
 
 ## Idea
 
-arkitekt_next is the python client for the arkitekt_next platform. It allows you to utilize the full extent of the platform from your python code.
+arkitekt-next is the python client for the arkitekt_next platform. It allows you to utilize the full extent of the platform from your python code.
 To understand the idea behind arkitekt_next, you need to understand the idea behind the arkitekt_next platform.
 (More on this in the [documentation](https://arkitekt.live))
 
