@@ -1,7 +1,20 @@
 # CHANGELOG
 
 
+## v0.10.3 (2025-05-13)
+
+### Bug Fixes
+
+- Update dependencies to include rich-click and watchfiles
+  ([`bf4a77d`](https://github.com/arkitektio/arkitekt-next/commit/bf4a77d99664ac59d4267ca89d927c7423ea5aec))
+
+
 ## v0.10.2 (2025-05-13)
+
+### Bug Fixes
+
+- Add semver
+  ([`cc7d5aa`](https://github.com/arkitektio/arkitekt-next/commit/cc7d5aa8692c42a0e77ccc3f44c370941aa05df6))
 
 
 ## v0.10.1 (2025-05-13)
