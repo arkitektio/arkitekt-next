@@ -1,7 +1,7 @@
-from arkitekt_next import get_current_service_registry
+from arkitekt_next import get_default_service_registry
 import rich_click as click
 from importlib import import_module
-from arkitekt_next.apps.types import App
+from arkitekt_next.apps.protocols import App
 from arkitekt_next.cli.commands.run.utils import import_builder
 from arkitekt_next.cli.vars import get_console, get_manifest
 from arkitekt_next.cli.options import with_builder
@@ -48,7 +48,6 @@ def requirements(
     entrypoint_file = f"{manifest.entrypoint}.py"
     os.path.realpath(entrypoint_file)
 
-
     entrypoint = manifest.entrypoint
 
     with console.status("Loading entrypoint module..."):
@@ -58,13 +57,9 @@ def requirements(
             console.print(f"Could not find entrypoint module {entrypoint}")
             raise e
 
-
-    service_registry = get_current_service_registry()
-    
-    
+    service_registry = get_default_service_registry()
 
     x = [item.model_dump(by_alias=True) for item in service_registry.get_requirements()]
-    
 
     if machine_readable:
         print("--START_REQUIREMENTS--" + json.dumps(x) + "--END_REQUIREMENTS--")

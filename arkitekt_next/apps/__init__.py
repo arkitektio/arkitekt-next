@@ -1,3 +1,3 @@
-from .types import App
+from .protocols import App
 
 __all__ = ["App"]

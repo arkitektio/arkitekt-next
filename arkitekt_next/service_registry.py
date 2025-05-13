@@ -1,11 +1,11 @@
 import contextvars
-from functools import wraps
-from pydantic import BaseModel, Field
 from herre_next import Herre
 from fakts_next import Fakts
+from koil.composition.base import KoiledModel
 from .base_models import Manifest, Requirement
-from typing import Callable, Dict, Optional, Protocol, TypeVar, overload
+from typing import Any, Callable, Dict, Optional, Protocol, Set, TypeVar, overload
 from typing import runtime_checkable
+from pydantic import BaseModel
 
 Params = Dict[str, str]
 
@@ -16,15 +16,11 @@ current_service_registry = contextvars.ContextVar(
 GLOBAL_SERVICE_REGISTRY = None
 
 
-def get_default_service_registry():
+def get_default_service_registry() -> "ServiceBuilderRegistry":
     global GLOBAL_SERVICE_REGISTRY
     if GLOBAL_SERVICE_REGISTRY is None:
         GLOBAL_SERVICE_REGISTRY = ServiceBuilderRegistry()
     return GLOBAL_SERVICE_REGISTRY
-
-
-def get_current_service_registry(allow_global=True):
-    return current_service_registry.get(get_default_service_registry())
 
 
 class Registration(BaseModel):
@@ -36,42 +32,68 @@ class Registration(BaseModel):
 
 @runtime_checkable
 class ArkitektService(Protocol):
-
-    def get_service_name(self):
-        pass
+    def get_service_name(self) -> str:
+        """Get the service name. This is used to identify the service in the
+        service registry. The service name should be unique across all services.
+        """
+        ...
 
     def build_service(
         self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
-    ):
+    ) -> Optional[KoiledModel]:
+        """Build the service. This is used to build the service and return
+        the service instance. The service instance should be a KoiledModel
+        that is used to interact with the service.
+        """
+        ...
+
+    def get_requirements(self) -> list[Requirement]:
+        """Get the requirements for the service. This is used to get the
+        requirements for the service. The requirements should be a list of
+        Requirement objects that are used to identify the service in the
+        service registry. The requirements should be unique across all
+        """
+        ...
+
+    def get_graphql_schema(self) -> Optional[str]:
+        """Get the GraphQL schema for the service. This is used to get the
+        GraphQL schema for the service. The GraphQL schema should be a
+        GraphQL schema object that is used to interact with the service.
+        """
         pass
 
-    def get_requirements(self):
-        pass
-
-    def get_graphql_schema(self):
-        pass
-
-    def get_turms_project(self):
+    def get_turms_project(self) -> Optional[Dict[str, Any]]:
+        """Get the Turms project for the service. This is used to get the
+        Turms project for the service. The Turms project should be a
+        Turms project object that is used to interact with the service.
+        """
         pass
 
 
 class BaseArkitektService:
+    """Base class for Arkitekt services. This class is used to define the
+    interface for Arkitekt services. It is used to define the service name,
+    build the service, and get the requirements for the service."""
 
-    def get_service_name(self):
+    def get_service_name(self) -> str:
         raise NotImplementedError("get_service_name not implemented")
 
     def build_service(
         self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
-    ):
+    ) -> Optional[KoiledModel]:
         raise NotImplementedError("build_service not implemented")
 
-    def get_requirements(self):
+    def get_requirements(self) -> list[Requirement]:
         raise NotImplementedError("get_requirements not implemented")
 
-    def get_graphql_schema(self):
+    def get_graphql_schema(self) -> Optional[str]:
         return None
 
-    def get_turms_project(self):
+    def get_turms_project(self) -> Optional[Dict[str, Any]]:
+        """Get the Turms project for the service. This is used to get the
+        Turms project for the service. The Turms project should be a
+        Turms project object that is used to interact with the service.
+        """
         return None
 
 
@@ -93,7 +115,6 @@ class ServiceBuilderRegistry:
         self,
         service: ArkitektService,
     ):
-
         name = service.get_service_name()
 
         if name not in self.service_builders:
@@ -106,8 +127,8 @@ class ServiceBuilderRegistry:
             raise ValueError(f"Requirement {requirement.key} already registered)")
         self.additional_requirements[requirement.key] = requirement
 
-    def get(self, name):
-        return self.services.get(name)
+    def get(self, name: str) -> Optional[ArkitektService]:
+        return self.service_builders.get(name)
 
     def build_service_map(
         self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
@@ -124,7 +145,6 @@ class ServiceBuilderRegistry:
         }
 
     def get_requirements(self):
-
         requirements = [
             Requirement(
                 key="lok",
@@ -132,7 +152,7 @@ class ServiceBuilderRegistry:
                 description="An instance of ArkitektNext Lok to authenticate the user",
             )
         ]
-        taken_requirements = set()
+        taken_requirements: Set[str] = set()
 
         for service in self.service_builders.values():
             for requirement in service.get_requirements():
@@ -154,31 +174,17 @@ class SetupInfo:
     services: Dict[str, object]
 
 
-import os
-import importlib.util
-import pkgutil
-import traceback
-import logging
-
 T = TypeVar("T")
 
 
-@overload
 def require(
     key: str,
-    service: str = None,
-    description: str = None,
-) -> Callable[[T], T]: ...
-
-
-def require(
-    key: str,
-    service: str = None,
-    description: str = None,
+    service: str,
+    description: str | None = None,
     service_registry: Optional[ServiceBuilderRegistry] = None,
 ):
     """Register a requirement with the service registry"""
-    service_hook_registry = service_registry or get_current_service_registry()
+    service_hook_registry = service_registry or get_default_service_registry()
 
     requirement = Requirement(key=key, service=service, description=description)
     service_hook_registry.register_requirement(requirement)

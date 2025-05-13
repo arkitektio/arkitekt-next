@@ -49,7 +49,7 @@ class MinioBlok:
         self.port = 9000
         self.skip = False
         self.scopes = {}
-        self.init_image = "jhnnsrs/init:paper"
+        self.init_image = "jhnnsrs/init:nightly"
         self.minio_image = "minio/minio:RELEASE.2025-02-18T16-25-55Z"
         self.buckets = []
         self.registered_clients = []

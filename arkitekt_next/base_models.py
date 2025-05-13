@@ -43,7 +43,7 @@ class Manifest(BaseModel):
     requirements: Optional[List[Requirement]] = Field(default_factory=list)
     """ Requirements that this app has TODO: What are the requirements? """
     model_config = ConfigDict(extra="forbid")
-    
+
     description: Optional[str] = None
     """ A human readable description of the app """
 
@@ -74,8 +74,8 @@ class Manifest(BaseModel):
         # Hash the JSON encoded dictionary
         return sha256(json_dd.encode()).hexdigest()
 
-    @field_validator("identifier")
-    def check_identifier(cls, v):
+    @field_validator("identifier", mode="after")
+    def check_identifier(cls, v: str) -> str:
         assert "/" not in v, "The identifier should not contain a /"
         assert len(v) > 0, "The identifier should not be empty"
         assert len(v) < 256, "The identifier should not be longer than 256 characters"

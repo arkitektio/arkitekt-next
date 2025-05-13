@@ -5,7 +5,7 @@ from arkitekt_next.apps.service.fakts_qt import build_arkitekt_next_qt_fakts_nex
 from arkitekt_next.apps.service.herre_qt import build_arkitekt_next_qt_herre_next
 from arkitekt_next.utils import create_arkitekt_next_folder
 from arkitekt_next.base_models import Manifest
-from arkitekt_next.apps.types import App
+from arkitekt_next.apps.protocols import App
 from arkitekt_next.service_registry import (
     ServiceBuilderRegistry,
     get_default_service_registry,
@@ -27,7 +27,7 @@ from arkitekt_next.apps.service.fakts_next import (
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from arkitekt_next.utils import create_arkitekt_next_folder
 from arkitekt_next.base_models import Manifest
-from arkitekt_next.apps.types import App
+from arkitekt_next.apps.protocols import App
 from arkitekt_next.service_registry import (
     ServiceBuilderRegistry,
 )

@@ -1,6 +1,6 @@
 from importlib import import_module
 from typing import Callable
-from arkitekt_next.apps.types import App
+from arkitekt_next.apps.protocols import App
 import os
 
 

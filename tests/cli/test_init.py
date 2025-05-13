@@ -1,13 +1,12 @@
 import os
 import pytest
-
+from arkitekt_next.cli.io import load_manifest_yaml
+from arkitekt_next.cli.main import cli
+from click.testing import CliRunner
 
 @pytest.fixture
 def initialized_app_cli_runner():
 
-    from arkitekt_next.cli.io import load_manifest_yaml
-    from arkitekt_next.cli.main import cli
-    from click.testing import CliRunner
 
     runner = CliRunner()
     with runner.isolated_filesystem():

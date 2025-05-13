@@ -11,7 +11,6 @@ try:
 except ImportError:
     get_default_definition_registry = lambda: None
     pass
-    
 
 
 def construct_codegen_welcome_panel() -> Panel:
@@ -71,12 +70,11 @@ def construct_app_group(app: App) -> Group:
     rekuest = app.services.get("rekuest")
     if rekuest is None:
         return Group(panel_header, service_tree)
-    
+
     default = get_default_definition_registry()
     if default is not None:
-        for key, template in default.templates.items():
+        for key, template in default.implementations.items():
             actor_tree.add(key + "-" + template.definition.name)
-    
 
     panel_group = Group(panel_header, service_tree, actor_tree)
 

@@ -2,7 +2,7 @@ import asyncio
 from pydantic import BaseModel
 import rich_click as click
 from importlib import import_module
-from arkitekt_next.apps.types import App
+from arkitekt_next.apps.protocols import App
 from arkitekt_next.cli.commands.run.utils import import_builder
 from arkitekt_next.cli.vars import get_console, get_manifest
 from arkitekt_next.cli.options import with_builder
@@ -16,7 +16,6 @@ try:
 except ImportError:
     get_default_definition_registry = lambda: None
     pass
-
 
 
 @click.command("prod")
@@ -77,17 +76,15 @@ def templates(
     )
 
     rekuest = app.services.get("rekuest")
-    
-    registry =  get_default_definition_registry()
+
+    registry = get_default_definition_registry()
     global_list = []
     if registry is None:
         raise Exception("No default registry found")
-    
-    to_be_created_templates = tuple(
-            x.model_dump() for x in registry.templates.values()
-    )
+
+    to_be_created_templates = tuple(x.model_dump() for x in registry.templates.values())
     global_list.extend(to_be_created_templates)
-        
+
     console.print(f"Templates to be created: {len(global_list)}")
 
     if rekuest is None:

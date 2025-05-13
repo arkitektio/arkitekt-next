@@ -1,71 +1,84 @@
-[tool.poetry]
+[project]
 name = "arkitekt-next"
-version = "0.9.2"
+version = "0.9.4"
 description = "client for the arkitekt_next platform"
-authors = ["jhnnsrs <jhnnsrs@gmail.com>"]
-license = "MIT"
-packages = [{ include = "arkitekt_next" }]
+authors = [{ name = "jhnnsrs", email = "jhnnsrs@gmail.com" }]
+requires-python = ">=3.11,<4"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = ">=3.9,<4"
-herre-next = ">=1.1.0"
-fakts-next = ">=1.1.0"
-kraph = { version = ">=0.2.0", python = ">=3.9", optional = true }
-mikro-next = { version = ">=0.2.0", python = "^3.11", optional = true }
-kabinet = { version = ">=0.2.0", optional = true,  python = "^3.9" }
-fluss-next = { version = ">=0.2.0", optional = true, python = ">=3.9" }
-reaktion-next= { version = ">=0.2.0", python = ">=3.9", optional = true }
-alpaka = { version = ">=0.2.0", python = "^3.10", optional = true }
-rekuest-next= { version = ">=0.3.1", python = ">=3.9", optional = true }
-unlok-next= { version = ">=0.2.0", python = ">=3.9", optional = true }
-lovekit = { version = ">=0.2.0",python = ">=3.10",  optional = true }
-elektro = { version = ">=0.5.0", python = ">=3.9", optional = true }
-rich-click = { version = ">=1.6.1", optional = true }
-watchfiles = { version = ">=0.18.1", optional = true }
-turms = { version = ">=0.8.2", python = ">=3.9", optional = true }
-semver = { version = ">=3.0.1", optional = true }
-dokker = ">=1.0.0"
-koil = ">=1.0.3"
-rath = ">=1.1.1"
-netifaces = { version = ">=0.11.0", python = ">=3.9", optional = true }
-blok = { version = ">=0.1.0", python = "^3.9", optional = true }
-cryptography = { version = ">=40.0.8", python = ">=3.9", optional = true }
-namegenerator = { version = ">=1.0.6", python = ">=3.9", optional = true }
-
-
-[tool.poetry.extras]
-cli = ["rich-click", "watchfiles", "turms", "semver", "rekuest-next"]
-alpaka = ["alpaka"]
-kraph = ["kraph"]
-mikro = ["mikro-next"]
-kabinet = ["kabinet"]
-elektro = ["elektro"]
-fluss = ["fluss-next"]
-reaktion = ["reaktion-next"]
-lovekit = ["lovekit"]
-rekuest = ["rekuest-next"]
-unlok = ["unlok-next"]
-all = [
-    "rich-click",
-    "watchfiles",
-    "turms",
-    "semver",
-    "reaktion-next",
-    "rekuest-next",
-    "mikro-next",
-    "kabinet",
-    "fluss-next",
-    "unlok-next",
+license = "MIT"
+dependencies = [
+    "herre-next>=1.2.0",
+    "fakts-next>=1.2.2",
+    "dokker>=2.1.2",
+    "koil>=2.0.4",
+    "rath>=3.4",
+    "click>=8.2.0",
 ]
-stream = ["lovekit"]
-extended = ["kraph","alpaka"]
-blok = ["netifaces", "blok", "cryptography", "namegenerator", "rich-click"]
+
+[project.optional-dependencies]
+cli = [
+    "turms>=0.8.2",
+    "rekuest-next>=0.3.1"
+]
+alpaka = ["alpaka>=0.2.0"]
+kraph = ["kraph>=0.2.0"]
+mikro = ["mikro-next>=0.3.1"]
+kabinet = ["kabinet>=0.4.0"]
+elektro = ["elektro>=0.5.0"]
+fluss = ["fluss-next>=0.2.0"]
+reaktion = ["reaktion-next>=0.2.0"]
+lovekit = ["lovekit>=0.2.0"]
+rekuest = ["rekuest-next>=0.6.0"]
+unlok = ["unlok-next>=0.2.0"]
+all = [
+    "rich-click>=1.6.1",
+    "watchfiles>=0.18.1",
+    "turms>=0.8.2",
+    "semver>=3.0.1",
+    "reaktion-next>=0.2.0",
+    "rekuest-next>=0.3.1",
+    "mikro-next>=0.2.0",
+    "kabinet>=0.2.0",
+    "fluss-next>=0.2.0",
+    "unlok-next>=0.2.0",
+]
+extended = [
+    "kraph>=0.2.0",
+    "alpaka>=0.2.0"
+]
+blok = [
+    "blok>=0.1.0",
+]
+
+[project.scripts]
+arkitekt-next = "arkitekt_next.cli.main:cli"
+
+[tool.uv]
+dev-dependencies = [
+    "autoflake>=1.7.7,<2",
+    "pytest>=7.2.0,<8",
+    "pytest-asyncio>=0.20.2,<0.21",
+    "pytest-cov>=4.0.0,<5",
+    "pytest-aiohttp>=1.0.4,<2",
+    "rich-click>=1.8",
+    "mikro-next>=0.3.1",
+    "rekuest-next>=0.7",
+    "python-semantic-release>=9.21.1",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["arkitekt_next"]
+
+[tool.hatch.build.targets.wheel]
+include = ["arkitekt_next"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.mypy]
 exclude = ["venv/"]
 ignore_missing_imports = true
-
 
 [tool.ruff]
 extend-select = ["ANN", "D1"]
@@ -98,24 +111,6 @@ exclude = [
 # Same as Black.
 line-length = 100
 
-[tool.poetry.group.dev.dependencies]
-autoflake = "^1.7.7"
-pytest = "^7.2.0"
-pytest-asyncio = "^0.20.2"
-pytest-cov = "^4.0.0"
-pytest-aiohttp = "^1.0.4"
-types-pyyaml = "^6.0.12.12"
-pyqt5-stubs = "^5.15.6.0"
-
-
-[tool.poetry.scripts]
-arkitekt-next = "arkitekt_next.cli.main:cli"
-
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
 [tool.pytest.ini_options]
 qt_api = "pyqt5"
 markers = [
@@ -124,7 +119,6 @@ markers = [
     "cli: marks tests that require a running cli",
 ]
 
-
 [[tool.pydoc-markdown.loaders]]
 type = "python"
 search_path = ["arkitekt_next"]
@@ -132,3 +126,11 @@ search_path = ["arkitekt_next"]
 [tool.pydoc-markdown.renderer]
 type = "docusaurus"
 docs_base_path = "website/docs"
+
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+upload_to_pypi = true
+branch = "main"
+build_command = "uv build"
+

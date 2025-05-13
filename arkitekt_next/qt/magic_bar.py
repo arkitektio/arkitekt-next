@@ -3,7 +3,7 @@ from qtpy import QtWidgets, QtGui, QtCore
 from arkitekt_next.qt.types import QtApp
 from koil.qt import async_to_qt
 
-from arkitekt_next.apps.types import App
+from arkitekt_next.apps.protocols import App
 from .utils import get_image_path
 from typing import Optional, Callable
 import logging

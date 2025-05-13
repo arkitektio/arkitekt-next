@@ -11,14 +11,14 @@ from arkitekt_next.apps.service.fakts_next import (
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from .utils import create_arkitekt_next_folder
 from .base_models import Manifest
-from .apps.types import App
-from .service_registry import ServiceBuilderRegistry, get_current_service_registry
+from .apps.protocols import App
+from .service_registry import ServiceBuilderRegistry, get_default_service_registry
 from .init_registry import InitHookRegisty, get_current_init_hook_registry
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 
 def easy(
-    identifier: str = None,
+    identifier: str | None = None,
     version: str = "0.0.1",
     logo: Optional[str] = None,
     scopes: Optional[List[str]] = None,
@@ -28,7 +28,6 @@ def easy(
     token: Optional[str] = None,
     no_cache: bool = False,
     redeem_token: Optional[str] = None,
-    app_kind: str = "development",
     service_registry: Optional[ServiceBuilderRegistry] = None,
     init_hook_registry: Optional[InitHookRegisty] = None,
     fakts: Optional[str] = None,
@@ -100,8 +99,13 @@ def easy(
     NextApp
         A built app, that can be used to interact with the ArkitektNext server
     """
-    service_registry = service_registry or get_current_service_registry()
+    service_registry = service_registry or get_default_service_registry()
     init_hook_registry = init_hook_registry or get_current_init_hook_registry()
+
+    if init_hook_registry is None:
+        raise ValueError(
+            "No init hook registry found. Please provide a init hook registry or use the default one."
+        )
 
     if identifier is None:
         identifier = __file__.split("/")[-1].replace(".py", "")
@@ -135,8 +139,6 @@ def easy(
             manifest=manifest,
             redeem_token=redeem_token,
             url=url,
-            no_cache=no_cache,
-            headless=headless,
         )
     else:
         fakts_next = build_arkitekt_next_fakts_next(
@@ -144,7 +146,6 @@ def easy(
             url=url,
             no_cache=no_cache,
             headless=headless,
-            client_kind=app_kind,
         )
 
     herre_next = build_arkitekt_next_herre_next(fakts_next=fakts_next)

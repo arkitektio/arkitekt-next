@@ -23,9 +23,10 @@ from arkitekt_next.bloks.self_signed import SelfSignedBlok
 from arkitekt_next.bloks.kraph import KraphBlok
 from arkitekt_next.bloks.local_sign import LocalSignBlok
 from arkitekt_next.bloks.elektro import ElektroBlok
+from blok.blok import Blok
 
 
-def get_bloks():
+def get_bloks() -> list[Blok]:
     return [
         AdminBlok(),
         ArkitektBlok(),
@@ -53,4 +54,3 @@ def get_bloks():
         LocalSignBlok(),
         ElektroBlok(),
     ]
-

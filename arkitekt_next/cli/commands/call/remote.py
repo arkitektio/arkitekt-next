@@ -1,3 +1,4 @@
+from click import Context
 import rich_click as click
 from arkitekt_next.cli.options import *
 import asyncio
@@ -49,7 +50,9 @@ async def call_app(
     help="The hash of the node to run",
     type=str,
 )
-def remote(ctx, entrypoint=None, builder=None, args=None, hash=str, **builder_kwargs):
+def remote(
+    ctx: Context, entrypoint=None, builder=None, args=None, hash=str, **builder_kwargs
+):
     """ALlows you to run a get the output of a node in a remote app.
 
     This is useful for debugging and testing. In this mode the app itself will not

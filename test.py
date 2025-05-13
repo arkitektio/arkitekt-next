@@ -1,10 +1,10 @@
-from arkitekt_next import easy, register_next
+from arkitekt_next import easy, register
 
 
-x = easy("johannes", redeem_token="fuckthisshit", url="localhost:8010")
+x = easy("johannes")
 
 
-@register_next
+@register
 def hallo(value: int = 3) -> None:
     """Hallo
 
@@ -15,5 +15,4 @@ def hallo(value: int = 3) -> None:
 
 
 with x:
-    x.get_fak
-    x.rekuest_next.run()
+    x.rekuest.run()

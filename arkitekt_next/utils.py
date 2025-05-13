@@ -43,10 +43,11 @@ def create_arkitekt_next_folder(with_cache: bool = True) -> str:
 def create_devcontainer_file(
     manifest: Manifest,
     flavour: str,
-    docker_file_path,
-    devcontainer_path=".devcontainer",
+    docker_file_path: str,
+    devcontainer_path: str = ".devcontainer",
 ) -> None:
-    """Creates a devcontainer.json file in the flavour folder.
+    """Creates a devcontainer.json file that matches the docker file
+    inside the flavour folder.
 
     Parameters
     ----------
@@ -67,9 +68,9 @@ def create_devcontainer_file(
     devcontainer_content["build"]["dockerfile"] = os.path.relpath(
         docker_file_path, flavour_container
     )
-    devcontainer_content["build"][
-        "context"
-    ] = "../.."  # This is the root of the project
+    devcontainer_content["build"]["context"] = (
+        "../.."  # This is the root of the project
+    )
     devcontainer_content["runArgs"] = ["--network=host"]
 
     json.dump(devcontainer_content, open(devcontainer_file, "w"), indent=4)

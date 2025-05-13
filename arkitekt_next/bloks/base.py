@@ -1,3 +1,4 @@
+from arkitekt_next.bloks.services.channel import ChannelService
 from blok import blok, InitContext, Option
 from blok.tree import YamlFile, Repo
 from typing import Any, Optional, Protocol
@@ -62,6 +63,7 @@ class BaseArkitektService:
         redis: RedisService,
         s3: S3Service,
         config: ConfigService,
+        channel: ChannelService,
         mount: MountService,
         admin: AdminService,
         secret: SecretService,

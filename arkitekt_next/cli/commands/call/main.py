@@ -1,3 +1,4 @@
+from click import Context
 import rich_click as click
 
 
@@ -7,7 +8,7 @@ from .remote import remote
 
 @click.group()
 @click.pass_context
-def call(ctx):
+def call(ctx: Context) -> None:
     """Inspects your arkitekt_next app
 
     Inspects various parts of your arkitekt_next app. This is useful for debugging

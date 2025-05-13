@@ -9,14 +9,13 @@ import os
 import sys
 import inspect
 from rekuest_next.definition.registry import get_default_definition_registry
-from rekuest_next.agents.hooks import get_default_hook_registry
+from rekuest_next.agents.hooks.registry import get_default_hook_registry
 from typing import MutableSet, Tuple, Any, Set
 from arkitekt_next.cli.ui import construct_changes_group, construct_app_group
 from arkitekt_next.cli.commands.run.utils import import_builder
 from arkitekt_next.cli.types import Manifest
-from arkitekt_next.apps.types import App
+from arkitekt_next.apps.protocols import App
 import rich_click as click
-import os
 from arkitekt_next.cli.options import (
     with_fakts_next_url,
     with_builder,
@@ -105,7 +104,7 @@ async def run_app(app: App) -> None:
         raise Exception("No rekuest service found. We need this to run the app.")
 
     async with app:
-        await rekuest.run()
+        await rekuest.arun()
 
 
 def reload_modules(reloadable_modules) -> None:
