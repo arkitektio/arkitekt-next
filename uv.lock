@@ -166,7 +166,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.10.1"
+version = "0.10.2"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -176,7 +176,9 @@ dependencies = [
     { name = "koil" },
     { name = "rath" },
     { name = "rekuest-next" },
+    { name = "rich-click" },
     { name = "semver" },
+    { name = "watchfiles" },
 ]
 
 [package.optional-dependencies]
@@ -273,6 +275,7 @@ requires-dist = [
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.3.1" },
     { name = "rekuest-next", marker = "extra == 'cli'", specifier = ">=0.3.1" },
     { name = "rekuest-next", marker = "extra == 'rekuest'", specifier = ">=0.6.0" },
+    { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
     { name = "semver", marker = "extra == 'all'", specifier = ">=3.0.1" },
@@ -280,6 +283,7 @@ requires-dist = [
     { name = "turms", marker = "extra == 'cli'", specifier = ">=0.8.2" },
     { name = "unlok-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "unlok-next", marker = "extra == 'unlok'", specifier = ">=0.2.0" },
+    { name = "watchfiles", specifier = ">=1.0.5" },
     { name = "watchfiles", marker = "extra == 'all'", specifier = ">=0.18.1" },
 ]
 
