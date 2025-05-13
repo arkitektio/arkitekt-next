@@ -1,6 +1,6 @@
 [project]
 name = "arkitekt-next"
-version = "0.10.1"
+version = "0.10.2"
 description = "client for the arkitekt_next platform"
 authors = [{ name = "jhnnsrs", email = "jhnnsrs@gmail.com" }]
 requires-python = ">=3.11,<4"
