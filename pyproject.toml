@@ -22,7 +22,6 @@ dependencies = [
 [project.optional-dependencies]
 cli = [
     "turms>=0.8.2",
-    "rekuest-next>=0.3.1"
 ]
 alpaka = ["alpaka>=0.2.0"]
 kraph = ["kraph>=0.2.0"]
@@ -32,7 +31,6 @@ elektro = ["elektro>=0.5.0"]
 fluss = ["fluss-next>=0.2.0"]
 reaktion = ["reaktion-next>=0.2.0"]
 lovekit = ["lovekit>=0.2.0"]
-rekuest = ["rekuest-next>=0.6.0"]
 unlok = ["unlok-next>=0.2.0"]
 all = [
     "rich-click>=1.6.1",
@@ -40,8 +38,8 @@ all = [
     "turms>=0.8.2",
     "semver>=3.0.1",
     "reaktion-next>=0.2.0",
-    "rekuest-next>=0.3.1",
-    "mikro-next>=0.2.0",
+    "rekuest-next>=0.7",
+    "mikro-next>=0.3.1",
     "kabinet>=0.2.0",
     "fluss-next>=0.2.0",
     "unlok-next>=0.2.0",
@@ -66,7 +64,6 @@ dev-dependencies = [
     "pytest-aiohttp>=1.0.4,<2",
     "rich-click>=1.8",
     "mikro-next>=0.3.1",
-    
     "python-semantic-release>=9.21.1",
 ]
 

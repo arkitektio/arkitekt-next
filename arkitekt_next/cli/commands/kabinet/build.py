@@ -14,7 +14,7 @@ import json
 from arkitekt_next.base_models import Requirement
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from arkitekt_next.utils import create_arkitekt_next_folder
-from rekuest_next.api.schema import TemplateInput
+from rekuest_next.api.schema import ImplementationInput
 
 
 class InspectionError(Exception):
@@ -93,7 +93,7 @@ def inspect_docker_container(build_id: str) -> InspectionInput:
         raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
 
 
-def inspect_templates(build_id: str, url: str) -> list[TemplateInput]:
+def inspect_templates(build_id: str, url: str) -> list[ImplementationInput]:
     try:
         # Run 'docker inspect' with the container ID or name
         process = subprocess.Popen(
@@ -107,7 +107,7 @@ def inspect_templates(build_id: str, url: str) -> list[TemplateInput]:
                     build_id,
                     "arkitekt-next",
                     "inspect",
-                    "templates",
+                    "implementations",
                     "-mr",
                 ]
             ),
@@ -151,7 +151,7 @@ def inspect_templates(build_id: str, url: str) -> list[TemplateInput]:
 
         if "No such command" in combined_error:
             raise InspectionError(
-                "Could not find the command `arkitekt_next inspect definitions` in the container. Maybe"
+                "Could not find the command `arkitekt_next inspect implementations` in the container. Maybe"
                 + "you forgot to install arkitekt_next in the container? "
             )
 

@@ -34,7 +34,7 @@ except ImportError:
     is_flag=True,
     default=False,
 )
-def templates(
+def implementations(
     ctx,
     pretty: bool,
     machine_readable: bool,
@@ -82,7 +82,9 @@ def templates(
     if registry is None:
         raise Exception("No default registry found")
 
-    to_be_created_templates = tuple(x.model_dump() for x in registry.templates.values())
+    to_be_created_templates = tuple(
+        x.model_dump() for x in registry.implementations.values()
+    )
     global_list.extend(to_be_created_templates)
 
     console.print(f"Templates to be created: {len(global_list)}")
@@ -92,7 +94,11 @@ def templates(
         return
 
     if machine_readable:
-        print("--START_TEMPLATES--" + json.dumps(global_list) + "--END_TEMPLATES--")
+        print(
+            "--START_TEMPLATES--"
+            + json.dumps(global_list, indent=2)
+            + "--END_TEMPLATES--"
+        )
 
     else:
         if pretty:
