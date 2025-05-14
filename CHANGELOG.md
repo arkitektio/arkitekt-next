@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.12.1 (2025-05-14)
+
+### Bug Fixes
+
+- Update rekuest-next dependency to version 0.8.1 and fix prod run
+  ([`d3c4a3e`](https://github.com/arkitektio/arkitekt-next/commit/d3c4a3e6297cf0353bfa755ea670b1a5b2470ef3))
+
+
 ## v0.12.0 (2025-05-14)
 
 ### Bug Fixes
