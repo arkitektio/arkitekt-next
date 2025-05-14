@@ -1,7 +1,20 @@
 # CHANGELOG
 
 
+## v0.12.0 (2025-05-14)
+
+### Bug Fixes
+
+- Update herre-next dependency to version 1.3 and bump arkitekt-next version to 0.11.0
+  ([`a192bbf`](https://github.com/arkitektio/arkitekt-next/commit/a192bbf208943684e718a9501bef78def7befb6f))
+
+
 ## v0.11.0 (2025-05-14)
+
+### Features
+
+- Update to rekuest 0.8, fixed minor bugs
+  ([`f99ea1e`](https://github.com/arkitektio/arkitekt-next/commit/f99ea1e0cb8c3700643a0c0476314dd8645a91b0))
 
 
 ## v0.10.3 (2025-05-13)
