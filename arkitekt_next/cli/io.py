@@ -68,7 +68,7 @@ def write_manifest(manifest: Manifest):
 
     with open(config_file, "w") as file:
         yaml.safe_dump(
-            json.loads(manifest.json(exclude_none=True, exclude_unset=True)),
+            json.loads(manifest.model_dump_json(exclude_none=True, exclude_unset=True)),
             file,
             sort_keys=True,
         )

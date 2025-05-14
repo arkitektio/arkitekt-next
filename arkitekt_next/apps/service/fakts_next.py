@@ -1,7 +1,6 @@
 from typing import Optional
 
 from fakts_next.fakts import Fakts
-from fakts_next.grants.hard import HardFakts
 from fakts_next.grants.remote import RemoteGrant
 from fakts_next.grants.remote.discovery.well_known import WellKnownDiscovery
 from fakts_next.grants.remote.demanders.static import StaticDemander
@@ -45,7 +44,7 @@ def build_arkitekt_next_fakts_next(
     )
 
 
-def build_arkitekt_next_redeem_fakts_next(manifest: Manifest, redeem_token: str, url):
+def build_arkitekt_next_redeem_fakts_next(manifest: Manifest, redeem_token: str, url: str) -> Fakts:
     identifier = manifest.identifier
     version = manifest.version
 
@@ -65,7 +64,7 @@ def build_arkitekt_next_redeem_fakts_next(manifest: Manifest, redeem_token: str,
 def build_arkitekt_next_token_fakts_next(
     manifest: Manifest,
     token: str,
-    url,
+    url: str,
 ):
     identifier = manifest.identifier
     version = manifest.version
@@ -82,11 +81,3 @@ def build_arkitekt_next_token_fakts_next(
         ),
     )
 
-
-def build_local_fakts(manifest, fakts):
-    identifier = manifest.identifier
-    version = manifest.version
-
-    return Fakts(
-        grant=HardFakts(fakts=fakts),
-    )

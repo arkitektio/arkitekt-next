@@ -1,5 +1,8 @@
+from functools import partial
 from importlib import import_module, reload
 import asyncio
+
+from click import Context
 from arkitekt_next import App
 from watchfiles import awatch, Change
 from rich.panel import Panel
@@ -165,10 +168,40 @@ def is_entrypoint_change(
     return False
 
 
+
+
+def callback(console: Console, future: asyncio.Task[None]):
+    if future.cancelled():
+        return
+    else:
+        has_exception = future.exception()
+
+        if not has_exception:
+            panel = Panel(
+                "App finished running", style="bold yellow", border_style="yellow"
+            )
+            console.print(panel)
+        else:
+            try:
+                raise has_exception
+            except Exception:
+                console.print_exception()
+                panel = Panel(
+                    "Error running App", style="bold red", border_style="red"
+                )
+                console.print(panel)
+
+
+
+
+
+
+
+
 async def run_dev(
     console: Console,
     manifest: Manifest,
-    version=None,
+    version: str | None =None,
     builder: str = "arkitekt_next.builders.easy",
     deep: bool = False,
     **builder_kwargs,
@@ -209,26 +242,10 @@ async def run_dev(
         console.print(panel)
         module = None
 
-    def callback(future):
-        if future.cancelled():
-            return
-        else:
-            has_exception = future.exception()
-
-            if not has_exception:
-                panel = Panel(
-                    "App finished running", style="bold yellow", border_style="yellow"
-                )
-                console.print(panel)
-            else:
-                try:
-                    raise has_exception
-                except Exception:
-                    console.print_exception()
-                    panel = Panel(
-                        "Error running App", style="bold red", border_style="red"
-                    )
-                    console.print(panel)
+    
+    
+    current_run: asyncio.Future[None] | None = None    
+    # This is the main task that is running the app    
 
     try:
         app: App = builder_func(
@@ -241,14 +258,16 @@ async def run_dev(
         panel = Panel(group, style="bold green", border_style="green")
         console.print(panel)
 
-        x = asyncio.create_task(run_app(app))
-        x.add_done_callback(callback)
+        current_run = asyncio.create_task(run_app(app))
+        current_run.add_done_callback(partial(callback, console))
     except Exception:
         console.print_exception()
         panel = Panel(
             "Error building initial App", style="bold red", border_style="red"
         )
         console.print(panel)
+        
+        
 
     async for changes in awatch(
         ".",
@@ -257,9 +276,12 @@ async def run_dev(
         step=500,
     ):
         if deep:
+            # 
             to_be_reloaded = check_deeps(changes)
             if not to_be_reloaded:
                 continue
+        else:
+            to_be_reloaded: Set[str] = set()
 
         group = construct_changes_group(changes)
         panel = Panel(group, style="bold blue", border_style="blue")
@@ -267,17 +289,17 @@ async def run_dev(
 
         console.print(panel)
         # Cancelling the app
-        if not x or x.done():
+        if not current_run or current_run.done():
             pass
 
         else:
-            x.cancel()
+            current_run.cancel()
             panel = Panel(
                 "Cancelling latest version", style="bold yellow", border_style="yellow"
             )
             console.print(panel)
             try:
-                await x
+                await current_run
 
             except asyncio.CancelledError:
                 pass
@@ -293,6 +315,8 @@ async def run_dev(
                     if deep:
                         reload_modules(to_be_reloaded)
                     else:
+         
+         
                         reload(module)
         except Exception:
             console.print_exception()
@@ -315,8 +339,8 @@ async def run_dev(
             panel = Panel(group, style="bold green", border_style="green")
             console.print(panel)
 
-            x = asyncio.create_task(run_app(app))
-            x.add_done_callback(callback)
+            current_run = asyncio.create_task(run_app(app))
+            current_run.add_done_callback(partial(callback, console))
         except Exception:
             console.print_exception()
             panel = Panel(
@@ -340,7 +364,7 @@ async def run_dev(
     is_flag=True,
 )
 @click.pass_context
-def dev(ctx, **kwargs):
+def dev(ctx: Context, **kwargs):
     """Runs the app in dev mode (with hot reloading)
 
     Running the app in dev mode will automatically reload the app when changes are detected.

@@ -6,14 +6,13 @@ from arkitekt_next.apps.service.fakts_next import (
     build_arkitekt_next_fakts_next,
     build_arkitekt_next_redeem_fakts_next,
     build_arkitekt_next_token_fakts_next,
-    build_local_fakts,
 )
 from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from .utils import create_arkitekt_next_folder
 from .base_models import Manifest
 from .apps.protocols import App
 from .service_registry import ServiceBuilderRegistry, get_default_service_registry
-from .init_registry import InitHookRegisty, get_current_init_hook_registry
+from .init_registry import InitHookRegistry, get_default_init_hook_registry
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 
@@ -29,9 +28,8 @@ def easy(
     no_cache: bool = False,
     redeem_token: Optional[str] = None,
     service_registry: Optional[ServiceBuilderRegistry] = None,
-    init_hook_registry: Optional[InitHookRegisty] = None,
-    fakts: Optional[str] = None,
-    **kwargs,
+    init_hook_registry: Optional[InitHookRegistry] = None,
+    instance_id: str = "main",
 ) -> App:
     """Creates a next app
 
@@ -100,12 +98,8 @@ def easy(
         A built app, that can be used to interact with the ArkitektNext server
     """
     service_registry = service_registry or get_default_service_registry()
-    init_hook_registry = init_hook_registry or get_current_init_hook_registry()
+    init_hook_registry = init_hook_registry or get_default_init_hook_registry()
 
-    if init_hook_registry is None:
-        raise ValueError(
-            "No init hook registry found. Please provide a init hook registry or use the default one."
-        )
 
     if identifier is None:
         identifier = __file__.split("/")[-1].replace(".py", "")
@@ -121,13 +115,8 @@ def easy(
         requirements=service_registry.get_requirements(),
     )
 
-    if fakts:
-        fakts_next = build_local_fakts(
-            manifest=manifest,
-            fakts=fakts,
-        )
 
-    elif token:
+    if token:
         fakts_next = build_arkitekt_next_token_fakts_next(
             manifest=manifest,
             token=token,
@@ -150,7 +139,8 @@ def easy(
 
     herre_next = build_arkitekt_next_herre_next(fakts_next=fakts_next)
 
-    params = kwargs
+    params = {
+              "instance_id": instance_id,}
 
     create_arkitekt_next_folder(with_cache=True)
 
@@ -189,8 +179,7 @@ def interactive(
     app_kind: str = "development",
     registry: Optional[ServiceBuilderRegistry] = None,
     sync_mode: bool = True,
-    **kwargs,
-):
+) -> App:
     """Creates an interactive jupyter app"""
 
     app = easy(
@@ -204,9 +193,7 @@ def interactive(
         token=token,
         no_cache=no_cache,
         redeem_token=redeem_token,
-        app_kind=app_kind,
-        registry=registry,
-        **kwargs,
+     
     )
 
     if sync_mode:
@@ -215,7 +202,7 @@ def interactive(
         # to avoid having to use await for every call. This is the default
         # behaviour for the app, but can be overwritten by setting
         # app.koil.sync_in_async = False
-        app.koil.sync_in_async = True
+        app._koil.sync_in_async = True
         app.enter()
 
     return app

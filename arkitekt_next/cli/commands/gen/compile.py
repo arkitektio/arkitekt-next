@@ -10,7 +10,7 @@ import os
     type=click.Path(exists=True),
     default=None,
 )
-def compile(projects, config):
+def compile(projects, config: click.Path):
     """Genererate the code of a project"
 
     Uses a previously generated graphql-config.yaml file to generate the code for a or multiple projects.

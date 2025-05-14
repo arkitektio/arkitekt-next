@@ -166,13 +166,14 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.10.2"
+version = "0.10.3"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
     { name = "dokker" },
     { name = "fakts-next" },
     { name = "herre-next" },
+    { name = "kabinet" },
     { name = "koil" },
     { name = "rath" },
     { name = "rekuest-next" },
@@ -201,7 +202,6 @@ blok = [
     { name = "blok" },
 ]
 cli = [
-    { name = "rekuest-next" },
     { name = "turms" },
 ]
 elektro = [
@@ -228,9 +228,6 @@ mikro = [
 ]
 reaktion = [
     { name = "reaktion-next" },
-]
-rekuest = [
-    { name = "rekuest-next" },
 ]
 unlok = [
     { name = "unlok-next" },
@@ -260,21 +257,20 @@ requires-dist = [
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
     { name = "herre-next", specifier = ">=1.2.0" },
+    { name = "kabinet", specifier = ">=0.5" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.4.0" },
     { name = "koil", specifier = ">=2.0.4" },
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.2.0" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.2.0" },
     { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=0.2.0" },
-    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
+    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.3.1" },
     { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.3.1" },
     { name = "rath", specifier = ">=3.4" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.7" },
-    { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.3.1" },
-    { name = "rekuest-next", marker = "extra == 'cli'", specifier = ">=0.3.1" },
-    { name = "rekuest-next", marker = "extra == 'rekuest'", specifier = ">=0.6.0" },
+    { name = "rekuest-next", specifier = ">=0.8" },
+    { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
@@ -1016,15 +1012,15 @@ wheels = [
 
 [[package]]
 name = "kabinet"
-version = "0.4.0"
+version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d4/91/ec31b8341a90976922e4e8f9a7597dfdc65086b8660a455c21aa28b73a63/kabinet-0.4.0.tar.gz", hash = "sha256:9497fd61c5b97445722602c95e5b4aeb0d721e25edf54cb1e2bf4f1c354c6e53", size = 23362 }
+sdist = { url = "https://files.pythonhosted.org/packages/f7/bc/3b320aeb484c36424cb27e98aedd9a50ed70cce145ef834499d7fbffedb8/kabinet-0.5.0.tar.gz", hash = "sha256:fe59de55d9f7d48f2b793f206e2ebe0fa2a47566409a85dfa1170a5ea5135e62", size = 23313 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1f/39/b464d642cf7753a31a6dea1e7d8d9b6b73d1d666b6e6b720ec78691a5810/kabinet-0.4.0-py3-none-any.whl", hash = "sha256:825bdd6e4bd8faef7221a3dadab4deb187d3d69e35952042f229a9439e03db19", size = 26487 },
+    { url = "https://files.pythonhosted.org/packages/c9/a8/5389224d424f3f8bc99f137394839e125354807fece159cd1934fa41362e/kabinet-0.5.0-py3-none-any.whl", hash = "sha256:e35042d2eb9a44d2328d1e68d9e59260bd02f9fc596390a83c37838327a67f37", size = 26423 },
 ]
 
 [[package]]
@@ -1824,7 +1820,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "0.7.0"
+version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -1836,9 +1832,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ce/84/4bfd0c6bd40b25d11ab14648e99e1e0b0abf09b62065988f6a27caa12bc7/rekuest_next-0.7.0.tar.gz", hash = "sha256:271a11113da08067d15dc4be35c761b181a7a8322fa5ee632d6c76bdd51f1419", size = 98709 }
+sdist = { url = "https://files.pythonhosted.org/packages/64/f9/9a8b0131788614338bab19a4350190d69478abc4f982e82b70439b1be2c0/rekuest_next-0.8.0.tar.gz", hash = "sha256:7fffe66dcf062cca1baeda78e9c952eaa2f3830c96f623fb7f48949aa7d20267", size = 101849 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5c/a0/4f600da9f08dddcc5becab7afcf46606d35b47b06a45e1c675dc1d5f400f/rekuest_next-0.7.0-py3-none-any.whl", hash = "sha256:09da61804cabfa2bdcd0975318a68ec51261ad4294b863386ce6c485b81115df", size = 133426 },
+    { url = "https://files.pythonhosted.org/packages/81/78/821446ba7939d31cbe2430ecf18f3d84576f9ab9ea6b44140c7d82902bf3/rekuest_next-0.8.0-py3-none-any.whl", hash = "sha256:d756f6364bcc08e9a2372383f7f142bfa29852563cbf9eea77851cab5e271d86", size = 137512 },
 ]
 
 [[package]]

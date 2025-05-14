@@ -1,4 +1,5 @@
 
+from click import Context
 import rich_click as click
 from arkitekt_next.cli.options import *
 import asyncio
@@ -8,7 +9,6 @@ from arkitekt_next.cli.utils import import_builder
 from rekuest_next.rekuest import RekuestNext
 from rich.console import Console
 from typing import Dict, Any
-import asyncio
 
 
 async def call_app(
@@ -22,15 +22,11 @@ async def call_app(
 
     async with app:
 
-        rekuest: RekuestNext = app.services["rekuest"]
+        rekuest: RekuestNext = app.rekuest
         
-        
-        raise NotImplementedError("Not implemented yet")
+        raise NotImplementedError("Not implemented yet. Do you want to implement it? :)")
 
 
-        t = asyncio.create_task(rekuest.arun())
-        
-        await t
 
 
 
@@ -66,12 +62,12 @@ async def call_app(
 )
 @click.option("--fakts", "-f", "fakts", type=(str, str), multiple=True)
 def local(
-    ctx,
-    entrypoint=None,
-    builder=None,
-    args=None,
-    template: str = None,
-    fakts: str = None,
+    ctx: Context,
+    entrypoint: str | None =None,
+    builder: str | None =None,
+    args: Optional[Dict[str, Any]] = None,
+    template: str | None = None,
+    fakts: Optional[Dict[str, str]] = None,
     **builder_kwargs,
 ):
     """Runs the app in production mode

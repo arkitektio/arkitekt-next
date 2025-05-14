@@ -1,6 +1,6 @@
 import contextvars
 from functools import wraps
-from typing import Callable, Dict, Optional, TypeVar, overload, cast
+from typing import Callable, Dict, Optional, TypeVar, overload
 from arkitekt_next.apps.protocols import App
 
 Params = Dict[str, str]
@@ -9,26 +9,29 @@ Params = Dict[str, str]
 current_init_hook_registry = contextvars.ContextVar(
     "current_init_hook_registry", default=None
 )
-GLOBAL_INIT_HOOK_REGISTRY = None
 
-
-def get_default_init_hook_registry():
-    global GLOBAL_INIT_HOOK_REGISTRY
-    if GLOBAL_INIT_HOOK_REGISTRY is None:
-        GLOBAL_INIT_HOOK_REGISTRY = InitHookRegisty()
-    return GLOBAL_INIT_HOOK_REGISTRY
-
-
-def get_current_init_hook_registry(allow_global=True):
-    return current_init_hook_registry.get(get_default_init_hook_registry())
 
 
 InitHook = Callable[[App], None]
 
 
-class InitHookRegisty:
+class InitHookRegistry:
+    """ A registry for init hooks. This is used to register init hooks that
+    are called when the app is initialized. The init hooks are called in
+    the order they are registered
+    
+    The purpose of init hooks is to allow specific initialization 
+    code to be run when the app is initialized. This is useful if you 
+    plan to add some custom configuration or setup code that needs to be
+    run before the app is getting conneted to the server.
+    
+    """
+    
+    
+    
     def __init__(self):
         self.init_hooks: Dict[str, InitHook] = {}
+        self.cli_only_hooks: Dict[str, InitHook] = {}
 
     def register(
         self,
@@ -36,67 +39,79 @@ class InitHookRegisty:
         name: Optional[str] = None,
         only_cli: bool = False,
     ):
+        """ Register a function as an init hook. This function will be called
+        
+        
+        when the app is initialized. The init hooks are called in the order
+        
+        
+        """
+        
         if name is None:
             name = function.__name__
+            
+        if only_cli:
+            if name not in self.cli_only_hooks:
+                self.cli_only_hooks[name] = function
+            else:
+                raise ValueError(f"CLI Hook {name} already registered")
 
         if name not in self.init_hooks:
             self.init_hooks[name] = function
         else:
-            raise ValueError(f"Service {name} already registered")
+            raise ValueError(f"Init Hook {name} already registered")
 
-    def run_all(self, app: App):
+    def run_all(self, app: App, is_cli: bool = False):
         for hook in self.init_hooks.values():
             hook(app)
+            
+        if is_cli:
+            for hook in self.cli_only_hooks.values():
+                hook(app)
 
 
 T = TypeVar("T", bound=InitHook)
 
 
 @overload
-def init(
-    *func: T,
-) -> T: ...
+def init(func: T) -> T: ...
 
 
 @overload
+def init(*, only_cli: bool = False, init_hook_registry: InitHookRegistry | None = None) -> Callable[[T], T]: ...
+
 def init(
+    func: T | None = None,
     *,
     only_cli: bool = False,
-    init_hook_registry: InitHookRegisty | None = None,
-) -> Callable[[T], T]: ...
-
-
-def init(
-    *func: T,
-    only_cli: bool = False,
-    init_hook_registry: InitHookRegisty | None = None,
+    init_hook_registry: InitHookRegistry | None = None,
 ) -> T | Callable[[T], T]:
     """Register a function as an init hook. This function will be called when the app is initialized."""
     init_hook_registry = init_hook_registry or get_default_init_hook_registry()
 
-    if len(func) > 1:
-        raise ValueError("You can only register one function or actor at a time.")
-    if len(func) == 1:
-        function_or_actor = func[0]
+    if func is not None:
+        init_hook_registry.register(func, only_cli=only_cli)
+        setattr(func, "__is_init_hook__", True)
+        return func
 
-        init_hook_registry.register(function_or_actor)
+    def decorator(inner: T) -> T:
+        @wraps(inner)
+        def wrapped(app: App):
+            return inner(app)
 
-        setattr(function_or_actor, "__is_init_hook__", True)
+        init_hook_registry.register(wrapped, only_cli=only_cli)
+        setattr(inner, "__is_init_hook__", True)
+        return inner
 
-        return function_or_actor
+    return decorator
 
-    else:
 
-        def real_decorator(function_or_actor):
-            # Simple bypass for now
-            @wraps(function_or_actor)
-            def wrapped_function(*args, **kwargs):
-                return function_or_actor(*args, **kwargs)
 
-            init_hook_registry.register(wrapped_function, only_cli=only_cli)
+GLOBAL_INIT_HOOK_REGISTRY = None
 
-            setattr(function_or_actor, "__is_init_hook__", True)
 
-            return wrapped_function
-
-        return cast(Callable[[T], T], real_decorator)
+def get_default_init_hook_registry():
+    global GLOBAL_INIT_HOOK_REGISTRY
+    if GLOBAL_INIT_HOOK_REGISTRY is None:
+        GLOBAL_INIT_HOOK_REGISTRY = InitHookRegistry() # type: ignore
+    return GLOBAL_INIT_HOOK_REGISTRY

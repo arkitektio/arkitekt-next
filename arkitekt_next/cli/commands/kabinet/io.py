@@ -119,7 +119,7 @@ def generate_build(
     with open(config_file, "w") as file:
         yaml.safe_dump(
             json.loads(
-                config.json(exclude_none=True, exclude_unset=True, by_alias=True)
+                config.model_dump_json(exclude_none=True, exclude_unset=True, by_alias=True)
             ),
             file,
             sort_keys=True,

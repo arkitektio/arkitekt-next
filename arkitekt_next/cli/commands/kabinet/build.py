@@ -5,11 +5,13 @@ import os
 from rich.panel import Panel
 import subprocess
 import uuid
+
+from kabinet.api.schema import RequirementInput
 from .io import generate_build
 from click import Context
 from .types import Flavour, InspectionInput
 import yaml
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 import json
 from arkitekt_next.base_models import Requirement
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
@@ -93,7 +95,7 @@ def inspect_docker_container(build_id: str) -> InspectionInput:
         raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
 
 
-def inspect_templates(build_id: str, url: str) -> list[ImplementationInput]:
+def inspect_implementations(build_id: str, url: str) -> list[ImplementationInput]:
     try:
         # Run 'docker inspect' with the container ID or name
         process = subprocess.Popen(
@@ -116,7 +118,7 @@ def inspect_templates(build_id: str, url: str) -> list[ImplementationInput]:
             stderr=subprocess.PIPE,
         )
 
-        lines = []
+        lines: list[str] = []
         # Poll process for new output until finished
         while True:
             if process.poll() is not None:
@@ -129,9 +131,25 @@ def inspect_templates(build_id: str, url: str) -> list[ImplementationInput]:
 
         output = process.communicate()[0]
         exitCode = process.returncode
-
         result = "\n".join(lines)
 
+        
+        
+        if exitCode != 0:
+            
+            if "ModuleNotFoundError" in result:
+                raise click.ClickException(
+                    " It looks like you are missing a module in your container. Please make sure that you have all the dependencies installed in your container. The error is listed above."
+                )
+            
+            
+            
+            
+            raise click.ClickException(
+                "When running the command `arkitekt_next inspect implementations` we got an error. The error is listed above."
+            )
+
+        
         # Parse the JSON output
         correct_part = result.split("--START_TEMPLATES--")[1].split(
             "--END_TEMPLATES--"
@@ -158,7 +176,7 @@ def inspect_templates(build_id: str, url: str) -> list[ImplementationInput]:
         raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
 
 
-def inspect_requirements(build_id: str) -> Dict[str, Requirement]:
+def inspect_requirements(build_id: str) -> List[RequirementInput]:
     try:
         # Run 'docker inspect' with the container ID or name
         result = subprocess.run(
@@ -205,10 +223,10 @@ def inspect_requirements(build_id: str) -> Dict[str, Requirement]:
 
 def inspect_build(build_id: str, url: str) -> InspectionInput:
     size, size_root_fs = inspect_docker_container(build_id)
-    templates = inspect_templates(build_id, url)
+    implementations = inspect_implementations(build_id, url)
     requirements = inspect_requirements(build_id)
 
-    return InspectionInput(size=size, templates=templates, requirements=requirements)
+    return InspectionInput(size=size, implementations=tuple(implementations), requirements=tuple(requirements))
 
 
 def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavour]:
@@ -223,7 +241,7 @@ def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavou
             "We could not find the flavours folder. Please run `arkitekt_next port init` first to create a buildable flavour"
         )
 
-    flavours = {}
+    flavours: Dict[str, Flavour] = {}
 
     for dir_name in os.listdir(flavours_folder):
         dir = os.path.join(flavours_folder, dir_name)
@@ -283,7 +301,7 @@ def build(
     ctx: Context,
     flavour: str,
     no_inspect: bool,
-    tag: str = None,
+    tag: str | None = None,
     url: str = DEFAULT_ARKITEKT_URL,
 ) -> None:
     """Builds the arkitekt_next app to docker"""
@@ -303,7 +321,7 @@ def build(
 
     build_run = str(uuid.uuid4())
 
-    for key, flavour in flavours.items():
+    for key, inspected_flavour in flavours.items():
         md = Panel(
             "Building Flavour [bold]{}[/bold]".format(key),
             subtitle="This may take a while...",
@@ -311,7 +329,7 @@ def build(
         )
         console.print(md)
 
-        build_tag = build_flavour(key, flavour)
+        build_tag = build_flavour(key, inspected_flavour)
 
         if tag:
             subprocess.run(["docker", "tag", build_tag, tag], check=True)
@@ -320,7 +338,7 @@ def build(
         if not no_inspect:
             inspection = inspect_build(build_tag, url)
 
-        generate_build(build_run, build_tag, key, flavour, manifest, inspection)
+        generate_build(build_run, build_tag, key, inspected_flavour, manifest, inspection)
 
         md = Panel(
             "Built Flavour [bold]{}[/bold]".format(key),

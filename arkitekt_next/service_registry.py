@@ -3,7 +3,7 @@ from herre_next import Herre
 from fakts_next import Fakts
 from koil.composition.base import KoiledModel
 from .base_models import Manifest, Requirement
-from typing import Any, Callable, Dict, Optional, Protocol, Set, TypeVar, overload
+from typing import Any, Callable, Dict, Optional, Protocol, Set, TypeVar
 from typing import runtime_checkable
 from pydantic import BaseModel
 
@@ -13,14 +13,6 @@ Params = Dict[str, str]
 current_service_registry = contextvars.ContextVar(
     "current_service_registry", default=None
 )
-GLOBAL_SERVICE_REGISTRY = None
-
-
-def get_default_service_registry() -> "ServiceBuilderRegistry":
-    global GLOBAL_SERVICE_REGISTRY
-    if GLOBAL_SERVICE_REGISTRY is None:
-        GLOBAL_SERVICE_REGISTRY = ServiceBuilderRegistry()
-    return GLOBAL_SERVICE_REGISTRY
 
 
 class Registration(BaseModel):
@@ -107,7 +99,7 @@ basic_requirements = [
 
 
 class ServiceBuilderRegistry:
-    def __init__(self, import_services=True):
+    def __init__(self):
         self.service_builders: Dict[str, ArkitektService] = {}
         self.additional_requirements: Dict[str, Requirement] = {}
 
@@ -170,8 +162,6 @@ class ServiceBuilderRegistry:
         return sorted_requirements
 
 
-class SetupInfo:
-    services: Dict[str, object]
 
 
 T = TypeVar("T")
@@ -182,11 +172,48 @@ def require(
     service: str,
     description: str | None = None,
     service_registry: Optional[ServiceBuilderRegistry] = None,
-):
-    """Register a requirement with the service registry"""
+) -> Requirement:
+    """Register a requirement with the service registry
+    
+    Parameters
+    ----------
+    key : str
+        The key for the requirement. This should be unique across all
+        requirements.
+        
+    service : str
+        The service that you require. This should be a uinque fakts
+        service name. I.e `live.arkitekt.lok` or `live.arkitekt.lok:0.0.1`
+    
+    description : str | None
+        The description for the requirement. This should be a short
+        description of the requirement that gets displayed to the user.
+        
+    service_registry : ServiceBuilderRegistry | None
+        The service registry to register the requirement with. If
+        None, the default service registry will be used.
+        
+    Returns
+    -------
+    Requirement
+        The requirement that was registered. This can be used to
+        get the requirement later on.
+
+    """
     service_hook_registry = service_registry or get_default_service_registry()
 
     requirement = Requirement(key=key, service=service, description=description)
     service_hook_registry.register_requirement(requirement)
 
     return requirement
+
+
+
+GLOBAL_SERVICE_REGISTRY = None
+
+
+def get_default_service_registry() -> "ServiceBuilderRegistry":
+    global GLOBAL_SERVICE_REGISTRY
+    if GLOBAL_SERVICE_REGISTRY is None:
+        GLOBAL_SERVICE_REGISTRY = ServiceBuilderRegistry() # type: ignore
+    return GLOBAL_SERVICE_REGISTRY
