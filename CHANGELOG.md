@@ -1,12 +1,20 @@
 # CHANGELOG
 
 
+## v0.11.0 (2025-05-14)
+
+
 ## v0.10.3 (2025-05-13)
 
 ### Bug Fixes
 
 - Update dependencies to include rich-click and watchfiles
   ([`bf4a77d`](https://github.com/arkitektio/arkitekt-next/commit/bf4a77d99664ac59d4267ca89d927c7423ea5aec))
+
+### Features
+
+- Replace templates command with implementations and update dependencies
+  ([`5faa656`](https://github.com/arkitektio/arkitekt-next/commit/5faa656278fec3f36d8a57380775096bdfaac09e))
 
 
 ## v0.10.2 (2025-05-13)
