@@ -8,11 +8,11 @@ from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 import sys
 
 
-async def run_app(app):
-    rekuest = app.services.get("rekuest")
+async def run_app(app: App):
+    rekuest = app.rekuest
 
     async with app:
-        await rekuest.run()
+        await rekuest.arun()
 
 
 @click.command("prod")

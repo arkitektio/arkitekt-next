@@ -166,7 +166,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.11.0"
+version = "0.12.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -269,7 +269,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.4" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.8" },
+    { name = "rekuest-next", specifier = ">=0.8.1" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -1820,7 +1820,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "0.8.0"
+version = "0.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -1832,9 +1832,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/64/f9/9a8b0131788614338bab19a4350190d69478abc4f982e82b70439b1be2c0/rekuest_next-0.8.0.tar.gz", hash = "sha256:7fffe66dcf062cca1baeda78e9c952eaa2f3830c96f623fb7f48949aa7d20267", size = 101849 }
+sdist = { url = "https://files.pythonhosted.org/packages/21/a3/260fa89888b5b74f38210b11eb58141c743e2fe30310a230efe4a7834019/rekuest_next-0.8.1.tar.gz", hash = "sha256:75bc7e79a141c3b5c8a058d2302698a3b8e7650d8db8c12dafc2347f3f43d7ef", size = 101844 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/81/78/821446ba7939d31cbe2430ecf18f3d84576f9ab9ea6b44140c7d82902bf3/rekuest_next-0.8.0-py3-none-any.whl", hash = "sha256:d756f6364bcc08e9a2372383f7f142bfa29852563cbf9eea77851cab5e271d86", size = 137512 },
+    { url = "https://files.pythonhosted.org/packages/b8/57/9e54b468b89dac73c1e64087a9d00275de057fd31e7515e07c3f4815112a/rekuest_next-0.8.1-py3-none-any.whl", hash = "sha256:62988ed97c1bde3e80853370c5faf5d070c2ac0d687454c97ad2a5834d2bd6b5", size = 137497 },
 ]
 
 [[package]]
