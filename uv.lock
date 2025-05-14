@@ -166,7 +166,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.10.3"
+version = "0.11.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -256,7 +256,7 @@ requires-dist = [
     { name = "fakts-next", specifier = ">=1.2.2" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
-    { name = "herre-next", specifier = ">=1.2.0" },
+    { name = "herre-next", specifier = ">=1.3" },
     { name = "kabinet", specifier = ">=0.5" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.4.0" },
@@ -841,7 +841,7 @@ wheels = [
 
 [[package]]
 name = "herre-next"
-version = "1.2.0"
+version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -851,9 +851,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/99/0f/8b6dc781992bfeae1e83df564815c2b1ec69d01e459b02f36ee61b674221/herre_next-1.2.0.tar.gz", hash = "sha256:91359382cc3185b52729e223e57930fdb227d141794a2bebdbe1721f19c0a5fb", size = 20265 }
+sdist = { url = "https://files.pythonhosted.org/packages/a4/06/e7b5325f47dcababc3bc5cc365051d3940eb0a5893bb3418c6ecaa91fa35/herre_next-1.3.0.tar.gz", hash = "sha256:dbb9d9c3f029d9b059e6a9762ca29d3857328ecb152f8cefa36ea0e322a9fa2b", size = 20283 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/16/ac/c64c68ffb1e28561df507b9b5e198d90406961229c7cd6b4c1e34c5ac30d/herre_next-1.2.0-py3-none-any.whl", hash = "sha256:a8e6cb1ed970dda5d0fbdd8141f1ae880ab1612d83e95be195bc017a037fe718", size = 33468 },
+    { url = "https://files.pythonhosted.org/packages/33/94/aa0fac6ce0ab0c60db43fca25989f049b31861935c19ecdebbfd6c5b4b60/herre_next-1.3.0-py3-none-any.whl", hash = "sha256:531ed2becce80b23cd665194221309d2516d2f5e520f9633e90e092c6724e7d1", size = 33614 },
 ]
 
 [[package]]
