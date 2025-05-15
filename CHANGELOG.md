@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.12.2 (2025-05-15)
+
+### Bug Fixes
+
+- Remove LocalSignBlok and update dependencies in various bloks
+  ([`25d7fdf`](https://github.com/arkitektio/arkitekt-next/commit/25d7fdff06cc5290b932ed6a1641334c048d2939))
+
+
 ## v0.12.1 (2025-05-14)
 
 ### Bug Fixes
