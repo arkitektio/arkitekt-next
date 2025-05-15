@@ -166,7 +166,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.12.0"
+version = "0.12.1"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -264,8 +264,8 @@ requires-dist = [
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.2.0" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.2.0" },
     { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=0.2.0" },
-    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.3.1" },
-    { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.3.1" },
+    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.4" },
+    { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.4.0" },
     { name = "rath", specifier = ">=3.4" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
@@ -275,8 +275,8 @@ requires-dist = [
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
     { name = "semver", marker = "extra == 'all'", specifier = ">=3.0.1" },
-    { name = "turms", marker = "extra == 'all'", specifier = ">=0.8.2" },
-    { name = "turms", marker = "extra == 'cli'", specifier = ">=0.8.2" },
+    { name = "turms", marker = "extra == 'all'", specifier = ">=0.9" },
+    { name = "turms", marker = "extra == 'cli'", specifier = ">=0.9.0" },
     { name = "unlok-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "unlok-next", marker = "extra == 'unlok'", specifier = ">=0.2.0" },
     { name = "watchfiles", specifier = ">=1.0.5" },
@@ -1159,11 +1159,10 @@ wheels = [
 
 [[package]]
 name = "mikro-next"
-version = "0.3.1"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
-    { name = "dokker" },
     { name = "numpy", marker = "python_full_version >= '3.12'" },
     { name = "pandas" },
     { name = "rath" },
@@ -1172,9 +1171,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1f/e7/02fa9c3f6072a85465046b08f94d800adde157dee1aed8b307faadfd9e7d/mikro_next-0.3.1.tar.gz", hash = "sha256:f7304f58e5160e3b014fdbdd2b0d9fcf76c4376d2c2857b5594c9eca78eb8d7a", size = 51987 }
+sdist = { url = "https://files.pythonhosted.org/packages/a0/9d/0a86c817a6dbc8fc0b0bdca8d154649feb17c2ca9933a9e3431de2b3f3d6/mikro_next-0.4.0.tar.gz", hash = "sha256:9fdd06381dc4e2076a696f48431b3c7e8f3256ae4a0502115980656b85f33233", size = 52563 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f3/17/220a53786bd92a2596d9d5687a687978d33353c88e37115ebfeda395e9b7/mikro_next-0.3.1-py3-none-any.whl", hash = "sha256:8dba0a8475198876689485453d2e9c28ecf545fa649c210b43508855dfb0068e", size = 59307 },
+    { url = "https://files.pythonhosted.org/packages/90/0e/0ecf39665a9c84a26b5e064e84e218fbe47cae44a5a63d046a842da467fe/mikro_next-0.4.0-py3-none-any.whl", hash = "sha256:0951902ae7a87f901a7e482fa3d1c2d71f850e7625a2367570e01c65cfd8094d", size = 59859 },
 ]
 
 [[package]]
@@ -2021,7 +2020,7 @@ wheels = [
 
 [[package]]
 name = "turms"
-version = "0.8.7"
+version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "graphql-core" },
@@ -2033,9 +2032,9 @@ dependencies = [
     { name = "rich-click" },
     { name = "watchfiles" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/30/7b/95f1739bdd6c7611d64b1c80aadd4736c9a1670a5600002bb1421182b1ec/turms-0.8.7.tar.gz", hash = "sha256:7b68665007cbc3332265bd40c56f257dbc4a7dfd60c320fab4748ce57a04d9aa", size = 53865 }
+sdist = { url = "https://files.pythonhosted.org/packages/3d/00/b3459ee9055a604faea7398bbe226c9a90bfd1a69274c5635d92a5df859f/turms-0.9.0.tar.gz", hash = "sha256:1d107a27445403c97ec590bba4de1574cd018be2be6cfd96ea57630dc29f1b43", size = 53988 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/e8/4a79f7af036611269b777bbaff51dc834dbfc6f3ec595747310dbd45a74f/turms-0.8.7-py3-none-any.whl", hash = "sha256:ce01425fb93c3a09ef1f4cad69cf7d45048e7e60b8b2f5b42acd7c26d63398a7", size = 68507 },
+    { url = "https://files.pythonhosted.org/packages/6d/4e/f5673d38c88ee4db60c864a67ba36f35fefd4ab4fdf26eb65548c08fbe02/turms-0.9.0-py3-none-any.whl", hash = "sha256:3534687800d84db3ee35ad9d3208e8528a7d52fbd754244f96b02758178ee578", size = 68622 },
 ]
 
 [[package]]

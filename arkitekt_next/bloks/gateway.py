@@ -67,19 +67,12 @@ class CaddyBlok:
     def preflight(
         self,
         init: InitContext,
-        dns: DnsService,
         name: NameService,
-        certer: CerterService,
     ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
-        self.public_ips = dns.get_dns_result().ip_addresses
-        self.public_hosts = dns.get_dns_result().hostnames
         self.gateway_network = name.retrieve_name().replace("-", "_")
-
-        self.cert_mount = certer.retrieve_certs_mount()
-        self.depends_on = certer.retrieve_depends_on()
 
     def build(
         self,
@@ -95,7 +88,6 @@ class CaddyBlok:
             if port.tls:
                 caddyfile += f"""
 :{port.port} {{
-    tls /certs/caddy.crt /certs/caddy.key
     reverse_proxy {port.host}:{port.to}
 }}
                 """
@@ -112,7 +104,6 @@ class CaddyBlok:
 """
             caddyfile += (
                 """
-    tls /certs/caddy.crt /certs/caddy.key
     """
                 if protocol == "https" and self.cert_mount
                 else ""
@@ -173,8 +164,6 @@ class CaddyBlok:
         ]
 
         volumes = ["./configs/Caddyfile:/etc/caddy/Caddyfile"]
-        if self.cert_mount:
-            volumes.append(f"{self.cert_mount}:/certs")
 
         caddy_container = {
             "image": "caddy:latest",
@@ -184,7 +173,6 @@ class CaddyBlok:
             ]
             + exposed_ports_strings,
             "volumes": volumes,
-            "depends_on": caddy_depends_on,
             "networks": [self.gateway_network, "default"],
         }
 

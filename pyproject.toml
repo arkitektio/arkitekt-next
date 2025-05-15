@@ -22,11 +22,11 @@ dependencies = [
 
 [project.optional-dependencies]
 cli = [
-    "turms>=0.8.2",
+    "turms>=0.9.0",
 ]
 alpaka = ["alpaka>=0.2.0"]
 kraph = ["kraph>=0.2.0"]
-mikro = ["mikro-next>=0.3.1"]
+mikro = ["mikro-next>=0.4.0"]
 kabinet = ["kabinet>=0.4.0"]
 elektro = ["elektro>=0.5.0"]
 fluss = ["fluss-next>=0.2.0"]
@@ -36,11 +36,11 @@ unlok = ["unlok-next>=0.2.0"]
 all = [
     "rich-click>=1.6.1",
     "watchfiles>=0.18.1",
-    "turms>=0.8.2",
+    "turms>=0.9",
     "semver>=3.0.1",
     "reaktion-next>=0.2.0",
     "rekuest-next>=0.7",
-    "mikro-next>=0.3.1",
+    "mikro-next>=0.4",
     "kabinet>=0.2.0",
     "fluss-next>=0.2.0",
     "unlok-next>=0.2.0",

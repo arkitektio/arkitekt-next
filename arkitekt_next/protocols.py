@@ -16,6 +16,7 @@ from koil import unkoil
 from koil.composition import KoiledModel
 from arkitekt_next.base_models import Manifest
 from fakts_next import Fakts
+from herre_next import Herre
 
 
 if TYPE_CHECKING:

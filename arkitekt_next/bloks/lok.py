@@ -35,7 +35,7 @@ class UserParamType(click.ParamType):
             return value
         try:
             name, password = value.split(":")
-            return {"name": name, "password": password}
+            return {"username": name, "password": password}
         except ValueError:
             self.fail(
                 f"User '{value}' is not in the correct format. It should be 'name:password'.",
@@ -176,8 +176,6 @@ class LokBlok:
         admin: AdminService,
         secrets: SecretBlok,
         s3: S3Service,
-        dns: DnsService,
-        livekit: Optional[LivekitService] = None,
     ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
@@ -193,9 +191,6 @@ class LokBlok:
         self.redis_access = redis.register()
         self.admin_access = admin.retrieve()
         self.s3_access = s3.create_buckets(self.buckets)
-        if livekit:
-            self.local_access = livekit.retrieve_access()
-        self.dns_result = dns.get_dns_result()
         self.initialized = True
 
     def build(self, context: ExecutionContext):
@@ -206,7 +201,7 @@ class LokBlok:
 
         if self.postgress_access.dependency:
             depends_on.append(self.postgress_access.dependency)
-            
+
         if self.s3_access.dependency:
             depends_on.append(self.s3_access.dependency)
 
@@ -219,7 +214,6 @@ class LokBlok:
             "volumes": [
                 "/var/run/docker.sock:/var/run/docker.sock",
                 "./configs/lok.yaml:/workspace/config.yaml",
-                "./certs:/certs",
             ],
         }
 
@@ -236,10 +230,6 @@ class LokBlok:
         db_service["command"] = self.command
 
         trusted_origins = []
-
-        for i in self.dns_result.hostnames:
-            trusted_origins.append(f"http://{i}")
-            trusted_origins.append(f"https://{i}")
 
         configuration = YamlFile(
             **{
@@ -262,14 +252,8 @@ class LokBlok:
                 ],
                 "groups": [group for group in self.groups],
                 "deployment": {"name": self.deployment_name},
-                "livekit": (
-                    asdict(self.local_access)
-                    if self.local_access
-                    else {"api_key": "dev", "api_secret": "secret", "api_url": None}
-                ),
                 "s3": asdict(self.s3_access),
                 "token_expire_seconds": self.token_expiry_seconds,
-                "apps": [],
                 "force_script_name": "lok",
                 "csrf_trusted_origins": trusted_origins,
             }

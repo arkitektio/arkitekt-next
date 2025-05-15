@@ -63,12 +63,10 @@ class BaseArkitektService:
         redis: RedisService,
         s3: S3Service,
         config: ConfigService,
-        channel: ChannelService,
         mount: MountService,
         admin: AdminService,
         secret: SecretService,
-        gateway: Optional[GatewayService] = None,
-        dns: DnsService = None,
+        gateway: GatewayService,
         mount_repo: bool = False,
         host: str = "",
         image: str = "",
@@ -100,12 +98,7 @@ class BaseArkitektService:
 
         django_secret = secret.retrieve_secret()
 
-        dns_result = dns.get_dns_result()
-
         csrf_trusted_origins = []
-        for hostname in dns_result.hostnames:
-            csrf_trusted_origins.append(f"http://{hostname}")
-            csrf_trusted_origins.append(f"https://{hostname}")
 
         configuration = YamlFile(
             **{

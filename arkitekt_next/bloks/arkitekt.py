@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional
 from pydantic import BaseModel
 
 from arkitekt_next.bloks.kraph import KraphBlok
+from arkitekt_next.bloks.lok import LokBlok
 from arkitekt_next.bloks.tailscale import TailscaleBlok
 from blok import InitContext, Panel, Renderer, blok
 
@@ -26,21 +27,17 @@ class AdminCredentials(BaseModel):
 @blok(
     "live.arkitekt",
     dependencies=[
+        LokBlok.as_dependency(True, True),
         MikroBlok.as_dependency(True, True),
         KabinetBlok.as_dependency(True, True),
         RekuestBlok.as_dependency(True, True),
         FlussBlok.as_dependency(True, True),
         InternalDockerBlok.as_dependency(True, True),
-        LocalLiveKitBlok.as_dependency(True, True),
-        OrkestratorBlok.as_dependency(True, False),
-        KraphBlok.as_dependency(True, False),
-        TailscaleBlok.as_dependency(True, False),
-        OllamaBlok.as_dependency(True, False),
-        ElektroBlok.as_dependency(True, False),
+        KraphBlok.as_dependency(True, True),
+        ElektroBlok.as_dependency(True, True),
     ],
 )
 class ArkitektBlok:
-
     def entry(self, renderer: Renderer):
         renderer.render(
             Panel(
