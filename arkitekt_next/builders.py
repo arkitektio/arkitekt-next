@@ -100,7 +100,6 @@ def easy(
     service_registry = service_registry or get_default_service_registry()
     init_hook_registry = init_hook_registry or get_default_init_hook_registry()
 
-
     if identifier is None:
         identifier = __file__.split("/")[-1].replace(".py", "")
 
@@ -114,7 +113,6 @@ def easy(
         logo=logo,
         requirements=service_registry.get_requirements(),
     )
-
 
     if token:
         fakts_next = build_arkitekt_next_token_fakts_next(
@@ -140,7 +138,8 @@ def easy(
     herre_next = build_arkitekt_next_herre_next(fakts_next=fakts_next)
 
     params = {
-              "instance_id": instance_id,}
+        "instance_id": instance_id,
+    }
 
     create_arkitekt_next_folder(with_cache=True)
 
@@ -176,7 +175,6 @@ def interactive(
     token: Optional[str] = None,
     no_cache: bool = False,
     redeem_token: Optional[str] = None,
-    app_kind: str = "development",
     registry: Optional[ServiceBuilderRegistry] = None,
     sync_mode: bool = True,
 ) -> App:
@@ -193,7 +191,7 @@ def interactive(
         token=token,
         no_cache=no_cache,
         redeem_token=redeem_token,
-     
+        service_registry=registry,
     )
 
     if sync_mode:
@@ -202,7 +200,8 @@ def interactive(
         # to avoid having to use await for every call. This is the default
         # behaviour for the app, but can be overwritten by setting
         # app.koil.sync_in_async = False
-        app._koil.sync_in_async = True
+        if app.__koil:
+            app.__koil.sync_in_async = True
         app.enter()
 
     return app

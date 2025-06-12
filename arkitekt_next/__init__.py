@@ -38,8 +38,10 @@ try:
         aiterate_raw,
         find,
     )
+    from .inspect import inspect
 except ImportError as e:
     raise e
+    inspect = missing_install("rekuest_next", e)
     publish = missing_install("rekuest_next", e)
     apublish = missing_install("rekuest_next", e)
     structure = missing_install("rekuest_next", e)
@@ -86,6 +88,7 @@ __all__ = [
     "breakpoint",
     "abreakpoint",
     "aiterate",
+    "inspect",
     "iterate",
     "aiterate_raw",
     "call",

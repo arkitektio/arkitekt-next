@@ -1,4 +1,3 @@
-from typing import Any, Protocol
 """
 This module contains the types for the apps
 depending on the builder used.
@@ -10,8 +9,9 @@ an import exception to the app.
 
 """
 
+from typing import Any, Protocol, cast
 import logging
-from typing import Any, Dict, TYPE_CHECKING
+from typing import Dict, TYPE_CHECKING
 from koil import unkoil
 from koil.composition import KoiledModel
 from arkitekt_next.base_models import Manifest
@@ -26,15 +26,9 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-
-
-    
-
-
-
-
 class App(Protocol):
     """An app that is built with the easy builder"""
+
     fakts: Fakts
     herre: Herre
     manifest: Manifest
@@ -45,7 +39,7 @@ class App(Protocol):
         """Get the rekuest service"""
         if "rekuest" not in self.services:
             raise ValueError("Rekuest service is not available")
-        return self.services["rekuest"]
+        return cast("RekuestNext", self.services["rekuest"])
 
     def run(self):
         return unkoil(self.rekuest.arun)
@@ -80,5 +74,4 @@ class Builder(Protocol):
     This protocol defines the methods that a builder class must implement.
     """
 
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
-        return super().__call__(*args, **kwds)
+    def __call__(self, *args: Any, **kwds: Any) -> Any: ...
