@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.13.0 (2025-06-12)
+
+### Features
+
+- Add inspect function and integrate rekuest_next handling
+  ([`7319887`](https://github.com/arkitektio/arkitekt-next/commit/73198874cb4b5f5cd70cb981c2c02fb68f0f0cb9))
+
+
 ## v0.12.2 (2025-05-15)
 
 ### Bug Fixes
