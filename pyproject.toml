@@ -12,7 +12,7 @@ dependencies = [
     "koil>=2.0.4",
     "rath>=3.4",
     "click>=8.2.0",
-    "rekuest-next>=0.11",
+    "rekuest-next>=0.11.1",
     "kabinet>=0.5",
     "semver>=3.0.4",
     "rich-click>=1.8.8",
@@ -31,7 +31,7 @@ elektro = ["elektro>=0.5.0"]
 fluss = ["fluss-next>=0.2.0"]
 reaktion = ["reaktion-next>=0.2.0"]
 lovekit = ["lovekit>=0.2.0"]
-unlok = ["unlok-next>=0.2.0"]
+unlok = ["unlok-next>=1.1.1"]
 all = [
     "rich-click>=1.6.1",
     "watchfiles>=0.18.1",
@@ -42,7 +42,7 @@ all = [
     "mikro-next>=0.4",
     "kabinet>=0.2.0",
     "fluss-next>=0.2.0",
-    "unlok-next>=0.2.0",
+    "unlok-next>=1.1.1",
 ]
 extended = [
     "kraph>=0.2.0",
