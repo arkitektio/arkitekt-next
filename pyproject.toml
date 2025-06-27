@@ -25,7 +25,7 @@ cli = [
 ]
 alpaka = ["alpaka>=0.2.0"]
 kraph = ["kraph>=0.2.0"]
-mikro = ["mikro-next>=0.4.0"]
+mikro = ["mikro-next>=0.5.0"]
 kabinet = ["kabinet>=0.4.0"]
 elektro = ["elektro>=0.5.0"]
 fluss = ["fluss-next>=0.2.0"]
