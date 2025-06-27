@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.15.0 (2025-06-27)
+
+
 ## v0.14.1 (2025-06-27)
+
+### Features
+
+- A deployable stack
+  ([`2489553`](https://github.com/arkitektio/arkitekt-next/commit/2489553bb2d7b50e343a546a2e02aacbbf784a49))
 
 
 ## v0.14.0 (2025-06-27)
