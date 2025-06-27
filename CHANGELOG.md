@@ -1,12 +1,18 @@
 # CHANGELOG
 
 
+## v0.14.0 (2025-06-27)
+
+
 ## v0.13.0 (2025-06-12)
 
 ### Features
 
 - Add inspect function and integrate rekuest_next handling
   ([`7319887`](https://github.com/arkitektio/arkitekt-next/commit/73198874cb4b5f5cd70cb981c2c02fb68f0f0cb9))
+
+- Herre is replaced by unified fakts
+  ([`dc75345`](https://github.com/arkitektio/arkitekt-next/commit/dc753455b0881c6103e31a3d97c320604f5b6877))
 
 
 ## v0.12.2 (2025-05-15)
