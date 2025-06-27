@@ -12,10 +12,8 @@ an import exception to the app.
 import logging
 from typing import Any, Dict, TYPE_CHECKING
 from koil import unkoil
-from arkitekt_next.base_models import Manifest
 from koil.composition import Composition
 from fakts_next import Fakts
-from herre_next import Herre
 
 
 if TYPE_CHECKING:
@@ -29,8 +27,6 @@ class App(Composition):
     """An app that is built with the easy builder"""
 
     fakts: Fakts
-    herre: Herre
-    manifest: Manifest
     services: Dict[str, Any]
 
     @property
@@ -54,6 +50,14 @@ class App(Composition):
         """Register a service"""
 
         self.rekuest.register(*args, **kwargs)
+
+    def register_startup(self, *args, **kwargs):
+        """Register a startup service"""
+        self.rekuest.register_startup(*args, **kwargs)
+
+    def register_background(self, *args, **kwargs):
+        """Register a background service"""
+        self.rekuest.register_background(*args, **kwargs)
 
     async def __aenter__(self):
         await super().__aenter__()

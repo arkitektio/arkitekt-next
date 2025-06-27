@@ -2,7 +2,7 @@ from blok import blok, InitContext, Option
 from arkitekt_next.bloks.services.admin import AdminService, AdminCredentials
 
 
-@blok(AdminService, description="sdmin credentials for the application")
+@blok(AdminService, description="Admin credentials for the application")
 class AdminBlok:
     def __init__(self) -> None:
         self.password = "admin"

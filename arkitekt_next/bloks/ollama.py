@@ -2,7 +2,7 @@ from typing import Dict, Any
 import secrets
 
 from arkitekt_next.bloks.services.gateway import GatewayService
-from arkitekt_next.bloks.services.ollama import OllamaService, OllamaCredentials
+from arkitekt_next.bloks.services.ollama import OllamaService, OllamaAccess
 from blok import blok, InitContext, ExecutionContext, Option
 from blok.tree import YamlFile, Repo
 
@@ -16,14 +16,21 @@ class OllamaBlok:
         self.skip = False
         self.gpu = bool
 
-    def preflight(self, init: InitContext, gateway: GatewayService):
+    def get_access(self) -> OllamaAccess:
+        """Get the credentials for the Ollama service."""
+        return OllamaAccess(
+            api_key="",
+            api_secret="",
+            api_url=f"http://{self.host}:{self.port}",
+            dependency=self.host,
+        )
+
+    def preflight(self, init: InitContext):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
         if self.skip:
             return
-
-        gateway.expose_port_to(self.port, self.host, 11434, False)
 
         self.initialized = True
 
@@ -84,6 +91,4 @@ class OllamaBlok:
         ]
 
     def __str__(self) -> str:
-        return (
-            f"Ollama(host={self.host}, command={self.command}, image={self.image})"
-        )
+        return f"Ollama(host={self.host}, command={self.command}, image={self.image})"

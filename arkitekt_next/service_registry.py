@@ -1,8 +1,7 @@
 import contextvars
-from herre_next import Herre
 from fakts_next import Fakts
 from koil.composition.base import KoiledModel
-from .base_models import Manifest, Requirement
+from fakts_next.models import Manifest, Requirement
 from typing import Any, Callable, Dict, Optional, Protocol, Set, TypeVar
 from typing import runtime_checkable
 from pydantic import BaseModel
@@ -18,7 +17,7 @@ current_service_registry = contextvars.ContextVar(
 class Registration(BaseModel):
     name: str
     requirement: Requirement
-    builder: Callable[[Herre, Fakts, Params], object]
+    builder: Callable[[Fakts, Params], object]
     schema_loader: Callable[[str], object]
 
 
@@ -30,9 +29,7 @@ class ArkitektService(Protocol):
         """
         ...
 
-    def build_service(
-        self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
-    ) -> Optional[KoiledModel]:
+    def build_service(self, fakts: Fakts, params: Params) -> Optional[KoiledModel]:
         """Build the service. This is used to build the service and return
         the service instance. The service instance should be a KoiledModel
         that is used to interact with the service.
@@ -70,9 +67,7 @@ class BaseArkitektService:
     def get_service_name(self) -> str:
         raise NotImplementedError("get_service_name not implemented")
 
-    def build_service(
-        self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
-    ) -> Optional[KoiledModel]:
+    def build_service(self, fakts: Fakts, params: Params) -> Optional[KoiledModel]:
         raise NotImplementedError("build_service not implemented")
 
     def get_requirements(self) -> list[Requirement]:
@@ -89,13 +84,7 @@ class BaseArkitektService:
         return None
 
 
-basic_requirements = [
-    Requirement(
-        key="lok",
-        service="live.arkitekt.lok",
-        description="An instance of ArkitektNext Lok to authenticate the user",
-    )
-]
+basic_requirements = []
 
 
 class ServiceBuilderRegistry:
@@ -122,11 +111,9 @@ class ServiceBuilderRegistry:
     def get(self, name: str) -> Optional[ArkitektService]:
         return self.service_builders.get(name)
 
-    def build_service_map(
-        self, fakts: Fakts, herre: Herre, params: Params, manifest: Manifest
-    ):
+    def build_service_map(self, fakts: Fakts, params: Params):
         potentially_needed_services = {
-            name: service.build_service(fakts, herre, params, manifest)
+            name: service.build_service(fakts, params)
             for name, service in self.service_builders.items()
         }
 
@@ -162,8 +149,6 @@ class ServiceBuilderRegistry:
         return sorted_requirements
 
 
-
-
 T = TypeVar("T")
 
 
@@ -174,25 +159,25 @@ def require(
     service_registry: Optional[ServiceBuilderRegistry] = None,
 ) -> Requirement:
     """Register a requirement with the service registry
-    
+
     Parameters
     ----------
     key : str
         The key for the requirement. This should be unique across all
         requirements.
-        
+
     service : str
         The service that you require. This should be a uinque fakts
         service name. I.e `live.arkitekt.lok` or `live.arkitekt.lok:0.0.1`
-    
+
     description : str | None
         The description for the requirement. This should be a short
         description of the requirement that gets displayed to the user.
-        
+
     service_registry : ServiceBuilderRegistry | None
         The service registry to register the requirement with. If
         None, the default service registry will be used.
-        
+
     Returns
     -------
     Requirement
@@ -208,12 +193,11 @@ def require(
     return requirement
 
 
-
 GLOBAL_SERVICE_REGISTRY = None
 
 
 def get_default_service_registry() -> "ServiceBuilderRegistry":
     global GLOBAL_SERVICE_REGISTRY
     if GLOBAL_SERVICE_REGISTRY is None:
-        GLOBAL_SERVICE_REGISTRY = ServiceBuilderRegistry() # type: ignore
+        GLOBAL_SERVICE_REGISTRY = ServiceBuilderRegistry()  # type: ignore
     return GLOBAL_SERVICE_REGISTRY

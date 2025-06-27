@@ -1,7 +1,7 @@
 from rich.console import Group
 from rich.tree import Tree
 from rich.panel import Panel
-from arkitekt_next.apps import App
+from arkitekt_next.app import App
 from typing import MutableSet, Tuple, Any, Dict
 import os
 from .texts import LOGO, WELCOME_MESSAGE
@@ -59,7 +59,7 @@ def construct_app_group(app: App) -> Group:
     Group
         A rich panel group
     """
-    panel_header = f"Running App \n\n{app.manifest.identifier}:{app.manifest.version}\n"
+    panel_header = f"Running App \n\n{app.fakts.manifest.identifier}:{app.fakts.manifest.version}\n"
 
     actor_tree = Tree("Registered Definitions", style="white not bold")
     service_tree = Tree("Depends on services", style="white not bold")

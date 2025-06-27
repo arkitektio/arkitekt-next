@@ -1,5 +1,5 @@
 from .builders import easy, interactive
-from .apps.protocols import App
+from .app.app import App
 from fakts_next.helpers import afakt, fakt
 from .init_registry import init, InitHookRegistry, get_default_init_hook_registry
 from .service_registry import (

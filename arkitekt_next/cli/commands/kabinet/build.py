@@ -13,7 +13,6 @@ from .types import Flavour, InspectionInput
 import yaml
 from typing import Dict, List, Optional
 import json
-from arkitekt_next.base_models import Requirement
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from arkitekt_next.utils import create_arkitekt_next_folder
 from rekuest_next.api.schema import ImplementationInput

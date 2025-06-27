@@ -68,9 +68,13 @@ class CaddyBlok:
         self,
         init: InitContext,
         name: NameService,
+        certs: CerterService,
     ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
+
+        self.cert_mount = certs.retrieve_certs_mount()
+        self.depends_on = certs.retrieve_depends_on()
 
         self.gateway_network = name.retrieve_name().replace("-", "_")
 
@@ -164,6 +168,8 @@ class CaddyBlok:
         ]
 
         volumes = ["./configs/Caddyfile:/etc/caddy/Caddyfile"]
+        if self.cert_mount:
+            volumes.append(f"{self.cert_mount}:/certs")
 
         caddy_container = {
             "image": "caddy:latest",

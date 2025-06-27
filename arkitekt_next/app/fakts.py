@@ -11,10 +11,10 @@ from fakts_next.grants.remote.demanders.device_code import (
 from fakts_next.grants.remote.claimers.post import ClaimEndpointClaimer
 from fakts_next.grants.remote.demanders.redeem import RedeemDemander
 from fakts_next.cache.file import FileCache
-from arkitekt_next.base_models import Manifest
+from fakts_next.models import Manifest
 
 
-def build_arkitekt_next_fakts_next(
+def build_device_code_fakts(
     manifest: Manifest,
     url: Optional[str] = None,
     no_cache: bool = False,
@@ -37,6 +37,7 @@ def build_arkitekt_next_fakts_next(
             discovery=WellKnownDiscovery(url=url, auto_protocols=["https", "http"]),
             claimer=ClaimEndpointClaimer(),
         ),
+        manifest=manifest,
         cache=FileCache(
             cache_file=f".arkitekt_next/cache/{identifier}-{version}_fakts_cache.json",
             hash=manifest.hash() + url,
@@ -44,11 +45,12 @@ def build_arkitekt_next_fakts_next(
     )
 
 
-def build_arkitekt_next_redeem_fakts_next(manifest: Manifest, redeem_token: str, url: str) -> Fakts:
+def build_redeem_fakts(manifest: Manifest, redeem_token: str, url: str) -> Fakts:
     identifier = manifest.identifier
     version = manifest.version
 
     return Fakts(
+        manifest=manifest,
         grant=RemoteGrant(
             demander=RedeemDemander(token=redeem_token, manifest=manifest),
             discovery=WellKnownDiscovery(url=url, auto_protocols=["https", "http"]),
@@ -61,7 +63,7 @@ def build_arkitekt_next_redeem_fakts_next(manifest: Manifest, redeem_token: str,
     )
 
 
-def build_arkitekt_next_token_fakts_next(
+def build_token_fakts(
     manifest: Manifest,
     token: str,
     url: str,
@@ -70,6 +72,7 @@ def build_arkitekt_next_token_fakts_next(
     version = manifest.version
 
     return Fakts(
+        manifest=manifest,
         grant=RemoteGrant(
             demander=StaticDemander(token=token),  # type: ignore
             discovery=WellKnownDiscovery(url=url, auto_protocols=["https", "http"]),
@@ -80,4 +83,3 @@ def build_arkitekt_next_token_fakts_next(
             hash=manifest.hash() + url,
         ),
     )
-

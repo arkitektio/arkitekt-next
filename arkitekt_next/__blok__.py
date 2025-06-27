@@ -10,6 +10,8 @@ from arkitekt_next.bloks.postgres import PostgresBlok
 from arkitekt_next.bloks.minio import MinioBlok
 from arkitekt_next.bloks.kabinet import KabinetBlok
 from arkitekt_next.bloks.lok import LokBlok
+from arkitekt_next.bloks.alpaka import AlpakaBlok
+from arkitekt_next.bloks.lovekit import LovekitBlok
 from arkitekt_next.bloks.config import ConfigBlok
 from arkitekt_next.bloks.mount import MountBlok
 from arkitekt_next.bloks.internal_docker import InternalDockerBlok
@@ -33,6 +35,8 @@ def get_bloks() -> list[Blok]:
         FlussBlok(),
         RedisBlok(),
         CaddyBlok(),
+        AlpakaBlok(),
+        LovekitBlok(),
         LocalLiveKitBlok(),
         PostgresBlok(),
         MinioBlok(),

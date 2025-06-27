@@ -17,7 +17,7 @@ from typing import MutableSet, Tuple, Any, Set
 from arkitekt_next.cli.ui import construct_changes_group, construct_app_group
 from arkitekt_next.cli.commands.run.utils import import_builder
 from arkitekt_next.cli.types import Manifest
-from arkitekt_next.apps.protocols import App
+from arkitekt_next.app.app import App
 import rich_click as click
 from arkitekt_next.cli.options import (
     with_fakts_next_url,
@@ -168,8 +168,6 @@ def is_entrypoint_change(
     return False
 
 
-
-
 def callback(console: Console, future: asyncio.Task[None]):
     if future.cancelled():
         return
@@ -186,22 +184,14 @@ def callback(console: Console, future: asyncio.Task[None]):
                 raise has_exception
             except Exception:
                 console.print_exception()
-                panel = Panel(
-                    "Error running App", style="bold red", border_style="red"
-                )
+                panel = Panel("Error running App", style="bold red", border_style="red")
                 console.print(panel)
-
-
-
-
-
-
 
 
 async def run_dev(
     console: Console,
     manifest: Manifest,
-    version: str | None =None,
+    version: str | None = None,
     builder: str = "arkitekt_next.builders.easy",
     deep: bool = False,
     **builder_kwargs,
@@ -242,10 +232,8 @@ async def run_dev(
         console.print(panel)
         module = None
 
-    
-    
-    current_run: asyncio.Future[None] | None = None    
-    # This is the main task that is running the app    
+    current_run: asyncio.Future[None] | None = None
+    # This is the main task that is running the app
 
     try:
         app: App = builder_func(
@@ -266,8 +254,6 @@ async def run_dev(
             "Error building initial App", style="bold red", border_style="red"
         )
         console.print(panel)
-        
-        
 
     async for changes in awatch(
         ".",
@@ -276,7 +262,7 @@ async def run_dev(
         step=500,
     ):
         if deep:
-            # 
+            #
             to_be_reloaded = check_deeps(changes)
             if not to_be_reloaded:
                 continue
@@ -315,8 +301,6 @@ async def run_dev(
                     if deep:
                         reload_modules(to_be_reloaded)
                     else:
-         
-         
                         reload(module)
         except Exception:
             console.print_exception()

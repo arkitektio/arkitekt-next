@@ -1,4 +1,4 @@
-from arkitekt_next.apps.protocols import App, Fakts, Herre, Manifest
+from arkitekt_next.app.app import App
 from typing import List, Callable, Dict, Any
 
 

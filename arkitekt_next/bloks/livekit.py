@@ -21,9 +21,9 @@ class LocalLiveKitBlok:
         self.api_key = "devkey"
         self.api_secret = "secret"
         self.skip = False
+        self.api_port = 7880
 
     def preflight(self, init: InitContext, gateway: GatewayService):
-
         for key, value in init.kwargs.items():
             setattr(self, key, value)
 
@@ -37,12 +37,13 @@ class LocalLiveKitBlok:
 
         self.initialized = True
 
-    def retrieve_access(self):
+    def get_access(self):
         return LivekitCredentials(
             **{
                 "api_key": self.api_key,
                 "api_secret": self.api_secret,
-                "api_url": f"http://{self.host}:7880",
+                "host": self.host,
+                "port": self.api_port,
             }
         )
 

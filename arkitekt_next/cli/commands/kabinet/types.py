@@ -1,11 +1,8 @@
-from importlib.metadata import version
 from pydantic import BaseModel, Field, field_validator
 import datetime
-from typing import List, Optional, Union, Literal, Dict
+from typing import List, Optional
 from enum import Enum
-import semver
-import uuid
-from arkitekt_next.base_models import Requirement
+
 from string import Formatter
 import os
 
@@ -31,6 +28,7 @@ class SelectorType(str, Enum):
 
 
 class Flavour(BaseModel):
+    """ Flavour is a pydantic model that represents a flavour of an app image"""
     selectors: List[SelectorInput]
     description: str = Field(default="")
     dockerfile: str = Field(default="Dockerfile")

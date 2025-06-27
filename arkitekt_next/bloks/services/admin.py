@@ -13,10 +13,9 @@ class AdminCredentials:
 
 @service("live.arkitekt.admin")
 class AdminService(Protocol):
+    def retrieve(self) -> AdminCredentials:
+        """Retrieve the admin credentials.
 
-    def retrieve(self):
-        return AdminCredentials(
-            password=self.password,
-            username=self.username,
-            email=self.email,
-        )
+        Admin credentials should be used to access the admin interface of the application.
+
+        """

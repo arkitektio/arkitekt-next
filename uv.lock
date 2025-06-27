@@ -166,13 +166,12 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.12.1"
+version = "0.12.2"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
     { name = "dokker" },
     { name = "fakts-next" },
-    { name = "herre-next" },
     { name = "kabinet" },
     { name = "koil" },
     { name = "rath" },
@@ -253,10 +252,9 @@ requires-dist = [
     { name = "click", specifier = ">=8.2.0" },
     { name = "dokker", specifier = ">=2.1.2" },
     { name = "elektro", marker = "extra == 'elektro'", specifier = ">=0.5.0" },
-    { name = "fakts-next", specifier = ">=1.2.2" },
+    { name = "fakts-next", specifier = ">=2" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
-    { name = "herre-next", specifier = ">=1.3" },
     { name = "kabinet", specifier = ">=0.5" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.4.0" },
@@ -672,18 +670,19 @@ wheels = [
 
 [[package]]
 name = "fakts-next"
-version = "1.2.2"
+version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "certifi" },
     { name = "koil" },
+    { name = "oauthlib" },
     { name = "pydantic" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/35/5c/82758a91480a98961a4746c2e11f603d9669b456520d4183b0a4d508b63d/fakts_next-1.2.2.tar.gz", hash = "sha256:07a8bf9167828ed308eb8a9ecb48ab6137d5b300c6526e1bab2fe8b76572e181", size = 28488 }
+sdist = { url = "https://files.pythonhosted.org/packages/60/23/fa15a113796e653190b809982b19fe9525da6d976740ba22c963e0c15ca3/fakts_next-2.0.0.tar.gz", hash = "sha256:239ad9db7b1576632bd55f2ea5a8890d5efc90aa8e78367cf92792cb5ddd3f39", size = 29639 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/18/54/eddb64c716b7f617e5111da91a880601bd4b94db236489e0b14901a5b3f1/fakts_next-1.2.2-py3-none-any.whl", hash = "sha256:974f7e5416ec0976b21a311794ea20b133a85a8bd48f742355d19ab834ef150f", size = 51370 },
+    { url = "https://files.pythonhosted.org/packages/39/cd/d6a053449270b606225ca152c2513c1010a52159a7cd6b04a16a174550cb/fakts_next-2.0.0-py3-none-any.whl", hash = "sha256:7437c8a9a1a6565eed9af942cdbfb503ac67932dc2cdad39a94d4cbe497bd19f", size = 50439 },
 ]
 
 [[package]]
@@ -837,23 +836,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/01/ee/02a2c011bdab74c6fb3c75474d40b3052059d95df7e73351460c8588d963/h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1", size = 101250 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86", size = 37515 },
-]
-
-[[package]]
-name = "herre-next"
-version = "1.3.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "aiohttp" },
-    { name = "certifi" },
-    { name = "koil" },
-    { name = "oauthlib" },
-    { name = "pydantic" },
-    { name = "pyyaml" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a4/06/e7b5325f47dcababc3bc5cc365051d3940eb0a5893bb3418c6ecaa91fa35/herre_next-1.3.0.tar.gz", hash = "sha256:dbb9d9c3f029d9b059e6a9762ca29d3857328ecb152f8cefa36ea0e322a9fa2b", size = 20283 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/33/94/aa0fac6ce0ab0c60db43fca25989f049b31861935c19ecdebbfd6c5b4b60/herre_next-1.3.0-py3-none-any.whl", hash = "sha256:531ed2becce80b23cd665194221309d2516d2f5e520f9633e90e092c6724e7d1", size = 33614 },
 ]
 
 [[package]]
@@ -1335,11 +1317,11 @@ wheels = [
 
 [[package]]
 name = "oauthlib"
-version = "3.2.2"
+version = "3.3.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6d/fa/fbf4001037904031639e6bfbfc02badfc7e12f137a8afa254df6c4c8a670/oauthlib-3.2.2.tar.gz", hash = "sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918", size = 177352 }
+sdist = { url = "https://files.pythonhosted.org/packages/0b/5f/19930f824ffeb0ad4372da4812c50edbd1434f678c90c2733e1188edfc63/oauthlib-3.3.1.tar.gz", hash = "sha256:0f0f8aa759826a193cf66c12ea1af1637f87b9b4622d46e866952bb022e538c9", size = 185918 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7e/80/cab10959dc1faead58dc8384a781dfbf93cb4d33d50988f7a69f1b7c9bbe/oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca", size = 151688 },
+    { url = "https://files.pythonhosted.org/packages/be/9c/92789c596b8df838baa98fa71844d84283302f7604ed565dafe5a6b5041a/oauthlib-3.3.1-py3-none-any.whl", hash = "sha256:88119c938d2b8fb88561af5f6ee0eec8cc8d552b7bb1f712743136eb7523b7a1", size = 160065 },
 ]
 
 [[package]]

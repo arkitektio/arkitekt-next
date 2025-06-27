@@ -10,12 +10,13 @@ from blok import InitContext, Panel, Renderer, blok
 from .fluss import FlussBlok
 from .internal_docker import InternalDockerBlok
 from .kabinet import KabinetBlok
-from .livekit import LocalLiveKitBlok
 from .mikro import MikroBlok
 from .orkestrator import OrkestratorBlok
 from .rekuest import RekuestBlok
 from .ollama import OllamaBlok
 from .elektro import ElektroBlok
+from .alpaka import AlpakaBlok
+from .lovekit import LovekitBlok
 
 
 class AdminCredentials(BaseModel):
@@ -34,7 +35,9 @@ class AdminCredentials(BaseModel):
         FlussBlok.as_dependency(True, True),
         InternalDockerBlok.as_dependency(True, True),
         KraphBlok.as_dependency(True, True),
+        AlpakaBlok.as_dependency(True, True),
         ElektroBlok.as_dependency(True, True),
+        LovekitBlok.as_dependency(True, True),
     ],
 )
 class ArkitektBlok:

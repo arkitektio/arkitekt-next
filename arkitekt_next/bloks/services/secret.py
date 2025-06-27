@@ -13,6 +13,4 @@ class AdminCredentials:
 
 @service("live.arkitekt.secrets")
 class SecretService(Protocol):
-
-    def retrieve_secret() -> str:
-        pass
+    def retrieve_secret(self) -> str: ...

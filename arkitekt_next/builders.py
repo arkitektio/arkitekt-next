@@ -2,15 +2,14 @@ from typing import List, Optional
 import logging
 import os
 
-from arkitekt_next.apps.service.fakts_next import (
-    build_arkitekt_next_fakts_next,
-    build_arkitekt_next_redeem_fakts_next,
-    build_arkitekt_next_token_fakts_next,
+from arkitekt_next.app.fakts import (
+    build_device_code_fakts,
+    build_redeem_fakts,
+    build_token_fakts,
 )
-from arkitekt_next.apps.service.herre import build_arkitekt_next_herre_next
 from .utils import create_arkitekt_next_folder
-from .base_models import Manifest
-from .apps.protocols import App
+from fakts_next.models import Manifest
+from .app import App
 from .service_registry import ServiceBuilderRegistry, get_default_service_registry
 from .init_registry import InitHookRegistry, get_default_init_hook_registry
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
@@ -115,27 +114,25 @@ def easy(
     )
 
     if token:
-        fakts_next = build_arkitekt_next_token_fakts_next(
+        fakts_next = build_token_fakts(
             manifest=manifest,
             token=token,
             url=url,
         )
 
     elif redeem_token:
-        fakts_next = build_arkitekt_next_redeem_fakts_next(
+        fakts_next = build_redeem_fakts(
             manifest=manifest,
             redeem_token=redeem_token,
             url=url,
         )
     else:
-        fakts_next = build_arkitekt_next_fakts_next(
+        fakts_next = build_device_code_fakts(
             manifest=manifest,
             url=url,
             no_cache=no_cache,
             headless=headless,
         )
-
-    herre_next = build_arkitekt_next_herre_next(fakts_next=fakts_next)
 
     params = {
         "instance_id": instance_id,
@@ -152,11 +149,7 @@ def easy(
 
     app = App(
         fakts=fakts_next,
-        herre=herre_next,
-        manifest=manifest,
-        services=service_registry.build_service_map(
-            fakts=fakts_next, herre=herre_next, params=params, manifest=manifest
-        ),
+        services=service_registry.build_service_map(fakts=fakts_next, params=params),
     )
 
     init_hook_registry.run_all(app)

@@ -5,7 +5,7 @@ from typing import List, Optional, Union, Literal, Dict
 from enum import Enum
 import semver
 import uuid
-from arkitekt_next.base_models import Requirement
+from fakts_next.models import Requirement
 from string import Formatter
 import os
 
@@ -39,4 +39,3 @@ class Manifest(BaseModel):
             "logo": self.logo,
             "scopes": self.scopes,
         }
-

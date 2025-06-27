@@ -1,7 +1,7 @@
 import contextvars
 from functools import wraps
 from typing import Callable, Dict, Optional, TypeVar, overload
-from arkitekt_next.apps.protocols import App
+from .app import App
 
 Params = Dict[str, str]
 
@@ -11,25 +11,23 @@ current_init_hook_registry = contextvars.ContextVar(
 )
 
 
-
 InitHook = Callable[[App], None]
 
 
 class InitHookRegistry:
-    """ A registry for init hooks. This is used to register init hooks that
+    """A registry for init hooks. This is used to register init hooks that
     are called when the app is initialized. The init hooks are called in
     the order they are registered
-    
-    The purpose of init hooks is to allow specific initialization 
-    code to be run when the app is initialized. This is useful if you 
+
+    The purpose of init hooks is to allow specific initialization
+    code to be run when the app is initialized. This is useful if you
     plan to add some custom configuration or setup code that needs to be
     run before the app is getting conneted to the server.
-    
+
     """
-    
-    
-    
-    def __init__(self):
+
+    def __init__(self) -> None:
+        """Initialize the InitHookRegistry."""
         self.init_hooks: Dict[str, InitHook] = {}
         self.cli_only_hooks: Dict[str, InitHook] = {}
 
@@ -38,18 +36,18 @@ class InitHookRegistry:
         function: InitHook,
         name: Optional[str] = None,
         only_cli: bool = False,
-    ):
-        """ Register a function as an init hook. This function will be called
-        
-        
+    ) -> None:
+        """Register a function as an init hook. This function will be called
+
+
         when the app is initialized. The init hooks are called in the order
-        
-        
+
+
         """
-        
+
         if name is None:
             name = function.__name__
-            
+
         if only_cli:
             if name not in self.cli_only_hooks:
                 self.cli_only_hooks[name] = function
@@ -61,10 +59,11 @@ class InitHookRegistry:
         else:
             raise ValueError(f"Init Hook {name} already registered")
 
-    def run_all(self, app: App, is_cli: bool = False):
+    def run_all(self, app: App, is_cli: bool = False) -> None:
+        """ Run all registered init hooks."""
         for hook in self.init_hooks.values():
             hook(app)
-            
+
         if is_cli:
             for hook in self.cli_only_hooks.values():
                 hook(app)
@@ -78,7 +77,10 @@ def init(func: T) -> T: ...
 
 
 @overload
-def init(*, only_cli: bool = False, init_hook_registry: InitHookRegistry | None = None) -> Callable[[T], T]: ...
+def init(
+    *, only_cli: bool = False, init_hook_registry: InitHookRegistry | None = None
+) -> Callable[[T], T]: ...
+
 
 def init(
     func: T | None = None,
@@ -96,7 +98,7 @@ def init(
 
     def decorator(inner: T) -> T:
         @wraps(inner)
-        def wrapped(app: App):
+        def wrapped(app: App) -> None:
             return inner(app)
 
         init_hook_registry.register(wrapped, only_cli=only_cli)
@@ -106,12 +108,15 @@ def init(
     return decorator
 
 
-
 GLOBAL_INIT_HOOK_REGISTRY = None
 
 
-def get_default_init_hook_registry():
+def get_default_init_hook_registry()-> InitHookRegistry:
+    """Get the default init hook registry. This is used to register init hooks
+    that are called when the app is initialized. If no registry is set, a new
+    registry is created and returned.
+    """
     global GLOBAL_INIT_HOOK_REGISTRY
     if GLOBAL_INIT_HOOK_REGISTRY is None:
-        GLOBAL_INIT_HOOK_REGISTRY = InitHookRegistry() # type: ignore
+        GLOBAL_INIT_HOOK_REGISTRY = InitHookRegistry()  # type: ignore
     return GLOBAL_INIT_HOOK_REGISTRY

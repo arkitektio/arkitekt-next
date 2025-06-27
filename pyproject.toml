@@ -7,8 +7,7 @@ requires-python = ">=3.11,<4"
 readme = "README.md"
 license = "MIT"
 dependencies = [
-    "herre-next>=1.3",
-    "fakts-next>=1.2.2",
+    "fakts-next>=2",
     "dokker>=2.1.2",
     "koil>=2.0.4",
     "rath>=3.4",

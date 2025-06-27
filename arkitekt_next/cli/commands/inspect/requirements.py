@@ -1,7 +1,7 @@
 from arkitekt_next import get_default_service_registry
 import rich_click as click
 from importlib import import_module
-from arkitekt_next.apps.protocols import App
+from arkitekt_next.app.app import App
 from arkitekt_next.cli.commands.run.utils import import_builder
 from arkitekt_next.cli.vars import get_console, get_manifest
 from arkitekt_next.cli.options import with_builder
