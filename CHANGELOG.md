@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.14.1 (2025-06-27)
+
+
 ## v0.14.0 (2025-06-27)
+
+### Bug Fixes
+
+- Udpated rekuest req
+  ([`87cdfe0`](https://github.com/arkitektio/arkitekt-next/commit/87cdfe0d69654f2af573e85626bc59fefd06dfd3))
 
 
 ## v0.13.0 (2025-06-12)
