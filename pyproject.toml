@@ -25,7 +25,7 @@ cli = [
 ]
 alpaka = ["alpaka>=0.2.0"]
 kraph = ["kraph>=0.2.0"]
-mikro = ["mikro-next>=0.5.0"]
+mikro = ["mikro-next>=0.6.0"]
 kabinet = ["kabinet>=0.4.0"]
 elektro = ["elektro>=0.5.0"]
 fluss = ["fluss-next>=0.2.0"]
@@ -39,7 +39,7 @@ all = [
     "semver>=3.0.1",
     "reaktion-next>=0.2.0",
     "rekuest-next>=0.7",
-    "mikro-next>=0.4",
+    "mikro-next>=0.6,
     "kabinet>=0.2.0",
     "fluss-next>=0.2.0",
     "unlok-next>=1.1.1",

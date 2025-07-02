@@ -15,7 +15,7 @@ from blok.tree import YamlFile, Repo
 )
 class InternalDockerBlok:
     def __init__(self) -> None:
-        self.host = "internal_docker"
+        self.host = "deployer"
 
         self.image = "jhnnsrs/deployer:nightly"
         self.instance_id = "INTERNAL_DOCKER"
@@ -32,9 +32,6 @@ class InternalDockerBlok:
 
         deps = init.dependencies
 
-        if self.skip:
-            return
-
         self._socket = socket.register_socket(self.host)
         self.gateway_host = gateway.get_internal_host()
         self.gateway_port = gateway.get_http_port()
@@ -48,8 +45,6 @@ class InternalDockerBlok:
         self.initialized = True
 
     def build(self, context: ExecutionContext):
-        if self.skip:
-            return
         db_service = {
             "image": self.image,
             "command": self.command,

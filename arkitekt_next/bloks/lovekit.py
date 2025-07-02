@@ -64,7 +64,10 @@ class LovekitBlok:
 
         path_name = self.host
 
-        gateway.expose(path_name, 80, self.host)
+        gateway_path = gateway.expose_service(path_name, 80, self.host)
+        lok.register_service_on_subpath(
+            self.get_blok_meta().service_identifier, gateway_path, "ht"
+        )
 
         postgress_access = db.register_db(self.host)
         redis_access = redis.register()

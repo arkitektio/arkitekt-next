@@ -51,10 +51,6 @@ class LocalLiveKitBlok:
         if self.skip:
             return
         db_service = {
-            "labels": [
-                "fakts.service=io.livekit.livekit",
-                "fakts.builder=livekitio.livekit",
-            ],
             "image": self.image,
             "command": self.command,
             "ports": [

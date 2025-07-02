@@ -38,10 +38,6 @@ class OllamaBlok:
         if self.skip:
             return
         db_service = {
-            "labels": [
-                "fakts.service=io.ollama.ollama",
-                "fakts.builder=ollama.ollama",
-            ],
             "image": self.image,
             "environment": {
                 "OLLAMA_KEEP_ALIVE": "24h",

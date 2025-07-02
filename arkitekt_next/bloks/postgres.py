@@ -61,7 +61,6 @@ class PostgresBlok(BaseModel):
                 "POSTGRES_PASSWORD": self.password,
                 "POSTGRES_MULTIPLE_DATABASES": "",
             },
-            "labels": ["fakts.service=live.arkitekt.postgres"],
         }
 
         if self.build_repo or self.dev:
@@ -73,7 +72,6 @@ class PostgresBlok(BaseModel):
             self.build_image["image"] = self.image
 
     def build(self, context: ExecutionContext):
-
         self.build_image["environment"]["POSTGRES_MULTIPLE_DATABASES"] = ",".join(
             self.registered_dbs.keys()
         )

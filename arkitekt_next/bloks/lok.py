@@ -139,6 +139,13 @@ class LokBlok:
             "read": "A generic read access",
             "write": "A generic write access",
         }
+        self.email_service: str = "smtp"
+        self.email_host: str = "NOT_SET"
+        self.email_port: int = 587
+        self.email_user: str = "NOT_SET"
+        self.email_password: str = "NOT_SET"
+        self.email_from: str = "NOT_SET"
+
         self.buckets = ["media"]
         self.key = None
         self.deployment_name = "default"
@@ -146,6 +153,31 @@ class LokBlok:
         self.preformed_redeem_tokens = [secrets.token_hex(16) for i in range(80)]
         self.registered_tokens = {}
         self.local_access = None
+        self.registered_instances = [
+            {
+                "identifier": "local-lok",
+                "service": "live.arkitekt.lok",
+                "aliases": [
+                    {
+                        "layer": "public",
+                        "kind": "relative",
+                        "path": "lok",
+                        "challenge": "ht",
+                    }
+                ],
+            },
+            {
+                "identifier": "local-datalayer",
+                "service": "live.arkitekt.s3",
+                "aliases": [
+                    {
+                        "layer": "public",
+                        "kind": "relative",
+                        "challenge": "minio/health/live",
+                    }
+                ],
+            },
+        ]
 
     def retrieve_credentials(self) -> LokCredentials:
         return LokCredentials(
@@ -167,6 +199,21 @@ class LokBlok:
     def register_scopes(self, scopes_dict: Dict[str, str]) -> LokCredentials:
         self.scopes = self.scopes | scopes_dict
 
+    def register_service_on_subpath(self, service_name: str, subpath: str, htpath: str):
+        registered_instance = {
+            "identifier": f"local-{service_name}",
+            "service": service_name,
+            "aliases": [
+                {
+                    "layer": "public",
+                    "kind": "relative",
+                    "path": subpath,
+                    "challenge": htpath,
+                }
+            ],
+        }
+        self.registered_instances.append(registered_instance)
+
     def preflight(
         self,
         init: InitContext,
@@ -183,7 +230,11 @@ class LokBlok:
         assert self.public_key, "Public key is required"
         assert self.private_key, "Private key is required"
 
-        gateway.expose("lok", 80, self.host, strip_prefix=False)
+        self.exposed_path = gateway.expose_service(
+            "lok", 80, self.host, strip_prefix=False
+        )
+        self.exposed_services = {"live.arkitekt.lok": {}}
+
         gateway.expose_mapped(".well-known", 80, self.host, "lok")
 
         self.secret_blok = secrets
@@ -206,13 +257,8 @@ class LokBlok:
             depends_on.append(self.s3_access.dependency)
 
         db_service = {
-            "labels": [
-                "fakts.service=live.arkitekt.lok",
-                "fakts.builder=arkitekt.lok",
-            ],
             "depends_on": depends_on,
             "volumes": [
-                "/var/run/docker.sock:/var/run/docker.sock",
                 "./configs/lok.yaml:/workspace/config.yaml",
             ],
         }
@@ -255,7 +301,22 @@ class LokBlok:
                 "s3": asdict(self.s3_access),
                 "token_expire_seconds": self.token_expiry_seconds,
                 "force_script_name": "lok",
+                "layers": [
+                    {
+                        "identifier": "public",
+                        "kind": "public",
+                    }
+                ],
+                "instances": self.registered_instances,
                 "csrf_trusted_origins": trusted_origins,
+                "email": {
+                    "service": self.email_service,
+                    "host": self.email_host,
+                    "port": self.email_port,
+                    "user": self.email_user,
+                    "password": self.email_password,
+                    "from": self.email_from,
+                },
             }
         )
 

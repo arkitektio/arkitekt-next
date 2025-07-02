@@ -66,9 +66,12 @@ class MinioBlok:
         for bucket in buckets:
             bucket_name = self.name_service.retrieve_name()
             bucket_map[bucket] = bucket_name
-            self.gateway_service.expose(bucket_name, 9000, self.host)
+            self.gateway_service.expose_service(bucket_name, 9000, self.host)
 
         self.buckets.extend(bucket_map.values())
+
+        # expose the health check endpoints
+        self.gateway_service.expose_service("minio/health/live", 9000, self.host)
 
         creds = S3Credentials(
             name=self.name_service.retrieve_name(),
@@ -126,7 +129,6 @@ class MinioBlok:
             },
             "image": self.minio_image,
             "volumes": ["./data:/data"],
-            "labels": ["fakts.service=live.arkitekt.s3", "fakts.builder=arkitekt.s3"],
         }
 
         context.file_tree.set_nested("data", {})

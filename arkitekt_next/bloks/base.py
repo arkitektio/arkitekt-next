@@ -83,17 +83,20 @@ class BaseArkitektService:
 
         path_name = self.host
 
-        if gateway:
-            print("Registering gateway access")
-            gateway_access = gateway.expose(path_name, 80, self.host)
-
         postgress_access = db.register_db(self.host)
         redis_access = redis.register()
         lok_access = lok.retrieve_credentials()
         admin_access = admin.retrieve()
         minio_access = s3.create_buckets(self.buckets)
-        lok_labels = lok.retrieve_labels(
-            self.get_blok_meta().service_identifier, self.get_builder()
+
+        self.service_identifier = self.get_blok_meta().service_identifier
+
+        gateway_path = gateway.expose_service(
+            path_name, 80, self.host, strip_prefix=False
+        )
+
+        lok_labels = lok.register_service_on_subpath(
+            self.service_identifier, gateway_path, "ht"
         )
 
         django_secret = secret.retrieve_secret()
@@ -135,7 +138,6 @@ class BaseArkitektService:
             depends_on.append(minio_access.dependency)
 
         service = {
-            "labels": lok_labels,
             "volumes": [f"{config_mount}:/workspace/config.yaml"],
             "depends_on": depends_on,
         }

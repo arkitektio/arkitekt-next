@@ -42,9 +42,7 @@ class CaddyBlok:
         self.exposed_to_hosts = {}
         self.http_expose_default = None
         self.exposed_ports = {}
-        self.with_certer = True
-        self.with_tailscale = True
-        self.certer_image = "jhnnsrs/certer:next"
+        self.with_certer = False
         self.http_port = 80
         self.https_port = 443
         self.public_ips = DEFAULT_PUBLIC_URLS
@@ -68,13 +66,9 @@ class CaddyBlok:
         self,
         init: InitContext,
         name: NameService,
-        certs: CerterService,
     ):
         for key, value in init.kwargs.items():
             setattr(self, key, value)
-
-        self.cert_mount = certs.retrieve_certs_mount()
-        self.depends_on = certs.retrieve_depends_on()
 
         self.gateway_network = name.retrieve_name().replace("-", "_")
 
@@ -102,7 +96,7 @@ class CaddyBlok:
 }}
                 """
 
-        for protocol in ["http", "https"]:
+        for protocol in ["http"]:
             caddyfile += f"""
 {protocol}:// {{
 """
@@ -168,14 +162,11 @@ class CaddyBlok:
         ]
 
         volumes = ["./configs/Caddyfile:/etc/caddy/Caddyfile"]
-        if self.cert_mount:
-            volumes.append(f"{self.cert_mount}:/certs")
 
         caddy_container = {
             "image": "caddy:latest",
             "ports": [
                 f"{self.http_port}:80",
-                f"{self.https_port}:443",
             ]
             + exposed_ports_strings,
             "volumes": volumes,
@@ -190,10 +181,13 @@ class CaddyBlok:
             {"driver": "bridge", "name": self.gateway_network},
         )
 
-    def expose(self, path_name: str, port: int, host: str, strip_prefix: bool = False):
+    def expose_service(
+        self, path_name: str, port: int, host: str, strip_prefix: bool = False
+    ):
         self.exposed_hosts[path_name] = ExposedHost(
             host=host, port=port, stip_prefix=strip_prefix
         )
+        return path_name
 
     def expose_mapped(self, path_name: str, port: int, host: str, to: str):
         self.exposed_to_hosts[path_name] = ExpostedToHost(host=host, port=port, to=to)

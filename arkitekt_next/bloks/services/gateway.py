@@ -8,9 +8,19 @@ from blok import blok, InitContext, service
 
 @service("live.arkitekt.gateway")
 class GatewayService(Protocol):
-    def expose(
+    def expose_service(
         self, path_name: str, port: int, host: str, strip_prefix: bool = True
-    ): ...
+    ) -> str:
+        """
+        Expose a service on the gateway.
+
+        :param path_name: The name of the path to expose.
+        :param port: The port to expose the service on.
+        :param host: The host to expose the service on.
+        :param strip_prefix: Whether to strip the prefix from the path.
+        :return: The name of the exposed service.
+        """
+        ...
 
     def retrieve_gateway_network(self): ...
 
