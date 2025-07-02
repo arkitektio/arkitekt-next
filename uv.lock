@@ -262,8 +262,8 @@ requires-dist = [
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.2.0" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.2.0" },
     { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=0.2.0" },
-    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.4" },
-    { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.5.0" },
+    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.6" },
+    { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.6.0" },
     { name = "rath", specifier = ">=3.4" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
@@ -1141,7 +1141,7 @@ wheels = [
 
 [[package]]
 name = "mikro-next"
-version = "0.5.0"
+version = "0.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -1153,9 +1153,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/27/8c/71ed3d216b08b0591686ea03f3dd4ac68f11b5e07b433093bac5ea855382/mikro_next-0.5.0.tar.gz", hash = "sha256:70506ddceb79bf3f62cbb363fb0a18a351b4954ad21c0212852df6d6f3b5630e", size = 52368 }
+sdist = { url = "https://files.pythonhosted.org/packages/0b/94/f8f7fa5e3e2294df7296f30f56f825833df733d50f551dcb38674803df37/mikro_next-0.6.0.tar.gz", hash = "sha256:41856c441633cfd805717df67f950f4841e113155f93036ae1d27d2ac06d17b7", size = 52589 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/5a/b3015ec224d9fa191d3bf94582d31a8b4af48e5b5560b87c48589879b5f1/mikro_next-0.5.0-py3-none-any.whl", hash = "sha256:396a0617fdaf2ebfd64de8e93923c796e09a738c3709503c92f5b6cfd52490cf", size = 59194 },
+    { url = "https://files.pythonhosted.org/packages/90/9f/b17a4b240e8aeb9439feda788167d1275f6486b7dcffc1b96fb5ffccb03c/mikro_next-0.6.0-py3-none-any.whl", hash = "sha256:54bd87aef50ecbaa97414fb2c301bf22fa9a5452e5b9c4b20febb713315c8df5", size = 59439 },
 ]
 
 [[package]]
