@@ -1,7 +1,25 @@
 # CHANGELOG
 
 
+## v0.16.0 (2025-07-02)
+
+### Bug Fixes
+
+- Update mikro-next version to 0.6.0 and correct dependency specifiers
+  ([`e8ee3c0`](https://github.com/arkitektio/arkitekt-next/commit/e8ee3c0850f2efc55b51b7524e5a3a6e873b1c4e))
+
+### Features
+
+- Bridge bloks to new version, update mikro
+  ([`0313ad6`](https://github.com/arkitektio/arkitekt-next/commit/0313ad655005d3f65db0597b753486b825ac2a04))
+
+
 ## v0.15.0 (2025-06-27)
+
+### Bug Fixes
+
+- Bump mikro to have the latest version
+  ([`2d3a00e`](https://github.com/arkitektio/arkitekt-next/commit/2d3a00ee3206e9e19b4df62db69240eb7680d751))
 
 
 ## v0.14.1 (2025-06-27)
