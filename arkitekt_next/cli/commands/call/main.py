@@ -1,20 +1,27 @@
+""" Calling functions in your arkitekt_next app"""
+
 from click import Context
 import rich_click as click
 
 
-import rich_click as click
 from .remote import remote
 
 
 @click.group()
 @click.pass_context
 def call(ctx: Context) -> None:
-    """Inspects your arkitekt_next app
-
-    Inspects various parts of your arkitekt_next app. This is useful for debugging
-    and development. It also represents methods that are called by the arkitekt_next
-    server when you run your app in production mode.
-
+    """Call functions in your arkitekt_next app.
+    
+    This command allows you to call functions in your app 
+    either locally or remotely.
+    
+    Locally, you can call functions that are defined in your app
+    without needing to use rekuest or fakts. (No Server for assignment needed)
+    
+    Remotely, you can call functions that are defined in your app
+    using rekuest or fakts. This goes through a rekuest server to
+    remote call the function.
+    
     """
 
 

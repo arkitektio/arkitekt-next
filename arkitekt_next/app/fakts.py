@@ -20,6 +20,15 @@ def build_device_code_fakts(
     no_cache: bool = False,
     headless: bool = False,
 ) -> Fakts:
+    """ Builds a Fakts instance for device code authentication.
+    
+    This is used when the user wants to authenticate an application
+    using a device code. The user will be prompted to open a browser
+    and enter a code to authenticate the application.
+    
+    
+    
+    """
     identifier = manifest.identifier
     version = manifest.version
     if url is None:
@@ -46,6 +55,15 @@ def build_device_code_fakts(
 
 
 def build_redeem_fakts(manifest: Manifest, redeem_token: str, url: str) -> Fakts:
+    """ Builds a Fakts instance for redeeming a token.
+    
+    A redeem token is used to register an application with the
+    fakts server, and to claim the configuration for the application.
+    
+    Instead of using a device code, the user can redeem an application
+    without user interaction.
+    
+    """
     identifier = manifest.identifier
     version = manifest.version
 
@@ -67,7 +85,15 @@ def build_token_fakts(
     manifest: Manifest,
     token: str,
     url: str,
-):
+) -> Fakts:
+    """ Builds a Fakts instance for token-based authentication.
+    
+    This is used when an appllication was previously authenticated
+    and the user has a (claim) token to use for authentication.
+    
+    E.g. when deploying an application through the kabinet deployer
+    
+    """
     identifier = manifest.identifier
     version = manifest.version
 

@@ -65,6 +65,7 @@ dev-dependencies = [
     "rich-click>=1.8",
     "mikro-next>=0.3.1",
     "python-semantic-release>=9.21.1",
+    "qtpy>=2.4.3",
 ]
 
 [tool.hatch.build.targets.sdist]

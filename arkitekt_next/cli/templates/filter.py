@@ -1,9 +1,9 @@
 from arkitekt_next import register
-from mikro.api.schema import RepresentationFragment, from_xarray
+from mikro_next.api.schema import Image, from_array_like, PartialDerivedViewInput
 
 
 @register
-def max_intensity_projection(image: RepresentationFragment) -> RepresentationFragment:
+def max_intensity_projection(image: Image) -> Image:
     """Z-Project the Maximum Intensity
 
     This function projects the maximum intensity of the input image
@@ -11,16 +11,16 @@ def max_intensity_projection(image: RepresentationFragment) -> RepresentationFra
 
     Parameters
     ----------
-    image : RepresentationFragment
+    image : Image
         The input image
 
     Returns
     -------
-    RepresentationFragment
+    Image
         The projected image
 
     """
-    image = image.data.max(dim="z")
-    return from_xarray(
-        image, name="Max Intensity Projection" + image.name, origins=[image]
+    image_data = image.data.max(dim="z")
+    return from_array_like(
+        image_data, name="Max Intensity Projection" + image.name, derived_views=[PartialDerivedViewInput(originImage=image)]
     )

@@ -1,4 +1,4 @@
-
+""" Calls a function in a local app, without needing to use rekuest or fakts."""
 from click import Context
 import rich_click as click
 from arkitekt_next.cli.options import *
