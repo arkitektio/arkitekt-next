@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.17.0 (2025-07-08)
+
+### Features
+
+- Remove the blok builds, as now deployment happens through arkitekt-server
+  ([`0dbccd1`](https://github.com/arkitektio/arkitekt-next/commit/0dbccd1d20f9744f28d9e26da0378421b7966ef0))
+
+
 ## v0.16.0 (2025-07-02)
 
 ### Bug Fixes
