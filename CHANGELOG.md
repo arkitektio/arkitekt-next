@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.18.0 (2025-07-20)
+
+### Features
+
+- And integration tests :)
+  ([`1a3780d`](https://github.com/arkitektio/arkitekt-next/commit/1a3780d9f0a8522f211aa6c5bd8fd0f1481af442))
+
+
 ## v0.17.0 (2025-07-08)
 
 ### Features
