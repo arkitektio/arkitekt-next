@@ -9,6 +9,7 @@ from arkitekt_next.app.fakts import (
 )
 from .utils import create_arkitekt_next_folder
 from fakts_next.models import Manifest
+from fakts_next.grants.remote.demanders.device_code import DeviceCodeHook
 from .app import App
 from .service_registry import ServiceBuilderRegistry, get_default_service_registry
 from .init_registry import InitHookRegistry, get_default_init_hook_registry
@@ -29,6 +30,7 @@ def easy(
     service_registry: Optional[ServiceBuilderRegistry] = None,
     init_hook_registry: Optional[InitHookRegistry] = None,
     instance_id: str = "main",
+    device_code_hook: DeviceCodeHook | None = None,
 ) -> App:
     """Creates a next app
 
@@ -132,6 +134,7 @@ def easy(
             url=url,
             no_cache=no_cache,
             headless=headless,
+            device_code_hook=device_code_hook,
         )
 
     params = {

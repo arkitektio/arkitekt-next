@@ -7,6 +7,9 @@ from fakts_next.grants.remote.demanders.static import StaticDemander
 from fakts_next.grants.remote.demanders.device_code import (
     ClientKind,
     DeviceCodeDemander,
+    DeviceCodeHook,
+    display_in_terminal,
+    
 )
 from fakts_next.grants.remote.claimers.post import ClaimEndpointClaimer
 from fakts_next.grants.remote.demanders.redeem import RedeemDemander
@@ -19,6 +22,7 @@ def build_device_code_fakts(
     url: Optional[str] = None,
     no_cache: bool = False,
     headless: bool = False,
+    device_code_hook: Optional[DeviceCodeHook] = None,
 ) -> Fakts:
     """ Builds a Fakts instance for device code authentication.
     
@@ -38,6 +42,7 @@ def build_device_code_fakts(
         manifest=manifest,
         open_browser=not headless,
         requested_client_kind=ClientKind.DEVELOPMENT,
+        device_code_hook=device_code_hook if device_code_hook else display_in_terminal,
     )
 
     return Fakts(
