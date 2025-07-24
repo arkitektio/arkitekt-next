@@ -1,9 +1,15 @@
 # CHANGELOG
 
 
+## v0.20.0 (2025-07-24)
+
+
 ## v0.19.0 (2025-07-24)
 
 ### Features
+
+- More unit tests
+  ([`5954e6c`](https://github.com/arkitektio/arkitekt-next/commit/5954e6c7b30e0f9a5f2b5ee111d31f317136b345))
 
 - With updates
   ([`5842537`](https://github.com/arkitektio/arkitekt-next/commit/5842537296433d725e8da2c5e6b65f4d50186be6))
