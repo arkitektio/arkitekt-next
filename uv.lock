@@ -120,16 +120,17 @@ wheels = [
 
 [[package]]
 name = "alpaka"
-version = "0.2.0"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "koil" },
-    { name = "ollama" },
+    { name = "rath" },
+    { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5b/04/e54c4b7e68f1590c4c107ff91bbec407d0f9183ec665a5c7293e1124d275/alpaka-0.2.0.tar.gz", hash = "sha256:f87e9b40a69f0f274aeee1049c7cacb1f9a90768557ed8068304560772742277", size = 11036 }
+sdist = { url = "https://files.pythonhosted.org/packages/47/94/a8f42e41aac63ed99511ff016539a8ea5d5d9bd67959fdf74946a05aebf1/alpaka-0.4.0.tar.gz", hash = "sha256:39e79575e94b0101e9f6a28dd14c371f44bf93eced04c083123ae0ae843767b2", size = 13284 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8c/4c/b898df6a19ddc71471dc8e20a90cadcfdc9c0d786ad930418851129d2d39/alpaka-0.2.0-py3-none-any.whl", hash = "sha256:5d12a1f0cda9411f09a9affd73f758871855eea11455e77e2dec66f1d3e35c2b", size = 9093 },
+    { url = "https://files.pythonhosted.org/packages/d6/aa/66663fbc85f9eddf05f69a28af89a7bc0fc5cd438110bcdccb75e7a489e4/alpaka-0.4.0-py3-none-any.whl", hash = "sha256:bea768b8f8c90de48d1707be4f6f5d4f343e1bfca27e3ce24709cb160e9a64ca", size = 14816 },
 ]
 
 [[package]]
@@ -166,7 +167,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.17.0"
+version = "0.18.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -178,6 +179,7 @@ dependencies = [
     { name = "rekuest-next" },
     { name = "rich-click" },
     { name = "semver" },
+    { name = "turms" },
     { name = "watchfiles" },
 ]
 
@@ -234,9 +236,14 @@ unlok = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "alpaka" },
     { name = "arkitekt-server" },
     { name = "autoflake" },
     { name = "dokker" },
+    { name = "fluss-next" },
+    { name = "kabinet" },
+    { name = "kraph" },
+    { name = "lovekit" },
     { name = "mikro-next" },
     { name = "numpy" },
     { name = "pytest" },
@@ -245,7 +252,10 @@ dev = [
     { name = "pytest-cov" },
     { name = "python-semantic-release" },
     { name = "qtpy" },
+    { name = "reaktion-next" },
+    { name = "rekuest-next" },
     { name = "rich-click" },
+    { name = "unlok-next" },
 ]
 
 [package.metadata]
@@ -254,12 +264,12 @@ requires-dist = [
     { name = "alpaka", marker = "extra == 'extended'", specifier = ">=0.2.0" },
     { name = "blok", marker = "extra == 'blok'", specifier = ">=0.1.0" },
     { name = "click", specifier = ">=8.2.0" },
-    { name = "dokker", specifier = ">=2.1.2" },
+    { name = "dokker", specifier = ">=2.3.0" },
     { name = "elektro", marker = "extra == 'elektro'", specifier = ">=0.5.0" },
-    { name = "fakts-next", specifier = ">=2.1" },
+    { name = "fakts-next", specifier = ">=2.1.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
-    { name = "kabinet", specifier = ">=0.6" },
+    { name = "kabinet", specifier = ">=0.6.0" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.6.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.6.0" },
     { name = "koil", specifier = ">=2.0.4" },
@@ -268,15 +278,16 @@ requires-dist = [
     { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=0.2.0" },
     { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.7.2" },
     { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.7.2" },
-    { name = "rath", specifier = ">=3.4" },
+    { name = "rath", specifier = ">=3.6.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.13" },
+    { name = "rekuest-next", specifier = ">=0.13.1" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
     { name = "semver", marker = "extra == 'all'", specifier = ">=3.0.1" },
+    { name = "turms", specifier = ">=0.9.0" },
     { name = "turms", marker = "extra == 'all'", specifier = ">=0.9" },
     { name = "turms", marker = "extra == 'cli'", specifier = ">=0.9.0" },
     { name = "unlok-next", marker = "extra == 'all'", specifier = ">=1.1.1" },
@@ -287,10 +298,15 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "alpaka", specifier = ">=0.4.0" },
     { name = "arkitekt-server", specifier = ">=1.3" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
-    { name = "mikro-next", specifier = ">=0.7.2" },
+    { name = "fluss-next", specifier = ">=0.7.0" },
+    { name = "kabinet", specifier = ">=0.6.0" },
+    { name = "kraph", specifier = ">=0.2.0" },
+    { name = "lovekit", specifier = ">=1.1.0" },
+    { name = "mikro-next", specifier = ">=0.8.1" },
     { name = "numpy", specifier = ">=1,<2" },
     { name = "pytest", specifier = ">=8.3.0,<9" },
     { name = "pytest-aiohttp", specifier = ">=1.0.4,<2" },
@@ -298,7 +314,10 @@ dev = [
     { name = "pytest-cov", specifier = ">=4.0.0,<5" },
     { name = "python-semantic-release", specifier = ">=9.21.1" },
     { name = "qtpy", specifier = ">=2.4.3" },
+    { name = "reaktion-next", specifier = ">=0.3.1" },
+    { name = "rekuest-next", specifier = ">=0.13.1" },
     { name = "rich-click", specifier = ">=1.8" },
+    { name = "unlok-next", specifier = ">=1.1.1" },
 ]
 
 [[package]]
@@ -716,7 +735,7 @@ wheels = [
 
 [[package]]
 name = "dokker"
-version = "2.2.0"
+version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -724,9 +743,9 @@ dependencies = [
     { name = "koil" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/36/fc/f12579a6cb2b75f8ba7dd5c7b3f7c384c79607b1ec2ad1feeec209d52b14/dokker-2.2.0.tar.gz", hash = "sha256:1cd37dbe7f8bdfe80e9d6f740e787d271a3dd8d7fba3326582152d0cebbf897f", size = 16419 }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/cc/396acef6a85fa9d19f3193ceed890fce08e4ecb4880c5675395fcce560b6/dokker-2.3.0.tar.gz", hash = "sha256:a08d427c9db5a5266ffa91a8f6ebcf39fbc534ea971a1da0d4f0e160cc7a2103", size = 16448 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/85/2c03f6cd3ff59ed3cb214bc2442af246157eccfa0c7604dd79ac5c77a6db/dokker-2.2.0-py3-none-any.whl", hash = "sha256:538e2576361d3b2162c334e19fd3977a0814f95479c09f710309b5f3aa9bd651", size = 21698 },
+    { url = "https://files.pythonhosted.org/packages/55/56/5678ae614a78b17bd736adbba4373b27cc3eb7d9fb7d98d070361f4c1d16/dokker-2.3.0-py3-none-any.whl", hash = "sha256:307ef20ebaf5a3014f32b503e629957b112b1466888bdf8ae05a39dcb523cc00", size = 21725 },
 ]
 
 [[package]]
@@ -813,15 +832,15 @@ wheels = [
 
 [[package]]
 name = "fluss-next"
-version = "0.6.0"
+version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/72/44/2b75141462b07e1f6915c55ee8bf1c7ab03a85eb06b5418555270ad618be/fluss_next-0.6.0.tar.gz", hash = "sha256:ab65b53b320550dc627c4b7df4eeb47aa00140205f2f3c78bda8746b54dbd7c0", size = 21744 }
+sdist = { url = "https://files.pythonhosted.org/packages/5c/a6/fc55bd7dc0cd59e8e2628f92e475a316e5662f64b1c329d5f8b4d061df58/fluss_next-0.7.0.tar.gz", hash = "sha256:143c20e2d9c8e507fcf8e8891541f0bb84dc9037d5ae3a2f64a6be0c4dbe1463", size = 21322 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/fa/5b87e9865a89f1e975408c38c057b8f16c3d8cd244632e79bc8f62c3fadf/fluss_next-0.6.0-py3-none-any.whl", hash = "sha256:b1f475c7dff1297881fb8e0693b8d164f95edda4f41bcd8ab22bfdd38892d4d7", size = 24578 },
+    { url = "https://files.pythonhosted.org/packages/8c/56/65c213323a1e489297c72903452030b47066a0d3579ff3bccfec2f2c0e02/fluss_next-0.7.0-py3-none-any.whl", hash = "sha256:62e70211f62743af8470179eae1676d5c941379985bb489292a4a847027ccc3b", size = 24294 },
 ]
 
 [[package]]
@@ -941,44 +960,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/c4/16/7574029da84834349b60ed71614d66ca3afe46e9bf9c7b9562102acb7d4f/graphql_core-3.2.6.tar.gz", hash = "sha256:c08eec22f9e40f0bd61d805907e3b3b1b9a320bc606e23dc145eebca07c8fbab", size = 505353 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ae/4f/7297663840621022bc73c22d7d9d80dbc78b4db6297f764b545cd5dd462d/graphql_core-3.2.6-py3-none-any.whl", hash = "sha256:78b016718c161a6fb20a7d97bbf107f331cd1afe53e45566c59f776ed7f0b45f", size = 203416 },
-]
-
-[[package]]
-name = "h11"
-version = "0.16.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/01/ee/02a2c011bdab74c6fb3c75474d40b3052059d95df7e73351460c8588d963/h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1", size = 101250 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86", size = 37515 },
-]
-
-[[package]]
-name = "httpcore"
-version = "1.0.9"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "certifi" },
-    { name = "h11" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/06/94/82699a10bca87a5556c9c59b5963f2d039dbd239f25bc2a63907a05a14cb/httpcore-1.0.9.tar.gz", hash = "sha256:6e34463af53fd2ab5d807f399a9b45ea31c3dfa2276f15a2c3f00afff6e176e8", size = 85484 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl", hash = "sha256:2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55", size = 78784 },
-]
-
-[[package]]
-name = "httpx"
-version = "0.27.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "anyio" },
-    { name = "certifi" },
-    { name = "httpcore" },
-    { name = "idna" },
-    { name = "sniffio" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/78/82/08f8c936781f67d9e6b9eeb8a0c8b4e406136ea4c3d1f89a5db71d42e0e6/httpx-0.27.2.tar.gz", hash = "sha256:f7c2be1d2f3c3c3160d441802406b206c2b76f5947b11115e6df10c6c65e66c2", size = 144189 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/95/9377bcb415797e44274b51d46e3249eba641711cf3348050f76ee7b15ffc/httpx-0.27.2-py3-none-any.whl", hash = "sha256:7bb2708e112d8fdd7829cd4243970f0c223274051cb35ee80c03301ee29a3df0", size = 76395 },
 ]
 
 [[package]]
@@ -1172,16 +1153,16 @@ wheels = [
 
 [[package]]
 name = "lovekit"
-version = "0.2.0"
+version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
-    { name = "koil" },
     { name = "livekit" },
+    { name = "rath" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8d/c7/4316b3dd1ab9278ec80b02b52ac6738f33130224af7f54d7b1593160d22c/lovekit-0.2.0.tar.gz", hash = "sha256:9273f7d455c49b6e99db506bc72f79205490895cf8f6ab7eeb433927882b4c5e", size = 2698 }
+sdist = { url = "https://files.pythonhosted.org/packages/d3/83/0448f000b003cfffdb53c9cc300b5ad791f6e52ce9989b9bb1c404c942f2/lovekit-1.1.0.tar.gz", hash = "sha256:ece9093a12cd85a4ff79c51d9d8f3fb9046934bfbb0164975f02f6187ff1e5e9", size = 10048 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/9b/1914b0faef66dfc1090c66ac46235d13e0bc37e6ceaa94927aefa67a4fb1/lovekit-0.2.0-py3-none-any.whl", hash = "sha256:eb6a165083b594cfd5304debd042655c27e4adb4b96693345d9035d8d61d0faa", size = 3603 },
+    { url = "https://files.pythonhosted.org/packages/4b/c8/fe948dc37d3b408e56e9c6b609cf344e8e58b6c83f782eb44a319634ee63/lovekit-1.1.0-py3-none-any.whl", hash = "sha256:ec64868b48e816cf1a6caa9a77ac8558c1e004b72b58a17b2196e2c1259b639a", size = 11545 },
 ]
 
 [[package]]
@@ -1255,7 +1236,7 @@ wheels = [
 
 [[package]]
 name = "mikro-next"
-version = "0.7.2"
+version = "0.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -1269,9 +1250,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/81/13/b44436710aed3f161cd58888dd44d7331a7d285c79624a5b281e7bcd76cd/mikro_next-0.7.2.tar.gz", hash = "sha256:2f6d0ba3e5d569cfd6d1563883f165bb9534d01bef689cc5433b58f1bab28525", size = 55809 }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/b1/501f4192330ce564b398b2a7718a016574f7fd8f88ce3df7c3b6369e7585/mikro_next-0.8.1.tar.gz", hash = "sha256:57bf5a423e14a755b147d09562c73d676a85109af3dfae50f4b9cec149cb4aa1", size = 55804 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0a/88/6fe09105a8c4a98846822e77b28c9102a50ead7501d1f396fa90c7bcbb9e/mikro_next-0.7.2-py3-none-any.whl", hash = "sha256:545f98e69d4a6b5af32dfc817c6d5a16e672c37e4f4965407b8bfd9266eaaf74", size = 62820 },
+    { url = "https://files.pythonhosted.org/packages/52/0d/512d2ad3352768f39aa5e14c7b323fbdcb5bf15e46bc355a1c23dca8d173/mikro_next-0.8.1-py3-none-any.whl", hash = "sha256:6eba47043761b22d9677e8c9478eaf3816c46466da298a0865586f03bcfae6cb", size = 62814 },
 ]
 
 [[package]]
@@ -1420,18 +1401,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/0b/5f/19930f824ffeb0ad4372da4812c50edbd1434f678c90c2733e1188edfc63/oauthlib-3.3.1.tar.gz", hash = "sha256:0f0f8aa759826a193cf66c12ea1af1637f87b9b4622d46e866952bb022e538c9", size = 185918 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/be/9c/92789c596b8df838baa98fa71844d84283302f7604ed565dafe5a6b5041a/oauthlib-3.3.1-py3-none-any.whl", hash = "sha256:88119c938d2b8fb88561af5f6ee0eec8cc8d552b7bb1f712743136eb7523b7a1", size = 160065 },
-]
-
-[[package]]
-name = "ollama"
-version = "0.3.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "httpx" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a6/8e/60a9b065eb796ef3996451cbe2d8044f6b030696166693b9805ae33b8b4c/ollama-0.3.3.tar.gz", hash = "sha256:f90a6d61803117f40b0e8ff17465cab5e1eb24758a473cfe8101aff38bc13b51", size = 10390 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/ca/d22905ac3f768523f778189d38c9c6cd9edf4fa9dd09cb5a3fc57b184f90/ollama-0.3.3-py3-none-any.whl", hash = "sha256:ca6242ce78ab34758082b7392df3f9f6c2cb1d070a9dede1a4c545c929e16dba", size = 10267 },
 ]
 
 [[package]]
@@ -1920,23 +1889,24 @@ wheels = [
 
 [[package]]
 name = "reaktion-next"
-version = "0.2.0"
+version = "0.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fluss-next" },
     { name = "rekuest-next" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9d/71/2bb35667e21b6a51371b2e64a304979ed3881432878d4a5f6adc66cff7c8/reaktion_next-0.2.0.tar.gz", hash = "sha256:47e85b762dc33e7b3ed02c6dc1ca11d88bf2a42eab6dc69a2e78c42c776e2239", size = 15691 }
+sdist = { url = "https://files.pythonhosted.org/packages/6a/6e/ccc79604d04fcb4ed6d0a817fdf892fb398cd123b7e0972d77c4e68e25e0/reaktion_next-0.3.1.tar.gz", hash = "sha256:199d23f113d317e9135d6672648b1394472f812d85b57a710d2edf85bc40b4ca", size = 16982 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/b4/803dc5e2efae80ff03577098c329ffff31bf735405e43183e5ae4fcb622b/reaktion_next-0.2.0-py3-none-any.whl", hash = "sha256:2a6bf1f8aa458ac0c347be59e74cd973b2042c1aaa52780c78e7677c1d7bc722", size = 30271 },
+    { url = "https://files.pythonhosted.org/packages/0e/3a/bd96470a7648ae75c13ff2ec7fc156e5d7088d85b8d5e9c992124b221246/reaktion_next-0.3.1-py3-none-any.whl", hash = "sha256:f2abe9203497eb9ddcbdd6d5cbe0a9409c97935abde4aa9fb53b2f6bf3d10b82", size = 32225 },
 ]
 
 [[package]]
 name = "rekuest-next"
-version = "0.13.0"
+version = "0.13.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
+    { name = "dokker" },
     { name = "fieldz" },
     { name = "inflection" },
     { name = "jsonpatch" },
@@ -1945,9 +1915,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ad/4f/aef66ebaa355441f15d6e7bb9e7573b9861bf2abf99a741ca2a3c2b95310/rekuest_next-0.13.0.tar.gz", hash = "sha256:8920be3cdaa02cdc7d84ba29cbe4c704a4b3f35ad319a43246f5553274ded8d6", size = 103278 }
+sdist = { url = "https://files.pythonhosted.org/packages/cc/aa/b144dd68ce8f9dec6a06076a24b9f4e24994b6a3429de09e602d3d35e4f5/rekuest_next-0.13.1.tar.gz", hash = "sha256:65872b8dd8f85fc4f66d414b587aa700238b8ea4be418d0bae379815045b1f79", size = 103235 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/68/93/8bb35c5b9637bfb5df303932d803ddc43178096781955ee3fd0601565ba5/rekuest_next-0.13.0-py3-none-any.whl", hash = "sha256:b40a23f97ec13b5a46ec13ae1b28ca6862d8e2f533bea5ba3b6a3b7ecef82463", size = 139678 },
+    { url = "https://files.pythonhosted.org/packages/d8/a9/d3ddf0072b315e70ad67a6398d6e328a2a4e12aa4b9b6e22fe078cf57e94/rekuest_next-0.13.1-py3-none-any.whl", hash = "sha256:7766d730aec75a6fe924b814320738e9f8fa86dc16b797579663bf9295bb8ad8", size = 139739 },
 ]
 
 [[package]]
@@ -2497,7 +2467,7 @@ wheels = [
 
 [[package]]
 name = "zarr"
-version = "3.0.8"
+version = "3.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "donfig" },
@@ -2506,9 +2476,9 @@ dependencies = [
     { name = "packaging" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/60/9652fd0536fbaca8d08cbc1a5572c52e0ce01773297df75da8bb47e45907/zarr-3.0.8.tar.gz", hash = "sha256:88505d095af899a88ae8ac4db02f4650ef0801d2ff6f65b6d1f0a45dcf760a6d", size = 256825 }
+sdist = { url = "https://files.pythonhosted.org/packages/71/66/852aa0905f906bc8ef0a6eb686d50c7ca8c46a38677c32152a8003bcce37/zarr-3.1.0.tar.gz", hash = "sha256:ace5b111dc69d5315cb1655dfd0f816c5acf9798d2ad92f43b608a52c8c8ac2b", size = 312546 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/00/3b/e20bdf84088c11f2c396d034506cbffadd53e024111c1aa4585c2aba1523/zarr-3.0.8-py3-none-any.whl", hash = "sha256:7f81e7aec086437d98882aa432209107114bd7f3a9f4958b2af9c6b5928a70a7", size = 205364 },
+    { url = "https://files.pythonhosted.org/packages/94/72/c5fd70742126cab7403126a1719b4161a81b816d83a2fdb78b390d8ecc47/zarr-3.1.0-py3-none-any.whl", hash = "sha256:bd3d2f88d602d43f81df82e26dd115ea66635a2af5bf6da261d3c640bb4c1ce4", size = 254089 },
 ]
 
 [[package]]
