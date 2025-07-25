@@ -167,7 +167,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.18.0"
+version = "0.20.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -304,9 +304,9 @@ dev = [
     { name = "dokker", specifier = ">=2.2" },
     { name = "fluss-next", specifier = ">=0.7.0" },
     { name = "kabinet", specifier = ">=0.6.0" },
-    { name = "kraph", specifier = ">=0.2.0" },
+    { name = "kraph", specifier = ">=0.3.0" },
     { name = "lovekit", specifier = ">=1.1.0" },
-    { name = "mikro-next", specifier = ">=0.8.2" },
+    { name = "mikro-next", specifier = ">=0.9.0" },
     { name = "numpy", specifier = ">=1,<2" },
     { name = "pytest", specifier = ">=8.3.0,<9" },
     { name = "pytest-aiohttp", specifier = ">=1.0.4,<2" },
@@ -1115,14 +1115,16 @@ wheels = [
 
 [[package]]
 name = "kraph"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "dokker" },
     { name = "rath" },
+    { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/eb/90/45129f6624cb56bd946bc3f48094d4482384b0f3c9be07bf474bc8c6416e/kraph-0.2.0.tar.gz", hash = "sha256:4d33a4a713fa84596cb3f917d0caf419f29c93d1d63f6b7f2f45ee6a5d95479f", size = 50598 }
+sdist = { url = "https://files.pythonhosted.org/packages/c2/8c/828cae34424c3ea5fd0410e5f19eb36272c65f18076e2d2a50e2a420a289/kraph-0.3.0.tar.gz", hash = "sha256:8e934698af86fde00003db990b6978279a5a2ccc6704810bccf1f7987058f2a2", size = 60696 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8d/cb/b9cbe21723224e1b15be45584725149ff05fb0bd4879c5a8dbc0f6bfb955/kraph-0.2.0-py3-none-any.whl", hash = "sha256:4125ee62a324b29a00242481e47b684795adefede32c44b3b33a548e140a9f63", size = 55314 },
+    { url = "https://files.pythonhosted.org/packages/ac/2d/2b6fe65c154743961ca3512f8fa3d0a71e207f33814d8eebfe9b5f71eb4c/kraph-0.3.0-py3-none-any.whl", hash = "sha256:e966f6836123c2628bc533fe903559c09aad13c55de60e60a19d47dc4d51c215", size = 64857 },
 ]
 
 [[package]]
@@ -1236,7 +1238,7 @@ wheels = [
 
 [[package]]
 name = "mikro-next"
-version = "0.8.2"
+version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -1251,9 +1253,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dd/f0/4fdc6091d70ed0185d43a7ae5266a72267f7e633af98d637dfc2e779b3ec/mikro_next-0.8.2.tar.gz", hash = "sha256:52cc8f8bf488f097107cd03497e19c604a88de0421a861830767068460bc4ea0", size = 55816 }
+sdist = { url = "https://files.pythonhosted.org/packages/f1/07/e31460cf4c0d527a627f49bee25f3ba785a2decbc0d73d8d4eed87713e1a/mikro_next-0.9.0.tar.gz", hash = "sha256:a28067ccea208751e0a5810c40434809a27ecd38d24be1899e7d290967e168fb", size = 55913 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/99/ad0efff70f83b26114101c97d418d5a8bc341702aee1fc74c66a51441956/mikro_next-0.8.2-py3-none-any.whl", hash = "sha256:4d053337a198ef95c043c639effba8a7a16e0a6933947178b19ec3c4fb35bb99", size = 62826 },
+    { url = "https://files.pythonhosted.org/packages/b8/69/9f955c1a74634f22e5a2d1a4d696598370a3b774eea290128f2c09ba5bfb/mikro_next-0.9.0-py3-none-any.whl", hash = "sha256:85f35e1d75a2fc44c61a82ed273818d1d712904ba2711d2f85ba4c9e02fd0763", size = 62947 },
 ]
 
 [[package]]
