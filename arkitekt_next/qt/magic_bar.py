@@ -193,10 +193,11 @@ class Profile(QtWidgets.QDialog):
         super().__init__(*args, **{"parent": bar, **kwargs})
         self.app = app
         self.bar = bar
+        self.manifest = self.app.fakts.manifest
 
         self.settings = QtCore.QSettings(
             "arkitekt_next",
-            f"{self.app.manifest.identifier}:{self.app.manifest.version}:profile",
+            f"{self.manifest.identifier}:{self.manifest.version}:profile",
         )
 
         self.setWindowTitle("Settings")
@@ -207,11 +208,11 @@ class Profile(QtWidgets.QDialog):
         self.setLayout(self.mylayout)
         self.mylayout.addLayout(self.infobar)
 
-        if self.app.manifest.logo:
-            self.infobar.addWidget(Logo(self.app.manifest.logo, parent=self))
+        if self.manifest.logo:
+            self.infobar.addWidget(Logo(self.manifest.logo, parent=self))
 
-        self.infobar.addWidget(QtWidgets.QLabel(self.app.manifest.identifier))
-        self.infobar.addWidget(QtWidgets.QLabel(self.app.manifest.version))
+        self.infobar.addWidget(QtWidgets.QLabel(self.manifest.identifier))
+        self.infobar.addWidget(QtWidgets.QLabel(self.manifest.version))
 
         self.unkonfigure_button = QtWidgets.QPushButton("Reconnect")
         self.unkonfigure_button.clicked.connect(lambda: self.bar.refresh_task.run())
@@ -320,7 +321,7 @@ class MagicBar(QtWidgets.QWidget):
         self.profile = Profile(app, self, dark_mode=dark_mode)
         self.profile.updated.connect(self.on_profile_updated)
 
-        self.configure_task = async_to_qt(self.app.fakts.aget)
+        self.configure_task = async_to_qt(self.app.fakts.aload)
         self.configure_task.errored.connect(self.configure_errored)
         self.configure_task.returned.connect(self.set_unlogined)
 
@@ -328,12 +329,11 @@ class MagicBar(QtWidgets.QWidget):
         self.refresh_task.errored.connect(self.configure_errored)
         self.refresh_task.returned.connect(self.set_unlogined)
 
-        self.get_token_task = async_to_qt(self.app.herre.aget_token)
+        self.get_token_task = async_to_qt(self.app.fakts.aget_token)
         self.get_token_task.errored.connect(self.login_errored)
         self.get_token_task.returned.connect(self.set_unprovided)
 
-        self.refresh_token_task = async_to_qt(self.app.herre.arefresh_token)
-        self.refresh_token_task.started.connect(self.set_providing)
+        self.refresh_token_task = async_to_qt(self.app.fakts.arefresh_token)
         self.refresh_token_task.errored.connect(self.login_errored)
         self.refresh_token_task.returned.connect(self.set_unprovided)
 
