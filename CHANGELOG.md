@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.20.1 (2025-07-29)
+
+### Bug Fixes
+
+- Magic-bar plus new mikro-next dependency
+  ([`817589f`](https://github.com/arkitektio/arkitekt-next/commit/817589f6a4f64f4843d07f8d63600e2fdb54a91e))
+
+- Updates
+  ([`b8eacf4`](https://github.com/arkitektio/arkitekt-next/commit/b8eacf43b40e755f45bf99831a35dfbf33d0c365))
+
+
 ## v0.20.0 (2025-07-24)
 
 
