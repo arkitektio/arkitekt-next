@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.21.0 (2025-07-30)
+
+### Features
+
+- New mikro version
+  ([`fbe593b`](https://github.com/arkitektio/arkitekt-next/commit/fbe593b3ba25f22a6905f3f529304a7f5592bd9d))
+
+
 ## v0.20.1 (2025-07-29)
 
 ### Bug Fixes
