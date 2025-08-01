@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.20.1"
+version = "0.21.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -308,7 +308,7 @@ dev = [
     { name = "kabinet", specifier = ">=0.6.0" },
     { name = "kraph", specifier = ">=0.3.0" },
     { name = "lovekit", specifier = ">=1.1.0" },
-    { name = "mikro-next", specifier = ">=0.11.0" },
+    { name = "mikro-next", specifier = ">=0.12.0" },
     { name = "numpy", specifier = ">=1,<2" },
     { name = "pytest", specifier = ">=8.3.0,<9" },
     { name = "pytest-aiohttp", specifier = ">=1.0.4,<2" },
@@ -1240,7 +1240,7 @@ wheels = [
 
 [[package]]
 name = "mikro-next"
-version = "0.11.0"
+version = "0.12.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -1255,9 +1255,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/06/98/718ceec496fc48fa0dd24514e9d10ee180ae43f86d08edc9f90a777fb806/mikro_next-0.11.0.tar.gz", hash = "sha256:34dc0c070ec1317b788b3e2bfb3e3bbe15663e41e2e743bcdb53ff5898183228", size = 56548, upload-time = "2025-07-30T11:04:29.841Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c2/06/2325398aa61be04f20b940c750caed4c9db4e03fe863e63d0c7a9741d812/mikro_next-0.12.0.tar.gz", hash = "sha256:b0a77c3e974cd67db563aa37b97abac85ce6c67692703f3b19d90d8d26379575", size = 57081, upload-time = "2025-08-01T16:58:03.016Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/52/88/2c8a747566af235a2819a077e37a8c138d2dcbbe177acc1abcbab50cc0ab/mikro_next-0.11.0-py3-none-any.whl", hash = "sha256:affe465b3981f7c7b95edb014b9016bb8c051f6a5bb10088d6b28738c675ea44", size = 63601, upload-time = "2025-07-30T11:04:28.49Z" },
+    { url = "https://files.pythonhosted.org/packages/96/32/ecc125d34287ebb7cb77f0ef81abfb141c943c422db86b8baa5ea8d41a06/mikro_next-0.12.0-py3-none-any.whl", hash = "sha256:ed456f631f9a91ce92a45263853064c22b37df03ad111f8fef6dc5314087d1e0", size = 64156, upload-time = "2025-08-01T16:58:01.86Z" },
 ]
 
 [[package]]
