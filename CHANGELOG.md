@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.22.0 (2025-08-02)
+
+### Features
+
+- New micro deps
+  ([`80bef04`](https://github.com/arkitektio/arkitekt-next/commit/80bef04c44ccda7767aa6672ba3e2f8a84e725b6))
+
+
 ## v0.21.0 (2025-07-30)
 
 ### Features
