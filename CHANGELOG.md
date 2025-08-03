@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.23.0 (2025-08-03)
+
+### Features
+
+- Add new kabinet with fixed 'funcs'
+  ([`1638427`](https://github.com/arkitektio/arkitekt-next/commit/163842739d92326aeb9adf9e948462e8c909009e))
+
+
 ## v0.22.0 (2025-08-02)
 
 ### Features
