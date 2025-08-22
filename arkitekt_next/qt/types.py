@@ -1,26 +1,20 @@
 from arkitekt_next.app.app import App
-from typing import List, Callable, Dict, Any
+from typing import Callable, TypeVar, ParamSpec, Any, Optional, Type
+from types import TracebackType
+from koil.qt import async_to_qt
+from koil import run_spawned
+from qtpy import QtCore
+
+R = TypeVar("R")
+P = ParamSpec("P")
 
 
 class QtApp(App):
     """An app that is built with the easy builder"""
 
-    hooks: Dict[str, List[Callable]] = {
-        "on_start": [],
-        "on_stop": [],
-        "on_error": [],
-        "on_message": [],
-        "on_warning": [],
-        "on_info": [],
-        "on_debug": [],
-        "on_enter": [],
-    }
+    parent: QtCore.QObject
 
-    def register_hook(self, hook_name: str, hook: Callable):
-        """Register a hook"""
-        self.hooks[hook_name].append(hook)
-
-    def register(self, *args, **kwargs):
+    def register(self, *args: Any, **kwargs: Any) -> None:
         """Register a function with the app (not in the Qt event loop)
 
         This is useful for functions that do not need access to the Qt event loop
@@ -31,7 +25,7 @@ class QtApp(App):
         """
         self.services["rekuest"].register(*args, **kwargs)
 
-    def register_in_qt_loop(self, function: Callable, **kwargs):
+    def register_in_qt_loop(self, function: Callable[..., Any], **kwargs: Any):
         """Register a function in the Qt event loop
 
         This is useful for functions that need to be resolved in the Qt event loop and are
@@ -40,13 +34,13 @@ class QtApp(App):
 
         """
 
-        from rekuest_next.qt.builders import qtinloopactifier
+        from rekuest_next.qt.builders import qtinloopactifier  # type: ignore
 
         return self.services["rekuest"].register(
             function, actifier=qtinloopactifier, **kwargs
         )
 
-    def register_with_qt_future(self, function: Callable, **kwargs):
+    def register_with_qt_future(self, function: Callable[..., Any], **kwargs: Any):
         """Register a function with a future that can be resolved in the Qt event loop
 
         This is useful for functions that need to be resolved in the Qt event loop, but
@@ -90,18 +84,26 @@ class QtApp(App):
 
 
         """
-        from rekuest_next.qt.builders import qtwithfutureactifier
+        from rekuest_next.qt.builders import qtwithfutureactifier  # type: ignore
 
         return self.services["rekuest"].register(
             function, actifier=qtwithfutureactifier, **kwargs
         )
 
-    def register_with_qt_generator(self, function: Callable, **kwargs):
-        from rekuest_next.qt.builders import qtwithgeneratoractifier
+    def register_with_qt_generator(self, function: Callable[..., Any], **kwargs: Any):
+        from rekuest_next.qt.builders import qtwithgeneratoractifier  # type: ignore
 
         return self.services["rekuest"].register(
             function, actifier=qtwithgeneratoractifier, **kwargs
         )
+
+    def wrap(self, function: Callable[P, R]) -> async_to_qt[R, P]:
+        """ """
+
+        async def wrappable(*args: P.args, **kwargs: P.kwargs) -> R:
+            return await run_spawned(function, *args, **kwargs)
+
+        return async_to_qt(wrappable, parent=self.parent)
 
     def run(self):
         """Run the app"""
@@ -114,6 +116,11 @@ class QtApp(App):
 
         return self
 
-    async def __aexit__(self, exc_type, exc_value, traceback):
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> None:
         for service in self.services.values():
             await service.__aexit__(exc_type, exc_value, traceback)
