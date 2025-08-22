@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.24.0 (2025-08-22)
+
+### Features
+
+- Fix qt builder and add "wrap to qtapp"
+  ([`29c65fd`](https://github.com/arkitektio/arkitekt-next/commit/29c65fdb8b336d285191f44928f88c30b9f6734c))
+
+
 ## v0.23.0 (2025-08-03)
 
 ### Features
