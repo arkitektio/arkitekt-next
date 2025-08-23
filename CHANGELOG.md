@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.25.0 (2025-08-23)
+
+### Features
+
+- Add test_app fixture
+  ([`076957c`](https://github.com/arkitektio/arkitekt-next/commit/076957c14c11570232ac67e986a2891852016632))
+
+
 ## v0.24.0 (2025-08-22)
 
 ### Features
