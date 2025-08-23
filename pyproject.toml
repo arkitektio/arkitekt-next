@@ -56,6 +56,9 @@ blok = [
 [project.scripts]
 arkitekt-next = "arkitekt_next.cli.main:cli"
 
+[project.entry-points.pytest11]
+arkitekt_next = "arkitekt_next.pytest"
+
 [tool.uv]
 dev-dependencies = [
     "autoflake>=1.7.7,<2",

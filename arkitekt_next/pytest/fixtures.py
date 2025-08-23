@@ -8,47 +8,30 @@ from dataclasses import dataclass
 from arkitekt_next.app import App
 from fakts_next.grants.remote import FaktsEndpoint
 from arkitekt_next import easy
-
 from dokker import local
 
 from arkitekt_next.service_registry import get_default_service_registry
-@pytest.fixture
-def initialized_app_cli_runner():
+import pytest
 
-
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        result = runner.invoke(
-            cli,
-            [
-                "init",
-                "--identifier",
-                "arkitekt-next",
-                "--version",
-                "0.0.1",
-                "--author",
-                "arkitek",
-                "--template",
-                "simple",
-                "--scopes",
-                "read",
-                "--scopes",
-                "write",
-            ],
-        )
-        assert result.exit_code == 0, result.output
-        yield runner
-
+def pytest_addoption(parser: pytest.Parser) -> None:
+    """Register custom command line options for pytest."""
+    parser.addoption(
+        "--test-against",
+        action="store",
+        default="temp",
+        help="Base URL of the Arkitekt server to use in tests",
+    )
 
 
 @pytest.fixture(scope="session")
-def arkitekt_server() -> Generator[Deployment, None, None]:
+def running_server(request: pytest.FixtureRequest) -> Generator[Deployment, None, None]:
     """ Generates a local Arkitekt server deployment for testing purposes. """
     
-    
+    if not request.config.getoption("--test-against") == "temp":
+        raise ValueError("Invalid test environment specified. Currently only 'temp' is supported.")
+
     config = ArkitektServerConfig()
-    
-    
+
     with temp_server() as temp_path:
         
         setup = local(temp_path / "docker-compose.yaml")
@@ -72,20 +55,19 @@ def arkitekt_server() -> Generator[Deployment, None, None]:
  
  
 @dataclass
-class AppWithinDeployment:
+class EasyApp:
     """Dataclass to hold the Arkitekt server deployment."""
     deployment: Deployment
     app: App         
             
 
 @pytest.fixture(scope="session")
-def running_app(arkitekt_server: Deployment) -> Generator[AppWithinDeployment, None, None]:
+def test_app(running_server: Deployment) -> Generator[EasyApp, None, None]:
     """Fixture to ensure the Arkitekt server is running."""
-    from mikro_next.api.schema import create_dataset
     
     async def device_code_hook(endpoint: FaktsEndpoint, device_code: str):
         
-        await arkitekt_server.arun(
+        await running_server.arun(
             "lok", f"uv run python manage.py validatecode {device_code} --user demo --org arkitektio"
         )
         
@@ -96,9 +78,9 @@ def running_app(arkitekt_server: Deployment) -> Generator[AppWithinDeployment, N
         
 
 
-    with easy(url=f"http://localhost:{arkitekt_server.spec.find_service('gateway').get_port_for_internal(80).published}", device_code_hook=device_code_hook) as app:
+    with easy(url=f"http://localhost:{running_server.spec.find_service('gateway').get_port_for_internal(80).published}", device_code_hook=device_code_hook) as app:
         
-        yield AppWithinDeployment(
-            deployment=arkitekt_server,
+        yield EasyApp(
+            deployment=running_server,
             app=app
         )
