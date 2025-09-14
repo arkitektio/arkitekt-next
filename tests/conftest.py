@@ -57,7 +57,7 @@ def arkitekt_server() -> Generator[Deployment, None, None]:
             url=lambda spec: f"http://localhost:{spec.find_service('gateway').get_port_for_internal(80).published}/lok/ht",
             service="lok",
             timeout=5,
-            max_retries=10,
+            max_retries=20,
         )
         with setup as setup:
             setup.down()
