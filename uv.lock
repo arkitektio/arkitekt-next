@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.24.0"
+version = "0.25.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -282,7 +282,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.7.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.15.0" },
+    { name = "rekuest-next", specifier = ">=0.16.0" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -306,7 +306,7 @@ dev = [
     { name = "dokker", specifier = ">=2.2" },
     { name = "fluss-next", specifier = ">=0.7.0" },
     { name = "kabinet", specifier = ">=0.6.0" },
-    { name = "kraph", specifier = ">=0.4.0" },
+    { name = "kraph", specifier = ">=0.5.0" },
     { name = "lovekit", specifier = ">=1.1.0" },
     { name = "mikro-next", specifier = ">=0.13.0" },
     { name = "numpy", specifier = ">=1,<2" },
@@ -1117,16 +1117,16 @@ wheels = [
 
 [[package]]
 name = "kraph"
-version = "0.4.0"
+version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dokker" },
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0f/a5/b4ba21902ad3bda78ebbf6f6d432ffd33099a953906d6ff44fc11927e292/kraph-0.4.0.tar.gz", hash = "sha256:a028eb49ffc865518d9053c876b6b619ea496f315a20f4eb4ba5938d692aa7bb", size = 63249, upload-time = "2025-08-22T13:21:50.195Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/b9/9e3f2b91dd42e00fc70b48fa93c0fbfe59841deb9ae1913853c5f8ac9ff4/kraph-0.5.0.tar.gz", hash = "sha256:686645c3f09c6fbd7caf00bd55d3eb6e4ab58cf173e93b79bbc07dbfa5ec86ad", size = 64160, upload-time = "2025-09-14T16:26:20.408Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/06/38/111af2d4137702f1779b66a38d3c8e7593db397c4bf3ffd1cf7617853b32/kraph-0.4.0-py3-none-any.whl", hash = "sha256:ba8a161105a3443e05fee8c18fbbf45042ffad0f21cdc748ec6d690cf78c4175", size = 67492, upload-time = "2025-08-22T13:21:47.738Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/88/510d2ba588c22a0b8303b330a658d846765c1debe4848024810c895ec91f/kraph-0.5.0-py3-none-any.whl", hash = "sha256:a12165310b12d2cb50c41f291ce5ba9282741bf3e2a743447145ca39460b175d", size = 68527, upload-time = "2025-09-14T16:26:19.58Z" },
 ]
 
 [[package]]
@@ -1908,7 +1908,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "0.15.0"
+version = "0.16.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -1921,9 +1921,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2b/15/00c6d1a9ef2556a8e27d4805740f45e2ad452f819404ce6263898dd01a20/rekuest_next-0.15.0.tar.gz", hash = "sha256:f760c5b812037518a104d5328e2963734f860024e7a42c72b6cc6c9a432eae69", size = 105887, upload-time = "2025-08-22T13:23:50.101Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/be/3bc3b1bcc374ba2fd9c42be1e77baeecbb7fcc91925e85c2dd44225d1953/rekuest_next-0.16.0.tar.gz", hash = "sha256:08255ca1cecb61f40aa17661d4fa94cd41a3cd029ea2ff2b427374019793a863", size = 106999, upload-time = "2025-08-28T15:26:00.836Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b1/c7/d85312cc585efdccd9a27f2072dc412b2e5fd542dda6571c80ddec158729/rekuest_next-0.15.0-py3-none-any.whl", hash = "sha256:c1d6917e8fb99e20a43731e0d78621a42f82f07a2227970ec8e647d05753b7dc", size = 142480, upload-time = "2025-08-22T13:23:48.657Z" },
+    { url = "https://files.pythonhosted.org/packages/50/52/6661d6db0ddfb3dfeb953286fc0428d17edb1d741005cb4aa7ac1aa2f9fd/rekuest_next-0.16.0-py3-none-any.whl", hash = "sha256:d4e629a30d2a5407ef897fed3bcb2d9bace137e205fabb19ffad5ebb926028ab", size = 145053, upload-time = "2025-08-28T15:25:59.599Z" },
 ]
 
 [[package]]
