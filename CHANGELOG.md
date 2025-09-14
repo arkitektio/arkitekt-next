@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.26.0 (2025-09-14)
+
+### Bug Fixes
+
+- Update retries, because lok is taking to long:
+  ([`0da5642`](https://github.com/arkitektio/arkitekt-next/commit/0da5642dab14be9a76a7de28423007d13c688abb))
+
+### Features
+
+- Update to latest kraph
+  ([`d428437`](https://github.com/arkitektio/arkitekt-next/commit/d4284374a5768c5fc37f282a4194ca9e9891e5c9))
+
+
 ## v0.25.0 (2025-08-23)
 
 ### Features
