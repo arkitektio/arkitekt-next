@@ -2,10 +2,13 @@ import datetime
 import uuid
 from arkitekt_next.utils import create_arkitekt_next_folder
 import os
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, TYPE_CHECKING
 from arkitekt_next.cli.types import (
     Manifest,
 )
+
+if TYPE_CHECKING:
+    pass
 
 from .types import (
     Build,
@@ -59,6 +62,41 @@ def get_builds(selected_run: Optional[str] = None) -> Dict[str, Build]:
         raise click.ClickException(
             "Could not find any builds. Please run `arkitekt_next port build` first"
         )
+
+
+def check_if_build_already_exists(manifest: Manifest, flavour_name: str) -> bool:
+    """Checks if a build with the same manifest identifier, version and flavour already exists.
+
+    Parameters
+    ----------
+    manifest : Manifest
+        The manifest to check
+    flavour_name : str
+        The flavour name to check
+
+    Returns
+    -------
+    bool
+        True if a build already exists, False otherwise
+    """
+    path = create_arkitekt_next_folder()
+    config_file = os.path.join(path, "builds.yaml")
+
+    if not os.path.exists(config_file):
+        return False
+
+    with open(config_file, "r") as file:
+        config = BuildsConfigFile(**yaml.safe_load(file))
+
+    for build in config.builds:
+        if (
+            build.manifest.identifier == manifest.identifier
+            and build.manifest.version == manifest.version
+            and build.flavour == flavour_name
+        ):
+            return True
+
+    return False
 
 
 def manifest_to_input(manifest: Manifest) -> ManifestInput:
