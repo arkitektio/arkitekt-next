@@ -7,7 +7,7 @@ import subprocess
 import uuid
 
 from kabinet.api.schema import RequirementInput
-from .io import generate_build
+from .io import generate_build, check_if_build_already_exists
 from click import Context
 from .types import Flavour, InspectionInput
 import yaml
@@ -295,6 +295,13 @@ def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavou
     type=str,
     default=DEFAULT_ARKITEKT_URL,
 )
+@click.option(
+    "--yes",
+    "-y",
+    help="Skip confirmation prompts",
+    is_flag=True,
+    default=False,
+)
 @click.pass_context
 def build(
     ctx: Context,
@@ -302,6 +309,7 @@ def build(
     no_inspect: bool,
     tag: str | None = None,
     url: str = DEFAULT_ARKITEKT_URL,
+    yes: bool = False,
 ) -> None:
     """Builds the arkitekt_next app to docker"""
 
@@ -321,6 +329,18 @@ def build(
     build_run = str(uuid.uuid4())
 
     for key, inspected_flavour in flavours.items():
+        # Check if this build already exists
+        if check_if_build_already_exists(manifest, key):
+            if not yes:
+                should_rebuild = click.confirm(
+                    f"A build for {manifest.identifier} version {manifest.version} with flavour '{key}' already exists. Do you want to rebuild it?"
+                )
+                if not should_rebuild:
+                    console.print(f"Skipping rebuild of flavour '{key}'")
+                    continue
+            else:
+                console.print(f"Warning: Rebuilding existing version {manifest.identifier} v{manifest.version} with flavour '{key}' (--yes flag provided)")
+
         md = Panel(
             "Building Flavour [bold]{}[/bold]".format(key),
             subtitle="This may take a while...",

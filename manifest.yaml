@@ -1,0 +1,6 @@
+identifier: demo.app
+version: 1.0.0
+author: demo
+entrypoint: main.py
+scopes:
+  - read
