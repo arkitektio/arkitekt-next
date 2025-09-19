@@ -1,6 +1,0 @@
-build_command:
-- echo
-- This would normally build with docker
-description: Vanilla flavour
-dockerfile: Dockerfile
-selectors: []
