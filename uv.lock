@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.25.0"
+version = "0.26.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -270,7 +270,7 @@ requires-dist = [
     { name = "fakts-next", specifier = ">=2.2.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
-    { name = "kabinet", specifier = ">=0.7.0" },
+    { name = "kabinet", specifier = ">=0.8.0" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.6.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.6.0" },
     { name = "koil", specifier = ">=2.0.5" },
@@ -282,7 +282,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.7.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.16.0" },
+    { name = "rekuest-next", specifier = ">=0.17.0" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -301,14 +301,14 @@ provides-extras = ["cli", "alpaka", "kraph", "mikro", "kabinet", "elektro", "flu
 [package.metadata.requires-dev]
 dev = [
     { name = "alpaka", specifier = ">=0.4.0" },
-    { name = "arkitekt-server", specifier = ">=1.3" },
+    { name = "arkitekt-server", specifier = ">=1.7" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
     { name = "fluss-next", specifier = ">=0.7.0" },
     { name = "kabinet", specifier = ">=0.6.0" },
-    { name = "kraph", specifier = ">=0.5.0" },
+    { name = "kraph", specifier = ">=0.5.1" },
     { name = "lovekit", specifier = ">=1.1.0" },
-    { name = "mikro-next", specifier = ">=0.13.0" },
+    { name = "mikro-next", specifier = ">=0.18.0" },
     { name = "numpy", specifier = ">=1,<2" },
     { name = "pytest", specifier = ">=8.3.0,<9" },
     { name = "pytest-aiohttp", specifier = ">=1.0.4,<2" },
@@ -324,7 +324,7 @@ dev = [
 
 [[package]]
 name = "arkitekt-server"
-version = "1.3.0"
+version = "1.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -337,9 +337,9 @@ dependencies = [
     { name = "rich-click" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/55/bf/6d24600698d6443a1520e8fec2a373dc2416074fee64e3bce1b9764ade2f/arkitekt_server-1.3.0.tar.gz", hash = "sha256:322044e3c69a8f85e6eca12e03674ae12550fa830dab3fc161d7248d49d71c80", size = 22640, upload-time = "2025-07-20T17:11:53.561Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/56/89/7023d347178128d95be9f5a67798a8f0767adae4c3ba7b6edd4cd4b2cab1/arkitekt_server-1.7.0.tar.gz", hash = "sha256:ee4f304780b7f1dddd24a6db08eaaad9b1d055f065fe74fe42b740abd573d5e2", size = 75893, upload-time = "2025-10-03T14:59:21.381Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a3/60/e2df48afee73b88599c1142e46307df8a5e603ac03ad5b7b707e6a325cd1/arkitekt_server-1.3.0-py3-none-any.whl", hash = "sha256:f9aafeec3d2ec5520900324871a5e238947dbb32975c4a183a0221b00a785c4a", size = 24860, upload-time = "2025-07-20T17:11:52.619Z" },
+    { url = "https://files.pythonhosted.org/packages/d0/15/bef80e0e39e07a309c118620421fde39b34f6bfc4b55f7a3342250ae0bbc/arkitekt_server-1.7.0-py3-none-any.whl", hash = "sha256:0d585c554b4f5f928d11e33eb4bf098eff836026727eb2d528c6e114e01856c3", size = 87506, upload-time = "2025-10-03T14:59:20.477Z" },
 ]
 
 [[package]]
@@ -1091,15 +1091,15 @@ wheels = [
 
 [[package]]
 name = "kabinet"
-version = "0.7.0"
+version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a0/c7/fcb5f92751feb4161148776b4f77e8c50cbec97ccc5fa95eca33ba6960d3/kabinet-0.7.0.tar.gz", hash = "sha256:760630c4c0fa86485c6a17d53364e3a835cc8eff19397f967bde65bef4d1bb57", size = 23661, upload-time = "2025-08-03T08:17:59.441Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/dc/f6/b69ca7f04dddfcab9ef1330d3f85d06d09724cdc29c42cb16bd1cff5ccaa/kabinet-0.8.0.tar.gz", hash = "sha256:77db5f502efb3efb6a6d5552b6a45c11a572c79d0e0c59f8f2bf4659e5a68c6c", size = 24351, upload-time = "2025-10-04T16:30:47.279Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/85/8cd941b15402297802791d055a7ca251614510a844b51a92af9294a37cc7/kabinet-0.7.0-py3-none-any.whl", hash = "sha256:ee948f01933d49b01d4a068d1b413e1f2f4f4bde59d8299b67e0540e4def5ca2", size = 26841, upload-time = "2025-08-03T08:17:58.289Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/9c/f5636b651648fcccc4b53e5604040d9975c2f70bd105687e6528ac6394b1/kabinet-0.8.0-py3-none-any.whl", hash = "sha256:7ee6cc3d93fef098388b041b289a41789b3b0b800297beddd859c6d3569167a5", size = 27498, upload-time = "2025-10-04T16:30:45.983Z" },
 ]
 
 [[package]]
@@ -1117,16 +1117,16 @@ wheels = [
 
 [[package]]
 name = "kraph"
-version = "0.5.0"
+version = "0.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dokker" },
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0f/b9/9e3f2b91dd42e00fc70b48fa93c0fbfe59841deb9ae1913853c5f8ac9ff4/kraph-0.5.0.tar.gz", hash = "sha256:686645c3f09c6fbd7caf00bd55d3eb6e4ab58cf173e93b79bbc07dbfa5ec86ad", size = 64160, upload-time = "2025-09-14T16:26:20.408Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/85/70/009432726eee021539d294eae369edc2d5441d6fd41010987256f7443b7b/kraph-0.5.1.tar.gz", hash = "sha256:b00370a73a953695315722e9953fea7ed9058cd5e93de01b545ab4b6f1183b0f", size = 64162, upload-time = "2025-09-26T15:04:47.252Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2a/88/510d2ba588c22a0b8303b330a658d846765c1debe4848024810c895ec91f/kraph-0.5.0-py3-none-any.whl", hash = "sha256:a12165310b12d2cb50c41f291ce5ba9282741bf3e2a743447145ca39460b175d", size = 68527, upload-time = "2025-09-14T16:26:19.58Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/7a/2e6c49541883d7c9016a5f47a03cf58a0720e7f44e69a2f4fcd3420b6b8d/kraph-0.5.1-py3-none-any.whl", hash = "sha256:a410b908664406eb30d59fa01d3afdb2c01c4cb19771983e237ee27fab14f355", size = 68527, upload-time = "2025-09-26T15:04:45.576Z" },
 ]
 
 [[package]]
@@ -1240,7 +1240,7 @@ wheels = [
 
 [[package]]
 name = "mikro-next"
-version = "0.13.0"
+version = "0.18.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -1255,9 +1255,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/84/35/509fbd358bba605a5b8f38d124f27ec8870012d7c48606c97face94e8471/mikro_next-0.13.0.tar.gz", hash = "sha256:1c4bc1b080e59c14693794131278c05cdddf4f065848382e153667e5f3f03850", size = 58675, upload-time = "2025-08-22T13:36:04.775Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/64/78/1551fe7ee9f158d065cfd074a3157ab05e870d00529eae929e84e72d697c/mikro_next-0.18.0.tar.gz", hash = "sha256:2a3499c686e8480c5ce36d46b09dd071ccc51befdfe1040165a6c21a376dbd34", size = 63754, upload-time = "2025-10-04T16:33:00.033Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/c8/9708c2840c628b9912c1bb9c12a94bad8a6aadd8310bd7a4aa89af3f0d51/mikro_next-0.13.0-py3-none-any.whl", hash = "sha256:d9607df6cccf8c553af258c1a9e2ed65fae8a5024a27cf63313e2bba078c65ea", size = 65734, upload-time = "2025-08-22T13:36:03.356Z" },
+    { url = "https://files.pythonhosted.org/packages/08/d7/b945556deeeab798e3df3e3f2a3843e5e6eadc4c8baf1dc6b3db2131632a/mikro_next-0.18.0-py3-none-any.whl", hash = "sha256:7a0838f58e2e04161673ccbe8ae371aec4809fa3d192b4943c2b19efca0f99c0", size = 70843, upload-time = "2025-10-04T16:32:58.763Z" },
 ]
 
 [[package]]
@@ -1908,7 +1908,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "0.16.0"
+version = "0.17.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -1921,9 +1921,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ae/be/3bc3b1bcc374ba2fd9c42be1e77baeecbb7fcc91925e85c2dd44225d1953/rekuest_next-0.16.0.tar.gz", hash = "sha256:08255ca1cecb61f40aa17661d4fa94cd41a3cd029ea2ff2b427374019793a863", size = 106999, upload-time = "2025-08-28T15:26:00.836Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e9/ce/4814f4dec50d8874acdbf944abe58f0bf9d787766e34aaa46ea3ee028e11/rekuest_next-0.17.0.tar.gz", hash = "sha256:1c4795a057d4ae26b571cd4502db7ad9b65a481cd7a780f93e05fd4f84d3dcda", size = 107315, upload-time = "2025-10-04T16:23:53.521Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/50/52/6661d6db0ddfb3dfeb953286fc0428d17edb1d741005cb4aa7ac1aa2f9fd/rekuest_next-0.16.0-py3-none-any.whl", hash = "sha256:d4e629a30d2a5407ef897fed3bcb2d9bace137e205fabb19ffad5ebb926028ab", size = 145053, upload-time = "2025-08-28T15:25:59.599Z" },
+    { url = "https://files.pythonhosted.org/packages/8a/0c/ed9c4052275debd216a0dab8135798b01d4babcdb90586e6171c9a13b8da/rekuest_next-0.17.0-py3-none-any.whl", hash = "sha256:6de13bfeed71d6d3fdf4fdd18135dc37d59dfae80bd0bf4f7f0ec69d9a871a25", size = 145302, upload-time = "2025-10-04T16:23:52.145Z" },
 ]
 
 [[package]]
