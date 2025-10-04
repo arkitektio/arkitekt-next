@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.27.0 (2025-10-04)
+
+### Features
+
+- New and hopefully improved
+  ([`3c6a643`](https://github.com/arkitektio/arkitekt-next/commit/3c6a64350da75722feefe24db008221ae32094c4))
+
+
 ## v0.26.0 (2025-09-14)
 
 ### Bug Fixes
