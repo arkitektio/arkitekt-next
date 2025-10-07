@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.29.0 (2025-10-07)
+
+### Features
+
+- Fix rekuest-next pydantic issue
+  ([`f4fa84c`](https://github.com/arkitektio/arkitekt-next/commit/f4fa84c5843474d076ed3caf1e6f13010ff3945e))
+
+
 ## v0.28.0 (2025-10-07)
 
 ### Features
