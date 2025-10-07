@@ -38,6 +38,7 @@ try:
         aiterate_raw,
         find,
     )
+    from rekuest_next.declare import declare, protocol
     from .inspect import inspect
 except ImportError as e:
     raise e
@@ -46,6 +47,8 @@ except ImportError as e:
     apublish = missing_install("rekuest_next", e)
     structure = missing_install("rekuest_next", e)
     register = missing_install("rekuest_next", e)
+    declare = missing_install("rekuest_next", e)
+    protocol = missing_install("rekuest_next", e)
     background = missing_install("rekuest_next", e)
     abreakpoint = missing_install("rekuest_next", e)
     breakpoint = missing_install("rekuest_next", e)
