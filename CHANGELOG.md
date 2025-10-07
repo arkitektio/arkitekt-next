@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.28.0 (2025-10-07)
+
+### Features
+
+- Add dependency declaration
+  ([`904b78d`](https://github.com/arkitektio/arkitekt-next/commit/904b78d72e70f70206de0fc390d1a5dc651286f4))
+
+
 ## v0.27.0 (2025-10-04)
 
 ### Features
