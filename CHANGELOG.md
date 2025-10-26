@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.30.0 (2025-10-26)
+
+### Features
+
+- Update to latest rekuest-next
+  ([`e664c3d`](https://github.com/arkitektio/arkitekt-next/commit/e664c3dd3ccd63a5db69e9703f9b40b04c056949))
+
+
 ## v0.29.0 (2025-10-07)
 
 ### Features
