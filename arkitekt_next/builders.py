@@ -2,6 +2,8 @@ from typing import List, Optional
 import logging
 import os
 
+from koil import Koil
+
 from arkitekt_next.app.fakts import (
     build_device_code_fakts,
     build_redeem_fakts,
@@ -196,8 +198,7 @@ def interactive(
         # to avoid having to use await for every call. This is the default
         # behaviour for the app, but can be overwritten by setting
         # app.koil.sync_in_async = False
-        if app.__koil:
-            app.__koil.sync_in_async = True
+        setattr(app, "__koil", Koil(sync_in_async=True))
         app.enter()
 
     return app
