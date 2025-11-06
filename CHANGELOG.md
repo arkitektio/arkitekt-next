@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.30.1 (2025-11-06)
+
+
 ## v0.30.0 (2025-10-26)
+
+### Bug Fixes
+
+- Fix interative mode
+  ([`4f58fae`](https://github.com/arkitektio/arkitekt-next/commit/4f58fae0e18358347b0d8c8b5769cc44ff168edd))
 
 ### Features
 
