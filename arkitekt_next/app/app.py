@@ -37,9 +37,11 @@ class App(Composition):
         return self.services["rekuest"]
 
     def run(self):
+        """Run the app by calling rekuest.run()"""
         return unkoil(self.rekuest.arun)
 
     async def arun(self):
+        """Run the app asynchronously"""
         return await self.rekuest.arun()
 
     def run_detached(self):

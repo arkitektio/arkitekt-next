@@ -7,17 +7,18 @@ requires-python = ">=3.11,<4"
 readme = "README.md"
 license = "MIT"
 dependencies = [
-    "fakts-next>=2.2.0",
+    "fakts-next>=2.3.0",
     "dokker>=2.3.0",
-    "koil>=2.0.5",
+    "koil>=2.0.6",
     "rath>=3.7.0",
     "click>=8.2.0",
-    "rekuest-next>=0.18.2",
+    "rekuest-next>=0.18.3",
     "kabinet>=0.9.0",
     "semver>=3.0.4",
     "rich-click>=1.8.8",
     "watchfiles>=1.0.5",
-    "turms>=0.10.0",
+    "turms>=0.10.1",
+    "platformdirs>=4.5.0",
 ]
 
 [project.optional-dependencies]
@@ -67,7 +68,7 @@ dev-dependencies = [
     "pytest-cov>=4.0.0,<5",
     "pytest-aiohttp>=1.0.4,<2",
     "rich-click>=1.8",
-    "mikro-next>=0.18.0",
+    "mikro-next>=0.19.0",
     "python-semantic-release>=9.21.1",
     "qtpy>=2.4.3",
     "arkitekt-server>=1.7",

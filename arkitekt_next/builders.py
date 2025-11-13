@@ -1,7 +1,9 @@
+import inspect
 from typing import List, Optional
 import logging
 import os
 
+from arkitekt_next.node_id import get_or_set_node_id
 from koil import Koil
 
 from arkitekt_next.app.fakts import (
@@ -32,6 +34,7 @@ def easy(
     service_registry: Optional[ServiceBuilderRegistry] = None,
     init_hook_registry: Optional[InitHookRegistry] = None,
     instance_id: str = "main",
+    node_id: Optional[str] = None,
     device_code_hook: DeviceCodeHook | None = None,
 ) -> App:
     """Creates a next app
@@ -104,10 +107,15 @@ def easy(
     init_hook_registry = init_hook_registry or get_default_init_hook_registry()
 
     if identifier is None:
-        identifier = __file__.split("/")[-1].replace(".py", "")
+        identifier = inspect.stack()[1].filename.split("/")[-1].replace(".py", "")
 
     url = os.getenv("FAKTS_URL", url)
     token = os.getenv("FAKTS_TOKEN", token)
+
+    if node_id is None:
+        node_id = os.getenv("ARKITEKT_NODE_ID", None)
+        if node_id is None:
+            node_id = get_or_set_node_id()
 
     manifest = Manifest(
         version=version,
@@ -115,6 +123,7 @@ def easy(
         scopes=scopes if scopes else ["openid"],
         logo=logo,
         requirements=service_registry.get_requirements(),
+        node_id=node_id,
     )
 
     if token:
@@ -174,6 +183,7 @@ def interactive(
     no_cache: bool = False,
     redeem_token: Optional[str] = None,
     registry: Optional[ServiceBuilderRegistry] = None,
+    node_id: Optional[str] = None,
     sync_mode: bool = True,
 ) -> App:
     """Creates an interactive jupyter app"""
@@ -190,6 +200,7 @@ def interactive(
         no_cache=no_cache,
         redeem_token=redeem_token,
         service_registry=registry,
+        node_id=node_id,
     )
 
     if sync_mode:
