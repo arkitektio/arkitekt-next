@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.31.0 (2025-11-13)
+
+
 ## v0.30.1 (2025-11-06)
+
+### Features
+
+- Now including node_ids to detect nodes
+  ([`ec7c6f2`](https://github.com/arkitektio/arkitekt-next/commit/ec7c6f217e90f8069a09f33337263f5444e40bdb))
 
 
 ## v0.30.0 (2025-10-26)
