@@ -12,7 +12,7 @@ from arkitekt_next.app.fakts import (
     build_token_fakts,
 )
 from .utils import create_arkitekt_next_folder
-from fakts_next.models import Manifest
+from fakts_next.models import Manifest, PublicSource
 from fakts_next.grants.remote.demanders.device_code import DeviceCodeHook
 from .app import App
 from .service_registry import ServiceBuilderRegistry, get_default_service_registry
@@ -36,6 +36,7 @@ def easy(
     instance_id: str = "main",
     node_id: Optional[str] = None,
     device_code_hook: DeviceCodeHook | None = None,
+    public_sources: Optional[List[PublicSource]] = None,
 ) -> App:
     """Creates a next app
 
@@ -124,6 +125,7 @@ def easy(
         logo=logo,
         requirements=service_registry.get_requirements(),
         node_id=node_id,
+        public_sources=public_sources if public_sources else [],
     )
 
     if token:

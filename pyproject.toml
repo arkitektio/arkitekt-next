@@ -7,7 +7,7 @@ requires-python = ">=3.11,<4"
 readme = "README.md"
 license = "MIT"
 dependencies = [
-    "fakts-next>=2.3.0",
+    "fakts-next>=2.4.0",
     "dokker>=2.3.0",
     "koil>=2.0.6",
     "rath>=3.7.0",
@@ -80,7 +80,7 @@ dev-dependencies = [
     "kraph>=0.5.1",
     "fluss-next>=0.7.0",
     "lovekit>=1.1.0",
-    "unlok-next>=1.1.1",
+    "unlok-next>=1.3.0",
     "reaktion-next>=0.4.0",
 ]
 
