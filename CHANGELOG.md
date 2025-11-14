@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.31.1 (2025-11-14)
+
+### Bug Fixes
+
+- Now with public sources
+  ([`ae4f69a`](https://github.com/arkitektio/arkitekt-next/commit/ae4f69a1e07c85e882da11c08277b164e3139c51))
+
+
 ## v0.31.0 (2025-11-13)
 
 
