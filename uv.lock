@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.31.0"
+version = "0.31.1"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -271,7 +271,7 @@ requires-dist = [
     { name = "fakts-next", specifier = ">=2.4.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
-    { name = "kabinet", specifier = ">=0.9.0" },
+    { name = "kabinet", specifier = ">=0.10.0" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.6.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.6.0" },
     { name = "koil", specifier = ">=2.0.6" },
@@ -284,7 +284,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.7.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.18.3" },
+    { name = "rekuest-next", specifier = ">=0.19.0" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -1093,15 +1093,15 @@ wheels = [
 
 [[package]]
 name = "kabinet"
-version = "0.9.0"
+version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f2/72/8468133b44bcb68c2be09928c2521cfd5e3329836dee161d0602dfa64c81/kabinet-0.9.0.tar.gz", hash = "sha256:212ee7ec8f1836724f8ab5b7980181cc303fc932ad3c74d2cd76ff027383f7de", size = 24592, upload-time = "2025-10-04T17:18:18.855Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/50/df/4032bcb604a1a6479bc98530986b8d699b1d8b13661737aa60888d5c8a37/kabinet-0.10.0.tar.gz", hash = "sha256:7b6c279bd5d0c6a39c3822d229b1c6b390fb7672eafa0afe0458ddb024144185", size = 25060, upload-time = "2025-11-14T15:28:34.749Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/6a/4605db87f76d6132f3a25ceced4d2bf91f9fba6bf848e2c5063a947845b5/kabinet-0.9.0-py3-none-any.whl", hash = "sha256:a05f01bf0d2bad42497aea8c32900e049e4b817dbfc0116474b7fd1663dddc29", size = 27758, upload-time = "2025-10-04T17:18:17.608Z" },
+    { url = "https://files.pythonhosted.org/packages/57/92/f621c9257cee2b9a91d551d19ee158374f7081a4f626e7ec2cbc9090d942/kabinet-0.10.0-py3-none-any.whl", hash = "sha256:300ce7b4431bb1f2796d1a8a68cac49291d9e691e599f2e2d451276a406efedf", size = 28188, upload-time = "2025-11-14T15:28:33.914Z" },
 ]
 
 [[package]]
@@ -1919,7 +1919,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "0.18.3"
+version = "0.19.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -1932,9 +1932,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/45/81/2b9922b7d9065a8c49ce6d7205dca9cfc54b9a89826db64f4182426f8c7f/rekuest_next-0.18.3.tar.gz", hash = "sha256:e46699ff19bd0bd0338a7c3a4e89e33995030ebf1f988e16d4bdeadedea6f25b", size = 109709, upload-time = "2025-11-13T12:42:53.448Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/c4/19a57d5b82fa563fe43654b031c661d079f14917a54df142327a3b45f394/rekuest_next-0.19.0.tar.gz", hash = "sha256:9b1c439ee5fa0ef5f26e84fac4898a218a3cfe540e86a27bdbdbc4d641934348", size = 112036, upload-time = "2025-11-15T12:33:24.313Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d8/2f/5332bee06974be20e4786a88d5a0c18cc17c00e23193578b69bc9419ab70/rekuest_next-0.18.3-py3-none-any.whl", hash = "sha256:1c95f16431e51f991fb53ab9eabb4c021206176c179162772826e9c25a4cd7d2", size = 147346, upload-time = "2025-11-13T12:42:51.955Z" },
+    { url = "https://files.pythonhosted.org/packages/60/1e/f66375e6d081ef5d4ab820e46f0ed77fc9081486c8f0558edbfb93f88815/rekuest_next-0.19.0-py3-none-any.whl", hash = "sha256:b226f7c934a360e8cea1d3f27dc1731960ad78a68e337b083cb7881986ed4118", size = 149982, upload-time = "2025-11-15T12:33:23.017Z" },
 ]
 
 [[package]]
