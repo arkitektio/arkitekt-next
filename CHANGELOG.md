@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.32.0 (2025-11-23)
+
+### Features
+
+- New rekuest-update
+  ([`6aa0335`](https://github.com/arkitektio/arkitekt-next/commit/6aa03351d2d87eb5fe9c9517678ac2601ddcc006))
+
+- Update to rekuest-next ;)
+  ([`55215f8`](https://github.com/arkitektio/arkitekt-next/commit/55215f87f4fb5b218ac00e13bc5e800fe0821209))
+
+
 ## v0.31.1 (2025-11-14)
 
 ### Bug Fixes
