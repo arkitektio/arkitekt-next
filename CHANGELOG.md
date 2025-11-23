@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.33.0 (2025-11-23)
+
+### Features
+
+- Fix background tasks handling
+  ([`ce8298f`](https://github.com/arkitektio/arkitekt-next/commit/ce8298f0eecd0eb6f7bef89407fa5b5e892976b5))
+
+
 ## v0.32.0 (2025-11-23)
 
 ### Features
