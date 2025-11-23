@@ -121,7 +121,7 @@ wheels = [
 
 [[package]]
 name = "alpaka"
-version = "0.4.0"
+version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -129,9 +129,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/47/94/a8f42e41aac63ed99511ff016539a8ea5d5d9bd67959fdf74946a05aebf1/alpaka-0.4.0.tar.gz", hash = "sha256:39e79575e94b0101e9f6a28dd14c371f44bf93eced04c083123ae0ae843767b2", size = 13284, upload-time = "2025-06-27T12:41:32.202Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1f/37/0b79bc3af8290f90d704691977ce55afd29bd4c29c320695ffa649e4fec8/alpaka-0.5.0.tar.gz", hash = "sha256:504987f4fefe03c2ecc88981b1edd0a58919f079169c08754c3c0a56e49665c4", size = 14940, upload-time = "2025-11-23T11:37:04.262Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/aa/66663fbc85f9eddf05f69a28af89a7bc0fc5cd438110bcdccb75e7a489e4/alpaka-0.4.0-py3-none-any.whl", hash = "sha256:bea768b8f8c90de48d1707be4f6f5d4f343e1bfca27e3ce24709cb160e9a64ca", size = 14816, upload-time = "2025-06-27T12:41:31.07Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/70/68cb90314ab48e483a808356fcc5c141259b731fc1ae29d66665922f850c/alpaka-0.5.0-py3-none-any.whl", hash = "sha256:b4a75e532e02628da9703c47ebb3e862191b3f0135da083928c9197c18a4319e", size = 16732, upload-time = "2025-11-23T11:37:03.147Z" },
 ]
 
 [[package]]
@@ -284,7 +284,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.7.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.19.0" },
+    { name = "rekuest-next", specifier = ">=0.23.0" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -302,7 +302,7 @@ provides-extras = ["cli", "alpaka", "kraph", "mikro", "kabinet", "elektro", "flu
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "alpaka", specifier = ">=0.4.0" },
+    { name = "alpaka", specifier = ">=0.5.0" },
     { name = "arkitekt-server", specifier = ">=1.7" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
@@ -1919,7 +1919,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "0.19.0"
+version = "0.23.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -1932,9 +1932,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5a/c4/19a57d5b82fa563fe43654b031c661d079f14917a54df142327a3b45f394/rekuest_next-0.19.0.tar.gz", hash = "sha256:9b1c439ee5fa0ef5f26e84fac4898a218a3cfe540e86a27bdbdbc4d641934348", size = 112036, upload-time = "2025-11-15T12:33:24.313Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6d/e3/a586ce311a14975355f62b111a7a836cbfa0949c17edb7c835ef6ac5b5ae/rekuest_next-0.23.0.tar.gz", hash = "sha256:37fa0472682653d41edd63a991075d534d5068a5bdb7929b5a77c1538c1ef16b", size = 111537, upload-time = "2025-11-23T11:52:18.254Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/1e/f66375e6d081ef5d4ab820e46f0ed77fc9081486c8f0558edbfb93f88815/rekuest_next-0.19.0-py3-none-any.whl", hash = "sha256:b226f7c934a360e8cea1d3f27dc1731960ad78a68e337b083cb7881986ed4118", size = 149982, upload-time = "2025-11-15T12:33:23.017Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/e8/6ff712b2c622c2524594ce0bd5a2a777d7f25a9aabfa9d0b8806b99077b6/rekuest_next-0.23.0-py3-none-any.whl", hash = "sha256:e5bb60fa46e6350fdb640736c9f6785e6ac2de74d8ca13a16f34f7284cf6f1d8", size = 149818, upload-time = "2025-11-23T11:52:16.74Z" },
 ]
 
 [[package]]
