@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.34.0 (2025-11-29)
+
+### Features
+
+- Minor updates
+  ([`7537143`](https://github.com/arkitektio/arkitekt-next/commit/7537143b77982549dae4177b02e127f211bd8d82))
+
+
 ## v0.33.0 (2025-11-23)
 
 ### Features
