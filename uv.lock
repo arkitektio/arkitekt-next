@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.32.0"
+version = "0.33.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -281,10 +281,10 @@ requires-dist = [
     { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.7.2" },
     { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.7.2" },
     { name = "platformdirs", specifier = ">=4.5.0" },
-    { name = "rath", specifier = ">=3.7.0" },
+    { name = "rath", specifier = ">=3.8.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=0.24.0" },
+    { name = "rekuest-next", specifier = ">=0.24.2" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -318,7 +318,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=4.0.0,<5" },
     { name = "python-semantic-release", specifier = ">=9.21.1" },
     { name = "qtpy", specifier = ">=2.4.3" },
-    { name = "reaktion-next", specifier = ">=0.4.0" },
+    { name = "reaktion-next", specifier = ">=0.4.1" },
     { name = "rekuest-next", specifier = ">=0.13.1" },
     { name = "rich-click", specifier = ">=1.8" },
     { name = "unlok-next", specifier = ">=1.3.0" },
@@ -1882,16 +1882,16 @@ wheels = [
 
 [[package]]
 name = "rath"
-version = "3.7.0"
+version = "3.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "graphql-core" },
     { name = "koil" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9e/55/2875a493007a9c54afd6173fc69b0aa6d1d520e727d1ede0b9f02c72aab9/rath-3.7.0.tar.gz", hash = "sha256:5c901bb6e84b28936f0bd9763799c26c7ada8e221b711e0b5f5376b8eae501ad", size = 33569, upload-time = "2025-08-22T13:25:18.974Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/86/9e/92999dcaaeef969c9beb864c901630763b605df4bff6ba91a6cad51d13a2/rath-3.8.0.tar.gz", hash = "sha256:a0662c56d446946e50b2c12b2c44854ef82c060c6aa0198e962c29481edadacf", size = 34144, upload-time = "2025-11-29T12:41:47.969Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/05/6a/535b5f0c340416cc26e66c591437c864e0dd30ca35bebb5e9f551da9038e/rath-3.7.0-py3-none-any.whl", hash = "sha256:56697f9bdb02928030419c43c0ebd0e5fcc3184f9def2d840d2ae6282b5cf5d6", size = 50137, upload-time = "2025-08-22T13:25:17.838Z" },
+    { url = "https://files.pythonhosted.org/packages/2f/93/bf5eb0c9973a40a525ed35753cc79b806eb82e269c5d60d3e248bd7da165/rath-3.8.0-py3-none-any.whl", hash = "sha256:c6c609c69bbf1d1e69baa15b74680583a637eb168edfe66a9138aea221ce7ad6", size = 50737, upload-time = "2025-11-29T12:41:49.121Z" },
 ]
 
 [[package]]
@@ -1905,21 +1905,21 @@ wheels = [
 
 [[package]]
 name = "reaktion-next"
-version = "0.4.0"
+version = "0.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fluss-next" },
     { name = "rath" },
     { name = "rekuest-next" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/25/8a/a251bbae2b48783d233c69cd767ffc5bb641820ba954d311c271c0dc6cc6/reaktion_next-0.4.0.tar.gz", hash = "sha256:7b2e12fc0c9394762eb95a118d6150a60bf76252c1caba6d6c5eb178caeca044", size = 17859, upload-time = "2025-08-03T08:44:22.794Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/66/43/8b6310b972019f86ec8b3a27a0f09671e910c8f96a38105ecbf1449a2c65/reaktion_next-0.4.1.tar.gz", hash = "sha256:68f7be4239e175a0a20de2fbfb5d18fb5adfc0f55e6cf677aa29f2f9da251348", size = 17943, upload-time = "2025-11-24T18:17:27.186Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/80/dc4520ad4961bcd1d6b373aa023064fd554717a9c49056fb788ef0f02fa9/reaktion_next-0.4.0-py3-none-any.whl", hash = "sha256:2399ce2e20acd025f3510894a7f54134aa1b5330a9d9674cf56880466c7f291c", size = 33041, upload-time = "2025-08-03T08:44:21.557Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/16/3e3f15d4b1508323f1043b004047af5a71ce05d3665901dfc51c73615ffb/reaktion_next-0.4.1-py3-none-any.whl", hash = "sha256:55567a0f6ebd0590e1bc03faa97c9b4279a66ff0fd318654b1925476e3443937", size = 33145, upload-time = "2025-11-24T18:17:26.319Z" },
 ]
 
 [[package]]
 name = "rekuest-next"
-version = "0.24.0"
+version = "0.24.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -1932,9 +1932,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/aa/74/c06a6b0cf818f8eec51dae2b79dbc4c9219e7e3407d601ed1db6c456afdf/rekuest_next-0.24.0.tar.gz", hash = "sha256:ada3f5af62e3c07f015ac6b0388bdf84d745be541f156d448927ddba4ae529f0", size = 111648, upload-time = "2025-11-23T12:52:33.506Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3b/fe/8ca3d795d42b45fad763f99516f335ee0805211c894b7cbdb733a7396def/rekuest_next-0.24.2.tar.gz", hash = "sha256:afa06b23b876be36c09878912a99edd8a6db483a9869fae3f3ec341265d37d47", size = 112138, upload-time = "2025-11-29T12:41:20.677Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/49/bcb154bc2656b9b55d70475a84a039053b767d205f40a7b30650e67635c8/rekuest_next-0.24.0-py3-none-any.whl", hash = "sha256:ecc4d00a945b6d87d58719e95f1b585f6cddd4a26ffc352810d92ac96dbbe3c2", size = 149980, upload-time = "2025-11-23T12:52:32.009Z" },
+    { url = "https://files.pythonhosted.org/packages/44/8f/a2087faa0c2506aeddaa67e1d7d71f9cda0f2a9f064c8b9bde1def7f2f9a/rekuest_next-0.24.2-py3-none-any.whl", hash = "sha256:a349c21c90723622ebe88af24672710a723696176f5e1a9fedb3ad32f05d0962", size = 150746, upload-time = "2025-11-29T12:41:19.189Z" },
 ]
 
 [[package]]
