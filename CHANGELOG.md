@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.35.0 (2025-11-29)
+
+### Features
+
+- Sync node_id to machine_id
+  ([`200c6fa`](https://github.com/arkitektio/arkitekt-next/commit/200c6fafb80800b1e2ed4d86e411bf23cb85cbe0))
+
+
 ## v0.34.0 (2025-11-29)
 
 ### Features
