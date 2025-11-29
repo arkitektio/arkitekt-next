@@ -11,14 +11,17 @@ from arkitekt_next.app.fakts import (
 )
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from arkitekt_next.init_registry import InitHookRegistry, get_default_init_hook_registry
+from arkitekt_next.node_id import get_or_set_node_id
 from arkitekt_next.qt.types import QtApp
 from arkitekt_next.service_registry import (
     ServiceBuilderRegistry,
     get_default_service_registry,
 )
 from arkitekt_next.utils import create_arkitekt_next_folder
-from fakts_next.models import Manifest
+from fakts_next.models import Manifest, PublicSource
+import logging
 
+logger = logging.getLogger(__name__)
 
 def qt(
     identifier: str | None = None,
@@ -31,8 +34,10 @@ def qt(
     token: Optional[str] = None,
     no_cache: bool = False,
     redeem_token: Optional[str] = None,
+    node_id: Optional[str] = None,
     app_kind: str = "development",
     service_registry: Optional[ServiceBuilderRegistry] = None,
+    public_sources: Optional[List[PublicSource]] = None,
     description: Optional[str] = None,
     instance_id: str = "main",
     init_hook_registry: Optional[InitHookRegistry] = None,
@@ -112,12 +117,20 @@ def qt(
     url = os.getenv("FAKTS_URL", url)
     token = os.getenv("FAKTS_TOKEN", token)
 
-    manifest = Manifest(
+    
+    
+    if node_id is None:
+        node_id = get_or_set_node_id()
+        logger.debug(f"Node id not set: {node_id}")
+        
+        manifest = Manifest(
         version=version,
         identifier=identifier,
         scopes=scopes if scopes else ["openid"],
         logo=logo,
         requirements=service_registry.get_requirements(),
+        node_id=node_id,
+        public_sources=public_sources if public_sources else [],
     )
 
     if token:
@@ -156,6 +169,7 @@ def qt(
 
     app = QtApp(
         parent=parent,
+        manifest=manifest,
         fakts=fakts_next,
         services=service_registry.build_service_map(fakts=fakts_next, params=params),
     )

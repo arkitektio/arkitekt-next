@@ -19,6 +19,7 @@ dependencies = [
     "watchfiles>=1.0.5",
     "turms>=0.10.1",
     "platformdirs>=4.5.0",
+    "py-machineid>=0.8.1",
 ]
 
 [project.optional-dependencies]

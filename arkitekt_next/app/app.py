@@ -14,6 +14,7 @@ from typing import Any, Dict, TYPE_CHECKING
 from koil import unkoil
 from koil.composition import Composition
 from fakts_next import Fakts
+from fakts_next.models import Manifest
 
 
 if TYPE_CHECKING:
@@ -27,6 +28,7 @@ class App(Composition):
     """An app that is built with the easy builder"""
 
     fakts: Fakts
+    manifest: Manifest
     services: Dict[str, Any]
 
     @property

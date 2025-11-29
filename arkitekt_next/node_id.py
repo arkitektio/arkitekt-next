@@ -2,6 +2,7 @@ import os
 import uuid
 from platformdirs import user_config_dir
 import logging
+from machineid import id
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,20 @@ def get_or_set_node_id() -> str | None:
     Returns:
         str: The unique node ID.
     """
+    
+    try:
+        os.getenv("ARKITEKT_NODE_ID", None) 
+        node_id = os.getenv("ARKITEKT_NODE_ID")
+        if node_id:
+            return node_id
+    except Exception as e:
+        logger.warning(f"Could not get ARKITEKT_NODE_ID from environment: {e}")
+            
+    
+    try:
+        return id()
+    except Exception as e:
+        logger.warning(f"Could not get machine ID from the os-level: {e}")
 
     try:
         config_dir = user_config_dir(APP_NAME, APP_AUTHOR)
@@ -37,6 +52,5 @@ def get_or_set_node_id() -> str | None:
         return node_id
 
     except Exception as e:
-        logger.warning(f"Could not get or set node ID: {e}")
-        print(f"Could not get or set node ID: {e}")
+        logger.warning(f"Could not get or set node ID in the user directory: {e}")
         return None

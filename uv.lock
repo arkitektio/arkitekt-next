@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.33.0"
+version = "0.34.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -177,6 +177,7 @@ dependencies = [
     { name = "kabinet" },
     { name = "koil" },
     { name = "platformdirs" },
+    { name = "py-machineid" },
     { name = "rath" },
     { name = "rekuest-next" },
     { name = "rich-click" },
@@ -281,6 +282,7 @@ requires-dist = [
     { name = "mikro-next", marker = "extra == 'all'", specifier = ">=0.7.2" },
     { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.7.2" },
     { name = "platformdirs", specifier = ">=4.5.0" },
+    { name = "py-machineid", specifier = ">=0.8.1" },
     { name = "rath", specifier = ">=3.8.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
@@ -1579,6 +1581,18 @@ wheels = [
 ]
 
 [[package]]
+name = "py-machineid"
+version = "0.8.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "winregistry", marker = "sys_platform == 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d7/2f/1b2b44dd362b8542df41417cb93162287f677585723386b981f602d0cd1c/py-machineid-0.8.1.tar.gz", hash = "sha256:e50416221235c874759e19cb64e8499def12afc2bdffd377bfd68f477f799dc8", size = 4608, upload-time = "2025-10-08T13:32:49.552Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/da/fd/c0c54a572399922fe97aebdc3adf2b27d5278bf30cecaa176a314d914adc/py_machineid-0.8.1-py3-none-any.whl", hash = "sha256:b8056f4e00c6b14caa60fcbbe3787829399eed5f352ecc428bc778d699347cf3", size = 4913, upload-time = "2025-10-08T13:32:48.811Z" },
+]
+
+[[package]]
 name = "pycparser"
 version = "2.22"
 source = { registry = "https://pypi.org/simple" }
@@ -2322,6 +2336,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/86/eb/20b6cdf273913d0ad05a6a14aed4b9a85591c18a987a3d47f20fa13dcc47/websockets-15.0.1-cp313-cp313-win32.whl", hash = "sha256:ba9e56e8ceeeedb2e080147ba85ffcd5cd0711b89576b83784d8605a7df455fa", size = 176393, upload-time = "2025-03-05T20:02:53.814Z" },
     { url = "https://files.pythonhosted.org/packages/1b/6c/c65773d6cab416a64d191d6ee8a8b1c68a09970ea6909d16965d26bfed1e/websockets-15.0.1-cp313-cp313-win_amd64.whl", hash = "sha256:e09473f095a819042ecb2ab9465aee615bd9c2028e4ef7d933600a8401c79561", size = 176837, upload-time = "2025-03-05T20:02:55.237Z" },
     { url = "https://files.pythonhosted.org/packages/fa/a8/5b41e0da817d64113292ab1f8247140aac61cbf6cfd085d6a0fa77f4984f/websockets-15.0.1-py3-none-any.whl", hash = "sha256:f7a866fbc1e97b5c617ee4116daaa09b722101d4a3c170c787450ba409f9736f", size = 169743, upload-time = "2025-03-05T20:03:39.41Z" },
+]
+
+[[package]]
+name = "winregistry"
+version = "2.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/86/94/ddc339d2562267af7d25d5067874f7df8c6c19ab9dd976fa830982b1c398/winregistry-2.1.2.tar.gz", hash = "sha256:50260e1aaba4116f707f86a4e287ffcb1eeae7dc0a0883c6d1776017e693fc69", size = 9538, upload-time = "2025-10-09T09:25:07.391Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/52/dd/5a18d9fbf9a3d69b40e395d80779dfaeda77b98c946df36bf7df41ddcaa5/winregistry-2.1.2-py3-none-any.whl", hash = "sha256:e142548f56fc1fc6b83ddf88baca2e9e18cd6a266d9e00f111e54977dee768cf", size = 8507, upload-time = "2025-10-09T09:25:05.82Z" },
 ]
 
 [[package]]

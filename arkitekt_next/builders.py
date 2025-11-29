@@ -20,6 +20,8 @@ from .init_registry import InitHookRegistry, get_default_init_hook_registry
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 
+logger = logging.getLogger(__name__)
+
 def easy(
     identifier: str | None = None,
     version: str = "0.0.1",
@@ -114,9 +116,8 @@ def easy(
     token = os.getenv("FAKTS_TOKEN", token)
 
     if node_id is None:
-        node_id = os.getenv("ARKITEKT_NODE_ID", None)
-        if node_id is None:
-            node_id = get_or_set_node_id()
+        node_id = get_or_set_node_id()
+        logger.debug(f"Node id not set: {node_id}")
 
     manifest = Manifest(
         version=version,
@@ -165,6 +166,7 @@ def easy(
 
     app = App(
         fakts=fakts_next,
+        manifest=manifest,
         services=service_registry.build_service_map(fakts=fakts_next, params=params),
     )
 
