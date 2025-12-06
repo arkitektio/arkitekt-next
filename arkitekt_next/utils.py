@@ -1,5 +1,4 @@
 import os
-from fakts_next.models import Manifest
 import json
 
 
@@ -40,14 +39,19 @@ def create_arkitekt_next_folder(with_cache: bool = True) -> str:
     return os.path.abspath(".arkitekt_next")
 
 
+from typing import Any
+
 def create_devcontainer_file(
-    manifest: Manifest,
+    manifest: Any,
     flavour: str,
     docker_file_path: str,
     devcontainer_path: str = ".devcontainer",
 ) -> None:
     """Creates a devcontainer.json file that matches the docker file
     inside the flavour folder.
+
+    It also adds the python extension and the arkitekt extension to the
+    devcontainer.
 
     Parameters
     ----------
@@ -72,5 +76,14 @@ def create_devcontainer_file(
         "../.."  # This is the root of the project
     )
     devcontainer_content["runArgs"] = ["--network=host"]
+    devcontainer_content["customizations"] = {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "jhnnsrs.arkitekt-next",
+            ]
+        }
+    }
 
     json.dump(devcontainer_content, open(devcontainer_file, "w"), indent=4)

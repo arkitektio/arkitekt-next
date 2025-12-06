@@ -1,0 +1,7 @@
+author: jhnnsrs
+entrypoint: app
+identifier: this
+package_manager: uv
+scopes:
+- read
+version: 0.0.1

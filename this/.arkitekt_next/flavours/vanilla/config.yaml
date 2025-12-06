@@ -1,0 +1,11 @@
+build_command:
+- docker
+- build
+- -t
+- '{tag}'
+- -f
+- '{dockerfile}'
+- .
+description: This is a vanilla flavour
+dockerfile: Dockerfile
+selectors: []
