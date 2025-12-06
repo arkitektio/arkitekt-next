@@ -137,3 +137,30 @@ def test_kabinet_init_uv():
         with open(".arkitekt_next/flavours/uv_flavour/Dockerfile") as f:
             content = f.read()
             assert "COPY --from=ghcr.io/astral-sh/uv" in content
+
+def test_kabinet_flavour_commands():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        # Initialize project
+        runner.invoke(cli, ["init", "--identifier", "com.test.app", "--version", "0.0.1", "--author", "me", "--entrypoint", "app"])
+        
+        # Test flavour add (alias for init)
+        result = runner.invoke(cli, ["kabinet", "flavour", "add", "--flavour", "gpu", "--description", "GPU flavour"], input="n\n")
+        if result.exit_code != 0:
+            print(result.output)
+            print(result.exception)
+        assert result.exit_code == 0
+        assert os.path.exists(".arkitekt_next/flavours/gpu/config.yaml")
+        
+        # Test selector add
+        result = runner.invoke(cli, ["kabinet", "selector", "add", "gpu", "--kind", "cuda", "--cuda-cores", "100"])
+        if result.exit_code != 0:
+            print(result.output)
+            print(result.exception)
+        assert result.exit_code == 0
+        
+        # Verify selector was added
+        with open(".arkitekt_next/flavours/gpu/config.yaml") as f:
+            content = f.read()
+            assert "kind: cuda" in content
+            assert "cuda_cores: 100" in content
