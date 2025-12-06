@@ -114,6 +114,12 @@ def get_default_package_manager():
     is_flag=True,
     default=False,
 )
+@click.option(
+    "--with-extra",
+    help="The extras to install with arkitekt-next. Defaults to all.",
+    multiple=True,
+    default=["all"],
+)
 @click.pass_context
 def init(
     ctx,
@@ -129,6 +135,7 @@ def init(
     overwrite_app: bool,
     package_manager: str,
     yes: bool,
+    with_extra: List[str],
 ):
     """Initializes an ArkitektNext app
 
@@ -219,9 +226,12 @@ def init(
                 check=True,
                 cwd=os.getcwd(),
             )
-            subprocess.run(
-                ["uv", "add", "arkitekt-next"], check=True, cwd=os.getcwd()
+            extras_string = ",".join(with_extra)
+            package_spec = (
+                f"arkitekt-next[{extras_string}]" if with_extra else "arkitekt-next"
             )
+
+            subprocess.run(["uv", "add", package_spec], check=True, cwd=os.getcwd())
             if os.path.exists("hello.py") and entrypoint != "hello":
                 os.remove("hello.py")
         else:

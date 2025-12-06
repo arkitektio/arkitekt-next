@@ -21,7 +21,7 @@ from mikro_next.api.schema import from_array_like
 import xarray as xr
 import numpy as np
 
-app = easy("upload_test", url="http://localhost:80")
+app = easy("upload_test", url="localhost")
 # Create a new app with the name "upload_test", we here use the
 # default url "http://localhost:80", adjust this if you are running
 # the server on a different port or host ()
