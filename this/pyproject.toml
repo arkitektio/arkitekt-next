@@ -1,9 +1,0 @@
-[project]
-name = "this"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "arkitekt-next>=0.35.0",
-]

@@ -19,7 +19,7 @@ def missing_install(name: str, error: Exception):
 
 
 try:
-    from rekuest_next.register import register
+    from rekuest_next.register import register, register_test
     from rekuest_next.agents.hooks.background import background
     from rekuest_next.agents.hooks.startup import startup
     from rekuest_next.agents.context import context
@@ -38,10 +38,12 @@ try:
         aiterate_raw,
         find,
     )
-    from rekuest_next.declare import declare, protocol
+    from rekuest_next.declare import declare, protocol, agent_protocol
     from .inspect import inspect
 except ImportError as e:
     raise e
+    model = missing_install("rekuest_next", e)
+    register_test = missing_install("rekuest_next", e)
     inspect = missing_install("rekuest_next", e)
     publish = missing_install("rekuest_next", e)
     apublish = missing_install("rekuest_next", e)
@@ -69,6 +71,7 @@ except ImportError as e:
     aiterate_raw = missing_install("rekuest_next", e)
     aiterate = missing_install("rekuest_next", e)
     iterate = missing_install("rekuest_next", e)
+    agent_protocol = missing_install("rekuest_next", e)
 
 
 __all__ = [

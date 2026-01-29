@@ -483,19 +483,65 @@ class MagicBar(QtWidgets.QWidget):
         self.magicb.setDisabled(False)
         self.magicb.setText("Cancel Provide..")
 
+    def get_endpoints(self) -> list[str]:
+        settings = QtCore.QSettings("arkitekt_next", "magic_bar")
+        history = settings.value("history", [], type=list)
+        # Ensure they are strings
+        history = [str(h) for h in history]
+
+        defaults = ["go.arkitekt.live", "http://127.0.0.1:8000"]
+        # Maybe check current url
+        try:
+            current = self.app.fakts.grant.discovery.url
+            if current:
+                defaults.insert(0, current)
+        except Exception:
+            pass
+
+        # Merge and deduplicate
+        all_endpoints = []
+        seen = set()
+        for e in history + defaults:
+            if e not in seen:
+                all_endpoints.append(e)
+                seen.add(e)
+        return all_endpoints
+
+    def add_to_history(self, url: str) -> None:
+        settings = QtCore.QSettings("arkitekt_next", "magic_bar")
+        history = settings.value("history", [], type=list)
+        history = [str(h) for h in history]
+        if url in history:
+            history.remove(url)
+        history.insert(0, url)
+        settings.setValue("history", history)
+
+    def connect_to_endpoint(self, url: str) -> None:
+        try:
+            self.app.fakts.grant.discovery.url = url
+        except Exception as e:
+            logger.error(f"Could not update fakts url: {e}")
+
+        self.add_to_history(url)
+        self.configure_task.run()
+
+    def show_endpoints_menu(self) -> None:
+        menu = QtWidgets.QMenu(self)
+
+        endpoints = self.get_endpoints()
+
+        for endpoint in endpoints:
+            action = menu.addAction(endpoint)
+            action.triggered.connect(
+                lambda checked, e=endpoint: self.connect_to_endpoint(e)
+            )
+
+        menu.exec_(self.magicb.mapToGlobal(QtCore.QPoint(0, self.magicb.height())))
+
     def magic_button_clicked(self) -> None:
-        if (
-            self.process_state == ProcessState.UNKONFIGURED
-            and not self.profile.go_all_the_way_down
-        ):
-            if not self.configure_future or self.configure_future.done():
-                self.configure_future = self.configure_task.run()
-                self.magicb.setText("Cancel Configuration")
-                return
-            if not self.configure_future.done():
-                self.configure_future.cancel()
-                self.set_unkonfigured()
-                return
+        if self.process_state == ProcessState.UNKONFIGURED:
+            self.show_endpoints_menu()
+            return
 
         if (
             self.process_state == ProcessState.UNLOGGED

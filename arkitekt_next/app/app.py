@@ -42,6 +42,10 @@ class App(Composition):
         """Run the app by calling rekuest.run()"""
         return unkoil(self.rekuest.arun)
 
+    def run_test(self):
+        """Run the app tests by calling rekuest.run_tests()"""
+        return unkoil(self.rekuest.arun_tests)
+
     async def arun(self):
         """Run the app asynchronously"""
         return await self.rekuest.arun()
