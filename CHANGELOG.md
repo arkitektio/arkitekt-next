@@ -1,6 +1,31 @@
 # CHANGELOG
 
 
+## v0.36.0 (2026-01-29)
+
+### Bug Fixes
+
+- Minimal fix to stop breaking tests, this is bad
+  ([`bc54ee4`](https://github.com/arkitektio/arkitekt-next/commit/bc54ee409edf404d7e2cbe9350e85f0a880e4635))
+
+### Features
+
+- Add dev
+  ([`59c79f1`](https://github.com/arkitektio/arkitekt-next/commit/59c79f164396a2f5c0115190ab661b7110778345))
+
+- Add flavours documentation and allow the "with-extra" param
+  ([`6d93fc1`](https://github.com/arkitektio/arkitekt-next/commit/6d93fc1e4df1fb8f471b3b48710ae29cdce73b21))
+
+- Add new stuff
+  ([`088ab05`](https://github.com/arkitektio/arkitekt-next/commit/088ab0590f298422bb59ff8ce548c1521cf273dc))
+
+- Add selector creator
+  ([`f628fa6`](https://github.com/arkitektio/arkitekt-next/commit/f628fa69e32f1caef63620b6700732a1a3d6779d))
+
+- Some more docs
+  ([`8c7f53a`](https://github.com/arkitektio/arkitekt-next/commit/8c7f53af54a95947531eb19ee6cb3fea151ab6e7))
+
+
 ## v0.35.0 (2025-11-29)
 
 ### Features
