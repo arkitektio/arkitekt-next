@@ -2,7 +2,7 @@ from typing import Generator
 import pytest
 from arkitekt_next.cli.main import cli
 from click.testing import CliRunner
-from arkitekt_server.create import temp_server, ArkitektServerConfig
+from arkitekt_server.dev import temp_server, ArkitektServerConfig
 from dokker import Deployment
 from dataclasses import dataclass
 from arkitekt_next.app import App

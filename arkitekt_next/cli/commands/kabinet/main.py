@@ -6,7 +6,7 @@ from click import Context
 class LazyGroup(click.Group):
 
     def list_commands(self, ctx):
-        return ["build", "init", "validate", "publish", "stage", "wizard"]
+        return ["build", "init", "validate", "publish", "stage", "wizard", "flavour", "selector"]
 
     def get_command(self, ctx, cmd_name):
         from .build import build
@@ -14,6 +14,8 @@ class LazyGroup(click.Group):
         from .stage import stage
         from .init import init
         from .validate import validate
+        from .flavour import flavour
+        from .selector import selector
 
         if cmd_name == "build":
             return build
@@ -25,6 +27,10 @@ class LazyGroup(click.Group):
             return publish
         elif cmd_name == "stage":
             return stage
+        elif cmd_name == "flavour":
+            return flavour
+        elif cmd_name == "selector":
+            return selector
         return None
 
 

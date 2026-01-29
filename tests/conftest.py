@@ -2,7 +2,7 @@ from typing import Generator
 import pytest
 from arkitekt_next.cli.main import cli
 from click.testing import CliRunner
-from arkitekt_server.create import temp_server, ArkitektServerConfig
+from arkitekt_server.dev import temp_server, ArkitektServerConfig
 from dokker import Deployment
 from dataclasses import dataclass
 from arkitekt_next.app import App
@@ -12,10 +12,10 @@ from arkitekt_next import easy
 from dokker import local
 
 from arkitekt_next.service_registry import get_default_service_registry
+
+
 @pytest.fixture
 def initialized_app_cli_runner():
-
-
     runner = CliRunner()
     with runner.isolated_filesystem():
         result = runner.invoke(
@@ -86,7 +86,7 @@ def running_app(arkitekt_server: Deployment) -> Generator[AppWithinDeployment, N
     async def device_code_hook(endpoint: FaktsEndpoint, device_code: str):
         
         await arkitekt_server.arun(
-            "lok", f"uv run python manage.py validatecode {device_code} --user demo --org arkitektio"
+            "lok", f"uv run python manage.py validatecode --code {device_code} --user demo --org arkitektio"
         )
         
         

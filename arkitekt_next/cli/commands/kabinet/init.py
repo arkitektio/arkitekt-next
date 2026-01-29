@@ -37,12 +37,12 @@ import os
     "--template",
     "-t",
     help="The dockerfile template to use",
-    default="vanilla",
+    default=None,
     type=click.Choice(compile_dockerfiles()),
 )
 @click.option(
     "--devcontainer",
-    "-d",
+    "-dc",
     help="Shouwld we create a devcontainer.json file?",
     is_flag=True,
     default=False,
@@ -81,6 +81,12 @@ def init(
 
     manifest = get_manifest(ctx)
 
+    if template is None:
+        if manifest.package_manager == "uv":
+            template = "uv"
+        else:
+            template = "vanilla"
+
     fl = Flavour(
         selectors=[],
         description=description,
@@ -96,7 +102,7 @@ def init(
         )
 
     with open(config_file, "w") as file:
-        yaml.dump(fl.dict(), file)
+            yaml.dump(fl.model_dump(), file)
 
     with open(build_relative_dir("dockerfiles", f"{template}.dockerfile"), "r") as f:
         dockerfile_content = f.read()

@@ -34,7 +34,7 @@ class MainWindow(QWidget):
 
         self.init_ui()
 
-    def show_image(self, arr: np.ndarray[Any, Any]):
+    def show_image(self, arr: np.ndarray[Any, Any]) -> None:
         """Display the provided `Image` using matplotlib.
 
         The `image.data` is typically a dask array; compute it to get a numpy
@@ -57,7 +57,8 @@ class MainWindow(QWidget):
             # Keep UI responsive and log errors
             print("Failed to show image with matplotlib:", e)
 
-    def init_ui(self):
+    def init_ui(self) -> None:
+        """ Init the UI components """
         self.setWindowTitle("Basic Qt Application")
         self.setGeometry(300, 300, 300, 200)
 
@@ -70,13 +71,20 @@ class MainWindow(QWidget):
         self.setLayout(layout)
 
     def generate_random_image(self) -> np.ndarray[Any, Any]:
+        """Generate a random image using an Arkitekt action
+        
+        Returns
+        -------
+        np.ndarray
+            The generated image as a numpy array
+        """
         action = find(
-            hash="4df8e256536caceb577d35a5766810371f767ed2c434f8dabb82a24f68f8045f"
+            "4df8e256536caceb577d35a5766810371f767ed2c434f8dabb82a24f68f8045f"
         )  # finds an arktiekt action by its hash
 
         image: Image = action(width=200, height=400)  # calls the action blockingly
 
-        arr = image.data.sel(c=0, z=0, t=0).compute()  # Select first channel, z, t
+        arr = image.data.sel(c=0, z=0, t=0).to_numpy()
         return arr
 
     def on_button_click(self):

@@ -60,11 +60,12 @@ def cli(ctx):
     console = Console()
     set_console(ctx, console)
 
-    create_arkitekt_next_folder()
+    if ctx.invoked_subcommand != "init":
+        create_arkitekt_next_folder()
 
-    manifest = load_manifest()
-    if manifest:
-        set_manifest(ctx, manifest)
+        manifest = load_manifest()
+        if manifest:
+            set_manifest(ctx, manifest)
 
     pass
 

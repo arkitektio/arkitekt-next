@@ -1,0 +1,6 @@
+author: jhnnsrs
+entrypoint: app
+identifier: arkitekt_next
+scopes:
+- read
+version: 0.0.1

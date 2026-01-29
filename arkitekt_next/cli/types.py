@@ -17,6 +17,7 @@ class Manifest(BaseModel):
     logo: Optional[str] = None
     entrypoint: str
     scopes: List[str]
+    package_manager: Literal["pip", "uv"] = "pip"
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
     @field_validator("version", mode="before")
