@@ -3,6 +3,7 @@ import pytest
 from arkitekt_next.cli.main import cli
 from click.testing import CliRunner
 from arkitekt_server.dev import temp_server, ArkitektServerConfig
+from arkitekt_server.config.server import LokConfig
 from dokker import Deployment
 from dataclasses import dataclass
 from arkitekt_next.app import App
@@ -48,8 +49,7 @@ def arkitekt_server() -> Generator[Deployment, None, None]:
     
     config = ArkitektServerConfig()
     
-    
-    with temp_server() as temp_path:
+    with temp_server(config) as temp_path:
         
         setup = local(temp_path / "docker-compose.yaml")
         
@@ -60,6 +60,8 @@ def arkitekt_server() -> Generator[Deployment, None, None]:
             max_retries=20,
         )
         with setup as setup:
+            
+            setup.pull()
             setup.down()
             
             
@@ -86,7 +88,7 @@ def running_app(arkitekt_server: Deployment) -> Generator[AppWithinDeployment, N
     async def device_code_hook(endpoint: FaktsEndpoint, device_code: str):
         
         await arkitekt_server.arun(
-            "lok", f"uv run python manage.py validatecode --code {device_code} --user demo --org arkitektio"
+            "lok", f"uv run python manage.py validatecode --code {device_code} --user demo --org arkitektio --composition "
         )
         
         
