@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.37.0 (2026-04-02)
+
+### Bug Fixes
+
+- Entrypoint rewrite for run dev
+  ([`96197da`](https://github.com/arkitektio/arkitekt-next/commit/96197daa51cbe53890edfc20c5f401d34f1a0db4))
+
+### Features
+
+- Add new arkitekt-server
+  ([`4d67743`](https://github.com/arkitektio/arkitekt-next/commit/4d67743d54a7466cf4f4a16bad603783eb12b231))
+
+
 ## v0.36.0 (2026-01-29)
 
 ### Bug Fixes
