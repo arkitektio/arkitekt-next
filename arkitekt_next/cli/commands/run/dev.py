@@ -3,7 +3,6 @@ from importlib import import_module, reload
 import asyncio
 
 from click import Context
-from arkitekt_next import App
 from watchfiles import awatch, Change
 from rich.panel import Panel
 from rich.console import Console
@@ -11,6 +10,7 @@ from watchfiles.filters import PythonFilter
 import os
 import sys
 import inspect
+from pathlib import Path
 from rekuest_next.definition.registry import get_default_definition_registry
 from rekuest_next.agents.hooks.registry import get_default_hook_registry
 from typing import MutableSet, Tuple, Any, Set
@@ -35,16 +35,16 @@ from arkitekt_next.cli.vars import get_console, get_manifest
 class EntrypointFilter(PythonFilter):
     """Checks if the entrypoint is changed"""
 
-    def __init__(self, entrypoint: str, *args, **kwargs) -> None:
+    def __init__(self, entrypoint_real_path: str, *args, **kwargs) -> None:
         """A filter that checks if the entrypoint is changed
 
         Parameters
         ----------
-        entrypoint : str
+        entrypoint_real_path : str
             The entrypoint to check
         """
         super().__init__(*args, **kwargs)
-        self.entrypoint = entrypoint
+        self.entrypoint_real_path = os.path.normpath(entrypoint_real_path)
 
     def __call__(self, change: Change, path: str) -> bool:
         """Checks if any of the python filters are changed
@@ -65,10 +65,7 @@ class EntrypointFilter(PythonFilter):
         if not x:
             return False
 
-        basename = os.path.basename(path)
-        module_name = basename.split(".")[0]
-
-        return module_name == self.entrypoint
+        return os.path.normpath(os.path.realpath(path)) == self.entrypoint_real_path
 
 
 class DeepFilter(PythonFilter):
@@ -168,6 +165,34 @@ def is_entrypoint_change(
     return False
 
 
+def resolve_entrypoint(entrypoint: str) -> tuple[str, str]:
+    """Returns the importable module path and watched file path."""
+    cwd = Path.cwd()
+    normalized_entrypoint = entrypoint.strip()
+    has_path_separator = any(
+        separator in normalized_entrypoint
+        for separator in (os.sep, os.altsep)
+        if separator
+    )
+
+    if normalized_entrypoint.endswith(".py") or has_path_separator:
+        entrypoint_path = Path(normalized_entrypoint)
+        if entrypoint_path.is_absolute():
+            entrypoint_path = entrypoint_path.resolve().relative_to(cwd)
+
+        if entrypoint_path.suffix == ".py":
+            entrypoint_path = entrypoint_path.with_suffix("")
+
+        module_path = ".".join(entrypoint_path.parts)
+    else:
+        module_path = normalized_entrypoint.strip(".")
+        entrypoint_path = Path(*module_path.split("."))
+
+    entrypoint_file = str((cwd / entrypoint_path).with_suffix(".py").resolve())
+
+    return module_path, entrypoint_file
+
+
 def callback(console: Console, future: asyncio.Task[None]):
     if future.cancelled():
         return
@@ -191,16 +216,17 @@ def callback(console: Console, future: asyncio.Task[None]):
 async def run_dev(
     console: Console,
     manifest: Manifest,
+    entrypoint: str | None = None,
     version: str | None = None,
     builder: str = "arkitekt_next.builders.easy",
     deep: bool = False,
     **builder_kwargs,
 ):
-    entrypoint = manifest.entrypoint
-    identifier = manifest.identifier
+    entrypoint = entrypoint or manifest.entrypoint
+    identifier = entrypoint or manifest.identifier
     version = version or "dev"
-    entrypoint_file = f"{manifest.entrypoint}.py"
-    os.path.realpath(entrypoint_file)
+
+    entrypoint_module, entrypoint_file = resolve_entrypoint(entrypoint)
 
     builder_func = import_builder(builder)
 
@@ -220,12 +246,12 @@ async def run_dev(
     console.print(panel)
 
     try:
-        module = import_module(manifest.entrypoint)
+        module = import_module(entrypoint_module)
 
     except Exception:
         console.print_exception()
         panel = Panel(
-            f"Error while importing your entrypoint please fix your file {entrypoint} and save",
+            f"Error while importing your entrypoint please fix your file {entrypoint_file} and save",
             style="bold red",
             border_style="red",
         )
@@ -257,7 +283,7 @@ async def run_dev(
 
     async for changes in awatch(
         ".",
-        watch_filter=EntrypointFilter(entrypoint) if not deep else DeepFilter(),
+        watch_filter=EntrypointFilter(entrypoint_file) if not deep else DeepFilter(),
         debounce=2000,
         step=500,
     ):
@@ -296,7 +322,7 @@ async def run_dev(
                 reset_structure()
 
                 if not module:
-                    module = import_module(entrypoint)
+                    module = import_module(entrypoint_module)
                 else:
                     if deep:
                         reload_modules(to_be_reloaded)
@@ -347,8 +373,9 @@ async def run_dev(
     help="Should we check the whole directory for changes and reload them when changes?",
     is_flag=True,
 )
+@click.argument("entrypoint", required=False)
 @click.pass_context
-def dev(ctx: Context, **kwargs):
+def dev(ctx: Context, entrypoint: str, **kwargs):
     """Runs the app in dev mode (with hot reloading)
 
     Running the app in dev mode will automatically reload the app when changes are detected.
@@ -358,4 +385,4 @@ def dev(ctx: Context, **kwargs):
     manifest = get_manifest(ctx)
     console = get_console(ctx)
 
-    asyncio.run(run_dev(console, manifest, **kwargs))
+    asyncio.run(run_dev(console, manifest, entrypoint=entrypoint, **kwargs))
