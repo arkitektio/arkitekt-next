@@ -87,7 +87,7 @@ def implementations(
     )
     global_list.extend(to_be_created_templates)
 
-    console.print(f"Templates to be created: {len(global_list)}")
+    console.print(f"Implementations to be created: {len(global_list)}")
 
     if rekuest is None:
         console.print("No rekuest service found in app")
