@@ -62,8 +62,13 @@ def get_builds(selected_run: Optional[str] = None) -> Dict[str, Build]:
 
 
 def manifest_to_input(manifest: Manifest) -> ManifestInput:
-
-    return ManifestInput(**manifest.model_dump(by_alias=True))
+    return ManifestInput(
+        identifier=manifest.identifier,
+        version=manifest.version,
+        author=manifest.author,
+        logo=manifest.logo,
+        scopes=tuple(manifest.scopes),
+    )
 
 
 def generate_build(
@@ -119,7 +124,9 @@ def generate_build(
     with open(config_file, "w") as file:
         yaml.safe_dump(
             json.loads(
-                config.model_dump_json(exclude_none=True, exclude_unset=True, by_alias=True)
+                config.model_dump_json(
+                    exclude_none=True, exclude_unset=True, by_alias=True
+                )
             ),
             file,
             sort_keys=True,
