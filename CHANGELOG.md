@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.38.1 (2026-04-07)
+
+### Bug Fixes
+
+- Manifest to io
+  ([`b3b89b0`](https://github.com/arkitektio/arkitekt-next/commit/b3b89b0ef4a86708712c809f8520cfcac487cd1a))
+
+
 ## v0.38.0 (2026-04-07)
 
 ### Features
