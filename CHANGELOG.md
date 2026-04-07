@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.38.0 (2026-04-07)
+
+### Features
+
+- Attemt to fix implementations
+  ([`0794576`](https://github.com/arkitektio/arkitekt-next/commit/07945760a815cf442d671757342c3175cccf4395))
+
+
 ## v0.37.0 (2026-04-02)
 
 ### Bug Fixes
