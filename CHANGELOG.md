@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.39.1 (2026-04-09)
+
+### Bug Fixes
+
+- Minimal readme
+  ([`c280986`](https://github.com/arkitektio/arkitekt-next/commit/c280986571e033fd5e47943fc0084eb9ff623bab))
+
+
 ## v0.39.0 (2026-04-09)
 
 ### Features
