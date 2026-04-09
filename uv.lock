@@ -214,7 +214,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.38.1"
+version = "0.39.1"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -331,7 +331,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.9.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=1.3.2" },
+    { name = "rekuest-next", specifier = ">=1.4.0" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -367,7 +367,7 @@ dev = [
     { name = "reaktion-next", specifier = ">=0.4.1" },
     { name = "rekuest-next", specifier = ">=0.13.1" },
     { name = "rich-click", specifier = ">=1.8" },
-    { name = "unlok-next", specifier = ">=1.3.0" },
+    { name = "unlok-next", specifier = ">=1.3.1" },
 ]
 
 [[package]]
@@ -2069,7 +2069,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "1.3.2"
+version = "1.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -2082,9 +2082,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/84/ee/00846d0cdc34764c776d5141f11056d12a822dc0c4d83ded877d0c2f2428/rekuest_next-1.3.2.tar.gz", hash = "sha256:dcd67cb693bf13ea562af108acbf453dc0089cbae43ebf4b2f8f6726553f05fe", size = 182103, upload-time = "2026-04-09T14:26:46.591Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/23/c5/24dfeaf971796fe4004348169620f7c5a12576ef7d5e28a3fd60aac017d0/rekuest_next-1.4.0.tar.gz", hash = "sha256:26ffa37822d35a13b095cf4361571be46bc848c7dc16484eb067647960f0f285", size = 182069, upload-time = "2026-04-09T15:24:24.344Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/60/8c/0131616317d0c7e69cdbad8cb14bf4b0665a1d370db2bb8fcff1de2fbadd/rekuest_next-1.3.2-py3-none-any.whl", hash = "sha256:65de2e469f9b4a2d7b4a4e288a4d2c204ebcb2ddbe97cdce1e0166c8573f6524", size = 238490, upload-time = "2026-04-09T14:26:47.644Z" },
+    { url = "https://files.pythonhosted.org/packages/f7/ba/4827c205fc1fc1050983a825fe3aaab43f784d93ce5089642d4e7db20697/rekuest_next-1.4.0-py3-none-any.whl", hash = "sha256:ef92410251e8e5ffc00c14ac7ddf0f9d8b96fdc4a87ea42879ab63f517583b7a", size = 238697, upload-time = "2026-04-09T15:24:23.015Z" },
 ]
 
 [[package]]
@@ -2330,16 +2330,16 @@ wheels = [
 
 [[package]]
 name = "unlok-next"
-version = "1.3.0"
+version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dokker" },
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7a/49/da73aaecd6b13797fab77f199ee47c3665d046cb564e53b531728520468c/unlok_next-1.3.0.tar.gz", hash = "sha256:d4195e2e7f5274da654071790b6aaa0fbb441f53bdf00e130173faede1d04593", size = 28641, upload-time = "2025-11-14T14:51:31.223Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/80/b3/5e6e8845457e3db2f5da1b0f7d08c7e26a02d3dab563b9c1a096326ad1e8/unlok_next-1.3.1.tar.gz", hash = "sha256:87c37a37cfcf4f12e808f1ab8762572e826a4cf74c1ef8ff673848aa828b311f", size = 30118, upload-time = "2026-04-09T15:38:23.459Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/95/7e/d68710e61219a7cfa15f1080e1024d0b7039238145f4e850c0b1119c9223/unlok_next-1.3.0-py3-none-any.whl", hash = "sha256:d49a9f8180a5012ed65fdf465f74d4ac6faa271fdd7d5c5dc8f145bc3644fb16", size = 30580, upload-time = "2025-11-14T14:51:30.382Z" },
+    { url = "https://files.pythonhosted.org/packages/11/e6/29ffc6041af274ec2f9ab269cd4cfc936413c73018e3b209a78cc9f47288/unlok_next-1.3.1-py3-none-any.whl", hash = "sha256:daf4834612ea8a4c7e0856257a4b682bc67cf057446f8abbef13611a3ade352e", size = 32171, upload-time = "2026-04-09T15:38:22.227Z" },
 ]
 
 [[package]]

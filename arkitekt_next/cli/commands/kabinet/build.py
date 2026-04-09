@@ -214,6 +214,7 @@ def inspect_requirements(build_id: str) -> List[RequirementInput]:
 def inspect_build(build_id: str, url: str) -> InspectionInput:
     size, size_root_fs = inspect_docker_container(build_id)
     runtime = inspect_all(build_id, url)
+    print("Runtime inspection result:", runtime)
 
     return InspectionInput(
         size=size,
