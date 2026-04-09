@@ -49,7 +49,7 @@ Apps can simply registered functions, through the register decorator
 ```python
 from arkitekt_next import register
 
-@register()
+@register
 def rpc_function(x: int, name: str) -> str
     """
     A rpc function that we can
