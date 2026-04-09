@@ -19,7 +19,7 @@ def missing_install(name: str, error: Exception):
 
 
 try:
-    from rekuest_next.register import register, register_test, action
+    from rekuest_next.register import register, action
     from rekuest_next.agents.hooks.background import background
     from rekuest_next.agents.hooks.startup import startup
     from rekuest_next.agents.context import context
@@ -28,7 +28,6 @@ try:
     from rekuest_next.actors.context import progress, aprogress
     from rekuest_next.actors.context import log, alog
     from rekuest_next.structures.model import model
-    from rekuest_next.actors.context import apublish, publish
     from rekuest_next.remote import (
         call,
         acall,
@@ -41,21 +40,18 @@ try:
     from rekuest_next.declare import declare, agent_protocol, dependency
     from .inspect import inspect
 except ImportError as e:
-    raise e
     dependency = missing_install("rekuest_next", e)
     action = missing_install("rekuest_next", e)
     model = missing_install("rekuest_next", e)
     register_test = missing_install("rekuest_next", e)
     inspect = missing_install("rekuest_next", e)
-    publish = missing_install("rekuest_next", e)
-    apublish = missing_install("rekuest_next", e)
     structure = missing_install("rekuest_next", e)
     register = missing_install("rekuest_next", e)
     declare = missing_install("rekuest_next", e)
-    protocol = missing_install("rekuest_next", e)
+    agent_protocol = missing_install("rekuest_next", e)
     background = missing_install("rekuest_next", e)
-    abreakpoint = missing_install("rekuest_next", e)
-    breakpoint = missing_install("rekuest_next", e)
+    apausepoint = missing_install("rekuest_next", e)
+    pausepoint = missing_install("rekuest_next", e)
     startup = missing_install("rekuest_next", e)
     context = missing_install("rekuest_next", e)
     find = missing_install("rekuest_next", e)
@@ -93,11 +89,11 @@ __all__ = [
     "get_default_service_registry",
     "register",
     "find",
-    "breakpoint",
-    "abreakpoint",
     "aiterate",
     "inspect",
     "iterate",
+    "pausepoint",
+    "apausepoint",
     "aiterate_raw",
     "call",
     "acall",
@@ -108,6 +104,4 @@ __all__ = [
     "background",
     "startup",
     "init",
-    "InitHookRegisty",
-    "get_current_init_hook_registry",
 ]

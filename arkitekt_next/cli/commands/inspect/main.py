@@ -5,6 +5,7 @@ import rich_click as click
 from .variables import variables
 from .implementations import implementations
 from .requirements import requirements
+from .all import all
 
 
 @click.group()
@@ -19,6 +20,7 @@ def inspect(ctx):
     """
 
 
+inspect.add_command(all, "all")
 inspect.add_command(variables, "variables")
 inspect.add_command(requirements, "requirements")
 inspect.add_command(implementations, "implementations")
