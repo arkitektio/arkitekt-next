@@ -1,12 +1,25 @@
 # CHANGELOG
 
 
+## v0.39.0 (2026-04-09)
+
+### Features
+
+- With all updates
+  ([`d3a145c`](https://github.com/arkitektio/arkitekt-next/commit/d3a145c095f83b55e1f514934e17130c2ed091fb))
+
+
 ## v0.38.1 (2026-04-07)
 
 ### Bug Fixes
 
 - Manifest to io
   ([`b3b89b0`](https://github.com/arkitektio/arkitekt-next/commit/b3b89b0ef4a86708712c809f8520cfcac487cd1a))
+
+### Features
+
+- Update dependencies
+  ([`341f435`](https://github.com/arkitektio/arkitekt-next/commit/341f435fbf8a8353dce363b38d2d8f7829c58e38))
 
 
 ## v0.38.0 (2026-04-07)
