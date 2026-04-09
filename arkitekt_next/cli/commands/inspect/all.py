@@ -10,6 +10,7 @@ import json
 import os
 
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
+from arkitekt_next.service_registry import get_default_service_registry
 from rekuest_next.app import get_default_app_registry
 
 try:
@@ -80,6 +81,10 @@ def all(
 
     registry = get_default_app_registry()
 
+    service_registry = get_default_service_registry()
+
+    x = [item.model_dump(by_alias=True) for item in service_registry.get_requirements()]
+
     agent = {
         "states": [d.model_dump() for d in registry.state_registry.states.values()]
         if registry
@@ -93,6 +98,7 @@ def all(
         "locks": [
             d.model_dump() for d in registry.implementation_registry.get_locks()
         ],  # TODO: this is a bit hacky locks are not a first class concept in the registry but we want to expose them in the agent manifest, we should probably refactor this at some point
+        "requirements": x,
     }
 
     if rekuest is None:
@@ -100,7 +106,7 @@ def all(
         return
 
     if machine_readable:
-        print("--START_AGENT--" + json.dumps(agent, indent=2) + "--END_AGENT--")
+        print("--START_AGENT--" + json.dumps(agent) + "--END_AGENT--")
 
     else:
         if pretty:

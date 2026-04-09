@@ -11,7 +11,7 @@ from .io import generate_build
 from click import Context
 from .types import Flavour, InspectionInput
 import yaml
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 import json
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from arkitekt_next.utils import create_arkitekt_next_folder
@@ -54,7 +54,7 @@ def build_flavour(flavour_name: str, flavour: Flavour) -> str:
     return build_id
 
 
-def inspect_docker_container(build_id: str) -> InspectionInput:
+def inspect_docker_container(build_id: str) -> tuple[int, int]:
     try:
         # Run 'docker inspect' with the container ID or name
         result = subprocess.run(
@@ -94,7 +94,7 @@ def inspect_docker_container(build_id: str) -> InspectionInput:
         raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
 
 
-def inspect_implementations(build_id: str, url: str) -> list[ImplementationInput]:
+def inspect_all(build_id: str, url: str) -> Dict[str, Any]:
     try:
         # Run 'docker inspect' with the container ID or name
         process = subprocess.Popen(
@@ -108,7 +108,7 @@ def inspect_implementations(build_id: str, url: str) -> list[ImplementationInput
                     build_id,
                     "arkitekt-next",
                     "inspect",
-                    "implementations",
+                    "all",
                     "-mr",
                 ]
             ),
@@ -132,27 +132,18 @@ def inspect_implementations(build_id: str, url: str) -> list[ImplementationInput
         exitCode = process.returncode
         result = "\n".join(lines)
 
-        
-        
         if exitCode != 0:
-            
             if "ModuleNotFoundError" in result:
                 raise click.ClickException(
                     " It looks like you are missing a module in your container. Please make sure that you have all the dependencies installed in your container. The error is listed above."
                 )
-            
-            
-            
-            
+
             raise click.ClickException(
                 "When running the command `arkitekt_next inspect implementations` we got an error. The error is listed above."
             )
 
-        
         # Parse the JSON output
-        correct_part = result.split("--START_TEMPLATES--")[1].split(
-            "--END_TEMPLATES--"
-        )[0]
+        correct_part = result.split("--START_AGENT--")[1].split("--END_AGENT--")[0]
 
         try:
             output = json.loads(correct_part)
@@ -222,10 +213,12 @@ def inspect_requirements(build_id: str) -> List[RequirementInput]:
 
 def inspect_build(build_id: str, url: str) -> InspectionInput:
     size, size_root_fs = inspect_docker_container(build_id)
-    implementations = inspect_implementations(build_id, url)
-    requirements = inspect_requirements(build_id)
+    runtime = inspect_all(build_id, url)
 
-    return InspectionInput(size=size, implementations=tuple(implementations), requirements=tuple(requirements))
+    return InspectionInput(
+        size=size,
+        **runtime,
+    )
 
 
 def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavour]:
@@ -337,7 +330,9 @@ def build(
         if not no_inspect:
             inspection = inspect_build(build_tag, url)
 
-        generate_build(build_run, build_tag, key, inspected_flavour, manifest, inspection)
+        generate_build(
+            build_run, build_tag, key, inspected_flavour, manifest, inspection
+        )
 
         md = Panel(
             "Built Flavour [bold]{}[/bold]".format(key),

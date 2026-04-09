@@ -124,13 +124,7 @@ class ServiceBuilderRegistry:
         }
 
     def get_requirements(self):
-        requirements = [
-            Requirement(
-                key="lok",
-                service="live.arkitekt.lok",
-                description="An instance of ArkitektNext Lok to authenticate the user",
-            )
-        ]
+        requirements = []
         taken_requirements: Set[str] = set()
 
         for service in self.service_builders.values():
