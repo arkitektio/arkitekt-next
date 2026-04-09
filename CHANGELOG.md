@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.39.2 (2026-04-09)
+
+### Bug Fixes
+
+- Update deps
+  ([`3bed7cc`](https://github.com/arkitektio/arkitekt-next/commit/3bed7cc95e7a643ee4188ac0540f1274c98d9f60))
+
+
 ## v0.39.1 (2026-04-09)
 
 ### Bug Fixes
