@@ -214,7 +214,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.39.1"
+version = "0.39.2"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -328,7 +328,7 @@ requires-dist = [
     { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=0.7.2" },
     { name = "platformdirs", specifier = ">=4.5.0" },
     { name = "py-machineid", specifier = ">=0.8.1" },
-    { name = "rath", specifier = ">=3.9.0" },
+    { name = "rath", specifier = ">=3.9.1" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
     { name = "rekuest-next", specifier = ">=1.4.0" },
@@ -2032,16 +2032,16 @@ wheels = [
 
 [[package]]
 name = "rath"
-version = "3.9.0"
+version = "3.9.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "graphql-core" },
     { name = "koil" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/76/39/bd30d6235adbfa4874d3037ca7451cc79f560748560fe678f9fe2bc820e1/rath-3.9.0.tar.gz", hash = "sha256:a45aa740dd2ad902ab8319e3f706a1c89a867be52a81cc21d3a35065376eb81b", size = 34849, upload-time = "2026-04-09T11:22:51.074Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a8/4a/f2f2bba592c8a13be201bd6ea4adb07bf355e17b973558f035153824b133/rath-3.9.1.tar.gz", hash = "sha256:7d1c533d73fe26903a961b883829e2cb7a1fdf41d8a2e05145b7d8fd9df872ba", size = 34862, upload-time = "2026-04-14T18:17:45.021Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4b/4d/fefd86abc8e40bcee38753779c10415838a25defa52c3c90273ae0541a0e/rath-3.9.0-py3-none-any.whl", hash = "sha256:e3b973965d17319ef4d31135a3da50034f3db9c435e8eb5a04f0428d914bb7f7", size = 52381, upload-time = "2026-04-09T11:22:50.114Z" },
+    { url = "https://files.pythonhosted.org/packages/a9/0a/73c706e5f29dd1b0aae75fadafdca7ddcc69b96379cc4409eca53bb5f005/rath-3.9.1-py3-none-any.whl", hash = "sha256:37eb8a16901c1afde3acc1a971f74a820aaeec2004bbd4d75510ce8935e7decf", size = 52401, upload-time = "2026-04-14T18:17:43.768Z" },
 ]
 
 [[package]]

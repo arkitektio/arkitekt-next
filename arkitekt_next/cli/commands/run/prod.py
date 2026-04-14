@@ -1,4 +1,5 @@
 import rich_click as click
+from arkitekt_next.cli.commands.run.dev import resolve_entrypoint
 from arkitekt_next.cli.options import *
 import asyncio
 from arkitekt_next.cli.ui import construct_run_panel
@@ -29,6 +30,7 @@ async def run_app(app: App):
 @with_headless
 @with_log_level
 @with_skip_cache
+@click.argument("entrypoint", required=False)
 @click.pass_context
 def prod(ctx, entrypoint=None, builder=None, **builder_kwargs):
     """Runs the app in production mode
@@ -44,11 +46,13 @@ def prod(ctx, entrypoint=None, builder=None, **builder_kwargs):
 
     builder = import_builder(builder)
 
+    entrypoint_module, entrypoint_file = resolve_entrypoint(entrypoint)
+
     with console.status("Loading entrypoint module..."):
         try:
-            import_module(entrypoint)
+            import_module(entrypoint_module)
         except ModuleNotFoundError as e:
-            console.print(f"Could not find entrypoint module {entrypoint}")
+            console.print(f"Could not find entrypoint module {entrypoint_module}")
             raise e
 
     app = builder(
