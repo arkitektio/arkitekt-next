@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.39.3 (2026-04-14)
+
+### Bug Fixes
+
+- Fix 3.11 regress
+  ([`14b8f4f`](https://github.com/arkitektio/arkitekt-next/commit/14b8f4fd9606710ef36aeccc8482ae7de7af13aa))
+
+
 ## v0.39.2 (2026-04-09)
 
 ### Bug Fixes
