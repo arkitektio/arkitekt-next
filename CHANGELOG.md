@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.39.4 (2026-04-15)
+
+### Bug Fixes
+
+- Fakts-next update
+  ([`42060e5`](https://github.com/arkitektio/arkitekt-next/commit/42060e5a5bc45bee250177e90435bb68f631bb46))
+
+
 ## v0.39.3 (2026-04-14)
 
 ### Bug Fixes
