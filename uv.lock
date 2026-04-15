@@ -214,7 +214,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.39.2"
+version = "0.39.3"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -314,7 +314,7 @@ requires-dist = [
     { name = "click", specifier = ">=8.2.0" },
     { name = "dokker", specifier = ">=2.3.0" },
     { name = "elektro", marker = "extra == 'elektro'", specifier = ">=0.5.0" },
-    { name = "fakts-next", specifier = ">=3.1.1" },
+    { name = "fakts-next", specifier = ">=3.1.2" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
     { name = "kabinet", specifier = ">=0.11.0" },
@@ -331,13 +331,13 @@ requires-dist = [
     { name = "rath", specifier = ">=3.9.1" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=1.4.0" },
+    { name = "rekuest-next", specifier = ">=1.4.1" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
     { name = "semver", marker = "extra == 'all'", specifier = ">=3.0.1" },
-    { name = "turms", specifier = ">=0.10.1" },
+    { name = "turms", specifier = ">=0.10.2" },
     { name = "turms", marker = "extra == 'all'", specifier = ">=0.9" },
     { name = "turms", marker = "extra == 'cli'", specifier = ">=0.9.0" },
     { name = "unlok-next", marker = "extra == 'all'", specifier = ">=1.1.1" },
@@ -757,7 +757,7 @@ wheels = [
 
 [[package]]
 name = "fakts-next"
-version = "3.1.1"
+version = "3.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -767,9 +767,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b1/40/3310674a2b46c8f9fbf64157fec1d4a49759f4cbb7d8b17f812fae433929/fakts_next-3.1.1.tar.gz", hash = "sha256:dd7462e6ad6f550ce294f7318f2d183c00666422b7a80b4fdce182d04019d731", size = 30820, upload-time = "2026-04-09T12:02:55.698Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/0d/d27fa1d73e016aad54a57caa716b728df4a2c88e21e178ed69d510d5b6f7/fakts_next-3.1.2.tar.gz", hash = "sha256:37a1620b65cae04e6ab735590b8a4431f0a23225d487b89426509f5b375d44d4", size = 30821, upload-time = "2026-04-15T07:10:50.426Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/11/30/d55161f95fc67e32d4c1091c187da75c304350d7f8a93cfa997cef9b1415/fakts_next-3.1.1-py3-none-any.whl", hash = "sha256:e988a695ff1624cb238c934b8893f36d8bd3fdc819bd75358b1351602c3cd646", size = 51818, upload-time = "2026-04-09T12:02:54.494Z" },
+    { url = "https://files.pythonhosted.org/packages/a3/05/79081f62a7e2029a3c24eb317afaacb182418efa99f51a7513d4f0c2defc/fakts_next-3.1.2-py3-none-any.whl", hash = "sha256:13fe33559e53cf4abd3d0b8043477c5e8123065292af0356a8dc25813f7b1bce", size = 51811, upload-time = "2026-04-15T07:10:49.46Z" },
 ]
 
 [[package]]
@@ -2069,7 +2069,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "1.4.0"
+version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -2082,9 +2082,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/23/c5/24dfeaf971796fe4004348169620f7c5a12576ef7d5e28a3fd60aac017d0/rekuest_next-1.4.0.tar.gz", hash = "sha256:26ffa37822d35a13b095cf4361571be46bc848c7dc16484eb067647960f0f285", size = 182069, upload-time = "2026-04-09T15:24:24.344Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/da/6c/2d721b39d4dd5f328543171b85da99864ee1c72388e7fa22ced6fcd3e069/rekuest_next-1.4.1.tar.gz", hash = "sha256:27a67e17c9a33b35cec134b84f4c0384bd7ddb97ee3434395a763b395c3d9f80", size = 182034, upload-time = "2026-04-10T09:45:05.737Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/ba/4827c205fc1fc1050983a825fe3aaab43f784d93ce5089642d4e7db20697/rekuest_next-1.4.0-py3-none-any.whl", hash = "sha256:ef92410251e8e5ffc00c14ac7ddf0f9d8b96fdc4a87ea42879ab63f517583b7a", size = 238697, upload-time = "2026-04-09T15:24:23.015Z" },
+    { url = "https://files.pythonhosted.org/packages/de/7b/8e295ac2970fa2ef70829965ed1cc79016c41360cd5a17d6cb1b98f6dc3e/rekuest_next-1.4.1-py3-none-any.whl", hash = "sha256:4c296284aff7c0ff991ffaa919fe2fc83fc3f41c38a4b8829bda98a6577595dd", size = 238697, upload-time = "2026-04-10T09:45:07.205Z" },
 ]
 
 [[package]]
@@ -2272,7 +2272,7 @@ wheels = [
 
 [[package]]
 name = "turms"
-version = "0.10.1"
+version = "0.10.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "graphql-core" },
@@ -2284,9 +2284,9 @@ dependencies = [
     { name = "rich-click" },
     { name = "watchfiles" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7b/93/2a51e5fc4b4a78a81c1320ae19507a88592f7fa4a1f4806c98add07eaccf/turms-0.10.1.tar.gz", hash = "sha256:98d8fbf32958ce5fe1c3b29c0f4bfbc53d7bd3a442f8e0ac6f713c5fb9a0a894", size = 56102, upload-time = "2025-10-29T20:12:24.406Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/89/81/34f54b048f965dc8ec5b51b9e59c081ee2edf060bb79824402ac1b4f7ded/turms-0.10.2.tar.gz", hash = "sha256:8676ff6e45db95177de96e2b1503db4835f528ef27c75bd2d8a7019812ef905b", size = 56199, upload-time = "2026-04-13T07:11:43.167Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/03/6e66cb20525aa1101d2ecb76ebafbc25425b7f8ebd63f76396b17cebb137/turms-0.10.1-py3-none-any.whl", hash = "sha256:52037684447245055220e6236ecf64826d54c084ca5fa7cd1ca3ebd6eb1e4b19", size = 70996, upload-time = "2025-10-29T20:12:23.063Z" },
+    { url = "https://files.pythonhosted.org/packages/4b/bd/2347087a84b215d9652ab6e02e922218add0e0fc927b44a6653360350d84/turms-0.10.2-py3-none-any.whl", hash = "sha256:2c17f28bc8d37d415b24b639f5c69d81157e6d18b898c07cedfc5ac5d03bf420", size = 71096, upload-time = "2026-04-13T07:11:44.446Z" },
 ]
 
 [[package]]
