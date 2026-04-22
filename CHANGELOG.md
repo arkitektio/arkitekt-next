@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.40.1 (2026-04-22)
+
+### Bug Fixes
+
+- Add kabinet
+  ([`a5f172e`](https://github.com/arkitektio/arkitekt-next/commit/a5f172e4b6865d031ab800912b9043c125bd285e))
+
+
 ## v0.40.0 (2026-04-22)
 
 ### Features
