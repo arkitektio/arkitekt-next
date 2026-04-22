@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.40.0 (2026-04-22)
+
+### Features
+
+- Add new rekuest
+  ([`cf031da`](https://github.com/arkitektio/arkitekt-next/commit/cf031da8866b1d7db69350ddad19d778411cad15))
+
+
 ## v0.39.5 (2026-04-15)
 
 
