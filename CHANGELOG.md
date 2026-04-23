@@ -1,9 +1,15 @@
 # CHANGELOG
 
 
+## v0.40.3 (2026-04-23)
+
+
 ## v0.40.2 (2026-04-23)
 
 ### Bug Fixes
+
+- Bene
+  ([`2175eaf`](https://github.com/arkitektio/arkitekt-next/commit/2175eaf2a3ec17febab7f916b399031a148b146f))
 
 - Update rekuest
   ([`618f52c`](https://github.com/arkitektio/arkitekt-next/commit/618f52ccebaf5c77e22c90dca6294711819024db))
