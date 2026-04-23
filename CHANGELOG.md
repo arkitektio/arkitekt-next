@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.40.2 (2026-04-23)
+
+### Bug Fixes
+
+- Update rekuest
+  ([`618f52c`](https://github.com/arkitektio/arkitekt-next/commit/618f52ccebaf5c77e22c90dca6294711819024db))
+
+
 ## v0.40.1 (2026-04-22)
 
 ### Bug Fixes
