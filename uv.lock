@@ -214,7 +214,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.40.0"
+version = "0.40.1"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -331,7 +331,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.9.1" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=1.4.4" },
+    { name = "rekuest-next", specifier = ">=1.4.5" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -2069,7 +2069,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "1.4.4"
+version = "1.4.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -2082,9 +2082,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ff/b2/107ce49fbb13537112eb3e235f6ea8db7f05ee604a97d570b37f12302d8e/rekuest_next-1.4.4.tar.gz", hash = "sha256:a2880eb9a160b329f7b798d9672a9a7aa8a8216f89ceb86b59107c5f56d27256", size = 183781, upload-time = "2026-04-20T15:59:59.28Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/30/b1/841b1c31ce936dac590a60269a1f9adf367067b9dfc351bad959c87f0bc2/rekuest_next-1.4.5.tar.gz", hash = "sha256:6fb7d28c12f2e4431d7dc7438d892649e1f38cc804bfdfe4db11a13b38283d63", size = 183920, upload-time = "2026-04-23T17:22:24.803Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/83/dc9068afccc9ff018882a578208ab4a89e10b441ba77d88fb799642c3983/rekuest_next-1.4.4-py3-none-any.whl", hash = "sha256:9cf867e1b18745aa066d8a11844403fe21629d4c9bb80f7bb4903a4c4e33875d", size = 240499, upload-time = "2026-04-20T16:00:00.481Z" },
+    { url = "https://files.pythonhosted.org/packages/20/75/0d72be8816715f34e87d9afce3c28b55c805e228a8babd5dfb78f38ac732/rekuest_next-1.4.5-py3-none-any.whl", hash = "sha256:6d7ff4202c74dfc45ad2181ea8e14d7176ad2ba919817d74004128a4ff5a75bf", size = 240688, upload-time = "2026-04-23T17:22:25.778Z" },
 ]
 
 [[package]]
