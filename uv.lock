@@ -331,7 +331,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.9.1" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=1.4.5" },
+    { name = "rekuest-next", specifier = ">=1.4.6" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -2069,7 +2069,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "1.4.5"
+version = "1.4.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -2082,9 +2082,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/30/b1/841b1c31ce936dac590a60269a1f9adf367067b9dfc351bad959c87f0bc2/rekuest_next-1.4.5.tar.gz", hash = "sha256:6fb7d28c12f2e4431d7dc7438d892649e1f38cc804bfdfe4db11a13b38283d63", size = 183920, upload-time = "2026-04-23T17:22:24.803Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/44/27/978a917f39fb38788a9d251dfa0501de7fb1ce222af40b0386ae063029e7/rekuest_next-1.4.6.tar.gz", hash = "sha256:2678d2dea0451126afcdcb715ef7ae1470c51553d6e5a4d678b2cccbb441971e", size = 183857, upload-time = "2026-04-23T17:48:57.986Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/20/75/0d72be8816715f34e87d9afce3c28b55c805e228a8babd5dfb78f38ac732/rekuest_next-1.4.5-py3-none-any.whl", hash = "sha256:6d7ff4202c74dfc45ad2181ea8e14d7176ad2ba919817d74004128a4ff5a75bf", size = 240688, upload-time = "2026-04-23T17:22:25.778Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/de/fac9e83cc649555002fc910be9256fb672d11cbb6d9a89c3d3fdc357bb4d/rekuest_next-1.4.6-py3-none-any.whl", hash = "sha256:11c2a5fa69d63cde37120b81323f39f8baac9572f493a3cbdf797b9e123acdcb", size = 240616, upload-time = "2026-04-23T17:48:56.515Z" },
 ]
 
 [[package]]
