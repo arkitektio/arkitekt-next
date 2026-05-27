@@ -57,15 +57,31 @@ class App(Composition):
     def register(self, *args, **kwargs):
         """Register a service"""
 
-        self.rekuest.register(*args, **kwargs)
+        return self.rekuest.register(*args, **kwargs)
 
     def register_startup(self, *args, **kwargs):
         """Register a startup service"""
-        self.rekuest.register_startup(*args, **kwargs)
+        return self.rekuest.register_startup(*args, **kwargs)
 
     def register_background(self, *args, **kwargs):
         """Register a background service"""
-        self.rekuest.register_background(*args, **kwargs)
+        return self.rekuest.register_background(*args, **kwargs)
+
+    def register_blok(self, *args, **kwargs):
+        """Register a blok"""
+        return self.rekuest.register_blok(*args, **kwargs)
+
+    def state(self, *args, **kwargs):
+        """Decorator to define a state class."""
+        return self.rekuest.state(*args, **kwargs)
+
+    def startup(self, *args, **kwargs):
+        """Decorator to define a startup function."""
+        return self.rekuest.register_startup(*args, **kwargs)
+
+    def background(self, *args, **kwargs):
+        """Decorator to define a background function."""
+        return self.rekuest.register_background(*args, **kwargs)
 
     async def __aenter__(self):
         await super().__aenter__()

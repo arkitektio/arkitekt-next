@@ -214,7 +214,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.40.1"
+version = "0.40.3"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -331,7 +331,7 @@ requires-dist = [
     { name = "rath", specifier = ">=3.9.1" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.2.0" },
-    { name = "rekuest-next", specifier = ">=1.4.6" },
+    { name = "rekuest-next", specifier = ">=1.6.2" },
     { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=0.7" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
@@ -356,7 +356,7 @@ dev = [
     { name = "kabinet", specifier = ">=0.6.0" },
     { name = "kraph", specifier = ">=0.5.1" },
     { name = "lovekit", specifier = ">=1.1.0" },
-    { name = "mikro-next", specifier = ">=1.0.2" },
+    { name = "mikro-next", specifier = ">=1.0.3" },
     { name = "numpy", specifier = ">=1,<2" },
     { name = "pytest", specifier = ">=8.3.0,<9" },
     { name = "pytest-aiohttp", specifier = ">=1.0.4,<2" },
@@ -1275,7 +1275,7 @@ wheels = [
 
 [[package]]
 name = "mikro-next"
-version = "1.0.2"
+version = "1.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -1290,9 +1290,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1a/f6/beda7d4689441b39b26e70c31114480824282f06502685a8f3c2b81de76e/mikro_next-1.0.2.tar.gz", hash = "sha256:c8eb4b75339d8844fc43adbf3c578ee806755c40c8af3ec87c535cfedcc62b6c", size = 75226, upload-time = "2026-04-09T14:18:00.423Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/48/7dd53dfd6495608ef33764a82cd1d8c784277992227ff40b33cd2f834021/mikro_next-1.0.3.tar.gz", hash = "sha256:047dc7107e90764ff33370c8130be64bc322183f4cecd0b2a6767325964af77b", size = 76295, upload-time = "2026-05-20T07:49:40.062Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/64/f0/e0af9bcfd5eb871b77d20e57320b7c701f4eb0bf7e58632feb8a0fac0b8d/mikro_next-1.0.2-py3-none-any.whl", hash = "sha256:1226e76b0826b1d8679bb7f9d9b110d8e70676db59ee5640816865358e5ea402", size = 83019, upload-time = "2026-04-09T14:17:59.409Z" },
+    { url = "https://files.pythonhosted.org/packages/27/0e/79a747c8b4a2da4e369536b3ff3fab53b629bceb62231f7359c78d8278bc/mikro_next-1.0.3-py3-none-any.whl", hash = "sha256:ba9ebf2764622bc55ec1cc1acf1c82af57fe140b48e0a67559a9e03902b783fc", size = 84131, upload-time = "2026-05-20T07:49:38.682Z" },
 ]
 
 [[package]]
@@ -2069,7 +2069,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "1.4.6"
+version = "1.6.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -2082,9 +2082,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/44/27/978a917f39fb38788a9d251dfa0501de7fb1ce222af40b0386ae063029e7/rekuest_next-1.4.6.tar.gz", hash = "sha256:2678d2dea0451126afcdcb715ef7ae1470c51553d6e5a4d678b2cccbb441971e", size = 183857, upload-time = "2026-04-23T17:48:57.986Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/65/f3/ada0948c423e867a8278546b4e9bebe7790bb04e49ef533b98020c6e1b27/rekuest_next-1.6.2.tar.gz", hash = "sha256:38b403d8129c3d06bb5686f7b7bf5f0433716570df18497a1b25fda04b23493c", size = 202621, upload-time = "2026-05-27T10:05:16.588Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d7/de/fac9e83cc649555002fc910be9256fb672d11cbb6d9a89c3d3fdc357bb4d/rekuest_next-1.4.6-py3-none-any.whl", hash = "sha256:11c2a5fa69d63cde37120b81323f39f8baac9572f493a3cbdf797b9e123acdcb", size = 240616, upload-time = "2026-04-23T17:48:56.515Z" },
+    { url = "https://files.pythonhosted.org/packages/2d/29/dd51cb80b9a1918d715a039b251c98f58d0323ee6e674c3a89c6e1ec2a14/rekuest_next-1.6.2-py3-none-any.whl", hash = "sha256:7b28ff00d82ac8c2062b58a2e8e87706a27692f12e61880f76e2617bc545b500", size = 262692, upload-time = "2026-05-27T10:05:17.856Z" },
 ]
 
 [[package]]
