@@ -1,9 +1,15 @@
 # CHANGELOG
 
 
+## v0.40.5 (2026-05-27)
+
+
 ## v0.40.4 (2026-05-27)
 
 ### Bug Fixes
+
+- Kabinet update
+  ([`daf7a52`](https://github.com/arkitektio/arkitekt-next/commit/daf7a524ac58b9b4752a6c71bbee12dc96ab8a7c))
 
 - New little things
   ([`8204ee9`](https://github.com/arkitektio/arkitekt-next/commit/8204ee98604363ade4e83b8a55f00d18ea5bab81))
