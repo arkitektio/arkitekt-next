@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.40.6 (2026-05-27)
+
+
 ## v0.40.5 (2026-05-27)
+
+### Bug Fixes
+
+- Inspection
+  ([`4cbd5f9`](https://github.com/arkitektio/arkitekt-next/commit/4cbd5f9d10b062f622bf83266c23a91598ac4757))
 
 
 ## v0.40.4 (2026-05-27)
