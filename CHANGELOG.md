@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.41.0 (2026-05-27)
+
+
 ## v0.40.6 (2026-05-27)
+
+### Features
+
+- Fix kabinet
+  ([`48c74ef`](https://github.com/arkitektio/arkitekt-next/commit/48c74efb8591a2343e74f29fda5efc48176809d5))
 
 
 ## v0.40.5 (2026-05-27)
