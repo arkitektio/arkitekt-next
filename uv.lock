@@ -317,7 +317,7 @@ requires-dist = [
     { name = "fakts-next", specifier = ">=3.1.2" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
-    { name = "kabinet", specifier = ">=0.11.2" },
+    { name = "kabinet", specifier = ">=0.11.3" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.6.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.6.0" },
     { name = "koil", specifier = ">=2.5.3" },
@@ -1098,15 +1098,15 @@ wheels = [
 
 [[package]]
 name = "kabinet"
-version = "0.11.2"
+version = "0.11.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4b/94/eca598e82eb3dfa5f46757a8a94ea8b14b82f0716653d3bdc54c1998c92a/kabinet-0.11.2.tar.gz", hash = "sha256:c54967566acdb13761286a3fcc27be8d116c229cea6198dd8faa32a3c4611d92", size = 27949, upload-time = "2026-04-22T07:23:44.787Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f0/90/f6c83f73500bf1a2bc317564e3fdc6fd66c9b8224291af26c2700e079421/kabinet-0.11.3.tar.gz", hash = "sha256:104acaa8edd30a20966c0ea77a607b8ac7ff3a1be678f3b073fb037f4b8ac8e8", size = 29705, upload-time = "2026-05-27T16:31:32.57Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/5b/636322035f0e937a81dda914caa723baa8e9fe949cebc309a32e80c6c8fd/kabinet-0.11.2-py3-none-any.whl", hash = "sha256:6cfa7300b6a761662f5c9af4ac7311b7c6e5b55a470070451c781decc206fb8a", size = 30578, upload-time = "2026-04-22T07:23:45.742Z" },
+    { url = "https://files.pythonhosted.org/packages/8d/1e/1601a72dcb7eebb94812adc4d89446778d3d16b720c2aad6e349d0bb0df5/kabinet-0.11.3-py3-none-any.whl", hash = "sha256:56b7721cd6ce0f839537bb08f9d3ea2d72dd7992536f75c2df3a833f5234c759", size = 32000, upload-time = "2026-05-27T16:31:31.706Z" },
 ]
 
 [[package]]
