@@ -214,7 +214,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.40.3"
+version = "0.40.5"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -317,7 +317,7 @@ requires-dist = [
     { name = "fakts-next", specifier = ">=3.1.2" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=0.2.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=0.2.0" },
-    { name = "kabinet", specifier = ">=0.11.3" },
+    { name = "kabinet", specifier = ">=0.11.4" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.6.0" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.6.0" },
     { name = "koil", specifier = ">=2.5.3" },
@@ -1098,15 +1098,15 @@ wheels = [
 
 [[package]]
 name = "kabinet"
-version = "0.11.3"
+version = "0.11.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f0/90/f6c83f73500bf1a2bc317564e3fdc6fd66c9b8224291af26c2700e079421/kabinet-0.11.3.tar.gz", hash = "sha256:104acaa8edd30a20966c0ea77a607b8ac7ff3a1be678f3b073fb037f4b8ac8e8", size = 29705, upload-time = "2026-05-27T16:31:32.57Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/39/bd8471503d560f3f37792ebb4eb21b7a88cd08fb7f43b288fb162a6266a2/kabinet-0.11.4.tar.gz", hash = "sha256:89fd3b3d404c977d3a737123c9d8f0e4a673aec34efce4ac55d48210c00e26a3", size = 29707, upload-time = "2026-05-27T16:43:10.97Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8d/1e/1601a72dcb7eebb94812adc4d89446778d3d16b720c2aad6e349d0bb0df5/kabinet-0.11.3-py3-none-any.whl", hash = "sha256:56b7721cd6ce0f839537bb08f9d3ea2d72dd7992536f75c2df3a833f5234c759", size = 32000, upload-time = "2026-05-27T16:31:31.706Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/64/225348c3b1c8b238aafaffe63caaf0d31b906ad05c7879811a62a42424a0/kabinet-0.11.4-py3-none-any.whl", hash = "sha256:9e02052517168ee69e24578e35df64c8dbe522e1ef4c3ec0fe61fc4fc29a4e28", size = 32003, upload-time = "2026-05-27T16:43:11.673Z" },
 ]
 
 [[package]]

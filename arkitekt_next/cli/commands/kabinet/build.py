@@ -231,7 +231,7 @@ def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavou
 
     if not os.path.exists(flavours_folder):
         raise click.ClickException(
-            "We could not find the flavours folder. Please run `arkitekt_next port init` first to create a buildable flavour"
+            "We could not find the flavours folder. Please run `arkitekt_next kabinet init` first to create a buildable flavour"
         )
 
     flavours: Dict[str, Flavour] = {}
