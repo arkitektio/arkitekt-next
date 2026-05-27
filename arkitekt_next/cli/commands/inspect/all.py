@@ -99,6 +99,12 @@ def all(
             d.model_dump() for d in registry.implementation_registry.get_locks()
         ],  # TODO: this is a bit hacky locks are not a first class concept in the registry but we want to expose them in the agent manifest, we should probably refactor this at some point
         "requirements": x,
+        "bloks": [
+            d.model_dump()
+            for d in registry.blok_registry.get_declared_bloks(
+                registry.implementation_registry, registry.state_registry
+            )
+        ],
     }
 
     if rekuest is None:
