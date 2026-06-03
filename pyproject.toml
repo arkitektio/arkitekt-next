@@ -24,32 +24,48 @@ dependencies = [
 
 [project.optional-dependencies]
 cli = [
-    "turms>=0.9.0",
+    "turms>=0.10.2",
 ]
-alpaka = ["alpaka>=0.2.0"]
-kraph = ["kraph>=0.2.0"]
-mikro = ["mikro-next>=0.7.2"]
-kabinet = ["kabinet>=0.6.0"]
+alpaka = [
+    "alpaka>=0.7.0",
+]
+kraph = [
+    "kraph>=0.5.1",
+]
+mikro = [
+    "mikro-next>=1.0.3",
+]
+kabinet = [
+    "kabinet>=0.11.4",
+]
 elektro = ["elektro>=0.5.0"]
-fluss = ["fluss-next>=0.2.0"]
-reaktion = ["reaktion-next>=0.2.0"]
-lovekit = ["lovekit>=0.2.0"]
-unlok = ["unlok-next>=1.1.1"]
+fluss = [
+    "fluss-next>=0.7.0",
+]
+reaktion = [
+    "reaktion-next>=0.4.1",
+]
+lovekit = [
+    "lovekit>=1.1.0",
+]
+unlok = [
+    "unlok-next>=1.3.1",
+]
 all = [
     "rich-click>=1.6.1",
     "watchfiles>=0.18.1",
-    "turms>=0.9",
+    "turms>=0.10.2",
     "semver>=3.0.1",
-    "reaktion-next>=0.2.0",
-    "rekuest-next>=0.7",
-    "mikro-next>=0.7.2",
-    "kabinet>=0.6.0",
-    "fluss-next>=0.2.0",
-    "unlok-next>=1.1.1",
+    "reaktion-next>=0.4.1",
+    "rekuest-next>=1.6.2",
+    "mikro-next>=1.0.3",
+    "kabinet>=0.11.4",
+    "fluss-next>=0.7.0",
+    "unlok-next>=1.3.1",
 ]
 extended = [
-    "kraph>=0.2.0",
-    "alpaka>=0.2.0"
+    "kraph>=0.5.1",
+    "alpaka>=0.7.0",
 ]
 blok = [
     "blok>=0.1.0",
@@ -76,7 +92,7 @@ dev-dependencies = [
     "numpy>=1,<2",
     "rekuest-next>=0.13.1",
     "kabinet>=0.6.0",
-    "alpaka>=0.6.0",
+    "alpaka>=0.7.0",
     "kraph>=0.5.1",
     "fluss-next>=0.7.0",
     "lovekit>=1.1.0",

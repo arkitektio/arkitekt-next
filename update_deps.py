@@ -1,6 +1,8 @@
 import subprocess
 import requests
 import sys
+import re
+import tomllib
 
 def get_latest_version(package_name):
     """Fetch the latest version from PyPI."""
@@ -30,6 +32,43 @@ def run_uv_add(args):
     return result.returncode == 0
 
 
+def normalize_name(name):
+    """Normalize a package name to compare/match dependencies consistently."""
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+
+def get_optional_groups(package_name):
+    """Find all optional dependency groups in pyproject.toml that include the package name."""
+    normalized_target = normalize_name(package_name)
+    groups = []
+    try:
+        with open("pyproject.toml", "rb") as f:
+            data = tomllib.load(f)
+        optional_deps = data.get("project", {}).get("optional-dependencies", {})
+        for group, reqs in optional_deps.items():
+            for req in reqs:
+                # Match the package name at the start of the requirement string
+                match = re.match(r'^([A-Za-z0-9]([A-Za-z0-9._-]*[A-Za-z0-9])?)', req)
+                if match:
+                    req_name = match.group(1)
+                    if normalize_name(req_name) == normalized_target:
+                        groups.append(group)
+                        break
+    except Exception as e:
+        print(f"Warning: could not parse pyproject.toml to find optional dependencies: {e}")
+    return groups
+
+
+def update_optional_dependencies(package_name, version):
+    """Update the package in any optional dependency groups it belongs to."""
+    groups = get_optional_groups(package_name)
+    for group in groups:
+        print(f"Adding {package_name}>={version} to optional group '{group}'...")
+        success = run_uv_add(["--optional", group, f"{package_name}>={version}"])
+        if not success:
+            raise RuntimeError(f"Failed to add optional {package_name} to group {group} after cache refresh")
+
+
 def add_package(package_name):
     """Add the latest version of a package using uv."""
     version = get_latest_version(package_name)
@@ -38,6 +77,7 @@ def add_package(package_name):
         success = run_uv_add([f"{package_name}>={version}"])
         if not success:
             raise RuntimeError(f"Failed to add {package_name} after cache refresh")
+        update_optional_dependencies(package_name, version)
     else:
         print(f"Skipping {package_name} (no version found)")
         
@@ -50,6 +90,7 @@ def add_package_dev(package_name):
         success = run_uv_add(["--dev", f"{package_name}>={version}"])
         if not success:
             raise RuntimeError(f"Failed to add dev {package_name} after cache refresh")
+        update_optional_dependencies(package_name, version)
     else:
         print(f"Skipping {package_name} (no version found)")
 
