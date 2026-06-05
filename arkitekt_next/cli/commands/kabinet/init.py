@@ -4,8 +4,7 @@ from .types import Flavour
 from arkitekt_next.cli.utils import build_relative_dir
 import rich_click as click
 from click import Context
-from rich import get_console
-from arkitekt_next.cli.vars import get_manifest
+from arkitekt_next.cli.vars import get_console, get_manifest, get_work_dir
 from arkitekt_next.utils import create_arkitekt_next_folder, create_devcontainer_file
 import yaml
 from rich.panel import Panel
@@ -16,6 +15,54 @@ except ImportError as e:
     raise ImportError("Please install rekuest to use this feature") from e
 
 import os
+import re
+import sys
+
+
+def _detect_python_version(work_dir: str) -> str:
+    """Detect the Python version for the project, returning 'major.minor' (e.g. '3.12').
+
+    Priority:
+    1. .python-version file (created by uv/pyenv)
+    2. requires-python in pyproject.toml (takes minimum bound)
+    3. Current interpreter version
+    """
+    python_version_file = os.path.join(work_dir, ".python-version")
+    if os.path.exists(python_version_file):
+        with open(python_version_file) as f:
+            raw = f.read().strip()
+        parts = raw.split(".")
+        if len(parts) >= 2:
+            return f"{parts[0]}.{parts[1]}"
+        if len(parts) == 1 and parts[0].isdigit():
+            return raw
+
+    pyproject = os.path.join(work_dir, "pyproject.toml")
+    if os.path.exists(pyproject):
+        with open(pyproject) as f:
+            content = f.read()
+        match = re.search(r'requires-python\s*=\s*["\']([^"\']+)["\']', content)
+        if match:
+            specifier = match.group(1)
+            version_match = re.search(r"(\d+\.\d+)", specifier)
+            if version_match:
+                return version_match.group(1)
+
+    return f"{sys.version_info.major}.{sys.version_info.minor}"
+
+
+def _detect_template(work_dir: str, manifest_package_manager: str) -> str:
+    """Detect the correct dockerfile template from project files, falling back to the manifest."""
+    if os.path.exists(os.path.join(work_dir, "uv.lock")):
+        return "uv"
+    if os.path.exists(os.path.join(work_dir, "pyproject.toml")):
+        with open(os.path.join(work_dir, "pyproject.toml")) as f:
+            content = f.read()
+        if "[tool.uv]" in content:
+            return "uv"
+    if manifest_package_manager == "uv":
+        return "uv"
+    return "vanilla"
 
 
 @click.command()
@@ -66,7 +113,8 @@ def init(
 ) -> None:
     """Runs the port wizard to generate a dockerfile to be used with port"""
 
-    arkitekt_next_folder = create_arkitekt_next_folder()
+    work_dir = get_work_dir(ctx)
+    arkitekt_next_folder = create_arkitekt_next_folder(base_dir=work_dir)
 
     flavour_folder = os.path.join(arkitekt_next_folder, "flavours", flavour)
     if os.path.exists(flavour_folder) and not overwrite:
@@ -82,10 +130,7 @@ def init(
     manifest = get_manifest(ctx)
 
     if template is None:
-        if manifest.package_manager == "uv":
-            template = "uv"
-        else:
-            template = "vanilla"
+        template = _detect_template(work_dir, manifest.package_manager)
 
     fl = Flavour(
         selectors=[],
@@ -104,11 +149,17 @@ def init(
     with open(config_file, "w") as file:
             yaml.dump(fl.model_dump(), file)
 
+    python_version = _detect_python_version(work_dir)
+    print(f"Detected Python version: {python_version}")
+
     with open(build_relative_dir("dockerfiles", f"{template}.dockerfile"), "r") as f:
         dockerfile_content = f.read()
 
     with open(dockerfile, "w") as f:
-        f.write(dockerfile_content.format(__arkitekt_version__=package_version))
+        f.write(dockerfile_content.format(
+            __arkitekt_version__=package_version,
+            __python_version__=python_version,
+        ))
 
     if devcontainer or click.confirm("Do you want to create a devcontainer.json file?"):
         create_devcontainer_file(manifest, flavour, dockerfile)
@@ -120,4 +171,4 @@ def init(
         style="green",
     )
 
-    get_console().print(panel)
+    get_console(ctx).print(panel)

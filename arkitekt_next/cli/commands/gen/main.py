@@ -2,9 +2,10 @@ import rich_click as click
 from .watch import watch
 from .compile import compile
 from .init import init
+from arkitekt_next.cli.docs import GEN_DOCS, help_epilog
 
 
-@click.group()
+@click.group(epilog=help_epilog(GEN_DOCS))
 def gen():
     """Codegeneration tools for ArkitektNext Apps (requires turms)
 

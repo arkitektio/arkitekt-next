@@ -15,6 +15,8 @@ LOGO = r"""
                                                                    
 """
 
+from arkitekt_next.cli.docs import DOCS_BASE_URL
+
 ERROR_EPILOGUE = (
-    "To find out more, visit [link=https://arkitekt.live]https://arkitekt.live[/link]"
+    f"To find out more, visit [link={DOCS_BASE_URL}]{DOCS_BASE_URL}[/link]"
 )

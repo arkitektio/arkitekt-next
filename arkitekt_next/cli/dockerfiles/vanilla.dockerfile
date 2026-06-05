@@ -1,4 +1,4 @@
-FROM python:3.11-slim-buster
+FROM python:{__python_version__}-slim
 
 RUN pip install "arkitekt-next[all]>={__arkitekt_version__}"
 

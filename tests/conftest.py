@@ -1,18 +1,13 @@
-from typing import Generator
+from __future__ import annotations
+from typing import TYPE_CHECKING, Generator
+from dataclasses import dataclass
 import pytest
 from arkitekt_next.cli.main import cli
 from click.testing import CliRunner
-from arkitekt_server.dev import temp_server, ArkitektServerConfig
-from arkitekt_server.config.server import LokConfig
-from dokker import Deployment
-from dataclasses import dataclass
-from arkitekt_next.app import App
-from fakts_next.grants.remote import FaktsEndpoint
-from arkitekt_next import easy
 
-from dokker import local
-
-from arkitekt_next.service_registry import get_default_service_registry
+if TYPE_CHECKING:
+    from dokker import Deployment
+    from arkitekt_next.app import App
 
 
 @pytest.fixture
@@ -41,18 +36,63 @@ def initialized_app_cli_runner():
         yield runner
 
 
+@pytest.fixture
+def cli_runner():
+    return CliRunner()
+
+
+@pytest.fixture
+def app_dir(tmp_path):
+    """Temp dir with an initialized app, using --work-dir (no os.chdir)."""
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "--work-dir",
+            str(tmp_path),
+            "init",
+            "--identifier",
+            "com.test.app",
+            "--version",
+            "0.0.1",
+            "--author",
+            "tester",
+            "--entrypoint",
+            "app",
+            "--package-manager",
+            "pip",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    return tmp_path
+
+
+@pytest.fixture
+def app_runner(app_dir):
+    """CliRunner paired with a pre-initialized app directory."""
+    runner = CliRunner()
+    return runner, app_dir
+
+
+@dataclass
+class AppWithinDeployment:
+    """Dataclass to hold the Arkitekt server deployment."""
+    deployment: Deployment
+    app: App
+
 
 @pytest.fixture(scope="session")
 def arkitekt_server() -> Generator[Deployment, None, None]:
-    """ Generates a local Arkitekt server deployment for testing purposes. """
-    
-    
+    """Generates a local Arkitekt server deployment for testing purposes."""
+    from arkitekt_server.dev import temp_server, ArkitektServerConfig
+    from dokker import local
+
     config = ArkitektServerConfig()
-    
+
     with temp_server(config) as temp_path:
-        
+
         setup = local(temp_path / "docker-compose.yaml")
-        
+
         setup.add_health_check(
             url=lambda spec: f"http://localhost:{spec.find_service('gateway').get_port_for_internal(80).published}/lok/ht",
             service="lok",
@@ -60,46 +100,35 @@ def arkitekt_server() -> Generator[Deployment, None, None]:
             max_retries=20,
         )
         with setup as setup:
-            
+
             setup.pull()
             setup.down()
-            
-            
+
             setup.up()
-            
+
             setup.check_health()
             yield setup
             setup.down()
- 
- 
- 
-@dataclass
-class AppWithinDeployment:
-    """Dataclass to hold the Arkitekt server deployment."""
-    deployment: Deployment
-    app: App         
-            
+
 
 @pytest.fixture(scope="session")
 def running_app(arkitekt_server: Deployment) -> Generator[AppWithinDeployment, None, None]:
     """Fixture to ensure the Arkitekt server is running."""
-    from mikro_next.api.schema import create_dataset
-    
+    from fakts_next.grants.remote import FaktsEndpoint
+    from arkitekt_next import easy
+    from arkitekt_next.service_registry import get_default_service_registry
+
     async def device_code_hook(endpoint: FaktsEndpoint, device_code: str):
-        
         await arkitekt_server.arun(
             "lok", f"uv run python manage.py validatecode --code {device_code} --user demo --org arkitektio --composition "
         )
-        
-        
-    registry = get_default_service_registry()
-        
-    assert registry, "Service registry must be initialized"    
-        
 
+    registry = get_default_service_registry()
+
+    assert registry, "Service registry must be initialized"
 
     with easy(url=f"http://localhost:{arkitekt_server.spec.find_service('gateway').get_port_for_internal(80).published}", device_code_hook=device_code_hook) as app:
-        
+
         yield AppWithinDeployment(
             deployment=arkitekt_server,
             app=app

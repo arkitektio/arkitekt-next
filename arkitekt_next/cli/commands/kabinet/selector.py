@@ -1,16 +1,17 @@
 import rich_click as click
+from arkitekt_next.cli.vars import get_work_dir
 from arkitekt_next.utils import create_arkitekt_next_folder
 import os
 import yaml
 from .types import Flavour
 from kabinet.api.schema import SelectorInput
 
+
 @click.group()
 def selector():
-    """
-    Manage selectors
-    """
+    """Manage selectors"""
     pass
+
 
 @selector.command(name="add")
 @click.argument("flavour")
@@ -21,11 +22,11 @@ def selector():
 @click.option("--cuda-cores", "-cc", help="The cuda cores of the selector", default=None, type=int)
 @click.option("--frequency", "-fr", help="The frequency of the selector", default=None, type=int)
 @click.option("--memory", "-m", help="The memory of the selector", default=None, type=int)
-def add_selector(flavour, kind, api_version, api_thing, one_api_version, cuda_cores, frequency, memory):
-    """
-    Add a new selector to a flavour
-    """
-    arkitekt_next_folder = create_arkitekt_next_folder()
+@click.pass_context
+def add_selector(ctx, flavour, kind, api_version, api_thing, one_api_version, cuda_cores, frequency, memory):
+    """Add a new selector to a flavour."""
+    work_dir = get_work_dir(ctx)
+    arkitekt_next_folder = create_arkitekt_next_folder(base_dir=work_dir)
     flavour_folder = os.path.join(arkitekt_next_folder, "flavours", flavour)
     config_file = os.path.join(flavour_folder, "config.yaml")
 
@@ -34,22 +35,22 @@ def add_selector(flavour, kind, api_version, api_thing, one_api_version, cuda_co
 
     with open(config_file, "r") as f:
         data = yaml.safe_load(f)
-    
+
     fl = Flavour(**data)
-    
-    selector = SelectorInput(
+
+    new_selector = SelectorInput(
         kind=kind,
         apiVersion=api_version,
         apiThing=api_thing,
         oneapiVersion=one_api_version,
         cudaCores=cuda_cores,
         frequency=frequency,
-        memory=memory
+        memory=memory,
     )
-    
-    fl.selectors.append(selector)
-    
+
+    fl.selectors.append(new_selector)
+
     with open(config_file, "w") as f:
         yaml.dump(fl.model_dump(), f)
-    
-    click.echo(f"Added selector {selector} to flavour {flavour}")
+
+    click.echo(f"Added selector {new_selector} to flavour {flavour}")

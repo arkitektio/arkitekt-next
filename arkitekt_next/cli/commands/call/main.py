@@ -5,9 +5,10 @@ import rich_click as click
 
 
 from .remote import remote
+from arkitekt_next.cli.docs import CALL_DOCS, help_epilog
 
 
-@click.group()
+@click.group(epilog=help_epilog(CALL_DOCS))
 @click.pass_context
 def call(ctx: Context) -> None:
     """Call functions in your arkitekt_next app.

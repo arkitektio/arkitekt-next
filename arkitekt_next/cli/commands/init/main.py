@@ -2,35 +2,16 @@ import rich_click as click
 import os
 import shutil
 import subprocess
-from arkitekt_next.cli.constants import *
+from arkitekt_next.cli.constants import compile_scopes, compile_templates
+from arkitekt_next.cli.utils import build_relative_dir
 from getpass import getuser
-from arkitekt_next.cli.types import Manifest, Requirement
-from arkitekt_next.cli.vars import get_manifest, get_console
+from arkitekt_next.cli.types import Manifest
+from arkitekt_next.cli.vars import get_console, get_work_dir
 import semver
 from arkitekt_next.cli.io import write_manifest, load_manifest
+from arkitekt_next.cli.docs import INIT_DOCS, help_epilog
 from rich.panel import Panel
 from typing import Optional, List
-
-
-def ensure_semver(ctx, param, value):
-    """Callback to check and prompt for file overwrite."""
-
-    if not value:
-        value = click.prompt(
-            "The version of your app",
-            default="0.0.1",
-        )
-
-    while not semver.Version.is_valid(value):
-        get_console(ctx).print(
-            "ArkitektNext versions need to follow [link=https://semver.org]semver[/link]. Please choose a correct format (examples: 0.0.0, 0.1.0, 0.0.0-alpha.1)"
-        )
-        value = click.prompt(
-            "The version of your app",
-            default="0.0.1",
-        )
-
-    return value
 
 
 def get_default_package_manager():
@@ -39,7 +20,7 @@ def get_default_package_manager():
     return "pip"
 
 
-@click.command()
+@click.command(epilog=help_epilog(INIT_DOCS))
 @click.argument("path", type=click.Path(), default=".", required=False)
 @click.option(
     "--overwrite-manifest",
@@ -148,13 +129,17 @@ def init(
     """
 
     console = get_console(ctx)
+    parent_work_dir = get_work_dir(ctx)
 
+    # Resolve the target directory without changing process CWD
     if path != ".":
-        os.makedirs(path, exist_ok=True)
-        os.chdir(path)
+        work_dir = os.path.join(parent_work_dir, path)
+        os.makedirs(work_dir, exist_ok=True)
+    else:
+        work_dir = parent_work_dir
 
     if not identifier:
-        default_identifier = os.path.basename(os.getcwd())
+        default_identifier = os.path.basename(work_dir)
         if yes:
             identifier = default_identifier
         else:
@@ -174,11 +159,6 @@ def init(
 
     if not semver.Version.is_valid(version):
         if yes:
-            # If yes is provided but version is invalid, we should probably fail or fallback to default if it was user provided?
-            # But here version has a default "0.0.1" in click option.
-            # If user provided an invalid version via flag, we should error.
-            # If user didn't provide version, it is "0.0.1" which is valid.
-            # So if we are here, user provided invalid version.
             raise click.ClickException(
                 f"Invalid version: {version}. ArkitektNext versions need to follow semver."
             )
@@ -192,13 +172,13 @@ def init(
                     default="0.0.1",
                 )
 
-    manifest = load_manifest()
-    if manifest and not overwrite_manifest:
+    existing_manifest = load_manifest(base_dir=work_dir)
+    if existing_manifest and not overwrite_manifest:
         if yes:
             should_overwrite = True
         else:
             should_overwrite = click.confirm(
-                f"Another ArkitektNext app {manifest.to_console_string()} exists already at {os.getcwd()}?. Do you want to overwrite?",
+                f"Another ArkitektNext app {existing_manifest.to_console_string()} exists already at {work_dir}?. Do you want to overwrite?",
                 abort=True,
             )
         if not should_overwrite:
@@ -220,20 +200,21 @@ def init(
                 "uv is not installed. Please install uv or choose another package manager."
             )
 
-        if not os.path.exists("pyproject.toml"):
+        pyproject = os.path.join(work_dir, "pyproject.toml")
+        if not os.path.exists(pyproject):
             subprocess.run(
                 ["uv", "init", "--name", identifier, "--no-workspace"],
                 check=True,
-                cwd=os.getcwd(),
+                cwd=work_dir,
             )
             extras_string = ",".join(with_extra)
             package_spec = (
                 f"arkitekt-next[{extras_string}]" if with_extra else "arkitekt-next"
             )
-
-            subprocess.run(["uv", "add", package_spec], check=True, cwd=os.getcwd())
-            if os.path.exists("hello.py") and entrypoint != "hello":
-                os.remove("hello.py")
+            subprocess.run(["uv", "add", package_spec], check=True, cwd=work_dir)
+            hello_py = os.path.join(work_dir, "hello.py")
+            if os.path.exists(hello_py) and entrypoint != "hello":
+                os.remove(hello_py)
         else:
             console.print(
                 "pyproject.toml already exists. Skipping uv init.", style="yellow"
@@ -242,7 +223,8 @@ def init(
     with open(build_relative_dir("templates", f"{template}.py")) as f:
         template_app = f.read()
 
-    if os.path.exists(f"{entrypoint}.py") and not overwrite_app:
+    entrypoint_file = os.path.join(work_dir, f"{entrypoint}.py")
+    if os.path.exists(entrypoint_file) and not overwrite_app:
         if yes:
             should_overwrite = True
         else:
@@ -250,13 +232,13 @@ def init(
                 "Entrypoint File already exists. Do you want to overwrite?"
             )
         if should_overwrite:
-            with open(f"{entrypoint}.py", "w") as f:
+            with open(entrypoint_file, "w") as f:
                 f.write(template_app)
     else:
-        with open(f"{entrypoint}.py", "w") as f:
+        with open(entrypoint_file, "w") as f:
             f.write(template_app)
 
-    write_manifest(manifest)
+    write_manifest(manifest, base_dir=work_dir)
     md = Panel(
         f"{manifest.to_console_string()} was successfully initialized\n\n"
         + "[not bold white]We are excited to see what you come up with!",

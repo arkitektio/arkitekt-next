@@ -1,9 +1,10 @@
 import rich_click as click
 from .dev import dev
 from .prod import prod
+from arkitekt_next.cli.docs import RUN_DOCS, help_epilog
 
 
-@click.group()
+@click.group(epilog=help_epilog(RUN_DOCS))
 @click.pass_context
 def run(ctx):
     """Runs your arkitekt_next app

@@ -14,7 +14,7 @@ from arkitekt_next.cli.options import (
 )
 import yaml
 from arkitekt_next.cli.utils import build_relative_dir
-from arkitekt_next.cli.vars import get_console, get_manifest
+from arkitekt_next.cli.vars import get_console, get_manifest, get_work_dir
 from arkitekt_next.service_registry import get_default_service_registry
 
 
@@ -52,7 +52,7 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
 
     
     
-    app_directory = os.getcwd()
+    app_directory = get_work_dir(ctx)
 
     app_api_path = os.path.join(app_directory, path)
     app_documents = os.path.join(app_directory, "documents")

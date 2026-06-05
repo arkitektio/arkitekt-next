@@ -1,14 +1,14 @@
-FROM python:3.11-slim-buster
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+FROM python:{__python_version__}-slim
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+RUN mkdir /app
 WORKDIR /app
+
 COPY pyproject.toml uv.lock /app/
+RUN uv sync --frozen --no-dev
 
-RUN uv sync --frozen --no-install-project
-
-COPY . /app
-
-RUN uv sync --frozen
-
-# Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
+
+COPY .arkitekt_next /app/.arkitekt_next
+COPY app.py /app/app.py

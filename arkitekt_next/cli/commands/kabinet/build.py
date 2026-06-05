@@ -1,328 +1,192 @@
 import sys
 import rich_click as click
-from arkitekt_next.cli.vars import get_console, get_manifest
+from arkitekt_next.cli.vars import get_console, get_manifest, get_work_dir
 import os
 from rich.panel import Panel
 import subprocess
 import uuid
 
 from kabinet.api.schema import RequirementInput
-from .io import generate_build
+from .io import generate_build, get_flavours
 from click import Context
 from .types import Flavour, InspectionInput
-import yaml
-from typing import Any, Dict, List, Optional
 import json
+from typing import Any, Dict, List, Optional
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
-from arkitekt_next.utils import create_arkitekt_next_folder
-from rekuest_next.api.schema import ImplementationInput
 
 
 class InspectionError(Exception):
     pass
 
 
-def build_flavour(flavour_name: str, flavour: Flavour) -> str:
-    """Builds the flavour to docker
-
-    Parameters
-    ----------
-    flavour : Flavour
-        The flavour to build
-    manifest : Manifest
-        The manifest of the app
-
-    Returns
-    -------
-
-    tag: str
-        The tag of the built docker container
-
-    """
-
+def build_flavour(flavour_name: str, flavour: Flavour, work_dir: str) -> str:
+    """Builds a flavour to a Docker image and returns the build_id (tag)."""
     build_id = str(uuid.uuid4())
-
-    relative_dir = ".arkitekt_next/flavours/{}/".format(flavour_name)
-
+    relative_dir = os.path.join(".arkitekt_next", "flavours", flavour_name, "")
     command = flavour.generate_build_command(build_id, relative_dir)
-
-    docker_run = subprocess.run(" ".join(command), shell=True)
-
+    docker_run = subprocess.run(" ".join(command), shell=True, cwd=work_dir)
     if docker_run.returncode != 0:
         raise click.ClickException("Could not build docker container")
-
     return build_id
 
 
 def inspect_docker_container(build_id: str) -> tuple[int, int]:
     try:
-        # Run 'docker inspect' with the container ID or name
         result = subprocess.run(
             ["docker", "inspect", build_id],
             stdout=subprocess.PIPE,
             text=True,
             check=True,
         )
-
-        # Parse the JSON output
         try:
             container_info = json.loads(result.stdout)
         except json.decoder.JSONDecodeError as e:
-            combined_error = result.stdout + result.stderr
             raise InspectionError(
-                f"Could not decode JSON output of docker inspect. {combined_error}"
+                f"Could not decode JSON output of docker inspect. {result.stdout}"
             ) from e
-
-        # Extract size information
         try:
-            size = container_info[0][
-                "Size"
-            ]  # Size of files that have been written to the filesystem
-            size_root_fs = container_info[0][
-                "Size"
-            ]  # Total size of all the files in the container
-        except IndexError as e:
-            raise InspectionError("Container not found or invalid JSON output") from e
-        except KeyError as e:
-            raise InspectionError(
-                "Size information not found in the container details"
-            ) from e
-
+            size = container_info[0]["Size"]
+            size_root_fs = container_info[0]["Size"]
+        except (IndexError, KeyError) as e:
+            raise InspectionError("Size information not found in container details") from e
         return size, size_root_fs
     except subprocess.CalledProcessError as e:
-        combined_error = e.stdout + e.stderr
-        raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
+        raise InspectionError(f"An error occurred: {e.stdout}{e.stderr}") from e
 
 
 def inspect_all(build_id: str, url: str) -> Dict[str, Any]:
     try:
-        # Run 'docker inspect' with the container ID or name
         process = subprocess.Popen(
-            " ".join(
-                [
-                    "docker",
-                    "run",
-                    "-it",
-                    "--network",
-                    "host",
-                    build_id,
-                    "arkitekt-next",
-                    "inspect",
-                    "all",
-                    "-mr",
-                ]
-            ),
+            " ".join([
+                "docker", "run", "-it", "--network", "host",
+                build_id, "arkitekt-next", "inspect", "all", "-mr",
+            ]),
             shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
 
         lines: list[str] = []
-        # Poll process for new output until finished
         while True:
             if process.poll() is not None:
                 break
             nextline = process.stdout.readline()
-
             lines.append(nextline.decode("utf-8"))
             sys.stdout.buffer.write(nextline)
             sys.stdout.flush()
 
-        output = process.communicate()[0]
-        exitCode = process.returncode
+        process.communicate()
         result = "\n".join(lines)
 
-        if exitCode != 0:
+        if process.returncode != 0:
             if "ModuleNotFoundError" in result:
                 raise click.ClickException(
-                    " It looks like you are missing a module in your container. Please make sure that you have all the dependencies installed in your container. The error is listed above."
+                    "Missing a module in the container. Make sure all dependencies are installed."
                 )
-
             raise click.ClickException(
-                "When running the command `arkitekt_next inspect implementations` we got an error. The error is listed above."
+                "Running `arkitekt-next inspect all` inside the container failed."
             )
 
-        # Parse the JSON output
         correct_part = result.split("--START_AGENT--")[1].split("--END_AGENT--")[0]
-
         try:
-            output = json.loads(correct_part)
+            return json.loads(correct_part)
         except json.decoder.JSONDecodeError as e:
-            combined_error = result.stdout + result.stderr
-            raise InspectionError(
-                f"Could not decode JSON output of docker inspect. {combined_error}"
-            ) from e
+            raise InspectionError(f"Could not decode inspection JSON. {result}") from e
 
-        return output
     except subprocess.CalledProcessError as e:
-        combined_error = e.stdout + e.stderr
-
-        if "No such command" in combined_error:
+        combined = e.stdout + e.stderr
+        if "No such command" in combined:
             raise InspectionError(
-                "Could not find the command `arkitekt_next inspect implementations` in the container. Maybe"
-                + "you forgot to install arkitekt_next in the container? "
+                "Command `arkitekt-next inspect implementations` not found in container. "
+                "Did you forget to install arkitekt-next?"
             )
-
-        raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
+        raise InspectionError(f"An error occurred: {combined}") from e
 
 
 def inspect_requirements(build_id: str) -> List[RequirementInput]:
     try:
-        # Run 'docker inspect' with the container ID or name
         result = subprocess.run(
-            [
-                "docker",
-                "run",
-                build_id,
-                "arkitekt-next",
-                "inspect",
-                "requirements",
-                "-mr",
-            ],
+            ["docker", "run", build_id, "arkitekt-next", "inspect", "requirements", "-mr"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=True,
             text=True,
         )
-
-        # Parse the JSON output
         correct_part = result.stdout.split("--START_REQUIREMENTS--")[1].split(
             "--END_REQUIREMENTS--"
         )[0]
-
         try:
-            output = json.loads(correct_part)
+            return json.loads(correct_part)
         except json.decoder.JSONDecodeError as e:
-            combined_error = result.stdout + result.stderr
             raise InspectionError(
-                f"Could not decode JSON output of docker inspect. {combined_error}"
+                f"Could not decode requirements JSON. {result.stdout + result.stderr}"
             ) from e
-
-        return output
     except subprocess.CalledProcessError as e:
-        combined_error = e.stdout + e.stderr
-
-        if "No such command" in combined_error:
+        combined = e.stdout + e.stderr
+        if "No such command" in combined:
             raise InspectionError(
-                "Could not find the command `arkitekt_next inspect definitions` in the container. Maybe"
-                + "you forgot to install arkitekt_next in the container? "
+                "Command `arkitekt-next inspect requirements` not found in container."
             )
-
-        raise InspectionError(f"An error occurred: {e.stdout + e.stderr}") from e
+        raise InspectionError(f"An error occurred: {combined}") from e
 
 
 def inspect_build(build_id: str, url: str) -> InspectionInput:
     size, size_root_fs = inspect_docker_container(build_id)
     runtime = inspect_all(build_id, url)
     print("Runtime inspection result:", runtime)
-
-    return InspectionInput(
-        size=size,
-        **runtime,
-    )
-
-
-def get_flavours(ctx: Context, select: Optional[str] = None) -> Dict[str, Flavour]:
-    """Gets the flavours for this app"""
-
-    arkitekt_next_folder = create_arkitekt_next_folder()
-
-    flavours_folder = os.path.join(arkitekt_next_folder, "flavours")
-
-    if not os.path.exists(flavours_folder):
-        raise click.ClickException(
-            "We could not find the flavours folder. Please run `arkitekt_next kabinet init` first to create a buildable flavour"
-        )
-
-    flavours: Dict[str, Flavour] = {}
-
-    for dir_name in os.listdir(flavours_folder):
-        dir = os.path.join(flavours_folder, dir_name)
-        if os.path.isdir(dir):
-            if select is not None and select != dir_name:
-                continue
-
-            if os.path.exists(os.path.join(dir, "config.yaml")):
-                with open(os.path.join(dir, "config.yaml")) as f:
-                    valued = yaml.load(f, Loader=yaml.SafeLoader)
-                try:
-                    flavour = Flavour.model_validate(valued)
-                    flavour.check_relative_paths(dir)
-                    flavours[dir_name] = flavour
-
-                except Exception as e:
-                    get_console(ctx).print_exception()
-                    raise click.ClickException(
-                        f"Could not load flavour {dir_name} from {dir} ` config.yaml ` is invalid"
-                    ) from e
-
-    return flavours
+    return InspectionInput(size=size, **runtime)
 
 
 @click.command()
 @click.option(
-    "--flavour",
-    "-f",
-    help="The flavour to build. By default all flavours are being built",
+    "--flavour", "-f",
+    help="The flavour to build. By default all flavours are built.",
     default=None,
     required=False,
 )
 @click.option(
-    "--no-inspect",
-    "-n",
-    help="Should we skip the inspection of the app?",
+    "--no-inspect", "-n",
+    help="Skip inspection of the app.",
     is_flag=True,
     default=False,
 )
 @click.option(
-    "--tag",
-    "-t",
-    help="Tag the build with a specific tag",
+    "--tag", "-t",
+    help="Tag the build with a specific tag.",
     type=str,
     default=None,
     required=False,
 )
 @click.option(
-    "--url",
-    "-u",
-    help="The fakts_next server to use",
+    "--url", "-u",
+    help="The fakts-next server to use.",
     type=str,
     default=DEFAULT_ARKITEKT_URL,
 )
 @click.pass_context
-def build(
-    ctx: Context,
-    flavour: str,
-    no_inspect: bool,
-    tag: str | None = None,
-    url: str = DEFAULT_ARKITEKT_URL,
-) -> None:
-    """Builds the arkitekt_next app to docker"""
-
+def build(ctx: Context, flavour: str, no_inspect: bool, tag: Optional[str], url: str) -> None:
+    """Builds the arkitekt-next app to Docker."""
     manifest = get_manifest(ctx)
     console = get_console(ctx)
+    work_dir = get_work_dir(ctx)
 
-    flavours = get_flavours(ctx, select=flavour)
+    flavours = get_flavours(base_dir=work_dir, select=flavour)
 
-    md = Panel(
-        "Starting to Build Containers for App [bold]{}[/bold]".format(
-            manifest.identifier
-        ),
+    console.print(Panel(
+        "Starting to Build Containers for App [bold]{}[/bold]".format(manifest.identifier),
         subtitle="Selected Flavours: {}".format(", ".join(flavours.keys())),
-    )
-    console.print(md)
+    ))
 
     build_run = str(uuid.uuid4())
 
     for key, inspected_flavour in flavours.items():
-        md = Panel(
+        console.print(Panel(
             "Building Flavour [bold]{}[/bold]".format(key),
             subtitle="This may take a while...",
             subtitle_align="right",
-        )
-        console.print(md)
+        ))
 
-        build_tag = build_flavour(key, inspected_flavour)
+        build_tag = build_flavour(key, inspected_flavour, work_dir)
 
         if tag:
             subprocess.run(["docker", "tag", build_tag, tag], check=True)
@@ -331,14 +195,10 @@ def build(
         if not no_inspect:
             inspection = inspect_build(build_tag, url)
 
-        generate_build(
-            build_run, build_tag, key, inspected_flavour, manifest, inspection
-        )
+        generate_build(build_run, build_tag, key, inspected_flavour, manifest, inspection, base_dir=work_dir)
 
-        md = Panel(
+        console.print(Panel(
             "Built Flavour [bold]{}[/bold]".format(key),
             subtitle="Build ID: {}".format(build_run),
             subtitle_align="right",
-        )
-
-        console.print(md)
+        ))

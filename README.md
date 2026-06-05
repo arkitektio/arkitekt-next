@@ -69,6 +69,8 @@ arkitekt-next run dev
 
 For more details on how to create an app follow the tutorials on https://arkitekt.live.
 
+For a complete reference of the `arkitekt-next` command line interface (init, run, manifest, kabinet, gen, inspect and call) see [docs/cli.md](docs/cli.md).
+
 ## Usage with complex Datastructures
 
 ArkitektNext takes care of serialization and documentation of standard python datastructures

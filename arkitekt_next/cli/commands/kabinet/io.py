@@ -25,40 +25,64 @@ import json
 import rich_click as click
 
 
-def get_builds(selected_run: Optional[str] = None) -> Dict[str, Build]:
-    """Will load the builds.yaml file and return a dictionary of builds
+def get_flavours(base_dir: Optional[str] = None, select: Optional[str] = None) -> Dict[str, Flavour]:
+    """Loads and validates all flavours from the .arkitekt_next/flavours directory."""
+    arkitekt_next_folder = create_arkitekt_next_folder(base_dir=base_dir)
+    flavours_folder = os.path.join(arkitekt_next_folder, "flavours")
 
-    Will load the builds.yaml file and return a dictionary of builds
-    where the key is the build_id and the value is the build object.
+    if not os.path.exists(flavours_folder):
+        raise click.ClickException(
+            "Could not find the flavours folder. Please run `arkitekt-next kabinet init` first"
+        )
+
+    flavours: Dict[str, Flavour] = {}
+
+    for dir_name in os.listdir(flavours_folder):
+        dir_path = os.path.join(flavours_folder, dir_name)
+        if not os.path.isdir(dir_path):
+            continue
+        if select is not None and select != dir_name:
+            continue
+
+        config_path = os.path.join(dir_path, "config.yaml")
+        if not os.path.exists(config_path):
+            raise click.ClickException(
+                f"Flavour {dir_name} is invalid: no config.yaml found"
+            )
+
+        with open(config_path) as f:
+            valued = yaml.load(f, Loader=yaml.SafeLoader)
+        try:
+            flavour = Flavour.model_validate(valued)
+            flavour.check_relative_paths(dir_path)
+            flavours[dir_name] = flavour
+        except Exception as e:
+            raise click.ClickException(
+                f"Could not load flavour {dir_name}: config.yaml is invalid"
+            ) from e
+
+    return flavours
 
 
-    Returns
-    -------
-    Dict[str, Build]
-        The loaded builds
-    """
-    path = create_arkitekt_next_folder()
+def get_builds(selected_run: Optional[str] = None, base_dir: Optional[str] = None) -> Dict[str, Build]:
+    """Loads the builds.yaml file and returns a dictionary of builds keyed by build_id."""
+    path = create_arkitekt_next_folder(base_dir=base_dir)
     config_file = os.path.join(path, "builds.yaml")
 
-    builds = {}
-
-    if os.path.exists(config_file):
-        with open(config_file, "r") as file:
-            config = BuildsConfigFile(**yaml.safe_load(file))
-
-            # We will only return the builds from the selected run
-            selected_run = selected_run or config.latest_build_run
-
-            builds = {
-                build.build_id: build
-                for build in config.builds
-                if build.build_run == selected_run
-            }
-            return builds
-    else:
+    if not os.path.exists(config_file):
         raise click.ClickException(
-            "Could not find any builds. Please run `arkitekt_next port build` first"
+            "Could not find any builds. Please run `arkitekt-next kabinet build` first"
         )
+
+    with open(config_file, "r") as file:
+        config = BuildsConfigFile(**yaml.safe_load(file))
+
+    selected_run = selected_run or config.latest_build_run
+    return {
+        build.build_id: build
+        for build in config.builds
+        if build.build_run == selected_run
+    }
 
 
 def manifest_to_input(manifest: Manifest) -> ManifestInput:
@@ -78,29 +102,10 @@ def generate_build(
     flavour: Flavour,
     manifest: Manifest,
     inspection: Optional[InspectionInput],
+    base_dir: Optional[str] = None,
 ) -> Build:
-    """Generates a build from a builder, build_id and manifest
-
-    Will generate a build from a builder, build_id and manifest,
-    and write it to the builds.yaml file in the arkitekt_next folder.
-
-
-    Parameters
-    ----------
-    builder : str
-        The builder that was used to build the build
-    build_id : str
-        The build_id of the build
-    manifest : Manifest
-        The manifest of the build
-
-    Returns
-    -------
-    Build
-        The generated build
-    """
-    path = create_arkitekt_next_folder()
-
+    """Generates a Build record and appends it to builds.yaml."""
+    path = create_arkitekt_next_folder(base_dir=base_dir)
     config_file = os.path.join(path, "builds.yaml")
 
     build = Build(
@@ -135,53 +140,24 @@ def generate_build(
     return build
 
 
-def get_deployments() -> DeploymentsConfigFile:
-    """Loads the deployments.yaml file and returns the deployments
-
-    Will load the deployments.yaml file and return the deployments
-    as a DeploymentsConfigFile object. If no deployments.yaml file
-    exists, it will return an empty DeploymentsConfigFile object.
-
-    Returns
-    -------
-    DeploymentsConfigFile
-        The deployments as a DeploymentsConfigFile object
-    """
-    path = create_arkitekt_next_folder()
+def get_deployments(base_dir: Optional[str] = None) -> DeploymentsConfigFile:
+    """Loads deployments.yaml; returns an empty config if the file does not exist."""
+    path = create_arkitekt_next_folder(base_dir=base_dir)
     config_file = os.path.join(path, "deployments.yaml")
     if os.path.exists(config_file):
         with open(config_file, "r") as file:
             return DeploymentsConfigFile(**yaml.safe_load(file))
-    else:
-        return DeploymentsConfigFile()
+    return DeploymentsConfigFile()
 
 
 def generate_deployment(
     deployment_run: str,
     build: Build,
     image: str,
+    base_dir: Optional[str] = None,
 ) -> AppImageInput:
-    """Generates a deployment from a build and an image
-
-    Parameters
-    ----------
-
-    build : Build
-        The build that should be deployed
-    image: str
-        The image that is the actuall deployment of the build
-    with_definitions: bool:
-        Should we generated and inspect definitions to bundle with
-        the deployment?
-
-    Returns:
-    ------
-    Deployment: The created deployment
-
-    """
-
-    path = create_arkitekt_next_folder()
-
+    """Generates a deployment record from a build and appends it to deployments.yaml."""
+    path = create_arkitekt_next_folder(base_dir=base_dir)
     config_file = os.path.join(path, "deployments.yaml")
 
     app_image = AppImageInput(

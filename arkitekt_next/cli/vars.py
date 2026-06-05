@@ -1,4 +1,5 @@
 import contextvars
+import os
 from rich.console import Console
 import rich_click as click
 from .types import Manifest
@@ -37,3 +38,11 @@ def get_manifest(ctx) -> Manifest:
 
 def set_manifest(ctx, manifest):
     ctx.obj["manifest"] = manifest
+
+
+def get_work_dir(ctx) -> str:
+    return ctx.obj.get("work_dir", os.getcwd())
+
+
+def set_work_dir(ctx, work_dir: str):
+    ctx.obj["work_dir"] = work_dir

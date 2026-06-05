@@ -2,6 +2,8 @@ import rich_click as click
 
 from click import Context
 
+from arkitekt_next.cli.docs import KABINET_DOCS, help_epilog
+
 
 class LazyGroup(click.Group):
 
@@ -34,7 +36,7 @@ class LazyGroup(click.Group):
         return None
 
 
-@click.group(cls=LazyGroup)
+@click.group(cls=LazyGroup, epilog=help_epilog(KABINET_DOCS))
 @click.pass_context
 def kabinet(ctx: Context) -> None:
     """Deploy the arkitekt_next app with Port

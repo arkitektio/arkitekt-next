@@ -7,7 +7,7 @@ from semver import (
     bump_patch,
     bump_prerelease,
 )
-from arkitekt_next.cli.vars import get_console, get_manifest
+from arkitekt_next.cli.vars import get_console, get_manifest, get_work_dir
 from arkitekt_next.cli.io import write_manifest
 
 
@@ -38,7 +38,8 @@ def set_version(ctx, version):
     """
 
     manifest = get_manifest(ctx)
-    get_console(ctx)
+    console = get_console(ctx)
+    work_dir = get_work_dir(ctx)
     old_version = manifest.version
 
     if not version:
@@ -54,8 +55,8 @@ def set_version(ctx, version):
         version = new_version
 
     manifest.version = version
-    write_manifest(manifest)
-    get_console().print(f"Version Updated from {old_version} to {version}")
+    write_manifest(manifest, base_dir=work_dir)
+    console.print(f"Version Updated from {old_version} to {version}")
 
 
 @version.command()
@@ -71,7 +72,7 @@ def patch(ctx):
     console = get_console(ctx)
     old_version = manifest.version
     manifest.version = bump_patch(old_version)
-    write_manifest(manifest)
+    write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
 
@@ -89,7 +90,7 @@ def minor(ctx):
     console = get_console(ctx)
     old_version = manifest.version
     manifest.version = bump_minor(old_version)
-    write_manifest(manifest)
+    write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
 
@@ -107,7 +108,7 @@ def major(ctx):
     console = get_console(ctx)
     old_version = manifest.version
     manifest.version = bump_major(old_version)
-    write_manifest(manifest)
+    write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
 
@@ -124,13 +125,13 @@ def prerelease(ctx):
     console = get_console(ctx)
     old_version = manifest.version
     manifest.version = bump_prerelease(old_version)
-    write_manifest(manifest)
+    write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
 
 @version.command("build")
 @click.pass_context
-def bump_build(ctx):
+def build_version(ctx):
     """Patches the build of the arkitekt_next app
 
     Patches the version of the arkitekt_next app, by bumping the build number.
@@ -143,5 +144,5 @@ def bump_build(ctx):
     console = get_console(ctx)
     old_version = manifest.version
     manifest.version = bump_build(old_version)
-    write_manifest(manifest)
+    write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")

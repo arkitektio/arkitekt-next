@@ -1,14 +1,12 @@
 import rich_click as click
-
-
-import rich_click as click
 from .variables import variables
 from .implementations import implementations
 from .requirements import requirements
 from .all import all
+from arkitekt_next.cli.docs import INSPECT_DOCS, help_epilog
 
 
-@click.group()
+@click.group(epilog=help_epilog(INSPECT_DOCS))
 @click.pass_context
 def inspect(ctx):
     """Inspects your arkitekt_next app

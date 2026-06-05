@@ -2,9 +2,10 @@ import rich_click as click
 from .inspect import inspect
 from .scopes import scopes_group
 from .version import version
+from arkitekt_next.cli.docs import MANIFEST_DOCS, help_epilog
 
 
-@click.group()
+@click.group(epilog=help_epilog(MANIFEST_DOCS))
 @click.pass_context
 def manifest(ctx) -> None:
     """Updates the manifest of this app

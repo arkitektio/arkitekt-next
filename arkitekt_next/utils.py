@@ -1,9 +1,10 @@
 import os
 import json
+from typing import Optional
 
 
-def create_arkitekt_next_folder(with_cache: bool = True) -> str:
-    """Creates the .arkitekt_next folder in the current directory.
+def create_arkitekt_next_folder(with_cache: bool = True, base_dir: Optional[str] = None) -> str:
+    """Creates the .arkitekt_next folder in the given directory (defaults to cwd).
 
     If the folder already exists, it does nothing.
     It automatically creates a .gitignore file, and a .dockerignore file,
@@ -13,18 +14,22 @@ def create_arkitekt_next_folder(with_cache: bool = True) -> str:
     ----------
     with_cache : bool, optional
         Should we create a cache dir?, by default True
+    base_dir : str, optional
+        Base directory to create the folder in. Defaults to os.getcwd().
 
     Returns
     -------
     str
         The path to the .arkitekt_next folder.
     """
-    os.makedirs(".arkitekt_next", exist_ok=True)
+    root = base_dir or os.getcwd()
+    folder = os.path.join(root, ".arkitekt_next")
+    os.makedirs(folder, exist_ok=True)
     if with_cache:
-        os.makedirs(".arkitekt_next/cache", exist_ok=True)
+        os.makedirs(os.path.join(folder, "cache"), exist_ok=True)
 
-    gitignore = os.path.join(".arkitekt_next", ".gitignore")
-    dockerignore = os.path.join(".arkitekt_next", ".dockerignore")
+    gitignore = os.path.join(folder, ".gitignore")
+    dockerignore = os.path.join(folder, ".dockerignore")
     if not os.path.exists(gitignore):
         with open(gitignore, "w") as f:
             f.write(
@@ -36,7 +41,7 @@ def create_arkitekt_next_folder(with_cache: bool = True) -> str:
                 "# Hiding ArkitektNext Credential files from git\n*.json\n*.temp\ncache/\nservers/"
             )
 
-    return os.path.abspath(".arkitekt_next")
+    return os.path.abspath(folder)
 
 
 from typing import Any
