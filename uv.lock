@@ -168,7 +168,7 @@ wheels = [
 
 [[package]]
 name = "alpaka"
-version = "0.7.0"
+version = "0.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -176,9 +176,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4e/b6/7ef642180ff4fa831644694459d3716632161e861817b2008081c1cd255d/alpaka-0.7.0.tar.gz", hash = "sha256:3aa95b4a14419d2164323da9badc1f8e23e762352b861b7cbdfeded24e22683f", size = 15832, upload-time = "2026-06-03T11:55:01.753Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8d/e4/44471bd144c97dbf8e5b5faf2d0ad2e65829e5759a0090823bb0d4cdd153/alpaka-0.7.1.tar.gz", hash = "sha256:27136715244ce27f69695a119e575344f164802865608e0658718db5f093bde3", size = 15840, upload-time = "2026-06-05T13:55:24.892Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b6/49/62cc79b26f2ec31f7af4d7bb5ef5c5f6e55ed6a1dd7ecf97084d7a849a40/alpaka-0.7.0-py3-none-any.whl", hash = "sha256:a50f270338ef95e9ed199692366e6f731967e6da3cccb2067422a343d0a6f85f", size = 17839, upload-time = "2026-06-03T11:55:00.951Z" },
+    { url = "https://files.pythonhosted.org/packages/45/64/68c9f7d7595930acec0bfb7aaafcba2320d7403ee4aa989cf4b459bb0dfa/alpaka-0.7.1-py3-none-any.whl", hash = "sha256:7cfc9621901349a4dadeb699b7c8a437b2cc412b4062a99b926fb173fd365d75", size = 17855, upload-time = "2026-06-05T13:55:23.92Z" },
 ]
 
 [[package]]
@@ -308,8 +308,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "alpaka", marker = "extra == 'alpaka'", specifier = ">=0.7.0" },
-    { name = "alpaka", marker = "extra == 'extended'", specifier = ">=0.7.0" },
+    { name = "alpaka", marker = "extra == 'alpaka'", specifier = ">=0.7.1" },
+    { name = "alpaka", marker = "extra == 'extended'", specifier = ">=0.7.1" },
     { name = "blok", marker = "extra == 'blok'", specifier = ">=0.1.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "dokker", specifier = ">=2.3.0" },
@@ -349,7 +349,7 @@ provides-extras = ["cli", "alpaka", "kraph", "mikro", "kabinet", "elektro", "flu
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "alpaka", specifier = ">=0.7.0" },
+    { name = "alpaka", specifier = ">=0.7.1" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
     { name = "fluss-next", specifier = ">=0.7.0" },

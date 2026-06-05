@@ -27,7 +27,7 @@ cli = [
     "turms>=0.10.2",
 ]
 alpaka = [
-    "alpaka>=0.7.0",
+    "alpaka>=0.7.1",
 ]
 kraph = [
     "kraph>=0.5.1",
@@ -65,7 +65,7 @@ all = [
 ]
 extended = [
     "kraph>=0.5.1",
-    "alpaka>=0.7.0",
+    "alpaka>=0.7.1",
 ]
 blok = [
     "blok>=0.1.0",
@@ -92,7 +92,7 @@ dev-dependencies = [
     "numpy>=1,<2",
     "rekuest-next>=0.13.1",
     "kabinet>=0.6.0",
-    "alpaka>=0.7.0",
+    "alpaka>=0.7.1",
     "kraph>=0.5.1",
     "fluss-next>=0.7.0",
     "lovekit>=1.1.0",
