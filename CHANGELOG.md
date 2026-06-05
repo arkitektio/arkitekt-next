@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.42.1 (2026-06-05)
+
+
 ## v0.42.0 (2026-06-03)
+
+### Bug Fixes
+
+- Python dep
+  ([`36d5830`](https://github.com/arkitektio/arkitekt-next/commit/36d58300d088e1612d305d6025d1ff699536a9de))
 
 ### Features
 
