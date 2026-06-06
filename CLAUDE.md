@@ -24,9 +24,8 @@ uv run pytest -k "test_easy"
 # Run integration tests (spins up a local Arkitekt server via Docker)
 uv run pytest -m integration
 
-# Lint (ruff) and type check
+# Lint
 uv run ruff check arkitekt_next/
-uv run mypy arkitekt_next/
 
 # Build the package
 uv build
@@ -153,7 +152,6 @@ App templates live in `arkitekt_next/cli/templates/` (currently `simple.py` and 
 ## Code Conventions
 
 - **Linting**: ruff with `ANN` (type annotations) and `D1` (public docstrings required), line length 100
-- **Type checking**: mypy with `ignore_missing_imports = true`
 - All public functions/classes need docstrings with NumPy-style Parameters/Returns sections
 - Optional dependencies (mikro, fluss, etc.) are guarded with try/except ImportError and replaced with `missing_install()` stub functions — see `__init__.py` pattern
 - Async patterns are bridged to sync via `koil` (`unkoil()` for one-shot, `Koil(sync_in_async=True)` for notebooks)
