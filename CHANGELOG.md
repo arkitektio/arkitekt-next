@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.43.0 (2026-06-08)
+
+
 ## v0.42.2 (2026-06-05)
+
+### Features
+
+- Update to koil 3
+  ([`3623842`](https://github.com/arkitektio/arkitekt-next/commit/362384201596ce59db695f3a49e43ff90f6da8aa))
 
 
 ## v0.42.1 (2026-06-05)
