@@ -214,7 +214,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.42.0"
+version = "0.42.1"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -320,7 +320,7 @@ requires-dist = [
     { name = "kabinet", specifier = ">=0.11.4" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=0.11.4" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=0.11.4" },
-    { name = "koil", specifier = ">=2.5.3" },
+    { name = "koil", specifier = ">=3.0.0" },
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.5.1" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.5.1" },
     { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=1.1.0" },
@@ -331,8 +331,8 @@ requires-dist = [
     { name = "rath", specifier = ">=3.9.1" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.4.1" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.4.1" },
-    { name = "rekuest-next", specifier = ">=1.6.2" },
-    { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=1.6.2" },
+    { name = "rekuest-next", specifier = ">=1.6.3" },
+    { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=1.6.3" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
@@ -1035,11 +1035,11 @@ wheels = [
 
 [[package]]
 name = "janus"
-version = "1.2.0"
+version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d8/1f/5100f13bc13e24a041f60757b097b3c7c31cf8a08c1c1ef1f1caa2516f22/janus-1.2.0.tar.gz", hash = "sha256:c03475c3e10e042f2a08d31a7a894df2a2a95845ff794b7265e7e9c10a425e5d", size = 21534, upload-time = "2024-12-12T23:59:54.797Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/7f/69884b6618be4baf6ebcacc716ee8680a842428a19f403db6d1c0bb990aa/janus-2.0.0.tar.gz", hash = "sha256:0970f38e0e725400496c834a368a67ee551dc3b5ad0a257e132f5b46f2e77770", size = 22910, upload-time = "2024-12-13T12:59:08.622Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d0/d6/6b3ac4df8d0e928521fe7d49cff8f3274b5012975ec0bdbb968ae50531aa/janus-1.2.0-py3-none-any.whl", hash = "sha256:3fa91456c00caed4905821a911e95c69d41306e463ea8da72c76c7a096abc698", size = 11674, upload-time = "2024-12-12T23:59:52.327Z" },
+    { url = "https://files.pythonhosted.org/packages/68/34/65604740edcb20e1bda6a890348ed7d282e7dd23aa00401cbe36fd0edbd9/janus-2.0.0-py3-none-any.whl", hash = "sha256:7e6449d34eab04cd016befbd7d8c0d8acaaaab67cb59e076a69149f9031745f9", size = 12161, upload-time = "2024-12-13T12:59:06.106Z" },
 ]
 
 [[package]]
@@ -1111,15 +1111,14 @@ wheels = [
 
 [[package]]
 name = "koil"
-version = "2.5.3"
+version = "3.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "janus" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c6/bb/74284dbe91bbc197a7ef27f53ff7ebdfd45644884c4a26b2b707d203db68/koil-2.5.3.tar.gz", hash = "sha256:159b18168b4f8a826de4c03a649e1d955f57513cabef46cc93dfaeb37cf39985", size = 15848, upload-time = "2026-04-02T15:26:16.422Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d0/33/93d970bc79a90ba8dad1773230d9ab85476df28d32411aa65986eb58a95e/koil-3.0.0.tar.gz", hash = "sha256:9d375a258a3e232a84c1505f9383bfc241c084b3bcd0b2bf1a5d412ff83d2a72", size = 23767, upload-time = "2026-06-08T10:38:01.339Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f3/38/3a0aa88b9c919861adcf296fad719828ed87179bb892ce61af582423add2/koil-2.5.3-py3-none-any.whl", hash = "sha256:d71fbef7c80ee3943ebd76235b4cf9a26ed700a249381fd54b01341b39f1faf1", size = 19398, upload-time = "2026-04-02T15:26:17.345Z" },
+    { url = "https://files.pythonhosted.org/packages/98/bd/d9c4064de94b50f2b3d0b6d1abc27b806c64055a94603fb3ca089045faf9/koil-3.0.0-py3-none-any.whl", hash = "sha256:14e08ba395df419106b52b0e49199192c7dd17c7f205df061fa68116c90b32c2", size = 28322, upload-time = "2026-06-08T10:38:02.221Z" },
 ]
 
 [[package]]
@@ -2069,22 +2068,23 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "1.6.2"
+version = "1.6.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
     { name = "dokker" },
     { name = "fieldz" },
     { name = "inflection" },
+    { name = "janus" },
     { name = "jsonpatch" },
     { name = "koil" },
     { name = "pydantic" },
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/65/f3/ada0948c423e867a8278546b4e9bebe7790bb04e49ef533b98020c6e1b27/rekuest_next-1.6.2.tar.gz", hash = "sha256:38b403d8129c3d06bb5686f7b7bf5f0433716570df18497a1b25fda04b23493c", size = 202621, upload-time = "2026-05-27T10:05:16.588Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b8/52/c194d8accb24ef1ba9737e0539f3985b664853b0327bb126a054f867de16/rekuest_next-1.6.3.tar.gz", hash = "sha256:d5aabc1cd5e150c35b774d863eb8341dc6bd35db90e48701301ba7a8d4ed0128", size = 203115, upload-time = "2026-06-08T13:19:05.982Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2d/29/dd51cb80b9a1918d715a039b251c98f58d0323ee6e674c3a89c6e1ec2a14/rekuest_next-1.6.2-py3-none-any.whl", hash = "sha256:7b28ff00d82ac8c2062b58a2e8e87706a27692f12e61880f76e2617bc545b500", size = 262692, upload-time = "2026-05-27T10:05:17.856Z" },
+    { url = "https://files.pythonhosted.org/packages/13/00/7bcc15c38f684d9edaa5688f234f53af6099e71e1dada943a487552ab3e7/rekuest_next-1.6.3-py3-none-any.whl", hash = "sha256:3e3f033c2b0534a596c52d79653ce6a11d242e4a48ed558134ceca9115ec05db", size = 263173, upload-time = "2026-06-08T13:19:04.731Z" },
 ]
 
 [[package]]

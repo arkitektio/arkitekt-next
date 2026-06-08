@@ -22,6 +22,7 @@ from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 logger = logging.getLogger(__name__)
 
+
 def easy(
     identifier: str | None = None,
     version: str = "0.0.1",
@@ -114,6 +115,7 @@ def easy(
 
     url = os.getenv("FAKTS_URL", url)
     token = os.getenv("FAKTS_TOKEN", token)
+    redeem_token = os.getenv("FAKTS_REDEEM_TOKEN", redeem_token)
 
     if node_id is None:
         node_id = get_or_set_node_id()

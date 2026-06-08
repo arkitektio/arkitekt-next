@@ -2,7 +2,7 @@ from arkitekt_next.app.app import App
 from typing import Callable, TypeVar, ParamSpec, Any, Optional, Type
 from types import TracebackType
 from koil.qt import async_to_qt
-from koil import run_spawned
+from koil import run_threaded
 from qtpy import QtCore
 
 R = TypeVar("R")
@@ -101,7 +101,7 @@ class QtApp(App):
         """ """
 
         async def wrappable(*args: P.args, **kwargs: P.kwargs) -> R:
-            return await run_spawned(function, *args, **kwargs)
+            return await run_threaded(function, *args, **kwargs)
 
         return async_to_qt(wrappable, parent=self.parent)
 
