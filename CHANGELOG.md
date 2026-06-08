@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.42.2 (2026-06-05)
+
+
 ## v0.42.1 (2026-06-05)
+
+### Bug Fixes
+
+- Cli docuemntation updates
+  ([`b6c884d`](https://github.com/arkitektio/arkitekt-next/commit/b6c884dbabc97d0d2797eef8db371d36715547f6))
 
 
 ## v0.42.0 (2026-06-03)
