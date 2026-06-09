@@ -22,3 +22,20 @@ def import_builder(builder: str) -> Callable[..., App]:
     module = import_module(module_path)
     function = getattr(module, function_name)
     return function
+
+
+async def run_app(app: App) -> None:
+    """Run an app by entering its context and running the rekuest service.
+
+    Parameters
+    ----------
+    app : App
+        The app to run.
+
+    """
+    rekuest = app.services.get("rekuest")
+    if not rekuest:
+        raise Exception("No rekuest service found. We need this to run the app.")
+
+    async with app:
+        await rekuest.arun()

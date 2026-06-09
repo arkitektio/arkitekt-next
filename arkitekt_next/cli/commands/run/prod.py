@@ -1,28 +1,26 @@
 import rich_click as click
 from arkitekt_next.cli.commands.run.dev import resolve_entrypoint
-from arkitekt_next.cli.options import *
+from arkitekt_next.cli.options import (
+    with_fakts_next_url,
+    with_builder,
+    with_token,
+    with_redeem_token,
+    with_instance_id,
+    with_headless,
+    with_log_level,
+    with_skip_cache,
+    with_version,
+)
+from arkitekt_next.cli.vars import get_console, get_manifest
 import asyncio
 from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
-from .utils import import_builder
-from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
+from .utils import import_builder, run_app
 import sys
 
 
-async def run_app(app: App):
-    rekuest = app.rekuest
-
-    async with app:
-        await rekuest.arun()
-
-
 @click.command("prod")
-@click.option(
-    "--url",
-    help="The fakts url for connection",
-    default=DEFAULT_ARKITEKT_URL,
-    envvar="FAKTS_URL",
-)
+@with_fakts_next_url
 @with_builder
 @with_token
 @with_redeem_token
@@ -30,9 +28,10 @@ async def run_app(app: App):
 @with_headless
 @with_log_level
 @with_skip_cache
+@with_version
 @click.argument("entrypoint", required=False)
 @click.pass_context
-def prod(ctx, entrypoint=None, builder=None, **builder_kwargs):
+def prod(ctx, entrypoint=None, builder=None, version=None, **builder_kwargs):
     """Runs the app in production mode
 
     \n
@@ -55,10 +54,12 @@ def prod(ctx, entrypoint=None, builder=None, **builder_kwargs):
             console.print(f"Could not find entrypoint module {entrypoint_module}")
             raise e
 
-    app = builder(
-        **manifest.to_builder_dict(),
-        **builder_kwargs,
-    )
+    # Build from the manifest; let --version override the manifest version if given.
+    builder_args = {**manifest.to_builder_dict(), **builder_kwargs}
+    if version:
+        builder_args["version"] = version
+
+    app = builder(**builder_args)
 
     panel = construct_run_panel(app)
     console.print(panel)

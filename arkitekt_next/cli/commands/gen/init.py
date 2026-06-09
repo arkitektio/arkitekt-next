@@ -25,7 +25,6 @@ from arkitekt_next.service_registry import get_default_service_registry
 @with_graphql_config
 @with_api_path
 @with_schemas
-@with_graphql_config
 @with_documents
 @click.pass_context
 def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_dirs):

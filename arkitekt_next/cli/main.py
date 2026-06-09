@@ -28,8 +28,10 @@ click.rich_click.HEADER_TEXT = LOGO
 click.rich_click.ERRORS_EPILOGUE = ERROR_EPILOGUE
 click.rich_click.USE_RICH_MARKUP = True
 
+CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
-@click.group(epilog=help_epilog(CLI_DOCS_BASE))
+
+@click.group(epilog=help_epilog(CLI_DOCS_BASE), context_settings=CONTEXT_SETTINGS)
 @click.option(
     "--work-dir",
     "-w",

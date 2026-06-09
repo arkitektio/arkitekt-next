@@ -24,7 +24,7 @@ with_token = click.option(
 with_redeem_token = click.option(
     "--redeem-token",
     "-r",
-    help="The token for the fakts_next instance",
+    help="The redeem token used to authenticate against the fakts_next instance",
     envvar="FAKTS_REDEEM_TOKEN",
     required=False,
 )
@@ -34,15 +34,6 @@ with_version = click.option(
     help="Override the version of the app",
     envvar="ARKITEKT_VERSION",
 )
-
-with_log_level = click.option(
-    "--log",
-    "-l",
-    help="Override the logging level",
-    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
-    envvar="ARKITEKT_LOG_LEVEL",
-)
-
 
 with_skip_cache = click.option(
     "--no-cache",
@@ -57,7 +48,7 @@ with_instance_id = click.option(
     "--instance-id",
     "-i",
     default="main",
-    help="The token for the fakts_next instance",
+    help="The instance id to run this app under (allows running multiple instances)",
     envvar="REKUEST_INSTANCE",
 )
 
@@ -65,7 +56,8 @@ with_log_level = click.option(
     "--log-level",
     "-l",
     default="ERROR",
-    help="The token for the fakts_next instance",
+    help="The logging level to use",
+    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
     envvar="ARKITEKT_LOG_LEVEL",
 )
 
@@ -80,7 +72,6 @@ with_builder = click.option(
 
 with_headless = click.option(
     "--headless",
-    "-h",
     is_flag=True,
     default=False,
     help="Should we start headless",
@@ -128,7 +119,7 @@ with_graphql_config = click.option(
 )
 with_api_path = click.option(
     "--path",
-    "-c",
+    "-p",
     help="The path of the api to be generated",
     prompt="Where should we generate the api? (relative to the current directory)",
     type=str,
@@ -166,7 +157,6 @@ with_documents = click.option(
 )
 with_schemas = click.option(
     "--schemas",
-    "-s",
     help="Should we copy the schemas",
     is_flag=True,
     default=True,

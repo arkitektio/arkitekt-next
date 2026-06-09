@@ -15,7 +15,7 @@ from rekuest_next.definition.registry import get_default_definition_registry
 from rekuest_next.agents.hooks.registry import get_default_hook_registry
 from typing import MutableSet, Tuple, Any, Set
 from arkitekt_next.cli.ui import construct_changes_group, construct_app_group
-from arkitekt_next.cli.commands.run.utils import import_builder
+from arkitekt_next.cli.commands.run.utils import import_builder, run_app
 from arkitekt_next.cli.types import Manifest
 from arkitekt_next.app.app import App
 import rich_click as click
@@ -28,6 +28,7 @@ from arkitekt_next.cli.options import (
     with_log_level,
     with_redeem_token,
     with_skip_cache,
+    with_version,
 )
 from arkitekt_next.cli.vars import get_console, get_manifest
 
@@ -87,24 +88,6 @@ class DeepFilter(PythonFilter):
             Should we reload?
         """
         return super().__call__(change, path)
-
-
-async def run_app(app: App) -> None:
-    """A helper function to run the app
-
-    Parameters
-    ----------
-    app : App
-        The app to run
-
-    """
-
-    rekuest = app.services.get("rekuest")
-    if not rekuest:
-        raise Exception("No rekuest service found. We need this to run the app.")
-
-    async with app:
-        await rekuest.arun()
 
 
 def reload_modules(reloadable_modules) -> None:
@@ -223,12 +206,16 @@ async def run_dev(
     **builder_kwargs,
 ):
     entrypoint = entrypoint or manifest.entrypoint
-    identifier = entrypoint or manifest.identifier
     version = version or "dev"
 
     entrypoint_module, entrypoint_file = resolve_entrypoint(entrypoint)
 
     builder_func = import_builder(builder)
+
+    # Build the app from the manifest (identifier, logo, scopes, ...), overriding
+    # the version with the dev sentinel (or an explicit --version). Shared between
+    # the initial build and every hot reload so they can never diverge.
+    builder_args = {**manifest.to_builder_dict(), "version": version, **builder_kwargs}
 
     generation_message = "[not bold white]This is a development tool for arkitekt_next apps. It will watch your app for changes and reload it when it detects a change. It will also print out the current state of your app.[/]"
 
@@ -262,12 +249,7 @@ async def run_dev(
     # This is the main task that is running the app
 
     try:
-        app: App = builder_func(
-            identifier=identifier,
-            version=version,
-            logo=manifest.logo,
-            **builder_kwargs,
-        )
+        app: App = builder_func(**builder_args)
         group = construct_app_group(app)
         panel = Panel(group, style="bold green", border_style="green")
         console.print(panel)
@@ -339,12 +321,7 @@ async def run_dev(
             continue
 
         try:
-            app = builder_func(
-                identifier=identifier,
-                version=version,
-                logo=manifest.logo,
-                **builder_kwargs,
-            )
+            app = builder_func(**builder_args)
             group = construct_app_group(app)
             panel = Panel(group, style="bold green", border_style="green")
             console.print(panel)
@@ -368,6 +345,7 @@ async def run_dev(
 @with_headless
 @with_log_level
 @with_skip_cache
+@with_version
 @click.option(
     "--deep",
     help="Should we check the whole directory for changes and reload them when changes?",
