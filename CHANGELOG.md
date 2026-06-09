@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.43.1 (2026-06-09)
+
+### Bug Fixes
+
+- Update readme and app:dev problem
+  ([`dd3f29a`](https://github.com/arkitektio/arkitekt-next/commit/dd3f29ad962acf6576bf96533862d6489f0dda8a))
+
+
 ## v0.43.0 (2026-06-08)
 
 
