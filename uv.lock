@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.11, <4"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -307,9 +307,9 @@ requires-dist = [
     { name = "fakts-next", specifier = ">=4.1.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=1.0.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=1.0.0" },
-    { name = "kabinet", specifier = ">=1.0.1" },
-    { name = "kabinet", marker = "extra == 'all'", specifier = ">=1.0.1" },
-    { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=1.0.1" },
+    { name = "kabinet", specifier = ">=1.0.2" },
+    { name = "kabinet", marker = "extra == 'all'", specifier = ">=1.0.2" },
+    { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=1.0.2" },
     { name = "koil", specifier = ">=3.3.1" },
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.5.1" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.5.1" },
@@ -1023,15 +1023,15 @@ wheels = [
 
 [[package]]
 name = "kabinet"
-version = "1.0.1"
+version = "1.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/82/54/0fec1c601f37ff0ae6c286e279a63e852011dfb240dac4a11acde765ffb0/kabinet-1.0.1.tar.gz", hash = "sha256:011e62873efc2181a659e48775eddfddfa185397b772bd70569ca8d413a3b993", size = 57702, upload-time = "2026-06-25T15:42:20.843Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c5/9a/cefc7dfec5e22d071d5650b09f2c0bf4ce119216f265fd759df80b811b4a/kabinet-1.0.2.tar.gz", hash = "sha256:08812ab83a46a53e4d94d0384f09b63694f2b47410b345059ce2fa523f5e0d59", size = 57857, upload-time = "2026-06-26T12:25:36.56Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/50/f3/fd8315a0152319ec23f071a42e1a63aaeb3be0c07074711de948c0851553/kabinet-1.0.1-py3-none-any.whl", hash = "sha256:6d92cd76366868a5852f6812a5b1dfc8cfbc6c07663e148b122071806924f976", size = 60248, upload-time = "2026-06-25T15:42:19.671Z" },
+    { url = "https://files.pythonhosted.org/packages/3e/1a/2f9e947d19098d49d19adce55955a59f2acb2f64c0626cbd0ba5d25ccf53/kabinet-1.0.2-py3-none-any.whl", hash = "sha256:6ee1457b362b9cf49377649e7e7c72b4da547c4124be13d35ff86b085a471fd4", size = 60361, upload-time = "2026-06-26T12:25:34.812Z" },
 ]
 
 [[package]]
