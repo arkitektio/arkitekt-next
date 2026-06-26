@@ -86,24 +86,22 @@ def all(
     x = [item.model_dump(by_alias=True) for item in service_registry.get_requirements()]
 
     agent = {
-        "states": [d.model_dump() for d in registry.state_registry.states.values()]
+        "states": [d.model_dump() for d in registry.states.values()]
         if registry
         else [],
         "implementations": [
             d.model_dump()
-            for d in registry.implementation_registry.get_implementations()
+            for d in registry.get_implementations()
         ]
         if registry
         else [],
         "locks": [
-            d.model_dump() for d in registry.implementation_registry.get_locks()
+            d.model_dump() for d in registry.get_locks()
         ],  # TODO: this is a bit hacky locks are not a first class concept in the registry but we want to expose them in the agent manifest, we should probably refactor this at some point
         "requirements": x,
         "bloks": [
             d.model_dump()
-            for d in registry.blok_registry.get_declared_bloks(
-                registry.implementation_registry, registry.state_registry
-            )
+            for key, d in registry.get_declared_bloks().items()
         ],
     }
 

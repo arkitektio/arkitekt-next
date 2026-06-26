@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Generator
 from dataclasses import dataclass
+import shutil
+import subprocess
 import pytest
 from arkitekt_next.cli.main import cli
 from click.testing import CliRunner
@@ -10,13 +12,39 @@ if TYPE_CHECKING:
     from arkitekt_next.app import App
 
 
+def _docker_available() -> bool:
+    """Return True if a docker CLI and a reachable daemon are present."""
+    if shutil.which("docker") is None:
+        return False
+    try:
+        subprocess.run(
+            ["docker", "info"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
+        return True
+    except Exception:
+        return False
+
+
 def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
-    """Skip every collected test in the suite."""
-    skip_marker = pytest.mark.skip(reason="All tests are temporarily skipped")
+    """Skip every collected test in the suite.
+
+    Tests marked ``needs_docker`` are exempt from the blanket skip: they run when a
+    docker daemon is available, and are skipped with a clear reason otherwise.
+    """
+    docker_ok = _docker_available()
+    skip_all = pytest.mark.skip(reason="All tests are temporarily skipped")
+    skip_no_docker = pytest.mark.skip(reason="docker daemon not available")
     for item in items:
-        item.add_marker(skip_marker)
+        if "needs_docker" in item.keywords:
+            if not docker_ok:
+                item.add_marker(skip_no_docker)
+            continue
+        item.add_marker(skip_all)
 
 
 @pytest.fixture

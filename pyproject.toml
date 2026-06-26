@@ -150,6 +150,7 @@ markers = [
     "integration: marks tests that require a running server",
     "qt: marks tests that require a running qt application",
     "cli: marks tests that require a running cli",
+    "needs_docker: marks tests that require a running docker daemon",
 ]
 
 [[tool.pydoc-markdown.loaders]]
