@@ -31,20 +31,27 @@ def _docker_available() -> bool:
 def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
-    """Skip every collected test in the suite.
+    """Gate tests that need external services.
 
-    Tests marked ``needs_docker`` are exempt from the blanket skip: they run when a
-    docker daemon is available, and are skipped with a clear reason otherwise.
+    Every test runs by default, except:
+    - ``integration`` tests (which require a running arkitekt-server) — skipped
+      unless explicitly selected with ``-m integration``;
+    - ``needs_docker`` tests — skipped when no docker daemon is reachable.
     """
     docker_ok = _docker_available()
-    skip_all = pytest.mark.skip(reason="All tests are temporarily skipped")
+    # `-m integration` selects integration tests; only then do we run them.
+    run_integration = "integration" in (config.getoption("markexpr") or "")
     skip_no_docker = pytest.mark.skip(reason="docker daemon not available")
+    skip_integration = pytest.mark.skip(
+        reason="integration tests require a running arkitekt-server; run with -m integration"
+    )
     for item in items:
-        if "needs_docker" in item.keywords:
-            if not docker_ok:
-                item.add_marker(skip_no_docker)
-            continue
-        item.add_marker(skip_all)
+        # Use get_closest_marker (not `in item.keywords`): keywords also contain
+        # path-derived names like the `cli` directory, which would over-match.
+        if item.get_closest_marker("integration") is not None and not run_integration:
+            item.add_marker(skip_integration)
+        if item.get_closest_marker("needs_docker") is not None and not docker_ok:
+            item.add_marker(skip_no_docker)
 
 
 @pytest.fixture
@@ -121,6 +128,7 @@ class AppWithinDeployment:
 @pytest.fixture(scope="session")
 def arkitekt_server() -> Generator[Deployment, None, None]:
     """Generates a local Arkitekt server deployment for testing purposes."""
+    #TODO CURRENTLY BROKEN, NEEDS TO BE FIXED
     from arkitekt_server.dev import temp_server, ArkitektServerConfig
     from dokker import local
 
