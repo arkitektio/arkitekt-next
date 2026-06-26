@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.11, <4"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -205,7 +205,7 @@ wheels = [
 
 [[package]]
 name = "arkitekt-next"
-version = "0.43.1"
+version = "1.0.0rc1"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
