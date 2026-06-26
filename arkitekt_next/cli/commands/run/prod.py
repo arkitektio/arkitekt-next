@@ -5,7 +5,7 @@ from arkitekt_next.cli.options import (
     with_builder,
     with_token,
     with_redeem_token,
-    with_instance_id,
+    with_force,
     with_headless,
     with_log_level,
     with_skip_cache,
@@ -24,7 +24,7 @@ import sys
 @with_builder
 @with_token
 @with_redeem_token
-@with_instance_id
+@with_force
 @with_headless
 @with_log_level
 @with_skip_cache

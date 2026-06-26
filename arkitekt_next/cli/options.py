@@ -44,12 +44,13 @@ with_skip_cache = click.option(
     envvar="ARKITEKT_NO_CACHE",
 )
 
-with_instance_id = click.option(
-    "--instance-id",
-    "-i",
-    default="main",
-    help="The instance id to run this app under (allows running multiple instances)",
-    envvar="REKUEST_INSTANCE",
+with_force = click.option(
+    "--force",
+    "-f",
+    is_flag=True,
+    default=False,
+    help="Force registration, kicking any existing connection for this agent and taking over",
+    envvar="ARKITEKT_FORCE",
 )
 
 with_log_level = click.option(

@@ -6,7 +6,7 @@ from typing import Any, Callable, Dict, Optional, Protocol, Set, TypeVar
 from typing import runtime_checkable
 from pydantic import BaseModel
 
-Params = Dict[str, str]
+Params = Dict[str, Any]
 
 
 current_service_registry = contextvars.ContextVar(

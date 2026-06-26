@@ -32,7 +32,6 @@ async def run_tests(app: App):
 @with_builder
 @with_token
 @with_redeem_token
-@with_instance_id
 @with_headless
 @with_log_level
 @with_skip_cache

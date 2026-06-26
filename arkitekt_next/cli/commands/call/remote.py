@@ -1,12 +1,18 @@
 from click import Context
 import rich_click as click
-from arkitekt_next.cli.options import *
+from arkitekt_next.cli.options import (
+    with_builder,
+    with_token,
+    with_headless,
+    get_console,
+    get_manifest,
+    with_log_level,
+    with_skip_cache,
+)
 import asyncio
 from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
-import rich_click as click
-from arkitekt_next.cli.options import *
-import asyncio
+from arkitekt_next.app import App
 from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
 from arkitekt_next.cli.utils import import_builder
@@ -31,7 +37,6 @@ async def call_app(
 )
 @with_builder
 @with_token
-@with_instance_id
 @with_headless
 @with_log_level
 @with_skip_cache
