@@ -10,12 +10,7 @@ import json
 import os
 
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
-
-try:
-    from rekuest_next.definition.registry import get_default_definition_registry
-except ImportError:
-    get_default_definition_registry = lambda: None
-    pass
+from rekuest_next.app import get_default_app_registry
 
 
 @click.command("prod")
@@ -77,15 +72,8 @@ def implementations(
 
     rekuest = app.services.get("rekuest")
 
-    registry = get_default_definition_registry()
-    global_list = []
-    if registry is None:
-        raise Exception("No default registry found")
-
-    to_be_created_templates = tuple(
-        x.model_dump() for x in registry.implementations.values()
-    )
-    global_list.extend(to_be_created_templates)
+    registry = get_default_app_registry()
+    global_list = [d.model_dump() for d in registry.get_implementations()] if registry else []
 
     console.print(f"Implementations to be created: {len(global_list)}")
 

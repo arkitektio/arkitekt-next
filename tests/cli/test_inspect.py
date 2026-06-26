@@ -102,16 +102,8 @@ def test_inspect_requirements(app_dir):
     assert isinstance(reqs, list)  # simple template adds no extra requirements
 
 
-@pytest.mark.xfail(
-    reason="`inspect implementations` imports the stale "
-    "`rekuest_next.definition.registry` (removed); the import falls back to "
-    "`lambda: None`, so the command raises 'No default registry found'. Use "
-    "`inspect all` instead, which reads the app registry. Remove this xfail once "
-    "implementations.py is updated.",
-    strict=False,
-)
 def test_inspect_implementations(app_dir):
-    """`inspect implementations -mr` should list the template's registered functions."""
+    """`inspect implementations -mr` lists the template's registered functions."""
     result = _run_cli(app_dir, "inspect", "implementations", "-mr")
     assert result.returncode == 0, result.stderr
 
@@ -120,17 +112,6 @@ def test_inspect_implementations(app_dir):
     assert len(impls) >= 3
     for name in _SIMPLE_FUNCS:
         assert name in result.stdout
-
-
-def test_inspect_implementations_currently_unsupported(app_dir):
-    """Pin the current behaviour: `inspect implementations` fails on a stale import.
-
-    Companion to the xfail above — this asserts the *observed* failure so a
-    regression (or a fix) is visible immediately.
-    """
-    result = _run_cli(app_dir, "inspect", "implementations", "-mr")
-    assert result.returncode != 0
-    assert "No default registry found" in (result.stderr + result.stdout)
 
 
 def test_inspect_all(app_dir):
