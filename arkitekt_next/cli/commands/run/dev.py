@@ -1,3 +1,4 @@
+from rekuest_next import get_default_app_registry
 from functools import partial
 from importlib import import_module, reload
 import asyncio
@@ -11,7 +12,7 @@ import os
 import sys
 import inspect
 from pathlib import Path
-from rekuest_next.definition.registry import get_default_definition_registry
+from rekuest_next.app import AppRegistry
 from rekuest_next.agents.hooks.registry import get_default_hook_registry
 from typing import MutableSet, Tuple, Any, Set
 from arkitekt_next.cli.ui import construct_changes_group, construct_app_group
@@ -23,7 +24,7 @@ from arkitekt_next.cli.options import (
     with_fakts_next_url,
     with_builder,
     with_token,
-    with_instance_id,
+    with_force,
     with_headless,
     with_log_level,
     with_redeem_token,
@@ -135,7 +136,7 @@ def check_deeps(changes: Set[Tuple[Change, str]]) -> Set[str]:
 def reset_structure() -> None:
     """Resets the default defintiion rgistry and all
     regitered nodes"""
-    get_default_definition_registry().actor_builders.clear()
+    get_default_app_registry().actor_builders.clear()
     get_default_hook_registry().reset()
 
 
@@ -340,7 +341,7 @@ async def run_dev(
 @with_fakts_next_url
 @with_builder
 @with_token
-@with_instance_id
+@with_force
 @with_redeem_token
 @with_headless
 @with_log_level

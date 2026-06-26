@@ -1,52 +1,52 @@
 [project]
 name = "arkitekt-next"
-version = "0.43.1"
+version = "1.0.0-rc.2"
 description = "client for the arkitekt_next platform"
 authors = [{ name = "jhnnsrs", email = "jhnnsrs@gmail.com" }]
 requires-python = ">=3.11,<4"
 readme = "README.md"
 license = "MIT"
 dependencies = [
-    "fakts-next>=3.1.2",
-    "dokker>=2.3.0",
-    "koil>=3.0.0",
-    "rath>=3.9.1",
+    "fakts-next>=4.1.0",
+    "dokker>=2.5.0",
+    "koil>=3.3.1",
+    "rath>=3.12.0",
     "click>=8.2.0",
-    "rekuest-next>=1.6.3",
-    "kabinet>=0.11.4",
+    "rekuest-next>=2.0.0",
+    "kabinet>=1.0.2",
     "semver>=3.0.4",
     "rich-click>=1.8.8",
     "watchfiles>=1.0.5",
-    "turms>=0.10.2",
+    "turms>=1.0.0",
     "platformdirs>=4.5.0",
     "py-machineid>=0.8.1",
 ]
 
 [project.optional-dependencies]
 cli = [
-    "turms>=0.10.2",
+    "turms>=1.0.0",
 ]
 alpaka = [
-    "alpaka>=0.7.1",
+    "alpaka>=1.0.0",
 ]
 kraph = [
     "kraph>=0.5.1",
 ]
 mikro = [
-    "mikro-next>=1.0.3",
+    "mikro-next>=2.0.0",
 ]
 kabinet = [
-    "kabinet>=0.11.4",
+    "kabinet>=1.0.2",
 ]
 elektro = ["elektro>=0.5.0"]
 fluss = [
-    "fluss-next>=0.7.0",
+    "fluss-next>=1.0.0",
 ]
 reaktion = [
     "reaktion-next>=0.4.1",
 ]
 lovekit = [
-    "lovekit>=1.1.0",
+    "lovekit>=1.2.0",
 ]
 unlok = [
     "unlok-next>=1.3.1",
@@ -54,22 +54,21 @@ unlok = [
 all = [
     "rich-click>=1.6.1",
     "watchfiles>=0.18.1",
-    "turms>=0.10.2",
+    "turms>=1.0.0",
     "semver>=3.0.1",
     "reaktion-next>=0.4.1",
-    "rekuest-next>=1.6.3",
-    "mikro-next>=1.0.3",
-    "kabinet>=0.11.4",
-    "fluss-next>=0.7.0",
+    "rekuest-next>=2.0.0",
+    "mikro-next>=2.0.0",
+    "kabinet>=1.0.2",
+    "fluss-next>=1.0.0",
     "unlok-next>=1.3.1",
 ]
 extended = [
     "kraph>=0.5.1",
-    "alpaka>=0.7.1",
+    "alpaka>=1.0.0",
 ]
-blok = [
-    "blok>=0.1.0",
-]
+# Installed inside the semantic-release Docker action so build_command has uv.
+build = ["uv>=0.7.12"]
 
 [project.scripts]
 arkitekt-next = "arkitekt_next.cli.main:cli"
@@ -85,17 +84,17 @@ dev-dependencies = [
     "pytest-cov>=4.0.0,<5",
     "pytest-aiohttp>=1.0.4,<2",
     "rich-click>=1.8",
-    "mikro-next>=1.0.3",
+    "mikro-next>=2.0.0",
     "python-semantic-release>=9.21.1",
     "qtpy>=2.4.3",
     "dokker>=2.2",
     "numpy>=1,<2",
     "rekuest-next>=0.13.1",
-    "kabinet>=0.6.0",
-    "alpaka>=0.7.1",
+    "kabinet>=1.0.1",
+    "alpaka>=1.0.0",
     "kraph>=0.5.1",
-    "fluss-next>=0.7.0",
-    "lovekit>=1.1.0",
+    "fluss-next>=1.0.0",
+    "lovekit>=1.2.0",
     "unlok-next>=1.3.1",
     "reaktion-next>=0.4.1",
 ]
@@ -164,7 +163,43 @@ docs_base_path = "website/docs"
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
-upload_to_pypi = true
-branch = "main"
-build_command = "uv build"
+# The semantic-release GitHub Action runs in a Docker container without uv, so
+# install it first (the `build` extra). After PSR bumps the version in
+# pyproject.toml, re-sync just this package's entry in uv.lock and stage it so
+# the release commit carries a consistent lock. $PACKAGE_NAME is injected by PSR.
+build_command = """
+    python -m pip install -e '.[build]'
+    uv lock --upgrade-package "$PACKAGE_NAME"
+    git add uv.lock
+    uv build
+"""
+commit_message = "chore(release): v{version} [skip ci]"
+
+# main -> stable X.Y.Z. next -> prereleases X.Y.Z-rc.N. N.x -> maintenance.
+[tool.semantic_release.branches.main]
+match = "main"
+prerelease = false
+
+[tool.semantic_release.branches.next]
+match = "next"
+prerelease = true
+prerelease_token = "rc"
+
+# Maintenance branches (1.x, 2.x, ...) cut stable patch/minor releases for an
+# older major after a new major has shipped from main.
+[tool.semantic_release.branches.maintenance]
+match = '^\d+\.x$'
+prerelease = false
+
+# Keep the changelog focused on user-facing changes. These patterns only filter
+# what's rendered — they do not affect version bumps.
+[tool.semantic_release.changelog]
+exclude_commit_patterns = [
+    '^chore(?:\([^)]*\))?: ',
+    '^ci(?:\([^)]*\))?: ',
+    '^build(?:\([^)]*\))?: ',
+    '^style(?:\([^)]*\))?: ',
+    '^test(?:\([^)]*\))?: ',
+    '^Merge ',
+]
 

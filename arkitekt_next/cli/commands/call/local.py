@@ -39,7 +39,6 @@ async def call_app(
 )
 @with_builder
 @with_token
-@with_instance_id
 @with_headless
 @with_log_level
 @with_skip_cache

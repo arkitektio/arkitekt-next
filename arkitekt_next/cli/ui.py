@@ -71,10 +71,10 @@ def construct_app_group(app: App) -> Group:
     if rekuest is None:
         return Group(panel_header, service_tree)
 
-    default = get_default_definition_registry()
-    if default is not None:
-        for key, template in default.implementations.items():
-            actor_tree.add(key + "-" + template.definition.name)
+    default = app.rekuest.agent.app_registry.get_implementations()
+
+    for template in default:
+        actor_tree.add(template.interface + "-" + template.definition.name)
 
     panel_group = Group(panel_header, service_tree, actor_tree)
 

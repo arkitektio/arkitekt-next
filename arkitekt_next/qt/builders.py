@@ -39,7 +39,7 @@ def qt(
     service_registry: Optional[ServiceBuilderRegistry] = None,
     public_sources: Optional[List[PublicSource]] = None,
     description: Optional[str] = None,
-    instance_id: str = "main",
+    force: bool = False,
     init_hook_registry: Optional[InitHookRegistry] = None,
 ) -> QtApp:
     """Creates a next app
@@ -90,11 +90,10 @@ def qt(
         Should we skip caching token, acess-token, by default False
         Attention: If this is set to True, the app will always have to be configured
         and authenticated.
-    instance_id : str, optional
-        The instance_id to use, by default "main"
-        Can be set to a different value, if you want to run multiple intstances
-        of the same app by the same user.
-        Will be overwritten by the REKUEST_INSTANCE_ID environment variable
+    force : bool, optional
+        Should we force registration, by default False
+        If set to True, the agent will kick any existing connection registered
+        for this agent and take over.
     register_reaktion : bool, optional
         Should we register the reaktion extension, by default True
         If set to False, the app will not be able to use the reaktion extension
@@ -155,7 +154,7 @@ def qt(
         )
 
     params = {
-        "instance_id": instance_id,
+        "force": force,
     }
 
     create_arkitekt_next_folder(with_cache=True)
