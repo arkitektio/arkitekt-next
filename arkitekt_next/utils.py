@@ -91,4 +91,5 @@ def create_devcontainer_file(
         }
     }
 
-    json.dump(devcontainer_content, open(devcontainer_file, "w"), indent=4)
+    with open(devcontainer_file, "w") as f:
+        json.dump(devcontainer_content, f, indent=4)
