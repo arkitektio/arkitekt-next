@@ -1,22 +1,18 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Generator
 from dataclasses import dataclass
+import shutil
+import subprocess
 import pytest
 from arkitekt_next.cli.main import cli
 from click.testing import CliRunner
 
 if TYPE_CHECKING:
-    from dokker import Deployment
+    from arkitekt_server.dev import ArkitektServer
     from arkitekt_next.app import App
 
 
-def pytest_collection_modifyitems(
-    config: pytest.Config, items: list[pytest.Item]
-) -> None:
-    """Skip every collected test in the suite."""
-    skip_marker = pytest.mark.skip(reason="All tests are temporarily skipped")
-    for item in items:
-        item.add_marker(skip_marker)
+
 
 
 @pytest.fixture
@@ -85,60 +81,68 @@ def app_runner(app_dir):
 
 @dataclass
 class AppWithinDeployment:
-    """Dataclass to hold the Arkitekt server deployment."""
-    deployment: Deployment
+    """Dataclass to hold the running Arkitekt server and the connected app."""
+    server: ArkitektServer
     app: App
 
 
+# Services the upload integration test needs: ``mikro`` provides the image/dataset
+# API, ``rekuest`` is part of the default service registry that ``easy`` negotiates
+# against. ``lok`` is always enabled (see ``REQUIRED_SERVICES``).
+INTEGRATION_SERVICES = ["rekuest", "mikro", "kabinet"]
+
+# lok auto-configures a local composition with this identifier from the default
+# kommunity partners that ``arkitekt-server`` writes into the generated config.
+# ``validatecode`` resolves the device code against it.
+COMPOSITION_IDENTIFIER = "localhost"
+
+
 @pytest.fixture(scope="session")
-def arkitekt_server() -> Generator[Deployment, None, None]:
-    """Generates a local Arkitekt server deployment for testing purposes."""
-    from arkitekt_server.dev import temp_server, ArkitektServerConfig
-    from dokker import local
+def arkitekt_server() -> Generator[ArkitektServer, None, None]:
+    """Spin up an ephemeral Arkitekt server with the services needed for tests.
 
-    config = ArkitektServerConfig()
+    Uses ``temp_setup`` which writes a throwaway config (anonymous volumes,
+    randomized ports), builds a ``dokker`` testing deployment and pre-registers a
+    health check for every enabled web service. The deployment is started here and
+    torn down on teardown.
+    """
+    from arkitekt_server.dev import temp_setup
 
-    with temp_server(config) as temp_path:
-
-        setup = local(temp_path / "docker-compose.yaml")
-
-        setup.add_health_check(
-            url=lambda spec: f"http://localhost:{spec.find_service('gateway').get_port_for_internal(80).published}/lok/ht",
-            service="lok",
-            timeout=5,
-            max_retries=20,
-        )
-        with setup as setup:
-
+    with temp_setup(INTEGRATION_SERVICES, channel="next") as server:
+        setup = server.setup
+        with setup:
             setup.pull()
-            setup.down()
-
             setup.up()
-
             setup.check_health()
-            yield setup
+            yield server
             setup.down()
 
 
 @pytest.fixture(scope="session")
-def running_app(arkitekt_server: Deployment) -> Generator[AppWithinDeployment, None, None]:
-    """Fixture to ensure the Arkitekt server is running."""
+def running_app(
+    arkitekt_server: ArkitektServer,
+) -> Generator[AppWithinDeployment, None, None]:
+    """Connect an ``easy`` app to the running Arkitekt server.
+
+    The device-code login is auto-approved by running lok's ``validatecode``
+    management command inside the lok container.
+    """
     from fakts_next.grants.remote import FaktsEndpoint
     from arkitekt_next import easy
     from arkitekt_next.service_registry import get_default_service_registry
 
     async def device_code_hook(endpoint: FaktsEndpoint, device_code: str):
-        await arkitekt_server.arun(
-            "lok", f"uv run python manage.py validatecode --code {device_code} --user demo --org arkitektio --composition "
+        await arkitekt_server.setup.arun(
+            "lok",
+            f"uv run python manage.py validatecode --code {device_code} "
+            f"--user demo --org arkitektio --composition {COMPOSITION_IDENTIFIER}",
         )
 
     registry = get_default_service_registry()
-
     assert registry, "Service registry must be initialized"
 
-    with easy(url=f"http://localhost:{arkitekt_server.spec.find_service('gateway').get_port_for_internal(80).published}", device_code_hook=device_code_hook) as app:
-
-        yield AppWithinDeployment(
-            deployment=arkitekt_server,
-            app=app
-        )
+    with easy(
+        url=arkitekt_server.gateway_url,
+        device_code_hook=device_code_hook,
+    ) as app:
+        yield AppWithinDeployment(server=arkitekt_server, app=app)

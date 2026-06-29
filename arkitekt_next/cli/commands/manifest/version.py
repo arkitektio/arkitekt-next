@@ -1,12 +1,5 @@
 import rich_click as click
-from semver import (
-    parse as parse_semver,
-    bump_build,
-    bump_major,
-    bump_minor,
-    bump_patch,
-    bump_prerelease,
-)
+from semver import Version
 from arkitekt_next.cli.vars import get_console, get_manifest, get_work_dir
 from arkitekt_next.cli.io import write_manifest
 
@@ -44,14 +37,14 @@ def set_version(ctx, version):
 
     if not version:
         try:
-            potential_new_version = bump_patch(old_version)
+            potential_new_version = str(Version.parse(old_version).bump_patch())
         except Exception:
             potential_new_version = None
 
         new_version = click.prompt(
             "Please provide a new version", default=potential_new_version, type=str
         )
-        version = parse_semver(new_version)
+        Version.parse(new_version)
         version = new_version
 
     manifest.version = version
@@ -71,7 +64,7 @@ def patch(ctx):
     manifest = get_manifest(ctx)
     console = get_console(ctx)
     old_version = manifest.version
-    manifest.version = bump_patch(old_version)
+    manifest.version = str(Version.parse(old_version).bump_patch())
     write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
@@ -89,7 +82,7 @@ def minor(ctx):
     manifest = get_manifest(ctx)
     console = get_console(ctx)
     old_version = manifest.version
-    manifest.version = bump_minor(old_version)
+    manifest.version = str(Version.parse(old_version).bump_minor())
     write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
@@ -107,7 +100,7 @@ def major(ctx):
     manifest = get_manifest(ctx)
     console = get_console(ctx)
     old_version = manifest.version
-    manifest.version = bump_major(old_version)
+    manifest.version = str(Version.parse(old_version).bump_major())
     write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
@@ -124,7 +117,7 @@ def prerelease(ctx):
     manifest = get_manifest(ctx)
     console = get_console(ctx)
     old_version = manifest.version
-    manifest.version = bump_prerelease(old_version)
+    manifest.version = str(Version.parse(old_version).bump_prerelease())
     write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")
 
@@ -143,6 +136,6 @@ def build_version(ctx):
     manifest = get_manifest(ctx)
     console = get_console(ctx)
     old_version = manifest.version
-    manifest.version = bump_build(old_version)
+    manifest.version = str(Version.parse(old_version).bump_build())
     write_manifest(manifest, base_dir=get_work_dir(ctx))
     console.print(f"Version Updated from {old_version} to {manifest.version}")

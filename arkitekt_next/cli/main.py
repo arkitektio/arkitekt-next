@@ -26,7 +26,7 @@ from arkitekt_next.utils import create_arkitekt_next_folder
 
 click.rich_click.HEADER_TEXT = LOGO
 click.rich_click.ERRORS_EPILOGUE = ERROR_EPILOGUE
-click.rich_click.USE_RICH_MARKUP = True
+click.rich_click.TEXT_MARKUP = "rich"
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
