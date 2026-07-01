@@ -1,27 +1,9 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.11, <4"
 resolution-markers = [
     "python_full_version >= '3.12'",
     "python_full_version < '3.12'",
-]
-
-[[package]]
-name = "aiobotocore"
-version = "2.26.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "aiohttp" },
-    { name = "aioitertools" },
-    { name = "botocore" },
-    { name = "jmespath" },
-    { name = "multidict" },
-    { name = "python-dateutil" },
-    { name = "wrapt" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/4d/f8/99fa90d9c25b78292899fd4946fce97b6353838b5ecc139ad8ba1436e70c/aiobotocore-2.26.0.tar.gz", hash = "sha256:50567feaf8dfe2b653570b4491f5bc8c6e7fb9622479d66442462c021db4fadc", size = 122026, upload-time = "2025-11-28T07:54:59.956Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b7/58/3bf0b7d474607dc7fd67dd1365c4e0f392c8177eaf4054e5ddee3ebd53b5/aiobotocore-2.26.0-py3-none-any.whl", hash = "sha256:a793db51c07930513b74ea7a95bd79aaa42f545bdb0f011779646eafa216abec", size = 87333, upload-time = "2025-11-28T07:54:58.457Z" },
 ]
 
 [[package]]
@@ -145,15 +127,6 @@ wheels = [
 ]
 
 [[package]]
-name = "aioitertools"
-version = "0.13.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fd/3c/53c4a17a05fb9ea2313ee1777ff53f5e001aefd5cc85aa2f4c2d982e1e38/aioitertools-0.13.0.tar.gz", hash = "sha256:620bd241acc0bbb9ec819f1ab215866871b4bbd1f73836a55f799200ee86950c", size = 19322, upload-time = "2025-11-06T22:17:07.609Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/10/a1/510b0a7fadc6f43a6ce50152e69dbd86415240835868bb0bd9b5b88b1e06/aioitertools-0.13.0-py3-none-any.whl", hash = "sha256:0be0292b856f08dfac90e31f4739432f4cb6d7520ab9eb73e143f4f2fa5259be", size = 24182, upload-time = "2025-11-06T22:17:06.502Z" },
-]
-
-[[package]]
 name = "aiosignal"
 version = "1.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -243,6 +216,7 @@ dependencies = [
 
 [package.optional-dependencies]
 all = [
+    { name = "elektro" },
     { name = "fluss-next" },
     { name = "kabinet" },
     { name = "mikro-next" },
@@ -298,6 +272,7 @@ dev = [
     { name = "arkitekt-server" },
     { name = "autoflake" },
     { name = "dokker" },
+    { name = "elektro" },
     { name = "fluss-next" },
     { name = "kabinet" },
     { name = "kraph" },
@@ -321,8 +296,9 @@ requires-dist = [
     { name = "alpaka", marker = "extra == 'alpaka'", specifier = ">=1.0.0" },
     { name = "alpaka", marker = "extra == 'extended'", specifier = ">=1.0.0" },
     { name = "click", specifier = ">=8.2.0" },
-    { name = "dokker", specifier = ">=2.5.0" },
-    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=0.5.0" },
+    { name = "dokker", specifier = ">=2.6.0" },
+    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.1.0" },
+    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.1.0" },
     { name = "fakts-next", specifier = ">=4.1.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=1.0.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=1.0.0" },
@@ -332,7 +308,7 @@ requires-dist = [
     { name = "koil", specifier = ">=3.3.1" },
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.5.1" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.5.1" },
-    { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=1.2.0" },
+    { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=1.2.1" },
     { name = "mikro-next", marker = "extra == 'all'", specifier = ">=2.0.0" },
     { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=2.0.0" },
     { name = "platformdirs", specifier = ">=4.5.0" },
@@ -363,10 +339,11 @@ dev = [
     { name = "arkitekt-server", specifier = ">=4" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
+    { name = "elektro", specifier = ">=1.1.0" },
     { name = "fluss-next", specifier = ">=1.0.0" },
     { name = "kabinet", specifier = ">=1.0.1" },
     { name = "kraph", specifier = ">=0.5.1" },
-    { name = "lovekit", specifier = ">=1.2.0" },
+    { name = "lovekit", specifier = ">=1.2.1" },
     { name = "mikro-next", specifier = ">=2.0.0" },
     { name = "numpy", specifier = ">=1,<2" },
     { name = "pytest", specifier = ">=8.3.0,<9" },
@@ -435,20 +412,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/96/5b/ef31e677f49cce9699070c4c1a2f0ccc297d24f88aab6dfd1f5b4b17d92e/blessed-1.45.0.tar.gz", hash = "sha256:d12abbbcfb5fdd80bac33ea7e22f1a163ff462f5c05f312159e04c5fee460c72", size = 14032801, upload-time = "2026-06-29T18:47:09.661Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/75/50/23322f1484a90caec587d6d3734f9ef3a445b45104148201524a4ff70adb/blessed-1.45.0-py3-none-any.whl", hash = "sha256:afcc23a07e965534dd4669951d2397397dbece46e18998eee9d24d40ac503765", size = 130447, upload-time = "2026-06-29T18:47:07.373Z" },
-]
-
-[[package]]
-name = "botocore"
-version = "1.41.5"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "jmespath" },
-    { name = "python-dateutil" },
-    { name = "urllib3" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/90/22/7fe08c726a2e3b11a0aef8bf177e83891c9cb2dc1809d35c9ed91a9e60e6/botocore-1.41.5.tar.gz", hash = "sha256:0367622b811597d183bfcaab4a350f0d3ede712031ce792ef183cabdee80d3bf", size = 14668152, upload-time = "2025-11-26T20:27:38.026Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4e/4e/21cd0b8f365449f1576f93de1ec8718ed18a7a3bc086dfbdeb79437bba7a/botocore-1.41.5-py3-none-any.whl", hash = "sha256:3fef7fcda30c82c27202d232cfdbd6782cb27f20f8e7e21b20606483e66ee73a", size = 14337008, upload-time = "2025-11-26T20:27:35.208Z" },
 ]
 
 [[package]]
@@ -884,21 +847,25 @@ wheels = [
 
 [[package]]
 name = "elektro"
-version = "0.5.0"
+version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
-    { name = "dokker" },
+    { name = "filelock" },
+    { name = "kanne" },
+    { name = "numcodecs" },
     { name = "numpy", marker = "python_full_version >= '3.12'" },
-    { name = "pandas" },
+    { name = "obstore" },
+    { name = "pydantic" },
+    { name = "pytest" },
     { name = "rath" },
-    { name = "s3fs" },
+    { name = "websockets" },
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/cb/a786bb1930e65261936fd5799f83e3f305b348c7246538942cfd46ab3310/elektro-0.5.0.tar.gz", hash = "sha256:aa6010c182c50679ff0d2f3e8f57fd25f32f7c90fbc0b42411ce43267ddf1aa3", size = 45385, upload-time = "2025-04-18T06:38:44.043Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/02/d0/dd3654d324ed94c4e1e190f0d050ee3d89814e5faf7acc3146339de9b090/elektro-1.1.0.tar.gz", hash = "sha256:4aaa0399e2b76bb58aebdc08d52ec9bbd112fd94f751ea50372f575d8e341593", size = 8226, upload-time = "2026-06-25T12:56:49.843Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/92/465703d770a7f770ed2e5980bf0611653ce6ec9843933d8ad8f4b1155785/elektro-0.5.0-py3-none-any.whl", hash = "sha256:1ece6d3e3068f148b0a7bd67b4d0e6032b3a6f85d8cefdc26792d4cdc05409f1", size = 54131, upload-time = "2025-04-18T06:38:42.425Z" },
+    { url = "https://files.pythonhosted.org/packages/73/34/04db5588138796f40b98d9647049587ce900dd43112273a2e6878e5bd33d/elektro-1.1.0-py3-none-any.whl", hash = "sha256:b892d4ea12fa482c7e6ad5e33b1d26cd0ed717f31349380694c3f861f8a6542b", size = 6012, upload-time = "2026-06-25T12:56:49.016Z" },
 ]
 
 [[package]]
@@ -927,6 +894,39 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/78/c2/9d35a747f439051bff41511178b0b527f1466c7fd4b5a5f7357c136e82bc/fieldz-0.1.3.tar.gz", hash = "sha256:bc21013b2bd5f8a4a782ecef440343ff059fc0a4a2033ae4d616311675260585", size = 18018, upload-time = "2025-09-26T20:42:24.67Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/12/a0/5db990f52226aa4e01e268f285fa56ddf233b3b27b993b4ecc751cf2216f/fieldz-0.1.3-py3-none-any.whl", hash = "sha256:f975fc6f250958966e39504f89bf09bad41479b4c5e0b06b36d13fd92fbac792", size = 18227, upload-time = "2025-09-26T20:42:22.894Z" },
+]
+
+[[package]]
+name = "filelock"
+version = "3.29.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e6/dc/be6cbe99670cd6e4ad387123647cb08e0c32975e223f82551e914c5568a6/filelock-3.29.4.tar.gz", hash = "sha256:10cdb3656fc44541cdf30652a93fb10ec6b05325620eb316bd26893e4201538a", size = 63028, upload-time = "2026-06-13T16:12:00.744Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/13/37/a065dc3bd6e49423a6532c642ca7378d3f467b1ef44c2800c937af7f9739/filelock-3.29.4-py3-none-any.whl", hash = "sha256:dac1648087d5115554850d113e7dd8c83ab2d38e3435dde2d4f163847e57b767", size = 42757, upload-time = "2026-06-13T16:11:59.582Z" },
+]
+
+[[package]]
+name = "flexcache"
+version = "0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/55/b0/8a21e330561c65653d010ef112bf38f60890051d244ede197ddaa08e50c1/flexcache-0.3.tar.gz", hash = "sha256:18743bd5a0621bfe2cf8d519e4c3bfdf57a269c15d1ced3fb4b64e0ff4600656", size = 15816, upload-time = "2024-03-09T03:21:07.555Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/27/cd/c883e1a7c447479d6e13985565080e3fea88ab5a107c21684c813dba1875/flexcache-0.3-py3-none-any.whl", hash = "sha256:d43c9fea82336af6e0115e308d9d33a185390b8346a017564611f1466dcd2e32", size = 13263, upload-time = "2024-03-09T03:21:05.635Z" },
+]
+
+[[package]]
+name = "flexparser"
+version = "0.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/82/99/b4de7e39e8eaf8207ba1a8fa2241dd98b2ba72ae6e16960d8351736d8702/flexparser-0.4.tar.gz", hash = "sha256:266d98905595be2ccc5da964fe0a2c3526fbbffdc45b65b3146d75db992ef6b2", size = 31799, upload-time = "2024-11-07T02:00:56.249Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fe/5e/3be305568fe5f34448807976dc82fc151d76c3e0e03958f34770286278c1/flexparser-0.4-py3-none-any.whl", hash = "sha256:3738b456192dcb3e15620f324c447721023c0293f6af9955b481e91d00179846", size = 27625, upload-time = "2024-11-07T02:00:54.523Z" },
 ]
 
 [[package]]
@@ -1130,7 +1130,7 @@ name = "importlib-metadata"
 version = "8.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp" },
+    { name = "zipp", marker = "python_full_version < '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/66/650a33bd90f786193e4de4b3ad86ea60b53c89b669a5c7be931fac31cdb0/importlib_metadata-8.7.0.tar.gz", hash = "sha256:d13b81ad223b890aa16c5471f2ac3056cf76c5f10f82d6f9292f0b415f389000", size = 56641, upload-time = "2025-04-27T15:29:01.736Z" }
 wheels = [
@@ -1212,15 +1212,6 @@ wheels = [
 ]
 
 [[package]]
-name = "jmespath"
-version = "1.0.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/00/2a/e867e8531cf3e36b41201936b7fa7ba7b5702dbef42922193f05c8976cd6/jmespath-1.0.1.tar.gz", hash = "sha256:90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe", size = 25843, upload-time = "2022-06-17T18:00:12.224Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/31/b4/b9b800c45527aadd64d5b442f9b932b00648617eb5d63d2c7a6587b7cafc/jmespath-1.0.1-py3-none-any.whl", hash = "sha256:02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980", size = 20256, upload-time = "2022-06-17T18:00:10.251Z" },
-]
-
-[[package]]
 name = "jsonpatch"
 version = "1.33"
 source = { registry = "https://pypi.org/simple" }
@@ -1252,6 +1243,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c5/9a/cefc7dfec5e22d071d5650b09f2c0bf4ce119216f265fd759df80b811b4a/kabinet-1.0.2.tar.gz", hash = "sha256:08812ab83a46a53e4d94d0384f09b63694f2b47410b345059ce2fa523f5e0d59", size = 57857, upload-time = "2026-06-26T12:25:36.56Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3e/1a/2f9e947d19098d49d19adce55955a59f2acb2f64c0626cbd0ba5d25ccf53/kabinet-1.0.2-py3-none-any.whl", hash = "sha256:6ee1457b362b9cf49377649e7e7c72b4da547c4124be13d35ff86b085a471fd4", size = 60361, upload-time = "2026-06-26T12:25:34.812Z" },
+]
+
+[[package]]
+name = "kanne"
+version = "2.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pint" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b7/03/33f91ad7df8670130e7d5693653404d39c5492ec329406cefa0c9360f3d8/kanne-2.2.1.tar.gz", hash = "sha256:2ddbed6eab12638754662e55a8da6c213db9deb47c955753672472fbd2cb323a", size = 13639, upload-time = "2026-06-20T14:43:15.912Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/79/30/7ddda89e5882d1b121472ccbcadcc27536b0943f8f192bea6f0b729d5b2d/kanne-2.2.1-py3-none-any.whl", hash = "sha256:783e8c1ab373abf85fa3d0c232b4b4216b52435a057b50b039b996d247fa232d", size = 15061, upload-time = "2026-06-20T14:43:14.922Z" },
 ]
 
 [[package]]
@@ -1310,16 +1314,16 @@ wheels = [
 
 [[package]]
 name = "lovekit"
-version = "1.2.0"
+version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "livekit" },
     { name = "rath" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fb/0b/fa6cff0c731ab57adfac6957adab36af9336361d3328e8577889f3070c06/lovekit-1.2.0.tar.gz", hash = "sha256:2c80b2787bf31c40178ef125efcae7a89b409f692f9894a8e15aeeab6e82f351", size = 10803, upload-time = "2026-06-25T16:32:36.831Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a8/75/38feb3d44877f63fc79a5f0987807230ac2a3c7a0c5034ec87804ec2efd0/lovekit-1.2.1.tar.gz", hash = "sha256:e0792ab5acd42519e271ab59aaf2a84302d67452b83f7e70dd1651ec13bf2f62", size = 10754, upload-time = "2026-06-29T15:31:53.79Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/55/83/3ab3623f1d5ae2e091983b8e2ec732ff9a2054383d9cca4fdc6e8e286954/lovekit-1.2.0-py3-none-any.whl", hash = "sha256:e562d4f10832ec4ab769496f19e0e9c1dbaf01e2703bd216cd2e202fc984c2e2", size = 11580, upload-time = "2026-06-25T16:32:35.924Z" },
+    { url = "https://files.pythonhosted.org/packages/41/82/cc6ccc63d5537e702b1c09cd3eac226cbdfd552aa7b806c411db1d7146a8/lovekit-1.2.1-py3-none-any.whl", hash = "sha256:fa05fed180542e9826cfee88dfee279dd57c956be54c39763da3f7b1e294fc1a", size = 11579, upload-time = "2026-06-29T15:31:52.928Z" },
 ]
 
 [[package]]
@@ -1756,6 +1760,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b2/3a/3f06f34820a31257ddcabdfafc2672c5816be79c7e353b02c1f318daa7d4/partd-1.4.2.tar.gz", hash = "sha256:d022c33afbdc8405c226621b015e8067888173d85f7f5ecebb3cafed9a20f02c", size = 21029, upload-time = "2024-05-06T19:51:41.945Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/71/e7/40fb618334dcdf7c5a316c0e7343c5cd82d3d866edc100d98e29bc945ecd/partd-1.4.2-py3-none-any.whl", hash = "sha256:978e4ac767ec4ba5b86c6eaa52e5a2a3bc748a2ca839e8cc798f1cc6ce6efb0f", size = 18905, upload-time = "2024-05-06T19:51:39.271Z" },
+]
+
+[[package]]
+name = "pint"
+version = "0.25.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flexcache" },
+    { name = "flexparser" },
+    { name = "platformdirs" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/52/9d/b1379cdbd33a49d17d627bc24e2b63cca06a1c5343b38072d2889499e82e/pint-0.25.3.tar.gz", hash = "sha256:f8f5df6cf65314d74da1ade1bf96f8e3e4d0c41b51577ac53c49e7d44ca5acee", size = 255106, upload-time = "2026-03-19T21:57:08.72Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1b/dd/a9fe6a0a09512da23951c68bf36466aeecd89def3183dc095edbc807ddc5/pint-0.25.3-py3-none-any.whl", hash = "sha256:27eb25143bd5de9fcc4d5a4b484f16faf6b4615aa93ece6b3373a8c1a3c1b97d", size = 307488, upload-time = "2026-03-19T21:57:07.022Z" },
 ]
 
 [[package]]
@@ -2377,20 +2396,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f2/ae/095cb626504733e288a81f871f86b10530b787d77c50193c170daaca0df1/runs-1.3.0.tar.gz", hash = "sha256:cca304b631dbefec598c7bfbcfb50d6feace6d3a968734b67fd42d3c728f5a05", size = 4585, upload-time = "2026-02-03T15:59:58.974Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4f/b6/049c75d399ccf6e25abea0652b85bf7e7e101e0300aa9c1d284ad7061c0b/runs-1.3.0-py3-none-any.whl", hash = "sha256:e71a551cfa8da9ef882cac1d5a108bda78c9edee5b8d87e37c1003da5b6a7bed", size = 6406, upload-time = "2026-02-03T15:59:59.96Z" },
-]
-
-[[package]]
-name = "s3fs"
-version = "2025.12.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "aiobotocore" },
-    { name = "aiohttp" },
-    { name = "fsspec" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/cf/26/fff848df6a76d6fec20208e61548244639c46a741e296244c3404d6e7df0/s3fs-2025.12.0.tar.gz", hash = "sha256:8612885105ce14d609c5b807553f9f9956b45541576a17ff337d9435ed3eb01f", size = 81217, upload-time = "2025-12-03T15:34:04.754Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/44/8c/04797ebb53748b4d594d4c334b2d9a99f2d2e06e19ad505f1313ca5d56eb/s3fs-2025.12.0-py3-none-any.whl", hash = "sha256:89d51e0744256baad7ae5410304a368ca195affd93a07795bc8ba9c00c9effbb", size = 30726, upload-time = "2025-12-03T15:34:03.576Z" },
 ]
 
 [[package]]
