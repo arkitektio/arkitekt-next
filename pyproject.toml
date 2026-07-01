@@ -39,7 +39,7 @@ kabinet = [
     "kabinet>=1.0.2",
 ]
 elektro = [
-    "elektro>=1.2.1",
+    "elektro>=1.2.2",
 ]
 fluss = [
     "fluss-next>=1.0.0",
@@ -63,7 +63,7 @@ all = [
     "mikro-next>=2.0.0",
     "kabinet>=1.0.2",
     "fluss-next>=1.0.0",
-    "elektro>=1.2.1",
+    "elektro>=1.2.2",
     "unlok-next>=1.3.1",
 ]
 extended = [
@@ -101,7 +101,7 @@ dev-dependencies = [
     "unlok-next>=1.3.1",
     "reaktion-next>=0.4.1",
     "arkitekt-server>=4",
-    "elektro>=1.2.1",
+    "elektro>=1.2.2",
 ]
 
 

@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.11, <4"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -297,8 +297,8 @@ requires-dist = [
     { name = "alpaka", marker = "extra == 'extended'", specifier = ">=1.0.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "dokker", specifier = ">=2.6.0" },
-    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.2.1" },
-    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.2.1" },
+    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.2.2" },
+    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.2.2" },
     { name = "fakts-next", specifier = ">=4.1.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=1.0.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=1.0.0" },
@@ -339,7 +339,7 @@ dev = [
     { name = "arkitekt-server", specifier = ">=4" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
-    { name = "elektro", specifier = ">=1.2.1" },
+    { name = "elektro", specifier = ">=1.2.2" },
     { name = "fluss-next", specifier = ">=1.0.0" },
     { name = "kabinet", specifier = ">=1.0.1" },
     { name = "kraph", specifier = ">=0.5.1" },
@@ -847,7 +847,7 @@ wheels = [
 
 [[package]]
 name = "elektro"
-version = "1.2.1"
+version = "1.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -863,9 +863,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4f/6c/f6314de4aa176038675731063a75f259076565b83ca7fc11224699cbc867/elektro-1.2.1.tar.gz", hash = "sha256:bcd943b3ab11d4fd0ff9605d7b17773e5de2d4de312f9fd2fb3a8505d76b0c66", size = 8228, upload-time = "2026-07-01T12:04:09.688Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/e7/46e00a7bcefbaf2d67714016745eb05e53c4361106cadc0f220cc3d29b2a/elektro-1.2.2.tar.gz", hash = "sha256:27bb11e20f9fd470a72cab4d03781b4e4535bcc005643707e1f29c8fc9f7153e", size = 76947, upload-time = "2026-07-01T12:29:06.978Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/8e/9bef58a22d14529b6730b2f417c382054647b86f32207a2f001b08be2a80/elektro-1.2.1-py3-none-any.whl", hash = "sha256:25bc28aa3e4ca598c5ae343bcee58e1dcb3510e3e651c429869fe40d1013aa7f", size = 6013, upload-time = "2026-07-01T12:04:08.67Z" },
+    { url = "https://files.pythonhosted.org/packages/1f/eb/e0a5b37f5210306cfbd8fca15fb81226b0bcc2e424a0bd63ce9064783a4a/elektro-1.2.2-py3-none-any.whl", hash = "sha256:338ef64d1828bbd789ac33f1f52fddb37666f71c5a17b3450d73c24a25eef383", size = 86239, upload-time = "2026-07-01T12:29:05.87Z" },
 ]
 
 [[package]]
@@ -1130,7 +1130,7 @@ name = "importlib-metadata"
 version = "8.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp" },
+    { name = "zipp", marker = "python_full_version < '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/66/650a33bd90f786193e4de4b3ad86ea60b53c89b669a5c7be931fac31cdb0/importlib_metadata-8.7.0.tar.gz", hash = "sha256:d13b81ad223b890aa16c5471f2ac3056cf76c5f10f82d6f9292f0b415f389000", size = 56641, upload-time = "2025-04-27T15:29:01.736Z" }
 wheels = [
