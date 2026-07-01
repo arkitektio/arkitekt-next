@@ -297,8 +297,8 @@ requires-dist = [
     { name = "alpaka", marker = "extra == 'extended'", specifier = ">=1.0.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "dokker", specifier = ">=2.6.0" },
-    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.1.0" },
-    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.1.0" },
+    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.2.1" },
+    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.2.1" },
     { name = "fakts-next", specifier = ">=4.1.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=1.0.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=1.0.0" },
@@ -339,7 +339,7 @@ dev = [
     { name = "arkitekt-server", specifier = ">=4" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
-    { name = "elektro", specifier = ">=1.1.0" },
+    { name = "elektro", specifier = ">=1.2.1" },
     { name = "fluss-next", specifier = ">=1.0.0" },
     { name = "kabinet", specifier = ">=1.0.1" },
     { name = "kraph", specifier = ">=0.5.1" },
@@ -847,7 +847,7 @@ wheels = [
 
 [[package]]
 name = "elektro"
-version = "1.1.0"
+version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -863,9 +863,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/02/d0/dd3654d324ed94c4e1e190f0d050ee3d89814e5faf7acc3146339de9b090/elektro-1.1.0.tar.gz", hash = "sha256:4aaa0399e2b76bb58aebdc08d52ec9bbd112fd94f751ea50372f575d8e341593", size = 8226, upload-time = "2026-06-25T12:56:49.843Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4f/6c/f6314de4aa176038675731063a75f259076565b83ca7fc11224699cbc867/elektro-1.2.1.tar.gz", hash = "sha256:bcd943b3ab11d4fd0ff9605d7b17773e5de2d4de312f9fd2fb3a8505d76b0c66", size = 8228, upload-time = "2026-07-01T12:04:09.688Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/73/34/04db5588138796f40b98d9647049587ce900dd43112273a2e6878e5bd33d/elektro-1.1.0-py3-none-any.whl", hash = "sha256:b892d4ea12fa482c7e6ad5e33b1d26cd0ed717f31349380694c3f861f8a6542b", size = 6012, upload-time = "2026-06-25T12:56:49.016Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/8e/9bef58a22d14529b6730b2f417c382054647b86f32207a2f001b08be2a80/elektro-1.2.1-py3-none-any.whl", hash = "sha256:25bc28aa3e4ca598c5ae343bcee58e1dcb3510e3e651c429869fe40d1013aa7f", size = 6013, upload-time = "2026-07-01T12:04:08.67Z" },
 ]
 
 [[package]]
