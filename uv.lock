@@ -297,14 +297,14 @@ requires-dist = [
     { name = "alpaka", marker = "extra == 'extended'", specifier = ">=1.0.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "dokker", specifier = ">=2.6.0" },
-    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.2.2" },
-    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.2.2" },
+    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.3.0" },
+    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.3.0" },
     { name = "fakts-next", specifier = ">=4.1.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=1.0.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=1.0.0" },
-    { name = "kabinet", specifier = ">=1.0.2" },
-    { name = "kabinet", marker = "extra == 'all'", specifier = ">=1.0.2" },
-    { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=1.0.2" },
+    { name = "kabinet", specifier = ">=1.0.3" },
+    { name = "kabinet", marker = "extra == 'all'", specifier = ">=1.0.3" },
+    { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=1.0.3" },
     { name = "koil", specifier = ">=3.3.1" },
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.5.1" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.5.1" },
@@ -316,8 +316,8 @@ requires-dist = [
     { name = "rath", specifier = ">=3.12.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.4.1" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.4.1" },
-    { name = "rekuest-next", specifier = ">=2.0.0" },
-    { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=2.0.0" },
+    { name = "rekuest-next", specifier = ">=2.1.0" },
+    { name = "rekuest-next", marker = "extra == 'all'", specifier = ">=2.1.0" },
     { name = "rich-click", specifier = ">=1.8.8" },
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
@@ -339,7 +339,7 @@ dev = [
     { name = "arkitekt-server", specifier = ">=4" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
-    { name = "elektro", specifier = ">=1.2.2" },
+    { name = "elektro", specifier = ">=1.3.0" },
     { name = "fluss-next", specifier = ">=1.0.0" },
     { name = "kabinet", specifier = ">=1.0.1" },
     { name = "kraph", specifier = ">=0.5.1" },
@@ -847,7 +847,7 @@ wheels = [
 
 [[package]]
 name = "elektro"
-version = "1.2.2"
+version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask" },
@@ -863,9 +863,9 @@ dependencies = [
     { name = "xarray" },
     { name = "zarr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9f/e7/46e00a7bcefbaf2d67714016745eb05e53c4361106cadc0f220cc3d29b2a/elektro-1.2.2.tar.gz", hash = "sha256:27bb11e20f9fd470a72cab4d03781b4e4535bcc005643707e1f29c8fc9f7153e", size = 76947, upload-time = "2026-07-01T12:29:06.978Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/24/d8/76e9dc7093a3267b3b956fb4be1884d15df3fe77d0d452767927cf0cb884/elektro-1.3.0.tar.gz", hash = "sha256:048041ab8275c11cd3a0c7a07877e158956f8c3e4289a9dacb41601b8493fdb6", size = 80757, upload-time = "2026-07-01T17:28:13.359Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1f/eb/e0a5b37f5210306cfbd8fca15fb81226b0bcc2e424a0bd63ce9064783a4a/elektro-1.2.2-py3-none-any.whl", hash = "sha256:338ef64d1828bbd789ac33f1f52fddb37666f71c5a17b3450d73c24a25eef383", size = 86239, upload-time = "2026-07-01T12:29:05.87Z" },
+    { url = "https://files.pythonhosted.org/packages/dd/7b/ad96d36c5f6e9fabdfc47a8bef46e63300f48d811b1e8959a06a3a16eab9/elektro-1.3.0-py3-none-any.whl", hash = "sha256:a503607cb2d817841a98b4b1b6b4a306a51b0b44a90f3bd2bd073e43ba454716", size = 90205, upload-time = "2026-07-01T17:28:12.003Z" },
 ]
 
 [[package]]
@@ -1234,28 +1234,28 @@ wheels = [
 
 [[package]]
 name = "kabinet"
-version = "1.0.2"
+version = "1.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/9a/cefc7dfec5e22d071d5650b09f2c0bf4ce119216f265fd759df80b811b4a/kabinet-1.0.2.tar.gz", hash = "sha256:08812ab83a46a53e4d94d0384f09b63694f2b47410b345059ce2fa523f5e0d59", size = 57857, upload-time = "2026-06-26T12:25:36.56Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/d7/84b835c586ba5244992375171ae8aa95e3e7f6b81d72c161b6327afffe16/kabinet-1.0.3.tar.gz", hash = "sha256:e7157aa9675557dbd437c39e36d74efb1d47ffd20f2080b59cdb134baa8ebdd7", size = 61564, upload-time = "2026-07-02T13:39:54.684Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3e/1a/2f9e947d19098d49d19adce55955a59f2acb2f64c0626cbd0ba5d25ccf53/kabinet-1.0.2-py3-none-any.whl", hash = "sha256:6ee1457b362b9cf49377649e7e7c72b4da547c4124be13d35ff86b085a471fd4", size = 60361, upload-time = "2026-06-26T12:25:34.812Z" },
+    { url = "https://files.pythonhosted.org/packages/a4/1d/ce83b9ff9665e188607dadf749670374a024a814951828fa6740dd4c6ab8/kabinet-1.0.3-py3-none-any.whl", hash = "sha256:b56b64c0d23e186e517da79f8d8eda9d45a5ae03d59f4d185073b8dec730c0e7", size = 64201, upload-time = "2026-07-02T13:39:53.517Z" },
 ]
 
 [[package]]
 name = "kanne"
-version = "2.2.1"
+version = "2.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pint" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b7/03/33f91ad7df8670130e7d5693653404d39c5492ec329406cefa0c9360f3d8/kanne-2.2.1.tar.gz", hash = "sha256:2ddbed6eab12638754662e55a8da6c213db9deb47c955753672472fbd2cb323a", size = 13639, upload-time = "2026-06-20T14:43:15.912Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5c/89/da981ac990debd23434c69b40b1775eb0fd14bda0f67d52e752dcf3592a5/kanne-2.4.0.tar.gz", hash = "sha256:5e7894fa4dbd10376e5925e0301f55f2a6287fbaca4b62922ff67a70e095817e", size = 14231, upload-time = "2026-07-01T20:54:33.134Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/30/7ddda89e5882d1b121472ccbcadcc27536b0943f8f192bea6f0b729d5b2d/kanne-2.2.1-py3-none-any.whl", hash = "sha256:783e8c1ab373abf85fa3d0c232b4b4216b52435a057b50b039b996d247fa232d", size = 15061, upload-time = "2026-06-20T14:43:14.922Z" },
+    { url = "https://files.pythonhosted.org/packages/d6/ae/ab0b4a3f3b4666fd2ad7faf45645193c9c78a5e2b9ffa9b0206f66c1fbb7/kanne-2.4.0-py3-none-any.whl", hash = "sha256:eac4a703887b3f38229e8a742110b7594d1ad304c3ad6e5778ae032b75ec387e", size = 15574, upload-time = "2026-07-01T20:54:32.026Z" },
 ]
 
 [[package]]
@@ -2314,7 +2314,7 @@ wheels = [
 
 [[package]]
 name = "rekuest-next"
-version = "2.0.0"
+version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
@@ -2327,9 +2327,9 @@ dependencies = [
     { name = "rath" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/be/fd/dc8ce0e3e2104852bc0448f996352e869405f2d691045fb0bd8ef343da71/rekuest_next-2.0.0.tar.gz", hash = "sha256:51c5b7310963320fcf65ef8ccb7af7ca2e4a25aebe9e719eb218a07ed184e8fe", size = 225822, upload-time = "2026-06-25T14:03:11.637Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f2/af/10f42f90ddbf41d4b7869d5e48759ea71293905c31c83cf35e9a4e5011fb/rekuest_next-2.1.0.tar.gz", hash = "sha256:15e632dbbb2f729fe2aa22aab3b798570dadef5663d921818a556627cc3aef90", size = 232466, upload-time = "2026-07-02T13:43:59.858Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f9/02/573a73f712f30f46cdd89907d214ff9d006965816b77bd6e2f62a7a533f5/rekuest_next-2.0.0-py3-none-any.whl", hash = "sha256:293a41f5e7189c9210961fe2970f4fa3f0b901ec8577c6bd513d6b90f4d3ff6a", size = 279763, upload-time = "2026-06-25T14:03:10.275Z" },
+    { url = "https://files.pythonhosted.org/packages/c8/59/0e4bf119b86353e82ab98b1e565df8b524fc6f53859bd482c9733315c918/rekuest_next-2.1.0-py3-none-any.whl", hash = "sha256:b3b884e6d767375ed1d4fdc556a7f8a123a2a8e7ad020d88aa4ef8248f89e71d", size = 288004, upload-time = "2026-07-02T13:43:58.769Z" },
 ]
 
 [[package]]

@@ -12,8 +12,8 @@ dependencies = [
     "koil>=3.3.1",
     "rath>=3.12.0",
     "click>=8.2.0",
-    "rekuest-next>=2.0.0",
-    "kabinet>=1.0.2",
+    "rekuest-next>=2.1.0",
+    "kabinet>=1.0.3",
     "semver>=3.0.4",
     "rich-click>=1.8.8",
     "watchfiles>=1.0.5",
@@ -36,10 +36,10 @@ mikro = [
     "mikro-next>=2.0.0",
 ]
 kabinet = [
-    "kabinet>=1.0.2",
+    "kabinet>=1.0.3",
 ]
 elektro = [
-    "elektro>=1.2.2",
+    "elektro>=1.3.0",
 ]
 fluss = [
     "fluss-next>=1.0.0",
@@ -59,11 +59,11 @@ all = [
     "turms>=1.0.0",
     "semver>=3.0.1",
     "reaktion-next>=0.4.1",
-    "rekuest-next>=2.0.0",
+    "rekuest-next>=2.1.0",
     "mikro-next>=2.0.0",
-    "kabinet>=1.0.2",
+    "kabinet>=1.0.3",
     "fluss-next>=1.0.0",
-    "elektro>=1.2.2",
+    "elektro>=1.3.0",
     "unlok-next>=1.3.1",
 ]
 extended = [
@@ -101,7 +101,7 @@ dev-dependencies = [
     "unlok-next>=1.3.1",
     "reaktion-next>=0.4.1",
     "arkitekt-server>=4",
-    "elektro>=1.2.2",
+    "elektro>=1.3.0",
 ]
 
 
