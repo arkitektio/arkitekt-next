@@ -8,7 +8,7 @@ from arkitekt_next.cli.main import cli
 from click.testing import CliRunner
 
 if TYPE_CHECKING:
-    from arkitekt_server.dev import ArkitektServer
+    from arkitekt_next.server.dev import ArkitektServer
     from arkitekt_next.app import App
 
 
@@ -22,6 +22,7 @@ def initialized_app_cli_runner():
         result = runner.invoke(
             cli,
             [
+                "app",
                 "init",
                 "--identifier",
                 "arkitekt-next",
@@ -55,6 +56,7 @@ def app_dir(tmp_path):
         [
             "--work-dir",
             str(tmp_path),
+            "app",
             "init",
             "--identifier",
             "com.test.app",
@@ -106,7 +108,7 @@ def arkitekt_server() -> Generator[ArkitektServer, None, None]:
     health check for every enabled web service. The deployment is started here and
     torn down on teardown.
     """
-    from arkitekt_server.dev import temp_setup
+    from arkitekt_next.server.dev import temp_setup
 
     with temp_setup(INTEGRATION_SERVICES, channel="next") as server:
         setup = server.setup

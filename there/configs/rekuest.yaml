@@ -1,0 +1,51 @@
+authentikate:
+  issuers:
+  - iss: go.arkitekt.live
+    jwks_uri: https://go.arkitekt.live/.well-known/jwks.json
+    kind: jwks_uri
+  provenance:
+    issuers:
+    - iss: rekuest
+      jwks_uri: http://rekuest:80/rekuest/.well-known/jwks.json
+      kind: jwks_uri
+  static_tokens: {}
+django:
+  admin:
+    email: null
+    password: uf2ao7tvs7yy2kpc54snsg5w29kju74plwhkp8wf
+    username: admin
+  csrf_trusted_origins:
+  - http://localhost
+  - https://localhost
+  debug: false
+  force_script_name: rekuest
+  hosts:
+  - '*'
+  secret_key: fyzckn@+#aunznq0wo62-r-&)o_=mkbpsf2a=id1)18a6*i6yi
+postgres:
+  db_name: rekuest
+  engine: django.db.backends.postgresql
+  host: db
+  password: 30ae0f6d873a75e6ca8d25f98033f849
+  port: 5432
+  username: sleepyviolettarsier
+provenance:
+  issuer: rekuest
+  kid: rekuest-prov-1
+  private_key: '-----BEGIN PRIVATE KEY-----
+
+    MC4CAQAwBQYDK2VwBCIEIMRw00LF6w4Lh+D1ydF0CxsWn76cZcONBkfS828ZMGpA
+
+    -----END PRIVATE KEY-----
+
+    '
+  public_key: '-----BEGIN PUBLIC KEY-----
+
+    MCowBQYDK2VwAyEA0BabMiLHOKWMrMLdx0tUXC9aCFwyPF3FUYDsEuUnTRY=
+
+    -----END PUBLIC KEY-----
+
+    '
+redis:
+  host: redis
+  port: 6379

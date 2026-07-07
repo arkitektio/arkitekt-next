@@ -26,7 +26,7 @@ import pytest
 from click.testing import CliRunner
 
 from arkitekt_next.cli.main import cli
-from arkitekt_next.cli.commands.kabinet.io import get_builds, get_deployments
+from arkitekt_next.cli.commands.plugin.io import get_builds, get_deployments
 
 
 pytestmark = pytest.mark.needs_docker
@@ -50,7 +50,7 @@ def _scaffold(runner: CliRunner, version: str = "0.0.1") -> None:
     result = runner.invoke(
         cli,
         [
-            "init",
+            "app", "init",
             "--identifier", "com.test.app",
             "--version", version,
             "--author", "me",
@@ -63,7 +63,7 @@ def _scaffold(runner: CliRunner, version: str = "0.0.1") -> None:
     result = runner.invoke(
         cli,
         [
-            "kabinet", "init",
+            "plugin", "init",
             "--flavour", "vanilla",
             "--arkitekt-version", "0.0.1",
         ],
@@ -93,7 +93,7 @@ def _patched_inspect_all():
     record carries a real size while the container-runtime payload is canned.
     """
     return patch(
-        "arkitekt_next.cli.commands.kabinet.build.inspect_all",
+        "arkitekt_next.cli.commands.plugin.build.inspect_all",
         return_value=_FAKE_RUNTIME,
     )
 
@@ -108,7 +108,7 @@ def _patched_push():
         return real_run(cmd, *args, **kwargs)
 
     return patch(
-        "arkitekt_next.cli.commands.kabinet.publish.subprocess.run",
+        "arkitekt_next.cli.commands.plugin.publish.subprocess.run",
         side_effect=fake_run,
     )
 
@@ -123,7 +123,7 @@ def test_kabinet_build_no_inspect():
     with runner.isolated_filesystem():
         _scaffold(runner)
         try:
-            result = runner.invoke(cli, ["kabinet", "build", "--no-inspect"])
+            result = runner.invoke(cli, ["plugin", "build", "--no-inspect"])
             if result.exit_code != 0:
                 print(result.output)
                 print(result.exception)
@@ -151,7 +151,7 @@ def test_kabinet_build_with_inspect():
         _scaffold(runner)
         try:
             with _patched_inspect_all():
-                result = runner.invoke(cli, ["kabinet", "build"])
+                result = runner.invoke(cli, ["plugin", "build"])
             if result.exit_code != 0:
                 print(result.output)
                 print(result.exception)
@@ -179,11 +179,11 @@ def test_kabinet_full_lifecycle():
         _scaffold(runner)
         try:
             with _patched_inspect_all():
-                result = runner.invoke(cli, ["kabinet", "build"])
+                result = runner.invoke(cli, ["plugin", "build"])
             assert result.exit_code == 0, result.output
 
             with _patched_push():
-                result = runner.invoke(cli, ["kabinet", "publish", "--tag", tag])
+                result = runner.invoke(cli, ["plugin", "publish", "--tag", tag])
             if result.exit_code != 0:
                 print(result.output)
                 print(result.exception)
@@ -206,14 +206,14 @@ def test_kabinet_publish_rejects_duplicate():
         _scaffold(runner)
         try:
             with _patched_inspect_all():
-                result = runner.invoke(cli, ["kabinet", "build"])
+                result = runner.invoke(cli, ["plugin", "build"])
             assert result.exit_code == 0, result.output
 
             with _patched_push():
-                first = runner.invoke(cli, ["kabinet", "publish", "--tag", tag])
+                first = runner.invoke(cli, ["plugin", "publish", "--tag", tag])
                 assert first.exit_code == 0, first.output
 
-                second = runner.invoke(cli, ["kabinet", "publish", "--tag", tag])
+                second = runner.invoke(cli, ["plugin", "publish", "--tag", tag])
             assert second.exit_code != 0
             assert "already exists" in second.output
         finally:

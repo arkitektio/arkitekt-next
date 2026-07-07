@@ -1,0 +1,15 @@
+buckets:
+- name: rekuestmedia
+- name: kabinetmedia
+- name: mikromedia
+- name: mikrozarr
+- name: mikroparquet
+- name: mikrobigfile
+- name: flussmedia
+- name: kraphmedia
+users:
+- access_key: ioto0a8b46k97qy0he186cia71xa6tv6jwhxu8eu
+  name: Default User
+  policies:
+  - readwrite
+  secret_key: bpec0m7xg61z3rhc5eta8h62ieeplq8zopyi9goo

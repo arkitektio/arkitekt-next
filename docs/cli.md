@@ -11,8 +11,8 @@ from the terminal:
 
 ```bash
 arkitekt-next --help
-arkitekt-next kabinet --help
-arkitekt-next manifest version --help
+arkitekt-next plugin --help
+arkitekt-next app manifest version --help
 ```
 
 Each `--help` output also links to the matching page in the hosted
@@ -25,7 +25,7 @@ documentation. Those links live as constants in
 | `init` | <https://arkitekt.live/docs/cli/init> |
 | `run` | <https://arkitekt.live/docs/cli/run> |
 | `manifest` | <https://arkitekt.live/docs/cli/manifest> |
-| `kabinet` | <https://arkitekt.live/docs/cli/kabinet> |
+| `plugin` | <https://arkitekt.live/docs/cli/plugin> |
 | `gen` | <https://arkitekt.live/docs/cli/gen> |
 | `inspect` | <https://arkitekt.live/docs/cli/inspect> |
 | `call` | <https://arkitekt.live/docs/cli/call> |
@@ -55,13 +55,13 @@ entrypoint file (default `app.py`) seeded from a template and a
 
 ```bash
 # Interactive — prompts for identifier, author and entrypoint
-arkitekt-next init
+arkitekt-next app init
 
 # Non-interactive — accept all defaults
-arkitekt-next init --yes --package-manager pip
+arkitekt-next app init --yes --package-manager pip
 
 # Fully specified
-arkitekt-next init myapp \
+arkitekt-next app init myapp \
   --identifier com.example.myapp \
   --version 0.1.0 \
   --author "Jane Doe" \
@@ -100,13 +100,13 @@ Runs your app against a (local or remote) Arkitekt instance.
 
 ```bash
 # Development mode with hot-reloading
-arkitekt-next run dev
+arkitekt-next app run dev
 
 # Production mode (no reloading, scalable)
-arkitekt-next run prod
+arkitekt-next app run prod
 
 # Connect to a specific instance, unattended
-arkitekt-next run dev --url http://localhost:8000 --headless
+arkitekt-next app run dev --url http://localhost:8000 --headless
 ```
 
 | Sub-command | Description |
@@ -144,7 +144,7 @@ platform.
 Prints the current manifest as a table.
 
 ```bash
-arkitekt-next manifest inspect
+arkitekt-next app manifest inspect
 ```
 
 ### `manifest version`
@@ -152,12 +152,12 @@ arkitekt-next manifest inspect
 Updates the app version, following [semver](https://semver.org/).
 
 ```bash
-arkitekt-next manifest version set 1.2.3   # set an explicit version
-arkitekt-next manifest version patch       # 1.2.3 -> 1.2.4
-arkitekt-next manifest version minor       # 1.2.3 -> 1.3.0
-arkitekt-next manifest version major       # 1.2.3 -> 2.0.0
-arkitekt-next manifest version prerelease  # 1.2.3 -> 1.2.3-rc.1
-arkitekt-next manifest version build       # 1.2.3 -> 1.2.3+build.1
+arkitekt-next app manifest version set 1.2.3   # set an explicit version
+arkitekt-next app manifest version patch       # 1.2.3 -> 1.2.4
+arkitekt-next app manifest version minor       # 1.2.3 -> 1.3.0
+arkitekt-next app manifest version major       # 1.2.3 -> 2.0.0
+arkitekt-next app manifest version prerelease  # 1.2.3 -> 1.2.3-rc.1
+arkitekt-next app manifest version build       # 1.2.3 -> 1.2.3+build.1
 ```
 
 | Sub-command | Effect |
@@ -176,10 +176,10 @@ arkitekt-next manifest version build       # 1.2.3 -> 1.2.3+build.1
 Inspect and modify the scopes your app requests.
 
 ```bash
-arkitekt-next manifest scopes list        # scopes this app requests
-arkitekt-next manifest scopes available   # all scopes the platform offers
-arkitekt-next manifest scopes add write   # request additional scopes
-arkitekt-next manifest scopes remove write
+arkitekt-next app manifest scopes list        # scopes this app requests
+arkitekt-next app manifest scopes available   # all scopes the platform offers
+arkitekt-next app manifest scopes add write   # request additional scopes
+arkitekt-next app manifest scopes remove write
 ```
 
 Scopes are validated against the platform's known scopes (currently `read` and
@@ -189,29 +189,29 @@ Scopes are validated against the platform's known scopes (currently `read` and
 
 ---
 
-## `kabinet` — Containerize and deploy
+## `plugin` — Containerize and deploy
 
-`kabinet` builds your app into Docker containers and deploys it to an Arkitekt
+`plugin` builds your app into Docker containers and deploys it to an Arkitekt
 instance. A single app can declare multiple **flavours** (build recipes) for
 different hardware — see [Flavours](flavours.md).
 
 ```bash
 # Scaffold a default (vanilla) flavour, plus a devcontainer
-arkitekt-next kabinet init --flavour vanilla --devcontainer
+arkitekt-next plugin init --flavour vanilla --devcontainer
 
 # Add a GPU flavour
-arkitekt-next kabinet flavour add --flavour gpu --description "CUDA enabled build"
+arkitekt-next plugin flavour add --flavour gpu --description "CUDA enabled build"
 
 # Attach a hardware selector to a flavour
-arkitekt-next kabinet selector add gpu --kind cuda --cuda-cores 100
+arkitekt-next plugin selector add gpu --kind cuda --cuda-cores 100
 
 # Validate all flavour Dockerfiles and configs
-arkitekt-next kabinet validate
+arkitekt-next plugin validate
 
 # Build, stage and publish
-arkitekt-next kabinet build
-arkitekt-next kabinet stage
-arkitekt-next kabinet publish
+arkitekt-next plugin build
+arkitekt-next plugin stage
+arkitekt-next plugin publish
 ```
 
 | Sub-command | Description |
@@ -224,7 +224,7 @@ arkitekt-next kabinet publish
 | `stage` | Prepares a build for publishing. |
 | `publish` | Publishes the built image(s) to a registry and registers them. |
 
-`kabinet init` options:
+`plugin init` options:
 
 | Option | Description |
 | :--- | :--- |
@@ -235,7 +235,7 @@ arkitekt-next kabinet publish
 | `--devcontainer`, `-dc` | Also generate a `.devcontainer/<flavour>/devcontainer.json`. |
 | `--overwrite`, `-o` | Overwrite an existing flavour of the same name. |
 
-`kabinet build` options:
+`plugin build` options:
 
 | Option | Description |
 | :--- | :--- |
@@ -244,12 +244,12 @@ arkitekt-next kabinet publish
 | `--no-inspect`, `-n` | Skip inspection of the app during the build. |
 | `--url`, `-u` | The `fakts-next` server to use during inspection. |
 
-`kabinet selector add <flavour>` attaches a hardware requirement to a flavour and
+`plugin selector add <flavour>` attaches a hardware requirement to a flavour and
 accepts `--kind`/`-k` (e.g. `cuda`) plus quantitative selectors such as
 `--cuda-cores`/`-cc`, `--frequency`/`-fr` and `--memory`/`-m`. See
 [Flavours](flavours.md) for how selectors drive deployment.
 
-📖 <https://arkitekt.live/docs/cli/kabinet> · [Flavours guide](flavours.md)
+📖 <https://arkitekt.live/docs/cli/plugin> · [Flavours guide](flavours.md)
 
 ---
 
@@ -259,9 +259,9 @@ Generates fully typed Python code for your GraphQL API documents using
 [turms](https://github.com/jhnnsrs/turms). Requires `turms` to be installed.
 
 ```bash
-arkitekt-next gen init      # scaffold a graphql.config.yaml
-arkitekt-next gen compile   # generate code once
-arkitekt-next gen watch     # regenerate whenever documents change
+arkitekt-next app gen init      # scaffold a graphql.config.yaml
+arkitekt-next app gen compile   # generate code once
+arkitekt-next app gen watch     # regenerate whenever documents change
 ```
 
 `gen compile` accepts `--config` to point at a specific GraphQL config file
@@ -278,13 +278,13 @@ to introspect your app when it runs in production.
 
 ```bash
 # Scan for module-level (leaking) variables that are unsafe on reload
-arkitekt-next inspect variables
+arkitekt-next app inspect variables
 
 # Emit the app's requirements as JSON
-arkitekt-next inspect requirements --pretty
+arkitekt-next app inspect requirements --pretty
 
 # Emit the full agent manifest (implementations, states, requirements) as JSON
-arkitekt-next inspect all --pretty
+arkitekt-next app inspect all --pretty
 ```
 
 | Sub-command | Description |
@@ -307,7 +307,7 @@ Calls functions defined in your app, either locally (no server needed) or
 remotely (through a rekuest server).
 
 ```bash
-arkitekt-next call remote <function> ...
+arkitekt-next app call remote <function> ...
 ```
 
 📖 <https://arkitekt.live/docs/cli/call>
@@ -318,15 +318,15 @@ arkitekt-next call remote <function> ...
 
 ```bash
 # 1. Create the app
-arkitekt-next init myapp --identifier com.example.myapp --package-manager uv
+arkitekt-next app init myapp --identifier com.example.myapp --package-manager uv
 cd myapp
 
 # 2. Iterate locally
-arkitekt-next run dev
+arkitekt-next app run dev
 
 # 3. Prepare for distribution
-arkitekt-next kabinet init --flavour vanilla --devcontainer
-arkitekt-next manifest version patch
-arkitekt-next kabinet build
-arkitekt-next kabinet publish
+arkitekt-next plugin init --flavour vanilla --devcontainer
+arkitekt-next app manifest version patch
+arkitekt-next plugin build
+arkitekt-next plugin publish
 ```

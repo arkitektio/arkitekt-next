@@ -1,0 +1,34 @@
+authentikate:
+  issuers:
+  - iss: go.arkitekt.live
+    jwks_uri: https://go.arkitekt.live/.well-known/jwks.json
+    kind: jwks_uri
+  provenance:
+    issuers:
+    - iss: rekuest
+      jwks_uri: http://rekuest:80/rekuest/.well-known/jwks.json
+      kind: jwks_uri
+  static_tokens: {}
+django:
+  admin:
+    email: null
+    password: d6vcd9a4i1adiovzvi7fkjk64yccq413ltkfgpm9
+    username: admin
+  csrf_trusted_origins:
+  - http://localhost
+  - https://localhost
+  debug: false
+  force_script_name: fluss
+  hosts:
+  - '*'
+  secret_key: (zfmqu2^bss21@e4f5xp3_pq#x8*e1_9m#fdj8d#a7(tzt9kcl
+postgres:
+  db_name: fluss
+  engine: django.db.backends.postgresql
+  host: db
+  password: 30ae0f6d873a75e6ca8d25f98033f849
+  port: 5432
+  username: sleepyviolettarsier
+redis:
+  host: redis
+  port: 6379
