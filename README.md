@@ -103,18 +103,23 @@ code and the app reloads automatically. When you are ready for production, use `
 
 ## The CLI
 
-`arkitekt-next` ships a batteries-included CLI for the whole app lifecycle:
+`arkitekt-next` is **the** command line for all things Arkitekt — one tool across
+the whole platform lifecycle. It absorbed the standalone `arkitekt-server` tool,
+so the same binary that builds your apps also stands up a deployment:
 
-| Command | What it does |
+| Command group | What it does |
 | --- | --- |
-| `init` | Scaffold a new app and its manifest. |
-| `run dev` | Run the app locally with hot reloading. |
-| `run prod` | Run the app in production mode. |
-| `gen` | Generate typed API clients from GraphQL schemas. |
-| `manifest` | Inspect and manage your app's manifest. |
-| `inspect` | Inspect an app's actions, variables, and requirements. |
-| `call` | Call registered functions on a remote server. |
-| `plugin` | Build, validate, and publish your app as a deployable plugin. |
+| `app` | Build, run and deploy apps from your Python code — scaffold (`init`), run locally (`run dev`/`run prod`), generate typed clients (`gen`), manage the manifest, inspect, and call functions. |
+| `plugin` | Containerize your app into flavours and publish it as a deployable plugin. |
+| `hub` · `coord` · `hubinator` · `engine` | Run the server — the data/compute services, an auth coordinator, the full all-in-one stack, or a standalone deployer. |
+| `mesh` | Join this machine to the deployment's private WireGuard mesh. |
+| `self` | Manage your Arkitekt install — upgrade the SDK, print versions, dump diagnostics. |
+
+```bash
+arkitekt-next app init         # scaffold an app
+arkitekt-next app run dev      # run it with hot reloading
+arkitekt-next hubinator init   # stand up an all-in-one server to run it against
+```
 
 See the full reference in **[docs/cli.md](docs/cli.md)**.
 
