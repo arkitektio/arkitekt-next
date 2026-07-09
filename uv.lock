@@ -178,6 +178,15 @@ wheels = [
 ]
 
 [[package]]
+name = "annotated-doc"
+version = "0.0.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/57/ba/046ceea27344560984e26a590f90bc7f4a75b06701f653222458922b558c/annotated_doc-0.0.4.tar.gz", hash = "sha256:fbcda96e87e9c92ad167c2e53839e57503ecfda18804ea28102353485033faa4", size = 7288, upload-time = "2025-11-10T22:07:42.062Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1e/d3/26bf1008eb3d2daa8ef4cacc7f3bfdc11818d111f7e2d0201bc6e3b49d45/annotated_doc-0.0.4-py3-none-any.whl", hash = "sha256:571ac1dc6991c450b25a9c2d84a3705e2ae7a53467b5d111c24fa8baabbed320", size = 5303, upload-time = "2025-11-10T22:07:40.673Z" },
+]
+
+[[package]]
 name = "annotated-types"
 version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -214,17 +223,12 @@ version = "1.3.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
-    { name = "cryptography" },
     { name = "dokker" },
     { name = "fakts-next" },
-    { name = "ifaddr" },
-    { name = "inquirer" },
     { name = "kabinet" },
     { name = "koil" },
     { name = "platformdirs" },
     { name = "py-machineid" },
-    { name = "python-slugify" },
-    { name = "pyyaml" },
     { name = "rath" },
     { name = "rekuest-next" },
     { name = "rich-click" },
@@ -288,6 +292,7 @@ unlok = [
 [package.dev-dependencies]
 dev = [
     { name = "alpaka" },
+    { name = "arkitekt-server" },
     { name = "autoflake" },
     { name = "dokker" },
     { name = "elektro" },
@@ -314,28 +319,23 @@ requires-dist = [
     { name = "alpaka", marker = "extra == 'alpaka'", specifier = ">=1.0.0" },
     { name = "alpaka", marker = "extra == 'extended'", specifier = ">=1.0.0" },
     { name = "click", specifier = ">=8.2.0" },
-    { name = "cryptography", specifier = ">=45.0.5" },
     { name = "dokker", specifier = ">=2.6.0" },
-    { name = "elektro", marker = "extra == 'all'", specifier = ">=2.0.0" },
-    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=2.0.0" },
+    { name = "elektro", marker = "extra == 'all'", specifier = ">=1.3.0" },
+    { name = "elektro", marker = "extra == 'elektro'", specifier = ">=1.3.0" },
     { name = "fakts-next", specifier = ">=4.1.0" },
     { name = "fluss-next", marker = "extra == 'all'", specifier = ">=1.0.0" },
     { name = "fluss-next", marker = "extra == 'fluss'", specifier = ">=1.0.0" },
-    { name = "ifaddr", specifier = ">=0.2.0" },
-    { name = "inquirer", specifier = ">=3.4.0" },
     { name = "kabinet", specifier = ">=1.0.3" },
     { name = "kabinet", marker = "extra == 'all'", specifier = ">=1.0.3" },
     { name = "kabinet", marker = "extra == 'kabinet'", specifier = ">=1.0.3" },
-    { name = "koil", specifier = ">=3.3.2" },
+    { name = "koil", specifier = ">=3.3.1" },
     { name = "kraph", marker = "extra == 'extended'", specifier = ">=0.5.1" },
     { name = "kraph", marker = "extra == 'kraph'", specifier = ">=0.5.1" },
     { name = "lovekit", marker = "extra == 'lovekit'", specifier = ">=1.2.1" },
-    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=2.1.0" },
-    { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=2.1.0" },
+    { name = "mikro-next", marker = "extra == 'all'", specifier = ">=2.0.0" },
+    { name = "mikro-next", marker = "extra == 'mikro'", specifier = ">=2.0.0" },
     { name = "platformdirs", specifier = ">=4.5.0" },
     { name = "py-machineid", specifier = ">=0.8.1" },
-    { name = "python-slugify", specifier = ">=8.0.4" },
-    { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "rath", specifier = ">=3.12.0" },
     { name = "reaktion-next", marker = "extra == 'all'", specifier = ">=0.4.1" },
     { name = "reaktion-next", marker = "extra == 'reaktion'", specifier = ">=0.4.1" },
@@ -345,9 +345,9 @@ requires-dist = [
     { name = "rich-click", marker = "extra == 'all'", specifier = ">=1.6.1" },
     { name = "semver", specifier = ">=3.0.4" },
     { name = "semver", marker = "extra == 'all'", specifier = ">=3.0.1" },
-    { name = "turms", specifier = ">=1.0.1" },
-    { name = "turms", marker = "extra == 'all'", specifier = ">=1.0.1" },
-    { name = "turms", marker = "extra == 'cli'", specifier = ">=1.0.1" },
+    { name = "turms", specifier = ">=1.0.0" },
+    { name = "turms", marker = "extra == 'all'", specifier = ">=1.0.0" },
+    { name = "turms", marker = "extra == 'cli'", specifier = ">=1.0.0" },
     { name = "unlok-next", marker = "extra == 'all'", specifier = ">=1.3.1" },
     { name = "unlok-next", marker = "extra == 'unlok'", specifier = ">=1.3.1" },
     { name = "uv", marker = "extra == 'build'", specifier = ">=0.7.12" },
@@ -359,14 +359,15 @@ provides-extras = ["cli", "alpaka", "kraph", "mikro", "kabinet", "elektro", "flu
 [package.metadata.requires-dev]
 dev = [
     { name = "alpaka", specifier = ">=1.0.0" },
+    { name = "arkitekt-server", specifier = ">=4" },
     { name = "autoflake", specifier = ">=1.7.7,<2" },
     { name = "dokker", specifier = ">=2.2" },
-    { name = "elektro", specifier = ">=2.0.0" },
+    { name = "elektro", specifier = ">=1.3.0" },
     { name = "fluss-next", specifier = ">=1.0.0" },
     { name = "kabinet", specifier = ">=1.0.1" },
     { name = "kraph", specifier = ">=0.5.1" },
     { name = "lovekit", specifier = ">=1.2.1" },
-    { name = "mikro-next", specifier = ">=2.1.0" },
+    { name = "mikro-next", specifier = ">=2.0.0" },
     { name = "numpy", specifier = ">=1,<2" },
     { name = "pytest", specifier = ">=8.3.0,<9" },
     { name = "pytest-aiohttp", specifier = ">=1.0.4,<2" },
@@ -378,6 +379,28 @@ dev = [
     { name = "rekuest-next", specifier = ">=0.13.1" },
     { name = "rich-click", specifier = ">=1.8" },
     { name = "unlok-next", specifier = ">=1.3.1" },
+]
+
+[[package]]
+name = "arkitekt-server"
+version = "4.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "cryptography" },
+    { name = "dokker" },
+    { name = "inquirer" },
+    { name = "platformdirs" },
+    { name = "py-machineid" },
+    { name = "pydantic" },
+    { name = "python-slugify" },
+    { name = "pyyaml" },
+    { name = "rich-click" },
+    { name = "typer" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/90/96/e9cde2eb1af5cc115e26ad83df20e26ee1b73b3496159f9942559f2722d8/arkitekt_server-4.0.0.tar.gz", hash = "sha256:65bf8880172fd4c81e10310b9fb1fb64ee26089315f2f35dcb20185521bae852", size = 93457, upload-time = "2026-06-29T21:19:47.881Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/24/46/e9000312522d87d14ab0c5140d26356d2c8160af72d9d04aa6103fabd99b/arkitekt_server-4.0.0-py3-none-any.whl", hash = "sha256:a63ab1826a9224cf9115aa7ba215ffdcbc1424277bc6352748cb15f280d8d0b4", size = 115495, upload-time = "2026-06-29T21:19:46.921Z" },
 ]
 
 [[package]]
@@ -1152,15 +1175,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/cd/63/9496c57188a2ee585e0f1db071d75089a11e98aa86eb99d9d7618fc1edce/idna-3.18.tar.gz", hash = "sha256:ffb385a7e039654cef1ab9ef32c6fafe283c0c0467bba1d9029738ce4a14a848", size = 196711, upload-time = "2026-06-02T14:34:07.794Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl", hash = "sha256:7f952cbe720b688055e3f87de14f5c3e5fdaa8bc3928985c4077ca689de849a2", size = 65455, upload-time = "2026-06-02T14:34:06.319Z" },
-]
-
-[[package]]
-name = "ifaddr"
-version = "0.2.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e8/ac/fb4c578f4a3256561548cd825646680edcadb9440f3f68add95ade1eb791/ifaddr-0.2.0.tar.gz", hash = "sha256:cc0cbfcaabf765d44595825fb96a99bb12c79716b73b44330ea38ee2b0c4aed4", size = 10485, upload-time = "2022-06-15T21:40:27.561Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/9c/1f/19ebc343cc71a7ffa78f17018535adc5cbdd87afb31d7c34874680148b32/ifaddr-0.2.0-py3-none-any.whl", hash = "sha256:085e0305cfe6f16ab12d72e2024030f5d52674afad6911bb1eee207177b8a748", size = 12314, upload-time = "2022-06-15T21:40:25.756Z" },
 ]
 
 [[package]]
@@ -2648,6 +2662,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/45/f7/265f0c796b64390396405db2f9c1ceb21cfbbefbf8c4cb3f090b7288df2f/turms-1.0.1.tar.gz", hash = "sha256:ec9dfc657411426b8105c0bc505e7ce0dca1ec21b474c1a57835dfc8aeb1012a", size = 71178, upload-time = "2026-07-06T11:46:47.534Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/03/e8/433d4347b18dccf40b2f4c530e58262014f10e4a2f3e8ccc1691bba79c65/turms-1.0.1-py3-none-any.whl", hash = "sha256:4d061267e68389d7c9491c3b69d14a0243f621aa998bb4e861bd93187b08a0de", size = 88517, upload-time = "2026-07-06T11:46:46.348Z" },
+]
+
+[[package]]
+name = "typer"
+version = "0.26.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "annotated-doc" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "rich" },
+    { name = "shellingham" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7c/f7/68adc395201b20b872d68e975386832e8005ffeacedd43a1d837a32815be/typer-0.26.8.tar.gz", hash = "sha256:c244a6bd558886fe3f8780efb6bdd28bb9aff005a94eedebaa5cb32926fe2f7e", size = 202097, upload-time = "2026-06-26T09:22:45.705Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/80/87/b9fd69c92c6102a066e1b86a35243f53e70bd4c709f2a26d9f4fee4f4dc0/typer-0.26.8-py3-none-any.whl", hash = "sha256:3512ca79ac5c11113414b36e80281b872884477722440691c89d1112e321a49c", size = 122564, upload-time = "2026-06-26T09:22:44.72Z" },
 ]
 
 [[package]]

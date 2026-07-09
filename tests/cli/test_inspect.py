@@ -21,8 +21,7 @@ pytestmark = pytest.mark.cli
 
 def _invoke(work_dir, *args, **kwargs):
     runner = CliRunner()
-    # SDK commands now live under the `app` group.
-    result = runner.invoke(cli, ["--work-dir", str(work_dir), "app", *args], **kwargs)
+    result = runner.invoke(cli, ["--work-dir", str(work_dir), *args], **kwargs)
     if result.exit_code != 0:
         print(result.output)
         print(result.exception)
@@ -39,7 +38,7 @@ def _run_cli(work_dir, *args):
     result = subprocess.run(
         [
             sys.executable, "-m", "arkitekt_next.cli.main",
-            "--work-dir", str(work_dir), "app", *args,
+            "--work-dir", str(work_dir), *args,
         ],
         capture_output=True,
         text=True,
@@ -147,16 +146,16 @@ def test_inspect_all_pretty(app_dir):
 
 def test_kabinet_validate(app_dir):
     """After scaffolding a flavour, validate reports it as valid."""
-    # Flavours are scaffolded via the top-level `plugin init` (not under `app`).
-    init_result = CliRunner().invoke(
-        cli,
-        ["--work-dir", str(app_dir), "plugin", "init",
-         "--flavour", "vanilla", "--arkitekt-version", "0.0.1"],
+    init_result = _invoke(
+        app_dir,
+        "kabinet", "init",
+        "--flavour", "vanilla",
+        "--arkitekt-version", "0.0.1",
         input="n\n",  # decline the devcontainer prompt
     )
-    assert init_result.exit_code == 0, init_result.output
+    assert init_result.exit_code == 0
 
-    result = CliRunner().invoke(cli, ["--work-dir", str(app_dir), "plugin", "validate"])
+    result = _invoke(app_dir, "kabinet", "validate")
     assert result.exit_code == 0
     assert "vanilla" in result.output
     assert "All flavours are valid" in result.output
@@ -164,9 +163,9 @@ def test_kabinet_validate(app_dir):
 
 def test_kabinet_validate_without_flavours_errors(app_dir):
     """validate fails cleanly when no flavours folder exists yet."""
-    result = CliRunner().invoke(cli, ["--work-dir", str(app_dir), "plugin", "validate"])
+    result = _invoke(app_dir, "kabinet", "validate")
     assert result.exit_code != 0
-    assert "plugin init" in result.output
+    assert "kabinet init" in result.output
 
 
 # ---------------------------------------------------------------------------
@@ -177,16 +176,15 @@ def test_kabinet_validate_without_flavours_errors(app_dir):
     "args",
     [
         [],
-        ["app"],
-        ["app", "init"],
-        ["app", "run"],
-        ["app", "gen"],
-        ["plugin"],
-        ["app", "manifest"],
-        ["app", "manifest", "version"],
-        ["app", "manifest", "scopes"],
-        ["app", "inspect"],
-        ["app", "call"],
+        ["init"],
+        ["run"],
+        ["gen"],
+        ["kabinet"],
+        ["manifest"],
+        ["manifest", "version"],
+        ["manifest", "scopes"],
+        ["inspect"],
+        ["call"],
     ],
 )
 def test_help_for_command_groups(args):

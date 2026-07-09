@@ -11,17 +11,18 @@ except ImportError:
     )
     sys.exit(1)
 
-from arkitekt_next.cli.vars import set_console, set_work_dir
+from arkitekt_next.cli.vars import get_console, set_console, get_manifest, set_manifest, get_work_dir, set_work_dir
 from arkitekt_next.cli.texts import LOGO, ERROR_EPILOGUE
 from arkitekt_next.cli.docs import CLI_DOCS_BASE, help_epilog
-from arkitekt_next.cli.commands.app.main import app
-from arkitekt_next.cli.commands.hub.main import hub
-from arkitekt_next.cli.commands.coord.main import coord
-from arkitekt_next.cli.commands.mesh.main import mesh
-from arkitekt_next.cli.commands.hubinator.main import hubinator
-from arkitekt_next.cli.commands.engine.main import engine
-from arkitekt_next.cli.commands.self.main import self_group
-from arkitekt_next.cli.commands.plugin.main import plugin
+from arkitekt_next.cli.commands.run.main import run
+from arkitekt_next.cli.commands.gen.main import gen
+from arkitekt_next.cli.commands.kabinet.main import kabinet
+from arkitekt_next.cli.commands.init.main import init
+from arkitekt_next.cli.commands.manifest.main import manifest
+from arkitekt_next.cli.commands.inspect.main import inspect
+from arkitekt_next.cli.commands.call.main import call
+from arkitekt_next.cli.io import load_manifest
+from arkitekt_next.utils import create_arkitekt_next_folder
 
 click.rich_click.HEADER_TEXT = LOGO
 click.rich_click.ERRORS_EPILOGUE = ERROR_EPILOGUE
@@ -57,20 +58,21 @@ def cli(ctx, work_dir):
     set_console(ctx, console)
     set_work_dir(ctx, work_dir)
 
-    # The manifest/`.arkitekt_next` folder is only relevant to the `app` command
-    # group (the client SDK). It is loaded lazily inside that group's callback so
-    # the server-deployment groups (`hub`/`coord`/`hubinator`) don't require an
-    # app project in the working directory.
+    if ctx.invoked_subcommand != "init":
+        create_arkitekt_next_folder(base_dir=work_dir)
+
+        manifest = load_manifest(base_dir=work_dir)
+        if manifest:
+            set_manifest(ctx, manifest)
 
 
-cli.add_command(app, "app")
-cli.add_command(hub, "hub")
-cli.add_command(coord, "coord")
-cli.add_command(mesh, "mesh")
-cli.add_command(hubinator, "hubinator")
-cli.add_command(engine, "engine")
-cli.add_command(self_group, "self")
-cli.add_command(plugin, "plugin")
+cli.add_command(init, "init")
+cli.add_command(run, "run")
+cli.add_command(gen, "gen")
+cli.add_command(kabinet, "kabinet")
+cli.add_command(manifest, "manifest")
+cli.add_command(inspect, "inspect")
+cli.add_command(call, "call")
 
 if __name__ == "__main__":
     cli()

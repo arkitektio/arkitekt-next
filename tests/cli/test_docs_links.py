@@ -19,7 +19,7 @@ def test_routes_build_on_base_url():
         docs.INIT_DOCS,
         docs.RUN_DOCS,
         docs.GEN_DOCS,
-        docs.PLUGIN_DOCS,
+        docs.KABINET_DOCS,
         docs.MANIFEST_DOCS,
         docs.INSPECT_DOCS,
         docs.CALL_DOCS,
@@ -35,23 +35,7 @@ def test_help_epilog_renders_a_link():
 
 @pytest.mark.parametrize(
     "args",
-    [
-        # SDK commands now live under the `app` group.
-        ["app"],
-        ["app", "init"],
-        ["app", "run"],
-        ["app", "gen"],
-        ["app", "manifest"],
-        ["app", "inspect"],
-        ["app", "call"],
-        # Top-level groups.
-        ["plugin"],
-        ["hub"],
-        ["coord"],
-        ["mesh"],
-        ["hubinator"],
-        ["self"],
-    ],
+    [["init"], ["run"], ["gen"], ["kabinet"], ["manifest"], ["inspect"], ["call"]],
 )
 def test_help_includes_docs_link(args):
     result = CliRunner().invoke(cli, [*args, "--help"])

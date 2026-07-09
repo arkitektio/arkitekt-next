@@ -22,13 +22,13 @@ When you publish your app, you publish all its flavours. When a user (or the Ark
 You can add a new flavour to your project using the CLI:
 
 ```bash
-arkitekt-next plugin flavour add --flavour <name>
+arkitekt-next kabinet flavour add --flavour <name>
 ```
 
 **Example:** Adding a GPU flavour
 
 ```bash
-arkitekt-next plugin flavour add --flavour gpu --description "CUDA enabled build"
+arkitekt-next kabinet flavour add --flavour gpu --description "CUDA enabled build"
 ```
 
 This will create a new directory in `.arkitekt_next/flavours/gpu/` containing a `Dockerfile` and `config.yaml`. You can then customize the Dockerfile to include the necessary GPU drivers and libraries.
