@@ -25,7 +25,16 @@ jobs:
         run: uv sync --all-extras --dev
 
       - name: Run tests
-        run: uv run pytest -m "not integration"
+        shell: bash
+        run: |
+          # Docker-backed tests (needs_docker) only run on Linux runners, which
+          # ship a working docker daemon. macOS/Windows GitHub runners have none,
+          # so deselect them there (they also auto-skip via conftest as a backstop).
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            uv run pytest -m "not integration"
+          else
+            uv run pytest -m "not integration and not needs_docker"
+          fi
 
   test-arm:
     runs-on: ubuntu-24.04-arm

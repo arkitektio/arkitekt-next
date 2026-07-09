@@ -12,6 +12,49 @@ if TYPE_CHECKING:
     from arkitekt_next.app import App
 
 
+def _docker_available() -> bool:
+    """Return True if a docker CLI and a reachable daemon are present."""
+    if shutil.which("docker") is None:
+        return False
+    try:
+        subprocess.run(
+            ["docker", "info"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
+        return True
+    except Exception:
+        return False
+
+
+def pytest_collection_modifyitems(
+    config: pytest.Config, items: list[pytest.Item]
+) -> None:
+    """Gate tests that need external services.
+
+    Every test runs by default, except:
+    - ``integration`` tests (which require a running arkitekt-server) — skipped
+      unless explicitly selected with ``-m integration``;
+    - ``needs_docker`` tests — skipped when no docker daemon is reachable, so
+      they no-op on macOS/Windows CI runners and dev machines without docker.
+    """
+    docker_ok = _docker_available()
+    # `-m integration` selects integration tests; only then do we run them.
+    run_integration = "integration" in str(config.getoption("markexpr") or "")
+    skip_no_docker = pytest.mark.skip(reason="docker daemon not available")
+    skip_integration = pytest.mark.skip(
+        reason="integration tests require a running arkitekt-server; run with -m integration"
+    )
+    for item in items:
+        # Use get_closest_marker (not `in item.keywords`): keywords also contain
+        # path-derived names like the `cli` directory, which would over-match.
+        if item.get_closest_marker("integration") is not None and not run_integration:
+            item.add_marker(skip_integration)
+        if item.get_closest_marker("needs_docker") is not None and not docker_ok:
+            item.add_marker(skip_no_docker)
+
+
 @pytest.fixture(autouse=True)
 def _assume_interactive(monkeypatch):
     """Make the CLI treat itself as interactive during tests.

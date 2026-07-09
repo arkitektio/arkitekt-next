@@ -1,7 +1,0 @@
-author: me
-entrypoint: app
-identifier: com.test.app
-package_manager: pip
-scopes:
-- read
-version: 1.2.3
