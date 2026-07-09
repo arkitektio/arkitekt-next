@@ -16,10 +16,19 @@ CLI_DOCS_BASE = f"{DOCS_BASE_URL}/docs/cli"
 INIT_DOCS = f"{CLI_DOCS_BASE}/init"
 RUN_DOCS = f"{CLI_DOCS_BASE}/run"
 GEN_DOCS = f"{CLI_DOCS_BASE}/gen"
-KABINET_DOCS = f"{CLI_DOCS_BASE}/kabinet"
 MANIFEST_DOCS = f"{CLI_DOCS_BASE}/manifest"
 INSPECT_DOCS = f"{CLI_DOCS_BASE}/inspect"
 CALL_DOCS = f"{CLI_DOCS_BASE}/call"
+SELF_DOCS = f"{CLI_DOCS_BASE}/self"
+APP_DOCS = f"{CLI_DOCS_BASE}/app"
+PLUGIN_DOCS = f"{CLI_DOCS_BASE}/plugin"
+
+# Server-deployment command groups (migrated from arkitekt-server).
+HUB_DOCS = f"{CLI_DOCS_BASE}/hub"
+COORD_DOCS = f"{CLI_DOCS_BASE}/coord"
+MESH_DOCS = f"{CLI_DOCS_BASE}/mesh"
+HUBINATOR_DOCS = f"{CLI_DOCS_BASE}/hubinator"
+ENGINE_DOCS = f"{CLI_DOCS_BASE}/engine"
 
 #: Conceptual guides referenced from multiple commands.
 FLAVOURS_DOCS = f"{DOCS_BASE_URL}/docs/flavours"

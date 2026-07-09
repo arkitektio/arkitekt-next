@@ -20,7 +20,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 @pytest.fixture(scope="session")
 def running_server(request: pytest.FixtureRequest) -> Generator[Deployment, None, None]:
     """ Generates a local Arkitekt server deployment for testing purposes. """
-    from arkitekt_server.dev import temp_server, ArkitektServerConfig
+    from arkitekt_next.server.dev import temp_server, ArkitektServerConfig
     from dokker import local
 
     if not request.config.getoption("--test-against") == "temp":
