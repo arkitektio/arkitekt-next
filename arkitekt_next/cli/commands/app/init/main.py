@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 from arkitekt_next.cli.constants import compile_scopes, compile_templates
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.cli.utils import build_relative_dir
 from getpass import getuser
 from arkitekt_next.cli.types import Manifest
@@ -12,6 +13,10 @@ from arkitekt_next.cli.io import write_manifest, load_manifest
 from arkitekt_next.cli.docs import INIT_DOCS, help_epilog
 from rich.panel import Panel
 from typing import Optional, List
+
+
+#: Non-interactive escape hatch surfaced when `app init` needs to prompt.
+_INIT_HINT = "Pass --yes to accept the defaults, or provide the fields as options."
 
 
 def get_default_package_manager():
@@ -143,18 +148,21 @@ def init(
         if yes:
             identifier = default_identifier
         else:
+            require_interactive("`app init`", hint=_INIT_HINT)
             identifier = click.prompt("Your app identifier", default=default_identifier)
 
     if not author:
         if yes:
             author = getuser()
         else:
+            require_interactive("`app init`", hint=_INIT_HINT)
             author = click.prompt("Your name", default=getuser())
 
     if not entrypoint:
         if yes:
             entrypoint = "app"
         else:
+            require_interactive("`app init`", hint=_INIT_HINT)
             entrypoint = click.prompt("Your app file", default="app")
 
     if not semver.Version.is_valid(version):
@@ -163,6 +171,7 @@ def init(
                 f"Invalid version: {version}. ArkitektNext versions need to follow semver."
             )
         else:
+            require_interactive("`app init`", hint=_INIT_HINT)
             while not semver.Version.is_valid(version):
                 get_console(ctx).print(
                     "ArkitektNext versions need to follow [link=https://semver.org]semver[/link]. Please choose a correct format (examples: 0.0.0, 0.1.0, 0.0.0-alpha.1)"
@@ -177,6 +186,7 @@ def init(
         if yes:
             should_overwrite = True
         else:
+            require_interactive("`app init`", hint=_INIT_HINT)
             should_overwrite = click.confirm(
                 f"Another ArkitektNext app {existing_manifest.to_console_string()} exists already at {work_dir}?. Do you want to overwrite?",
                 abort=True,
@@ -228,6 +238,7 @@ def init(
         if yes:
             should_overwrite = True
         else:
+            require_interactive("`app init`", hint=_INIT_HINT)
             should_overwrite = click.confirm(
                 "Entrypoint File already exists. Do you want to overwrite?"
             )

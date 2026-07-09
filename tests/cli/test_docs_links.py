@@ -48,6 +48,7 @@ def test_help_epilog_renders_a_link():
         ["plugin"],
         ["hub"],
         ["coord"],
+        ["mesh"],
         ["hubinator"],
         ["self"],
     ],

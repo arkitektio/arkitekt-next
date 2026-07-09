@@ -91,7 +91,7 @@ from .users import (
 # Re-export kommunity models
 from .kommunity import (
     KommunityPartner,
-    PreconfiguredComposition,
+    PreconfiguredHub,
     ServiceAlias,
     ServiceInstance,
     ServiceManifest,
@@ -181,7 +181,7 @@ __all__ = [
     "ServiceAlias",
     "ServiceManifest",
     "ServiceInstance",
-    "PreconfiguredComposition",
+    "PreconfiguredHub",
     "KommunityPartner",
     "create_local_service_aliases",
     "create_default_kommunity_partners",

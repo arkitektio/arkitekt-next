@@ -25,26 +25,33 @@ from arkitekt_next.cli.commands._server_common import (
     help="Do not reverse-resolve DNS host names for discovered IPs.",
 )
 @click.option(
+    "--resolve-timeout",
+    type=float,
+    default=2.0,
+    help="Seconds to wait for each reverse-DNS lookup before giving up on it.",
+)
+@click.option(
     "--all-hosts",
     "-a",
     is_flag=True,
     help="Advertise every discovered host without prompting for a selection.",
 )
 @click.pass_context
-def connect(ctx, path, server, no_browser, timeout, no_resolve, all_hosts) -> None:
+def connect(ctx, path, server, no_browser, timeout, no_resolve, resolve_timeout, all_hosts) -> None:
     """Connect this hub to an organization.
 
-    Inspects the machine's current host addresses, builds a composition
-    advertising each enabled hub service on those hosts, POSTs it to the
-    organization's coordination server, and opens the browser to authorize it.
+    Inspects the machine's current host addresses, builds a hub advertising each
+    enabled hub service on those hosts, POSTs it to the organization's
+    coordination server, and opens the browser to authorize it.
     """
+    import asyncio
     import sys
 
     from arkitekt_next.server.config import HubConfig
     from arkitekt_next.server.connect import (
-        build_hub_composition,
+        build_hub,
         discover_host_candidates,
-        register_composition,
+        register_hub,
     )
     from arkitekt_next.server.utils import load_profile_yaml
 
@@ -62,7 +69,9 @@ def connect(ctx, path, server, no_browser, timeout, no_resolve, all_hosts) -> No
     server = server or config.coord_server
 
     console.print("[blue]Inspecting current hosts...[/blue]")
-    candidates = discover_host_candidates(resolve_names=not no_resolve)
+    candidates = discover_host_candidates(
+        resolve_names=not no_resolve, resolve_timeout=resolve_timeout
+    )
     if not candidates:
         raise click.ClickException(
             "Could not discover any routable host addresses to advertise."
@@ -106,23 +115,25 @@ def connect(ctx, path, server, no_browser, timeout, no_resolve, all_hosts) -> No
 
     console.print(f"Advertising [bold]{len(hosts)}[/bold] host(s): [cyan]{', '.join(hosts)}[/cyan]")
 
-    request = build_hub_composition(config, hosts)
-    if not request.composition.instances:
+    request = build_hub(config, hosts)
+    if not request.hub.instances:
         raise click.ClickException(
             "No enabled services to advertise. Enable services in the hub config first."
         )
 
     console.print(
-        f"Registering [bold]{len(request.composition.instances)}[/bold] service(s) "
+        f"Registering [bold]{len(request.hub.instances)}[/bold] service(s) "
         f"with [cyan]{server}[/cyan]..."
     )
     try:
-        completed, configure_url = register_composition(
-            request,
-            server=server,
-            open_browser=not no_browser,
-            timeout=timeout,
-            on_status=lambda s: console.print(f"[dim]authorization {s}...[/dim]"),
+        completed, configure_url = asyncio.run(
+            register_hub(
+                request,
+                server=server,
+                open_browser=not no_browser,
+                timeout=timeout,
+                on_status=lambda s: console.print(f"[dim]authorization {s}...[/dim]"),
+            )
         )
     except Exception as e:  # pragma: no cover - surfaced to the user
         raise click.ClickException(f"Failed to register with {server}: {e}")

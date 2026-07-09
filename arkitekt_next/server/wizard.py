@@ -18,6 +18,7 @@ from rich.markdown import Markdown
 from rich.align import Align
 import click
 import inquirer
+from arkitekt_next.cli.interactive import require_interactive
 from .utils import safe_org_slug
 from .logo import ASCI_LOGO
 from .config import (
@@ -29,7 +30,7 @@ from .config import (
     User,
     Membership,
     KommunityPartner,
-    PreconfiguredComposition,
+    PreconfiguredHub,
     create_local_service_aliases,
     generate_name,
 )
@@ -510,7 +511,7 @@ Configure **kommunity partners** for external service access.
                 website_url="localhost",
                 partner_kind=kind,
                 auto_configure=True,
-                preconfigured_composition=PreconfiguredComposition(
+                preconfigured_hub=PreconfiguredHub(
                     identifier="localhost",
                     instances=create_local_service_aliases(local_services),
                 ),
@@ -545,7 +546,7 @@ Configure **kommunity partners** for external service access.
                     website_url="localhost",
                     partner_kind=kind,
                     auto_configure=True,
-                    preconfigured_composition=PreconfiguredComposition(
+                    preconfigured_hub=PreconfiguredHub(
                         identifier="localhost",
                         instances=create_local_service_aliases(local_services),
                     ),
@@ -598,6 +599,10 @@ def prompt_config(console: Console) -> ArkitektServerConfig:
     Returns:
         Configured ArkitektServerConfig.
     """
+    require_interactive(
+        "The configuration wizard",
+        hint="Pass --template to generate a config non-interactively instead.",
+    )
     # Welcome banner
     console.print(
         Panel(
@@ -671,6 +676,10 @@ def prompt_hub_config(console: Console) -> HubConfig:
     A hub has no local coordinator and manages no identities, so this asks ONLY
     about the local servers/services -- never organizations or users.
     """
+    require_interactive(
+        "The hub configuration wizard",
+        hint="Pass --template to generate a config non-interactively instead.",
+    )
     _welcome_banner(console, "Arkitekt Hub Setup")
 
     config = HubConfig()
@@ -724,6 +733,10 @@ def prompt_coord_config(console: Console) -> CoordConfig:
     admin account and -- only if the operator opts in -- organizations, users and
     memberships. It runs no data/compute services, so there is no service picker.
     """
+    require_interactive(
+        "The coordinator configuration wizard",
+        hint="Pass --template to generate a config non-interactively instead.",
+    )
     _welcome_banner(console, "Arkitekt Coordinator Setup")
 
     config = CoordConfig()

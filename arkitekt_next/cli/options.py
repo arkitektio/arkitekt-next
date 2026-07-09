@@ -1,5 +1,6 @@
 import rich_click as click
 
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from .constants import *
 from .types import *
@@ -121,10 +122,9 @@ with_graphql_config = click.option(
 with_api_path = click.option(
     "--path",
     "-p",
-    help="The path of the api to be generated",
-    prompt="Where should we generate the api? (relative to the current directory)",
+    help="The path of the api to be generated (default: api). Prompted if omitted.",
     type=str,
-    default="api",
+    default=None,
 )
 
 
@@ -133,6 +133,10 @@ def check_overwrite_config(ctx, param, value):
 
     config = ctx.params["config"]
     if os.path.exists(config) and not value:
+        require_interactive(
+            "Confirming a config overwrite",
+            hint="Pass --overwrite-config to overwrite non-interactively.",
+        )
         should_overwrite = click.confirm(
             "GraphQL Config file already exists. Do you want to overwrite?"
         )

@@ -1,28 +1,26 @@
 """Connect a hub to an organization.
 
-Ports ``testing/composition_auth.py`` into a reusable, dependency-light module:
+A reusable, dependency-light module that:
 
-1. Inspect the machine's current host addresses (via ``ifaddr``) and reverse-resolve
+1. Inspects the machine's current host addresses (via ``ifaddr``) and reverse-resolves
    their names.
-2. Build a ``CompositionStartRequest`` that advertises each enabled hub service as
-   an instance, with one absolute alias per discovered host (pointing at the hub's
+2. Builds a ``HubStartRequest`` that advertises each enabled hub service as an
+   instance, with one absolute alias per discovered host (pointing at the hub's
    gateway port + the service's path).
-3. POST it to the organization's coordination (Lok) server, open the browser so the
-   operator can authorize the composition, and poll the challenge until it completes.
+3. POSTs it to the organization's coordination (Lok) server, opens the browser so the
+   operator can authorize the hub, and polls the challenge until it completes.
 
-The models mirror the shapes the remote ``lok/f/compositionstart/`` endpoint expects.
+The models mirror the shapes the remote ``lok/f/hubstart/`` endpoint expects.
 """
 
 from __future__ import annotations
 
+import asyncio
 import ipaddress
-import json
 import logging
+import queue
 import socket
-import ssl
-import time
-import urllib.error
-import urllib.request
+import threading
 import webbrowser
 from typing import TYPE_CHECKING, Any, Callable
 
@@ -32,13 +30,15 @@ from pydantic import BaseModel, Field
 from arkitekt_next.node_id import get_or_set_node_id
 
 if TYPE_CHECKING:
+    from aiohttp import ClientSession
+
     from arkitekt_next.server.config import HubConfig
 
 logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Composition models (match the remote lok compositionstart schema)
+# Hub models (match the remote lok hubstart schema)
 # ---------------------------------------------------------------------------
 
 
@@ -85,13 +85,13 @@ class InstanceConfigure(BaseModel):
     aliases: list[StagingAlias]
 
 
-class CompositionManifest(BaseModel):
+class HubManifest(BaseModel):
     identifier: str | None = None
     instances: list[InstanceConfigure] = Field(default_factory=list)
 
 
-class CompositionStartRequest(BaseModel):
-    composition: CompositionManifest
+class HubStartRequest(BaseModel):
+    hub: HubManifest
     expiration_time_seconds: int = 600
 
 
@@ -156,6 +156,36 @@ def _primary_outbound_ip() -> str | None:
     return None
 
 
+def _reverse_resolve(addr: str, timeout: float) -> tuple[str, list[str]] | None:
+    """Reverse-resolve ``addr`` to ``(hostname, aliases)`` within ``timeout`` seconds.
+
+    ``socket.gethostbyaddr`` is a blocking call that honours neither
+    ``socket.setdefaulttimeout`` nor any argument, so a slow / black-holed PTR
+    resolver would hang the discovery (and thus ``hub connect``) with no way to
+    abort. We run it on a **daemon** thread and wait at most ``timeout`` for a
+    result: daemon threads are abandoned at interpreter shutdown, so a still-blocked
+    lookup can never keep the process alive (unlike a ``ThreadPoolExecutor`` worker,
+    which ``concurrent.futures`` joins on exit). Returns ``None`` on timeout or
+    failure -- callers treat that like an unresolved address.
+    """
+    result: "queue.Queue[tuple[str, list[str]] | None]" = queue.Queue(maxsize=1)
+
+    def _worker() -> None:
+        try:
+            hostname, aliases, _ = socket.gethostbyaddr(addr)
+            result.put((hostname, aliases))
+        except OSError:
+            result.put(None)
+
+    thread = threading.Thread(target=_worker, name=f"ptr-{addr}", daemon=True)
+    thread.start()
+    try:
+        return result.get(timeout=timeout)
+    except queue.Empty:
+        logger.debug("Reverse DNS for %s timed out after %.1fs", addr, timeout)
+        return None
+
+
 # Human-readable blurb per candidate kind, shown in the discovery table / prompt.
 _KIND_LABELS = {
     "primary": "primary outbound route",
@@ -190,7 +220,9 @@ class HostCandidate(BaseModel):
         return base
 
 
-def discover_host_candidates(*, resolve_names: bool = True) -> list[HostCandidate]:
+def discover_host_candidates(
+    *, resolve_names: bool = True, resolve_timeout: float = 2.0
+) -> list[HostCandidate]:
     """Discover advertisable host addresses, classified and best route first.
 
     The goal is to advertise addresses at which *other* machines can reach this
@@ -206,7 +238,9 @@ def discover_host_candidates(*, resolve_names: bool = True) -> list[HostCandidat
     primary outbound IP (the source address the OS would use to reach the
     internet) first, then any other globally-routable addresses, then
     private-LAN addresses. Reverse-DNS names, when ``resolve_names`` is set,
-    follow the IP they resolve from.
+    follow the IP they resolve from. Each reverse lookup is bounded by
+    ``resolve_timeout`` seconds (see :func:`_reverse_resolve`) so a slow resolver
+    cannot stall discovery -- a lookup that overruns is treated as unresolved.
     """
     primary = _primary_outbound_ip()
 
@@ -262,11 +296,11 @@ def discover_host_candidates(*, resolve_names: bool = True) -> list[HostCandidat
         )
         seen.add(addr)
         if resolve_names:
-            try:
-                hostname, aliases, _ = socket.gethostbyaddr(addr)
-            except OSError:
+            resolved = _reverse_resolve(addr, resolve_timeout)
+            if resolved is None:
                 logger.debug("Could not resolve hostname for %s", addr)
                 continue
+            hostname, aliases = resolved
             for name in (hostname, *aliases):
                 if name and name not in seen:
                     candidates.append(
@@ -276,13 +310,20 @@ def discover_host_candidates(*, resolve_names: bool = True) -> list[HostCandidat
     return candidates
 
 
-def discover_hosts(*, resolve_names: bool = True) -> list[str]:
+def discover_hosts(
+    *, resolve_names: bool = True, resolve_timeout: float = 2.0
+) -> list[str]:
     """Return the machine's advertisable host addresses, best route first.
 
     Thin wrapper over :func:`discover_host_candidates` returning only the address
     strings. See that function for the discovery / filtering rules.
     """
-    return [c.value for c in discover_host_candidates(resolve_names=resolve_names)]
+    return [
+        c.value
+        for c in discover_host_candidates(
+            resolve_names=resolve_names, resolve_timeout=resolve_timeout
+        )
+    ]
 
 
 def build_aliases(
@@ -309,13 +350,13 @@ def build_aliases(
     ]
 
 
-def build_hub_composition(
+def build_hub(
     config: "HubConfig",
     hosts: list[str],
     *,
     identifier: str = "localhost",
-) -> CompositionStartRequest:
-    """Build the composition advertising every enabled hub service on ``hosts``."""
+) -> HubStartRequest:
+    """Build the hub advertising every enabled hub service on ``hosts``."""
     from arkitekt_next.server.diff import iterate_services
 
     services = iterate_services(
@@ -362,8 +403,8 @@ def build_hub_composition(
             )
         )
 
-    return CompositionStartRequest(
-        composition=CompositionManifest(identifier=identifier, instances=instances)
+    return HubStartRequest(
+        hub=HubManifest(identifier=identifier, instances=instances)
     )
 
 
@@ -372,20 +413,71 @@ def build_hub_composition(
 # ---------------------------------------------------------------------------
 
 
-def _post_json(url: str, payload: dict[str, Any], context: ssl.SSLContext) -> dict[str, Any]:
-    data = json.dumps(payload).encode()
-    req = urllib.request.Request(
+async def _post_json(session: "ClientSession", url: str, payload: dict[str, Any]) -> dict[str, Any]:
+    """POST ``payload`` as JSON to ``url`` and return the decoded JSON body."""
+    async with session.post(
         url,
-        data=data,
+        json=payload,
         headers={"Accept": "application/json", "Content-Type": "application/json"},
-        method="POST",
-    )
-    with urllib.request.urlopen(req, context=context) as response:
-        return json.load(response)
+    ) as response:
+        # content_type=None: accept JSON even if the server does not set a
+        # precise application/json content-type.
+        return await response.json(content_type=None)
 
 
-def register_composition(
-    request: CompositionStartRequest,
+async def _hub_start(
+    session: "ClientSession", base_url: str, request: HubStartRequest
+) -> tuple[str | None, str | None, str]:
+    """Start a hub registration; returns ``(code, challenge, configure_url)``.
+
+    ``code`` identifies the request on the web authorization page; ``challenge``
+    is the secret used to poll for the result.
+    """
+    data = await _post_json(session, f"{base_url}lok/f/hubstart/", request.model_dump())
+    code = data.get("code")
+    # Lok answers the start with ``challenge`` (the secret to poll with);
+    # ``challenge_code`` is accepted for older servers.
+    challenge = data.get("challenge") or data.get("challenge_code")
+    configure_url = f"{base_url}hubconfigure/{code}"
+    return code, challenge, configure_url
+
+
+async def _hub_poll(
+    session: "ClientSession",
+    base_url: str,
+    challenge: str,
+    *,
+    timeout: float,
+    poll_interval: float,
+    on_status: Callable[[str], None] | None,
+) -> bool:
+    """Poll the challenge endpoint until it is granted or ``timeout`` elapses."""
+    loop = asyncio.get_running_loop()
+    deadline = loop.time() + timeout
+    while loop.time() < deadline:
+        try:
+            result = await _post_json(
+                session, f"{base_url}lok/f/hubchallenge/", {"code": challenge}
+            )
+        except Exception as e:  # transient network error -- keep polling
+            logger.debug("Challenge poll failed: %s", e)
+            result = {}
+
+        status = result.get("status")
+        if on_status and status:
+            on_status(status)
+        # Lok reports an authorized hub as ``granted`` (with the hub token);
+        # ``completed`` is accepted for older servers.
+        if status in ("granted", "completed"):
+            return True
+
+        await asyncio.sleep(poll_interval)
+
+    return False
+
+
+async def register_hub(
+    request: HubStartRequest,
     *,
     server: str,
     open_browser: bool = True,
@@ -396,42 +488,39 @@ def register_composition(
     """Register ``request`` with the coordination server at ``server``.
 
     Returns ``(completed, configure_url)``. ``completed`` is True only if the
-    challenge reached the ``completed`` state before ``timeout``.
+    challenge was granted before ``timeout``.
+
+    ``server`` is a host name (``https://`` is assumed) or a full base URL with
+    an explicit scheme (e.g. ``http://localhost:8010`` for a local deployment).
     """
-    base_url = f"https://{server}/"
-    context = ssl.create_default_context()
+    import aiohttp
 
-    data = _post_json(
-        f"{base_url}lok/f/compositionstart/", request.model_dump(), context
-    )
-    code = data.get("code")
-    challenge_code = data.get("challenge_code")
-    configure_url = f"{base_url}compositionconfigure/{code}"
+    if "://" in server:
+        base_url = f"{server.rstrip('/')}/"
+    else:
+        base_url = f"https://{server}/"
 
-    if open_browser:
-        webbrowser.open(configure_url)
+    async with aiohttp.ClientSession(
+        timeout=aiohttp.ClientTimeout(total=10)
+    ) as session:
+        _code, challenge, configure_url = await _hub_start(session, base_url, request)
 
-    # Poll the challenge until the operator authorizes it (or we time out).
-    deadline = timeout
-    elapsed = 0.0
-    while challenge_code and elapsed < deadline:
-        try:
-            result = _post_json(
-                f"{base_url}lok/f/compositionchallenge/",
-                {"code": challenge_code},
-                context,
-            )
-        except urllib.error.URLError as e:
-            logger.debug("Challenge poll failed: %s", e)
-            result = {}
+        if open_browser:
+            # A wedged BROWSER handler can block; the printed link is the fallback.
+            try:
+                webbrowser.open(configure_url)
+            except Exception:  # pragma: no cover - environment dependent
+                pass
 
-        status = result.get("status")
-        if on_status and status:
-            on_status(status)
-        if status == "completed":
-            return True, configure_url
+        if not challenge:
+            return False, configure_url
 
-        time.sleep(poll_interval)
-        elapsed += poll_interval
-
-    return False, configure_url
+        completed = await _hub_poll(
+            session,
+            base_url,
+            challenge,
+            timeout=timeout,
+            poll_interval=poll_interval,
+            on_status=on_status,
+        )
+        return completed, configure_url

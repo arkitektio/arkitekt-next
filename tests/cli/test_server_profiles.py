@@ -4,8 +4,6 @@ Covers the three deep, standalone schemas + their dedicated generators, the CLI
 ``init``/``up`` flows (per-profile config files), and the ``hub connect`` flow.
 """
 
-import io
-import json
 import os
 import tempfile
 from pathlib import Path
@@ -245,12 +243,13 @@ def test_hub_connect_advertises_services_and_filters_local_ips():
     runner = CliRunner()
     posts = []
 
-    def fake_urlopen(req, context=None, timeout=None):
-        url = req.full_url
-        posts.append((url, json.loads(req.data.decode())))
-        if "compositionstart" in url:
-            return io.BytesIO(json.dumps({"code": "CODE123", "challenge_code": "CH"}).encode())
-        return io.BytesIO(json.dumps({"status": "completed"}).encode())
+    async def fake_post(session, url, payload):
+        posts.append((url, payload))
+        # Shapes mirror the real lok server: the start answers with ``challenge``
+        # and an authorized challenge polls as ``granted`` (with the token).
+        if "hubstart" in url:
+            return {"status": "granted", "code": "CODE123", "challenge": "CH"}
+        return {"status": "granted", "token": "TOK"}
 
     adapters = [
         _FakeAdapter(["192.168.1.50"], name="eth0"),
@@ -270,20 +269,20 @@ def test_hub_connect_advertises_services_and_filters_local_ips():
         )
         with patch("ifaddr.get_adapters", return_value=adapters), \
              patch("socket.gethostbyaddr", side_effect=OSError), \
-             patch("urllib.request.urlopen", side_effect=fake_urlopen), \
+             patch("arkitekt_next.server.connect._post_json", side_effect=fake_post), \
              patch("webbrowser.open") as wb:
             result = runner.invoke(cli, ["--work-dir", d, "hub", "connect", "--timeout", "1"])
 
     assert result.exit_code == 0, result.output
-    start = next(p for p in posts if "compositionstart" in p[0])
-    instances = start[1]["composition"]["instances"]
+    start = next(p for p in posts if "hubstart" in p[0])
+    instances = start[1]["hub"]["instances"]
     assert sorted(i["manifest"]["identifier"] for i in instances) == [
         "live.arkitekt.mikro",
         "live.arkitekt.rekuest",
     ]
     # Only the routable IP is advertised.
     assert sorted(a["host"] for a in instances[0]["aliases"]) == ["192.168.1.50"]
-    assert wb.call_args[0][0] == "https://go.arkitekt.live/compositionconfigure/CODE123"
+    assert wb.call_args[0][0] == "https://go.arkitekt.live/hubconfigure/CODE123"
     assert "connected to the organization" in result.output
 
 
@@ -337,3 +336,50 @@ def test_discover_host_candidates_can_skip_name_resolution():
 
     assert [c.value for c in cands] == ["192.168.1.50"]
     resolve.assert_not_called()
+
+
+def test_discover_host_candidates_bounds_slow_reverse_dns():
+    """A hanging PTR lookup must not stall discovery -- the bound drops the name."""
+    import time
+
+    from arkitekt_next.server.connect import discover_host_candidates
+
+    adapters = [_FakeAdapter(["203.0.113.5"], name="eth0")]
+
+    def slow_resolve(addr):
+        time.sleep(5)  # would hang discovery without the resolve_timeout bound
+        return ("slow.example.org", [], [addr])
+
+    with patch("ifaddr.get_adapters", return_value=adapters), \
+         patch("socket.gethostbyaddr", side_effect=slow_resolve), \
+         patch("arkitekt_next.server.connect._primary_outbound_ip", return_value=None):
+        start = time.monotonic()
+        cands = discover_host_candidates(resolve_names=True, resolve_timeout=0.2)
+        elapsed = time.monotonic() - start
+
+    # Returned promptly (did not wait for the 5s lookup) ...
+    assert elapsed < 2.0
+    # ... and dropped the unresolved name, keeping the routable IP.
+    assert [c.value for c in cands] == ["203.0.113.5"]
+
+
+def test_hub_connect_threads_resolve_timeout():
+    """`hub connect --resolve-timeout` reaches ``discover_host_candidates``."""
+    runner = CliRunner()
+    with tempfile.TemporaryDirectory() as d:
+        runner.invoke(
+            cli,
+            ["--work-dir", d, "hub", "init", "--template", "stable",
+             "--service", "rekuest", "--coord-server", "go.arkitekt.live"],
+        )
+        with patch(
+            "arkitekt_next.server.connect.discover_host_candidates", return_value=[]
+        ) as disc:
+            result = runner.invoke(
+                cli,
+                ["--work-dir", d, "hub", "connect", "--resolve-timeout", "0.5", "--all-hosts"],
+            )
+
+    # Empty discovery aborts cleanly, but the option was threaded through.
+    assert result.exit_code != 0
+    assert disc.call_args.kwargs.get("resolve_timeout") == 0.5

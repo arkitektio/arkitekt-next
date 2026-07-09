@@ -15,6 +15,12 @@ from typing import Any, Dict, List, Optional
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 
+#: How long to let the in-container ``arkitekt-next inspect all`` run before
+#: treating it as wedged. Without a bound, a container that never emits the
+#: ``--END_AGENT--`` sentinel (or hangs on import) would block the build forever.
+INSPECTION_TIMEOUT_SECONDS = 300
+
+
 class InspectionError(Exception):
     pass
 
@@ -56,9 +62,11 @@ def inspect_docker_container(build_id: str) -> tuple[int, int]:
 
 def inspect_all(build_id: str, url: str) -> Dict[str, Any]:
     try:
+        # No ``-it``: a TTY is meaningless when stdout/stderr are piped and it
+        # keeps the read from cleanly ending on container exit.
         process = subprocess.Popen(
             " ".join([
-                "docker", "run", "-it", "--network", "host",
+                "docker", "run", "--network", "host",
                 build_id, "arkitekt-next", "inspect", "all", "-mr",
             ]),
             shell=True,
@@ -66,17 +74,24 @@ def inspect_all(build_id: str, url: str) -> Dict[str, Any]:
             stderr=subprocess.PIPE,
         )
 
-        lines: list[str] = []
-        while True:
-            if process.poll() is not None:
-                break
-            nextline = process.stdout.readline()
-            lines.append(nextline.decode("utf-8"))
-            sys.stdout.buffer.write(nextline)
-            sys.stdout.flush()
+        # ``communicate`` reads to EOF but is bounded by ``timeout`` -- a wedged
+        # container is killed and reported rather than hanging the build forever.
+        try:
+            stdout, _stderr = process.communicate(timeout=INSPECTION_TIMEOUT_SECONDS)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.communicate()
+            raise InspectionError(
+                f"Inspecting the container ({build_id}) timed out after "
+                f"{INSPECTION_TIMEOUT_SECONDS}s and was aborted. Make sure "
+                "`arkitekt-next inspect all` returns inside the image."
+            )
 
-        process.communicate()
-        result = "\n".join(lines)
+        # Surface the captured output so the operator still sees what ran.
+        if stdout:
+            sys.stdout.buffer.write(stdout)
+            sys.stdout.flush()
+        result = stdout.decode("utf-8")
 
         if process.returncode != 0:
             if "ModuleNotFoundError" in result:

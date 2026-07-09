@@ -1,5 +1,6 @@
 import rich_click as click
 from semver import Version
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.cli.vars import get_console, get_manifest, get_work_dir
 from arkitekt_next.cli.io import write_manifest
 
@@ -36,6 +37,10 @@ def set_version(ctx, version):
     old_version = manifest.version
 
     if not version:
+        require_interactive(
+            "Choosing a new version",
+            hint="Pass the version as an argument to set it non-interactively.",
+        )
         try:
             potential_new_version = str(Version.parse(old_version).bump_patch())
         except Exception:

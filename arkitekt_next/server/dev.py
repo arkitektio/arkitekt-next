@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Generator, Literal
+from typing import TYPE_CHECKING, Generator, Literal
 from arkitekt_next.server.diff import (
     write_virtual_config_files,
     write_hub_files,
@@ -11,8 +11,11 @@ from .config import ArkitektServerConfig, HubConfig, CoordConfig, EngineConfig
 from .services import SERVICE_REGISTRY
 from pathlib import Path
 import random
-from dokker import Deployment, local, testing
+from dokker import Deployment, testing
 from dataclasses import dataclass
+
+if TYPE_CHECKING:
+    from arkitekt_next.server.lok import LokController
 
 # Services that are always enabled regardless of the requested selection.
 # Lok provides authentication/authorization and every other service depends on it.
@@ -239,6 +242,18 @@ class ArkitektServer:
     def gateway_url(self) -> str:
         """Get the URL for the gateway service."""
         return self.get_service_url("gateway", 80)
+
+    @property
+    def lok(self) -> "LokController":
+        """Controller for the deployment's lok (coordination) server.
+
+        Lets tests act as the human operator: approve/deny device codes,
+        authorize hub registrations, or run arbitrary management
+        commands inside the lok container.
+        """
+        from arkitekt_next.server.lok import LokController
+
+        return LokController(self.deployment)
 
     def health_url(self, service: str) -> str:
         """Get the gateway-routed health-check URL for a service (``/<service>/ht``)."""

@@ -13,6 +13,7 @@ from arkitekt_next.cli.options import (
     with_seperate_document_dirs,
 )
 import yaml
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.cli.utils import build_relative_dir
 from arkitekt_next.cli.vars import get_console, get_manifest, get_work_dir
 from arkitekt_next.service_registry import get_default_service_registry
@@ -53,6 +54,18 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
     
     app_directory = get_work_dir(ctx)
 
+    # --path is prompted only when omitted; guard so a non-TTY run never blocks
+    # on click's option prompt (default is used as the prompt pre-fill).
+    if path is None:
+        require_interactive(
+            "Choosing the api output path",
+            hint="Pass --path to set it non-interactively (default: api).",
+        )
+        path = click.prompt(
+            "Where should we generate the api? (relative to the current directory)",
+            default="api",
+        )
+
     app_api_path = os.path.join(app_directory, path)
     app_documents = os.path.join(app_directory, "documents")
 
@@ -76,6 +89,10 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
             if key in services
         }
     else:
+        require_interactive(
+            "`app gen init`",
+            hint="Pass --service to choose the service non-interactively.",
+        )
         service = click.prompt(
             "Choose a service to initialize the project for",
             type=click.Choice(list(chosen_services.keys())),
@@ -84,6 +101,10 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
         chosen_services = {service: chosen_services[service]}
 
     if os.path.exists(config):
+        require_interactive(
+            "`app gen init`",
+            hint="Remove or move the existing GraphQL config to run non-interactively.",
+        )
         if click.confirm(
             f"GraphQL Config file already exists. Do you want to merge your choices?"
         ):
@@ -106,6 +127,10 @@ def init(ctx, boring, services, config, documents, schemas, path, seperate_doc_d
 
             if key in projects:
                 get_console(ctx).print(f"[red]Project {key} already exists [/]")
+                require_interactive(
+                    "`app gen init`",
+                    hint="Remove the existing project to run non-interactively.",
+                )
                 if not click.confirm("Do you want to overwrite it?"):
                     continue
 

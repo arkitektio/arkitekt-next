@@ -26,6 +26,7 @@ PLUGIN_DOCS = f"{CLI_DOCS_BASE}/plugin"
 # Server-deployment command groups (migrated from arkitekt-server).
 HUB_DOCS = f"{CLI_DOCS_BASE}/hub"
 COORD_DOCS = f"{CLI_DOCS_BASE}/coord"
+MESH_DOCS = f"{CLI_DOCS_BASE}/mesh"
 HUBINATOR_DOCS = f"{CLI_DOCS_BASE}/hubinator"
 ENGINE_DOCS = f"{CLI_DOCS_BASE}/engine"
 

@@ -3,6 +3,7 @@
 from importlib.metadata import version
 from arkitekt_next.cli.constants import compile_dockerfiles
 from arkitekt_next.cli.commands.plugin.types import Flavour
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.cli.utils import build_relative_dir
 import rich_click as click
 from click import Context
@@ -168,6 +169,11 @@ def init(
             __python_version__=python_version,
         ))
 
+    if not devcontainer:
+        require_interactive(
+            "Choosing whether to create a devcontainer.json",
+            hint="Pass --devcontainer to create it non-interactively.",
+        )
     if devcontainer or click.confirm("Do you want to create a devcontainer.json file?"):
         create_devcontainer_file(manifest, flavour, dockerfile)
 

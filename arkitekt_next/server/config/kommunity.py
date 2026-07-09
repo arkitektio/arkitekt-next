@@ -14,7 +14,7 @@ class ServiceAlias(BaseModel):
     """Configuration for a service alias in the kommunity partner."""
 
     challenge: str = Field(default="ht", description="Challenge type for the alias")
-    host: str = Field(description="Host for the alias (relative to composition)")
+    host: str = Field(description="Host for the alias (relative to hub)")
     id: str = Field(description="Unique identifier for the alias")
     port: int = Field(default=80, description="Port for the alias")
     kind: Literal["relative", "absolute"] = Field(
@@ -49,7 +49,7 @@ class ServiceManifest(BaseModel):
 
 
 class ServiceInstance(BaseModel):
-    """Instance of a service in the kommunity partner composition."""
+    """Instance of a service in the kommunity partner hub."""
 
     identifier: str = Field(description="Unique identifier for the instance")
     aliases: list[ServiceAlias] = Field(
@@ -58,12 +58,12 @@ class ServiceInstance(BaseModel):
     manifest: ServiceManifest = Field(description="Manifest for the service")
 
 
-class PreconfiguredComposition(BaseModel):
-    """Preconfigured composition for a kommunity partner."""
+class PreconfiguredHub(BaseModel):
+    """Preconfigured hub for a kommunity partner."""
 
-    identifier: str = Field(description="Unique identifier for the composition")
+    identifier: str = Field(description="Unique identifier for the hub")
     instances: list[ServiceInstance] = Field(
-        default_factory=list, description="Service instances in the composition"
+        default_factory=list, description="Service instances in the hub"
     )
 
 
@@ -82,8 +82,8 @@ class KommunityPartner(BaseModel):
     auto_configure: bool = Field(
         default=True, description="Whether to auto-configure this partner"
     )
-    preconfigured_composition: PreconfiguredComposition | None = Field(
-        default=None, description="Preconfigured composition for this partner"
+    preconfigured_hub: PreconfiguredHub | None = Field(
+        default=None, description="Preconfigured hub for this partner"
     )
 
     model_config = ConfigDict(
@@ -159,7 +159,7 @@ def create_default_kommunity_partners() -> list[KommunityPartner]:
             website_url="localhost",
             partner_kind="autoconfigured",
             auto_configure=True,
-            preconfigured_composition=PreconfiguredComposition(
+            preconfigured_hub=PreconfiguredHub(
                 identifier="localhost",
                 instances=create_local_service_aliases(local_services),
             ),
@@ -170,7 +170,7 @@ def create_default_kommunity_partners() -> list[KommunityPartner]:
             website_url="localhost",
             partner_kind="preauthorized",
             auto_configure=True,
-            preconfigured_composition=PreconfiguredComposition(
+            preconfigured_hub=PreconfiguredHub(
                 identifier="localhost",
                 instances=create_local_service_aliases(local_services),
             ),

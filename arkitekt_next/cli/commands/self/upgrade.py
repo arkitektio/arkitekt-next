@@ -18,6 +18,7 @@ import rich_click as click
 import semver
 from rich.table import Table
 
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.cli.vars import get_console, get_work_dir
 from arkitekt_next.cli.commands.app.init.main import get_default_package_manager
 from .constants import ARKITEKT_PACKAGES
@@ -94,6 +95,7 @@ def _upgrade_all_dependencies(ctx, console, manager: str, yes: bool) -> None:
                 "uv is not installed. Please install uv or choose --package-manager pip."
             )
         if not yes:
+            require_interactive("Confirming the upgrade", hint="Pass --yes to upgrade non-interactively.")
             click.confirm(
                 "Upgrade ALL project dependencies with `uv sync --upgrade`?",
                 abort=True,
@@ -125,6 +127,7 @@ def _upgrade_all_dependencies(ctx, console, manager: str, yes: bool) -> None:
 
     console.print(f"{len(outdated_names)} outdated package(s): {', '.join(outdated_names)}")
     if not yes:
+        require_interactive("Confirming the upgrade", hint="Pass --yes to upgrade non-interactively.")
         click.confirm(f"Upgrade all {len(outdated_names)} package(s) with pip?", abort=True)
 
     command = [sys.executable, "-m", "pip", "install", "--upgrade", *outdated_names]
@@ -218,6 +221,7 @@ def upgrade(ctx, package_manager: Optional[str], upgrade_all: bool, yes: bool, p
     manager = _resolve_package_manager(ctx, package_manager)
 
     if not yes:
+        require_interactive("Confirming the upgrade", hint="Pass --yes to upgrade non-interactively.")
         click.confirm(
             f"Upgrade {len(outdated)} package(s) using {manager}?",
             abort=True,

@@ -204,6 +204,7 @@ async def run_dev(
     version: str | None = None,
     builder: str = "arkitekt_next.builders.easy",
     deep: bool = False,
+    reauth: bool = False,
     **builder_kwargs,
 ):
     entrypoint = entrypoint or manifest.entrypoint
@@ -216,7 +217,7 @@ async def run_dev(
     # Build the app from the manifest (identifier, logo, scopes, ...), overriding
     # the version with the dev sentinel (or an explicit --version). Shared between
     # the initial build and every hot reload so they can never diverge.
-    builder_args = {**manifest.to_builder_dict(), "version": version, **builder_kwargs}
+    builder_args = {**manifest.to_builder_dict(), "version": version, **builder_kwargs, "no_cache": reauth}
 
     generation_message = "[not bold white]This is a development tool for arkitekt_next apps. It will watch your app for changes and reload it when it detects a change. It will also print out the current state of your app.[/]"
 
@@ -349,6 +350,11 @@ async def run_dev(
 @with_version
 @click.option(
     "--deep",
+    help="Should we check the whole directory for changes and reload them when changes?",
+    is_flag=True,
+)
+@click.option(
+    "--reauth",
     help="Should we check the whole directory for changes and reload them when changes?",
     is_flag=True,
 )

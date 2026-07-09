@@ -17,6 +17,7 @@ from arkitekt_next.cli.docs import CLI_DOCS_BASE, help_epilog
 from arkitekt_next.cli.commands.app.main import app
 from arkitekt_next.cli.commands.hub.main import hub
 from arkitekt_next.cli.commands.coord.main import coord
+from arkitekt_next.cli.commands.mesh.main import mesh
 from arkitekt_next.cli.commands.hubinator.main import hubinator
 from arkitekt_next.cli.commands.engine.main import engine
 from arkitekt_next.cli.commands.self.main import self_group
@@ -65,6 +66,7 @@ def cli(ctx, work_dir):
 cli.add_command(app, "app")
 cli.add_command(hub, "hub")
 cli.add_command(coord, "coord")
+cli.add_command(mesh, "mesh")
 cli.add_command(hubinator, "hubinator")
 cli.add_command(engine, "engine")
 cli.add_command(self_group, "self")

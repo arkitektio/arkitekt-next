@@ -1,6 +1,7 @@
 import rich_click as click
 import subprocess
 from .utils import search_username_in_docker_info
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.cli.vars import get_console
 from .types import Build
 from rich.panel import Panel
@@ -54,6 +55,10 @@ def publish(ctx: Context, build: str, tag: str) -> None:
     docker_info = subprocess.check_output(["docker", "info"]).decode("utf-8")
     username = search_username_in_docker_info(docker_info)
     if not username:
+        require_interactive(
+            "Providing a docker username",
+            hint="Log in to docker (so `docker info` reports a username) to run non-interactively.",
+        )
         username = click.prompt(
             "Could not find username in docker info. Please provide your docker username"
         )
@@ -66,10 +71,15 @@ def publish(ctx: Context, build: str, tag: str) -> None:
 
         check_if_build_already_deployed(build_model)
 
-        tag = tag or click.prompt(
-            "The tag to use",
-            default=f"{username}/{build_model.manifest.identifier}:{build_model.manifest.version}-{build_model.flavour}",
-        )
+        if not tag:
+            require_interactive(
+                "Choosing a docker tag",
+                hint="Pass --tag to set the tag non-interactively.",
+            )
+            tag = click.prompt(
+                "The tag to use",
+                default=f"{username}/{build_model.manifest.identifier}:{build_model.manifest.version}-{build_model.flavour}",
+            )
 
         md = Panel("Building Docker Container")
         console.print(md)

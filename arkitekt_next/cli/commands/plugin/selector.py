@@ -1,4 +1,5 @@
 import rich_click as click
+from arkitekt_next.cli.interactive import require_interactive
 from arkitekt_next.cli.vars import get_work_dir
 from arkitekt_next.utils import create_arkitekt_next_folder
 import os
@@ -15,7 +16,7 @@ def selector():
 
 @selector.command(name="add")
 @click.argument("flavour")
-@click.option("--kind", "-k", help="The kind of selector", prompt=True)
+@click.option("--kind", "-k", help="The kind of selector", default=None)
 @click.option("--api-version", "-av", help="The api version of the selector", default=None)
 @click.option("--api-thing", "-at", help="The api thing of the selector", default=None)
 @click.option("--one-api-version", "-oav", help="The one api version of the selector", default=None)
@@ -32,6 +33,13 @@ def add_selector(ctx, flavour, kind, api_version, api_thing, one_api_version, cu
 
     if not os.path.exists(config_file):
         raise click.ClickException(f"Flavour {flavour} does not exist")
+
+    if kind is None:
+        require_interactive(
+            "Choosing a selector kind",
+            hint="Pass --kind to set it non-interactively.",
+        )
+        kind = click.prompt("The kind of selector")
 
     with open(config_file, "r") as f:
         data = yaml.safe_load(f)

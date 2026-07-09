@@ -12,6 +12,18 @@ if TYPE_CHECKING:
     from arkitekt_next.app import App
 
 
+@pytest.fixture(autouse=True)
+def _assume_interactive(monkeypatch):
+    """Make the CLI treat itself as interactive during tests.
+
+    ``CliRunner`` replaces ``sys.stdin`` with a non-TTY stream, so the
+    ``require_interactive`` guard (added to every prompt site) would abort any
+    test that drives a prompt via ``input=``. Tests that specifically exercise
+    the non-TTY guard patch ``is_interactive`` back to ``False`` themselves.
+    """
+    monkeypatch.setattr(
+        "arkitekt_next.cli.interactive.is_interactive", lambda: True
+    )
 
 
 
@@ -93,10 +105,31 @@ class AppWithinDeployment:
 # against. ``lok`` is always enabled (see ``REQUIRED_SERVICES``).
 INTEGRATION_SERVICES = ["rekuest", "mikro", "kabinet"]
 
-# lok auto-configures a local composition with this identifier from the default
+# lok auto-configures a local hub with this identifier from the default
 # kommunity partners that ``arkitekt-server`` writes into the generated config.
 # ``validatecode`` resolves the device code against it.
-COMPOSITION_IDENTIFIER = "localhost"
+HUB_IDENTIFIER = "localhost"
+
+
+@pytest.fixture(scope="session")
+def lok_server() -> Generator[ArkitektServer, None, None]:
+    """Spin up a lok-only Arkitekt deployment (gateway + lok + infra).
+
+    Much faster to boot than the full ``arkitekt_server`` stack; use it for
+    CLI integration tests that only talk to the coordination server. Control
+    lok through ``lok_server.lok`` (approve device codes, authorize
+    hubs, run management commands).
+    """
+    from arkitekt_next.server.dev import temp_setup
+
+    with temp_setup([], channel="next") as server:
+        setup = server.setup
+        with setup:
+            setup.pull()
+            setup.up()
+            setup.check_health()
+            yield server
+            setup.down()
 
 
 @pytest.fixture(scope="session")
@@ -126,18 +159,16 @@ def running_app(
 ) -> Generator[AppWithinDeployment, None, None]:
     """Connect an ``easy`` app to the running Arkitekt server.
 
-    The device-code login is auto-approved by running lok's ``validatecode``
-    management command inside the lok container.
+    The device-code login is auto-approved through the lok controller (which
+    runs lok's ``validatecode`` management command inside the container).
     """
     from fakts_next.grants.remote import FaktsEndpoint
     from arkitekt_next import easy
     from arkitekt_next.service_registry import get_default_service_registry
 
     async def device_code_hook(endpoint: FaktsEndpoint, device_code: str):
-        await arkitekt_server.setup.arun(
-            "lok",
-            f"uv run python manage.py validatecode --code {device_code} "
-            f"--user demo --org arkitektio --composition {COMPOSITION_IDENTIFIER}",
+        await arkitekt_server.lok.avalidate_device_code(
+            device_code, hub=HUB_IDENTIFIER
         )
 
     registry = get_default_service_registry()

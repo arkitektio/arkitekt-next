@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict
 
 from pydantic import BaseModel
-import typer
+import click
 from .config import (
     ArkitektServerConfig,
     BaseService,
@@ -684,22 +684,22 @@ class RedeemTokenConfig(BaseModel):
     token: str
     user: str
     organization: str
-    composition: str = "localhost"
+    hub: str = "localhost"
 
 
-# Identifier of the auto-configured composition that bundles every local service.
-LOCAL_COMPOSITION_IDENTIFIER = "localhost"
+# Identifier of the auto-configured hub that bundles every local service.
+LOCAL_HUB_IDENTIFIER = "localhost"
 
 
 def build_local_kommunity_partner(
     ctx: GenContext, services: list[BaseService]
 ) -> dict[str, Any]:
-    """Build a lok ``kommunity_partner`` that auto-configures a local composition.
+    """Build a lok ``kommunity_partner`` that auto-configures a local hub.
 
-    The composition (identifier ``localhost``) registers every enabled service as an
+    The hub (identifier ``localhost``) registers every enabled service as an
     instance so that clients authenticating against this deployment receive working
     aliases for them. The emitted shape matches lok's ``KommunityPartnerModel`` /
-    ``CompositionManifest`` schema (see ``docs/config/lok.md``).
+    ``HubManifest`` schema (see ``docs/config/lok.md``).
     """
     instances: list[dict[str, Any]] = []
     for service in services:
@@ -734,7 +734,7 @@ def build_local_kommunity_partner(
 
     # MinIO is not a Django web service, so ``iterate_service`` does not yield it,
     # yet storage clients (e.g. mikro) declare a ``live.arkitekt.s3`` requirement.
-    # Register the object store as a composition instance so those clients can be
+    # Register the object store as a hub instance so those clients can be
     # composed -- the gateway routes ``/minio/*`` to MinIO, and the client reads
     # only the endpoint URL from this alias (upload credentials are minted by the
     # owning service).
@@ -774,8 +774,8 @@ def build_local_kommunity_partner(
         "website_url": "localhost",
         "partner_kind": "preauthorized",
         "auto_configure": True,
-        "preconfigured_composition": {
-            "identifier": LOCAL_COMPOSITION_IDENTIFIER,
+        "preconfigured_hub": {
+            "identifier": LOCAL_HUB_IDENTIFIER,
             "instances": instances,
         },
     }
@@ -1108,7 +1108,7 @@ def _emit_lok(
         membership.model_dump() for membership in ctx.memberships
     ]
     lok_config["redeem_tokens"] = [token.model_dump() for token in redeem_tokens]
-    # Auto-configure a local composition bundling every enabled service, plus any
+    # Auto-configure a local hub bundling every enabled service, plus any
     # explicitly configured partners.
     lok_config["kommunity_partners"] = [
         build_local_kommunity_partner(ctx, routed_services)
@@ -1368,7 +1368,7 @@ def run_dry_run_diff(
         allow_deletes: Whether to allow deletion of existing files
 
     Raises:
-        typer.Abort: If the user declines to apply the changes
+        click.Abort: If the user declines to apply the changes
     """
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -1380,7 +1380,13 @@ def run_dry_run_diff(
         compare_filesystems(virtual_dir, real_dir, allow_deletes=allow_deletes)
 
         if not yes:
-            typer.confirm(
+            from arkitekt_next.cli.interactive import require_interactive
+
+            require_interactive(
+                "Confirming the config changes",
+                hint="Pass yes=True (or the command's --yes flag) to apply non-interactively.",
+            )
+            click.confirm(
                 "Do you want to apply these changes?",
                 abort=True,
             )
