@@ -2,6 +2,17 @@
   <h1 align="center">arkitekt-next</h1>
 </p>
 
+> # ⚠️ DEPRECATED — do not use for new work
+>
+> This package was **renamed to [`arkitekt`](https://github.com/arkitektio/arkitekt)**.
+> It was published as `arkitekt-next` up to **1.4.2**; from **2.0.0** the same client is
+> published as `arkitekt`, and the import root is `arkitekt` (`arkitekt_next` is gone).
+>
+> **Use `arkitekt>=2` instead.** All work from this repository — including the
+> `refactor/cli-typer-migration` branch (Typer CLI, selectors, the server-construction
+> removal) — is already in `arkitekt`'s `main`. Nothing here is maintained.
+
+
 <p align="center">
   <em>Turn your Python functions into apps you can orchestrate, share, and scale.</em>
 </p>
