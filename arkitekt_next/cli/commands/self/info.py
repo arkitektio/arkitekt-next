@@ -10,7 +10,7 @@ import shutil
 import sys
 from importlib.metadata import version as installed_version, PackageNotFoundError
 
-import rich_click as click
+import typer
 from rich.table import Table
 
 from arkitekt_next.cli.vars import get_console, get_work_dir
@@ -33,9 +33,7 @@ def _which_version(executable: str, args: list[str]) -> str:
         return path
 
 
-@click.command()
-@click.pass_context
-def info(ctx) -> None:
+def info(ctx: typer.Context) -> None:
     """Print environment diagnostics for the Arkitekt CLI.
 
     Shows the installed CLI version, the Python interpreter, the available
@@ -59,7 +57,7 @@ def info(ctx) -> None:
     table.add_row("Platform", f"{platform.system()} {platform.release()} ({platform.machine()})")
     table.add_row("uv", _which_version("uv", ["--version"]))
     table.add_row("pip", _which_version("pip", ["--version"]))
-    # Docker is optional — only the `hub`/`coord`/`hubinator` up commands need it.
+    # Docker is optional — only the `plugin build`/`publish` commands need it.
     table.add_row("docker [dim](optional)[/dim]", _which_version("docker", ["--version"]))
     table.add_row("Working dir", get_work_dir(ctx))
 

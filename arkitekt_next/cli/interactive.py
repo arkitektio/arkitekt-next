@@ -7,13 +7,11 @@ to abort. ``require_interactive`` is the single guard to call before any such
 prompt: on a non-TTY it raises a clean :class:`click.ClickException` that names
 the non-interactive escape hatch instead of hanging.
 
-This mirrors the ``sys.stdin.isatty()`` guard already used in
-``arkitekt_next.cli.commands.hub.connect``.
 """
 
 import sys
 
-import rich_click as click
+from arkitekt_next.cli.errors import cli_error
 
 
 def is_interactive() -> bool:
@@ -33,7 +31,7 @@ def require_interactive(purpose: str, *, hint: str) -> None:
     """
     if is_interactive():
         return
-    raise click.ClickException(
+    cli_error(
         f"{purpose} needs an interactive terminal, but stdin is not a TTY "
         f"(are you running in CI or through a pipe?). {hint}"
     )

@@ -20,22 +20,16 @@ MANIFEST_DOCS = f"{CLI_DOCS_BASE}/manifest"
 INSPECT_DOCS = f"{CLI_DOCS_BASE}/inspect"
 CALL_DOCS = f"{CLI_DOCS_BASE}/call"
 SELF_DOCS = f"{CLI_DOCS_BASE}/self"
-APP_DOCS = f"{CLI_DOCS_BASE}/app"
 PLUGIN_DOCS = f"{CLI_DOCS_BASE}/plugin"
 
-# Server-deployment command groups (migrated from arkitekt-server).
-HUB_DOCS = f"{CLI_DOCS_BASE}/hub"
-COORD_DOCS = f"{CLI_DOCS_BASE}/coord"
 MESH_DOCS = f"{CLI_DOCS_BASE}/mesh"
-HUBINATOR_DOCS = f"{CLI_DOCS_BASE}/hubinator"
-ENGINE_DOCS = f"{CLI_DOCS_BASE}/engine"
 
 #: Conceptual guides referenced from multiple commands.
 FLAVOURS_DOCS = f"{DOCS_BASE_URL}/docs/flavours"
 
 
 def help_epilog(url: str) -> str:
-    """Render a rich-click epilogue that links to the hosted docs for a command.
+    """Render a Typer/rich epilogue that links to the hosted docs for a command.
 
     Used as the ``epilog=`` of a command/group so that ``--help`` always points
     the user at the matching page on the hosted documentation.

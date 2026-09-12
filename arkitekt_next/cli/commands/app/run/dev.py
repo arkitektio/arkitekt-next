@@ -3,7 +3,6 @@ from functools import partial
 from importlib import import_module, reload
 import asyncio
 
-from click import Context
 from watchfiles import awatch, Change
 from rich.panel import Panel
 from rich.console import Console
@@ -14,23 +13,25 @@ import inspect
 from pathlib import Path
 from rekuest_next.app import AppRegistry
 from rekuest_next.agents.hooks.registry import get_default_hook_registry
-from typing import MutableSet, Tuple, Any, Set
+from typing import Annotated, MutableSet, Optional, Tuple, Any, Set
+import typer
 from arkitekt_next.cli.ui import construct_changes_group, construct_app_group
 from arkitekt_next.cli.commands.app.run.utils import import_builder, run_app
+from arkitekt_next.cli.options import (
+    LogLevel,
+    UrlOption,
+    BuilderOption,
+    TokenOption,
+    RedeemTokenOption,
+    ForceOption,
+    HeadlessOption,
+    LogLevelOption,
+    NoCacheOption,
+    VersionOption,
+)
 from arkitekt_next.cli.types import Manifest
 from arkitekt_next.app.app import App
-import rich_click as click
-from arkitekt_next.cli.options import (
-    with_fakts_next_url,
-    with_builder,
-    with_token,
-    with_force,
-    with_headless,
-    with_log_level,
-    with_redeem_token,
-    with_skip_cache,
-    with_version,
-)
+from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 from arkitekt_next.cli.vars import get_console, get_manifest
 
 
@@ -217,7 +218,9 @@ async def run_dev(
     # Build the app from the manifest (identifier, logo, scopes, ...), overriding
     # the version with the dev sentinel (or an explicit --version). Shared between
     # the initial build and every hot reload so they can never diverge.
-    builder_args = {**manifest.to_builder_dict(), "version": version, **builder_kwargs, "no_cache": reauth}
+    # --reauth implies skipping the fakts cache; never clobber an explicit --no-cache.
+    builder_args = {**manifest.to_builder_dict(), "version": version, **builder_kwargs}
+    builder_args["no_cache"] = bool(builder_args.get("no_cache")) or reauth
 
     generation_message = "[not bold white]This is a development tool for arkitekt_next apps. It will watch your app for changes and reload it when it detects a change. It will also print out the current state of your app.[/]"
 
@@ -282,8 +285,6 @@ async def run_dev(
         group = construct_changes_group(changes)
         panel = Panel(group, style="bold blue", border_style="blue")
         console.print(panel)
-
-        console.print(panel)
         # Cancelling the app
         if not current_run or current_run.done():
             pass
@@ -338,29 +339,33 @@ async def run_dev(
             console.print(panel)
 
 
-@click.command()
-@with_fakts_next_url
-@with_builder
-@with_token
-@with_force
-@with_redeem_token
-@with_headless
-@with_log_level
-@with_skip_cache
-@with_version
-@click.option(
-    "--deep",
-    help="Should we check the whole directory for changes and reload them when changes?",
-    is_flag=True,
-)
-@click.option(
-    "--reauth",
-    help="Should we check the whole directory for changes and reload them when changes?",
-    is_flag=True,
-)
-@click.argument("entrypoint", required=False)
-@click.pass_context
-def dev(ctx: Context, entrypoint: str, **kwargs):
+def dev(
+    ctx: typer.Context,
+    entrypoint: Annotated[Optional[str], typer.Argument()] = None,
+    url: UrlOption = DEFAULT_ARKITEKT_URL,
+    builder: BuilderOption = "arkitekt_next.builders.easy",
+    token: TokenOption = None,
+    force: ForceOption = False,
+    redeem_token: RedeemTokenOption = None,
+    headless: HeadlessOption = False,
+    log_level: LogLevelOption = LogLevel.ERROR,
+    no_cache: NoCacheOption = False,
+    version: VersionOption = None,
+    deep: Annotated[
+        bool,
+        typer.Option(
+            "--deep",
+            help="Should we check the whole directory for changes and reload them when changes?",
+        ),
+    ] = False,
+    reauth: Annotated[
+        bool,
+        typer.Option(
+            "--reauth",
+            help="Force a fresh login: skip the fakts cache and re-run authentication.",
+        ),
+    ] = False,
+) -> None:
     """Runs the app in dev mode (with hot reloading)
 
     Running the app in dev mode will automatically reload the app when changes are detected.
@@ -370,4 +375,21 @@ def dev(ctx: Context, entrypoint: str, **kwargs):
     manifest = get_manifest(ctx)
     console = get_console(ctx)
 
-    asyncio.run(run_dev(console, manifest, entrypoint=entrypoint, **kwargs))
+    asyncio.run(
+        run_dev(
+            console,
+            manifest,
+            entrypoint=entrypoint,
+            url=url,
+            builder=builder,
+            token=token,
+            force=force,
+            redeem_token=redeem_token,
+            headless=headless,
+            log_level=log_level.value,
+            no_cache=no_cache,
+            version=version,
+            deep=deep,
+            reauth=reauth,
+        )
+    )

@@ -1,10 +1,12 @@
+from typing import Annotated
 from arkitekt_next import get_default_service_registry
-import rich_click as click
+import typer
+
+from arkitekt_next.cli.utils import emit_machine_readable
 from importlib import import_module
 from arkitekt_next.app.app import App
 from arkitekt_next.cli.commands.app.run.utils import import_builder
 from arkitekt_next.cli.vars import get_console, get_manifest
-from arkitekt_next.cli.options import with_builder
 import json
 import os
 
@@ -14,26 +16,16 @@ async def run_app(app):
         await app.rekuest.run()
 
 
-@click.command("prod")
-@click.pass_context
-@click.option(
-    "--pretty",
-    "-p",
-    help="Should we just output json?",
-    is_flag=True,
-    default=False,
-)
-@click.option(
-    "--machine-readable",
-    "-mr",
-    help="Should we just output json?",
-    is_flag=True,
-    default=False,
-)
 def requirements(
-    ctx,
-    pretty: bool,
-    machine_readable: bool,
+    ctx: typer.Context,
+    pretty: Annotated[
+        bool,
+        typer.Option("--pretty", "-p", help="Should we just output json?"),
+    ] = False,
+    machine_readable: Annotated[
+        bool,
+        typer.Option("--machine-readable", "-mr", help="Should we just output json?"),
+    ] = False,
 ):
     """Checks the requirements of the app
 
@@ -62,7 +54,7 @@ def requirements(
     x = [item.model_dump(by_alias=True) for item in service_registry.get_requirements()]
 
     if machine_readable:
-        print("--START_REQUIREMENTS--" + json.dumps(x) + "--END_REQUIREMENTS--")
+        emit_machine_readable("REQUIREMENTS", x)
 
     else:
         if pretty:

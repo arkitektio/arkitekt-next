@@ -1,168 +1,129 @@
-import rich_click as click
+"""Shared Typer option definitions.
 
-from arkitekt_next.cli.interactive import require_interactive
-from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
-from .constants import *
-from .types import *
-from .vars import *
-from .ui import *
+Connection options: `run dev|prod` and `call remote` all take the same
+fakts/builder options.
 
-with_fakts_next_url = click.option(
-    "--url",
-    "-u",
-    help="The fakts_next url for connection",
-    default=DEFAULT_ARKITEKT_URL,
-    envvar="FAKTS_URL",
-)
+Defining each once as an `Annotated` alias keeps flags, help, envvars and types
+identical across commands; each command still supplies its own default at the call
+site (e.g. `url: UrlOption = DEFAULT_ARKITEKT_URL`).
+"""
 
-with_token = click.option(
-    "--token",
-    "-t",
-    help="The token for the fakts_next instance",
-    envvar="FAKTS_TOKEN",
-    required=False,
-)
-with_redeem_token = click.option(
-    "--redeem-token",
-    "-r",
-    help="The redeem token used to authenticate against the fakts_next instance",
-    envvar="FAKTS_REDEEM_TOKEN",
-    required=False,
-)
-with_version = click.option(
-    "--version",
-    "-v",
-    help="Override the version of the app",
-    envvar="ARKITEKT_VERSION",
-)
+from enum import Enum
+from typing import Annotated, Optional
 
-with_skip_cache = click.option(
-    "--no-cache",
-    "-nc",
-    is_flag=True,
-    default=False,
-    help="Should we skip the cache",
-    envvar="ARKITEKT_NO_CACHE",
-)
-
-with_force = click.option(
-    "--force",
-    "-f",
-    is_flag=True,
-    default=False,
-    help="Force registration, kicking any existing connection for this agent and taking over",
-    envvar="ARKITEKT_FORCE",
-)
-
-with_log_level = click.option(
-    "--log-level",
-    "-l",
-    default="ERROR",
-    help="The logging level to use",
-    type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]),
-    envvar="ARKITEKT_LOG_LEVEL",
-)
+import typer
 
 
-with_builder = click.option(
-    "--builder",
-    "-b",
-    default="arkitekt_next.builders.easy",
-    help="The builder for this run",
-    envvar="ARKITEKT_BUILDER",
-)
+class LogLevel(str, Enum):
+    """The logging levels accepted by the run commands."""
 
-with_headless = click.option(
-    "--headless",
-    is_flag=True,
-    default=False,
-    help="Should we start headless",
-    envvar="ARKITEKT_HEADLESS",
-)
+    DEBUG = "DEBUG"
+    INFO = "INFO"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    CRITICAL = "CRITICAL"
 
 
-def check_gen_boring(ctx, param, value):
-    """Callback to check and prompt for file overwrite."""
+#: The fakts_next endpoint URL. Callers default this to ``DEFAULT_ARKITEKT_URL``.
+UrlOption = Annotated[
+    str,
+    typer.Option(
+        "--url",
+        "-u",
+        help="The fakts_next url for connection",
+        envvar="FAKTS_URL",
+    ),
+]
 
-    if not value:
-        get_console(ctx).print(construct_codegen_welcome_panel())
+#: The dotted path to the builder function. Callers default to the easy builder.
+BuilderOption = Annotated[
+    str,
+    typer.Option(
+        "--builder",
+        "-b",
+        help="The builder for this run",
+        envvar="ARKITEKT_BUILDER",
+    ),
+]
 
-    return value
+#: A pre-issued fakts credential, as ``client_id:refresh_token``.
+#: Callers default this to ``None``.
+TokenOption = Annotated[
+    Optional[str],
+    typer.Option(
+        "--token",
+        "-t",
+        help=(
+            "A previously issued credential, as 'client_id:refresh_token'. "
+            "Both halves are required: the token endpoint authenticates the "
+            "client before it validates the refresh token. To provision a new "
+            "app instead, use --redeem-token."
+        ),
+        envvar="FAKTS_TOKEN",
+    ),
+]
 
+#: A redeem token used to authenticate. Callers default this to ``None``.
+RedeemTokenOption = Annotated[
+    Optional[str],
+    typer.Option(
+        "--redeem-token",
+        "-r",
+        help="The redeem token used to authenticate against the fakts_next instance",
+        envvar="FAKTS_REDEEM_TOKEN",
+    ),
+]
 
-with_boring = click.option(
-    "--boring",
-    help="Should we skip the welcome message?",
-    is_flag=True,
-    default=False,
-    callback=check_gen_boring,
-)
-with_seperate_document_dirs = click.option(
-    "--seperate-doc-dirs",
-    "-sd",
-    help="Should we generate seperate dirs for the documents?",
-    is_flag=True,
-    default=False,
-)
-with_choose_services = click.option(
-    "--services",
-    "-s",
-    help="The services to create the codegen for",
-    multiple=True,
-    type=click.Choice(compile_services()),
-    default=[],
-)
-with_graphql_config = click.option(
-    "--config",
-    "-c",
-    help="The name of the configuration file",
-    type=str,
-    default="graphql.config.yaml",
-)
-with_api_path = click.option(
-    "--path",
-    "-p",
-    help="The path of the api to be generated (default: api). Prompted if omitted.",
-    type=str,
-    default=None,
-)
+#: Force registration, taking over an existing connection. Callers default to ``False``.
+ForceOption = Annotated[
+    bool,
+    typer.Option(
+        "--force",
+        "-f",
+        help="Force registration, kicking any existing connection for this agent and taking over",
+        envvar="ARKITEKT_FORCE",
+    ),
+]
 
+#: Run without an interactive UI. Callers default this to ``False``.
+HeadlessOption = Annotated[
+    bool,
+    typer.Option(
+        "--headless",
+        help="Should we start headless",
+        envvar="ARKITEKT_HEADLESS",
+    ),
+]
 
-def check_overwrite_config(ctx, param, value):
-    """Callback to check and prompt for file overwrite."""
+#: The logging level. Callers default this to ``LogLevel.ERROR``.
+LogLevelOption = Annotated[
+    LogLevel,
+    typer.Option(
+        "--log-level",
+        "-l",
+        help="The logging level to use",
+        envvar="ARKITEKT_LOG_LEVEL",
+    ),
+]
 
-    config = ctx.params["config"]
-    if os.path.exists(config) and not value:
-        require_interactive(
-            "Confirming a config overwrite",
-            hint="Pass --overwrite-config to overwrite non-interactively.",
-        )
-        should_overwrite = click.confirm(
-            "GraphQL Config file already exists. Do you want to overwrite?"
-        )
-        return should_overwrite
+#: Skip the fakts cache. Callers default this to ``False``.
+NoCacheOption = Annotated[
+    bool,
+    typer.Option(
+        "--no-cache",
+        "-nc",
+        help="Should we skip the cache",
+        envvar="ARKITEKT_NO_CACHE",
+    ),
+]
 
-    return value
-
-
-with_overwrite_graphql = click.option(
-    "--overwrite-config",
-    "-o",
-    help="Should we overwrite the config file if it already exists",
-    is_flag=True,
-    default=False,
-    callback=check_overwrite_config,
-)
-with_documents = click.option(
-    "--documents",
-    "-d",
-    help="With documents",
-    is_flag=True,
-    default=True,
-)
-with_schemas = click.option(
-    "--schemas",
-    help="Should we copy the schemas",
-    is_flag=True,
-    default=True,
-)
+#: Override the app version. Callers default this to ``None``.
+VersionOption = Annotated[
+    Optional[str],
+    typer.Option(
+        "--version",
+        "-v",
+        help="Override the version of the app",
+        envvar="ARKITEKT_VERSION",
+    ),
+]

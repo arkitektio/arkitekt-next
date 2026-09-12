@@ -2,6 +2,12 @@ from importlib import import_module
 from typing import Callable
 from arkitekt_next.app.app import App
 
+# Re-exported for backwards compatibility; the canonical definition now lives in
+# `arkitekt_next.cli.options` alongside the shared option aliases.
+from arkitekt_next.cli.options import LogLevel
+
+__all__ = ["LogLevel", "import_builder", "run_app"]
+
 
 def import_builder(builder: str) -> Callable[..., App]:
     """Import a builder function from a module.

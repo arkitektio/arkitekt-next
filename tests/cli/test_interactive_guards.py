@@ -7,11 +7,10 @@ stdin forever. The autouse ``_assume_interactive`` fixture (see
 patch ``is_interactive`` back to ``False`` to exercise the guard.
 """
 
-import tempfile
 from unittest.mock import patch
 
 import pytest
-import rich_click as click
+import typer
 from click.testing import CliRunner
 
 from arkitekt_next.cli.interactive import require_interactive
@@ -25,24 +24,15 @@ def test_require_interactive_is_noop_when_tty():
         require_interactive("Something", hint="do X")  # must not raise
 
 
-def test_require_interactive_raises_when_not_tty():
+def test_require_interactive_raises_when_not_tty(capsys):
     with patch(INTERACTIVE, return_value=False):
-        with pytest.raises(click.ClickException) as exc:
+        # cli_error prints the guidance to stderr, then raises typer.Exit(1).
+        with pytest.raises(typer.Exit):
             require_interactive("The wizard", hint="Pass --template instead.")
 
-    message = str(exc.value)
+    message = capsys.readouterr().err
     assert "The wizard" in message
     assert "Pass --template instead." in message
-
-
-def test_coord_init_wizard_aborts_without_tty():
-    """`coord init` with no template drops into the wizard -> guarded on non-TTY."""
-    runner = CliRunner()
-    with tempfile.TemporaryDirectory() as d, patch(INTERACTIVE, return_value=False):
-        result = runner.invoke(cli, ["--work-dir", d, "coord", "init"])
-
-    assert result.exit_code != 0
-    assert "interactive terminal" in result.output
 
 
 def test_mesh_leave_aborts_without_tty_and_without_yes():

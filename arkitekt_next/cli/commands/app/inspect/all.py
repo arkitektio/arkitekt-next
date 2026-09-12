@@ -1,11 +1,13 @@
 import asyncio
+from typing import Annotated
 from pydantic import BaseModel
-import rich_click as click
+import typer
+
+from arkitekt_next.cli.utils import emit_machine_readable
 from importlib import import_module
 from arkitekt_next.app.app import App
 from arkitekt_next.cli.commands.app.run.utils import import_builder
 from arkitekt_next.cli.vars import get_console, get_manifest
-from arkitekt_next.cli.options import with_builder
 import json
 import os
 
@@ -20,35 +22,24 @@ except ImportError:
     pass
 
 
-@click.command("prod")
-@click.pass_context
-@click.option(
-    "--pretty",
-    "-p",
-    help="Should we just output json?",
-    is_flag=True,
-    default=False,
-)
-@click.option(
-    "--machine-readable",
-    "-mr",
-    help="Should we just output json?",
-    is_flag=True,
-    default=False,
-)
 def all(
-    ctx,
-    pretty: bool,
-    machine_readable: bool,
-    builder: str = "arkitekt_next.builders.easy",
-    url: str = DEFAULT_ARKITEKT_URL,
+    ctx: typer.Context,
+    pretty: Annotated[
+        bool,
+        typer.Option("--pretty", "-p", help="Should we just output json?"),
+    ] = False,
+    machine_readable: Annotated[
+        bool,
+        typer.Option("--machine-readable", "-mr", help="Should we just output json?"),
+    ] = False,
 ):
-    """Runs the app in production mode
+    """Inspect everything this app exposes.
 
-    \n
-    You can specify the builder to use with the --builder flag. By default, the easy builder is used, which is designed to be easy to use and to get started with.
-
+    Builds the app without running it and reports its variables, requirements and
+    implementations. Pass --machine-readable to get JSON instead of a table.
     """
+    builder: str = "arkitekt_next.builders.easy"
+    url: str = DEFAULT_ARKITEKT_URL
 
     manifest = get_manifest(ctx)
     console = get_console(ctx)
@@ -85,24 +76,14 @@ def all(
 
     x = [item.model_dump(by_alias=True) for item in service_registry.get_requirements()]
 
+    # Assemble the agent payload through ImplementAgentInput so it is validated
+    # the same way the server would validate it, instead of hand-rolling raw
+    # model_dump()s. `name`/`hash` are agent-instance concerns, and requirements
+    # are a fakts/manifest concept, so they stay out of / get added to the dump.
+    agent_input = registry.to_implement_agent_input()
     agent = {
-        "states": [d.model_dump() for d in registry.states.values()]
-        if registry
-        else [],
-        "implementations": [
-            d.model_dump()
-            for d in registry.get_implementations()
-        ]
-        if registry
-        else [],
-        "locks": [
-            d.model_dump() for d in registry.get_locks()
-        ],  # TODO: this is a bit hacky locks are not a first class concept in the registry but we want to expose them in the agent manifest, we should probably refactor this at some point
+        **agent_input.model_dump(exclude={"name", "hash"}),
         "requirements": x,
-        "bloks": [
-            d.model_dump()
-            for key, d in registry.get_declared_bloks().items()
-        ],
     }
 
     if rekuest is None:
@@ -110,7 +91,7 @@ def all(
         return
 
     if machine_readable:
-        print("--START_AGENT--" + json.dumps(agent) + "--END_AGENT--")
+        emit_machine_readable("AGENT", agent)
 
     else:
         if pretty:

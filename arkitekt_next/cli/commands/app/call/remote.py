@@ -1,21 +1,22 @@
-from click import Context
-import rich_click as click
-from arkitekt_next.cli.options import (
-    with_builder,
-    with_token,
-    with_headless,
-    get_console,
-    get_manifest,
-    with_log_level,
-    with_skip_cache,
-)
 import asyncio
-from arkitekt_next.cli.ui import construct_run_panel
 from importlib import import_module
+from typing import Annotated, List, Optional
+
+import typer
+
 from arkitekt_next.app import App
+from arkitekt_next.cli.options import (
+    LogLevel,
+    UrlOption,
+    BuilderOption,
+    TokenOption,
+    HeadlessOption,
+    LogLevelOption,
+    NoCacheOption,
+)
 from arkitekt_next.cli.ui import construct_run_panel
-from importlib import import_module
 from arkitekt_next.cli.utils import import_builder
+from arkitekt_next.cli.vars import get_console, get_manifest
 from arkitekt_next.constants import DEFAULT_ARKITEKT_URL
 
 
@@ -28,49 +29,51 @@ async def call_app(
         raise NotImplementedError("This is not implemented yet")
 
 
-@click.command("prod")
-@click.option(
-    "--url",
-    help="The fakts_next url for connection",
-    default=DEFAULT_ARKITEKT_URL,
-    envvar="FAKTS_URL",
-)
-@with_builder
-@with_token
-@with_headless
-@with_log_level
-@with_skip_cache
-@click.pass_context
-@click.option(
-    "--arg",
-    "-a",
-    "args",
-    help="Key Value pairs for the setup",
-    type=(str, str),
-    multiple=True,
-)
-@click.option(
-    "--hash",
-    "-h",
-    help="The hash of the node to run",
-    type=str,
-)
 def remote(
-    ctx: Context, entrypoint=None, builder=None, args=None, hash=str, **builder_kwargs
+    ctx: typer.Context,
+    url: UrlOption = DEFAULT_ARKITEKT_URL,
+    builder: BuilderOption = "arkitekt_next.builders.easy",
+    token: TokenOption = None,
+    headless: HeadlessOption = False,
+    log_level: LogLevelOption = LogLevel.ERROR,
+    no_cache: NoCacheOption = False,
+    args: Annotated[
+        List[str],
+        typer.Option(
+            "--arg",
+            "-a",
+            help="Key Value pairs for the setup",
+        ),
+    ] = [],
+    hash: Annotated[
+        Optional[str],
+        typer.Option(
+            "--hash",
+            help="The hash of the node to run",
+        ),
+    ] = None,
 ):
-    """ALlows you to run a get the output of a node in a remote app.
+    """Call a node in a remote app and print its output.
 
     This is useful for debugging and testing. In this mode the app itself will not
-    be run, so local nodes cannot be called. Only nodes that are availabble on your
+    be run, so local nodes cannot be called. Only nodes that are available on your
     arkitekt_next server can be called.
 
     """
 
     manifest = get_manifest(ctx)
     console = get_console(ctx)
-    entrypoint = entrypoint or manifest.entrypoint
+    entrypoint = manifest.entrypoint
 
     kwargs = dict(args or [])
+
+    builder_kwargs = {
+        "url": url,
+        "token": token,
+        "headless": headless,
+        "log_level": log_level.value,
+        "no_cache": no_cache,
+    }
 
     builder = import_builder(builder)
 

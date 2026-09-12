@@ -56,12 +56,11 @@ pip install "arkitekt-next[all]"
 This installs everything, including the `arkitekt-next` command line interface used to create, develop,
 containerize, and deploy apps.
 
-Prefer a lean install? Pick only the extras you need:
+Prefer a lean install? The CLI and packaging tooling are always included — pick
+only the service extras you need:
 
 ```bash
-pip install "arkitekt-next[cli]"            # the CLI + app development tooling
 pip install "arkitekt-next[mikro]"          # microscopy / imaging data
-pip install "arkitekt-next[kabinet]"        # Docker packaging & deployment
 pip install "arkitekt-next[fluss]"          # workflow orchestration
 pip install "arkitekt-next[elektro]"       # electrophysiology data
 pip install "arkitekt-next[alpaka]"         # want to talk to LLMs? This one's for you.
@@ -75,7 +74,7 @@ pip install "arkitekt-next[alpaka]"         # want to talk to LLMs? This one's f
 
 ```bash
 mkdir my-app && cd my-app
-arkitekt-next app init
+arkitekt-next init
 ```
 
 This walks you through creating an app and writes a manifest (identifier, version, entrypoint, scopes)
@@ -106,30 +105,29 @@ def greet(name: str, excited: bool = False) -> str:
 ### 3. Run it
 
 ```bash
-arkitekt-next app run dev
+arkitekt-next run dev
 ```
 
 `run dev` connects your app to a local or remote Arkitekt server with **hot reloading** — edit your
-code and the app reloads automatically. When you are ready for production, use `arkitekt-next app run prod`.
+code and the app reloads automatically. When you are ready for production, use `arkitekt-next run prod`.
 
 ## The CLI
 
-`arkitekt-next` is **the** command line for all things Arkitekt — one tool across
-the whole platform lifecycle. It absorbed the standalone `arkitekt-server` tool,
-so the same binary that builds your apps also stands up a deployment:
+`arkitekt-next` is the command line for building and running Arkitekt apps.
+Standing up an Arkitekt server is the job of
+[konstruktor](https://github.com/arkitektio/konstruktor):
 
-| Command group | What it does |
+| Command | What it does |
 | --- | --- |
-| `app` | Build, run and deploy apps from your Python code — scaffold (`init`), run locally (`run dev`/`run prod`), generate typed clients (`gen`), manage the manifest, inspect, and call functions. |
+| `init` · `run` · `gen` · `manifest` · `inspect` · `call` | Build, run and deploy apps from your Python code — scaffold, run locally (`run dev`/`run prod`), generate typed clients, manage the manifest, inspect, and call functions. |
 | `plugin` | Containerize your app into flavours and publish it as a deployable plugin. |
-| `hub` · `coord` · `hubinator` · `engine` | Run the server — the data/compute services, an auth coordinator, the full all-in-one stack, or a standalone deployer. |
 | `mesh` | Join this machine to the deployment's private WireGuard mesh. |
 | `self` | Manage your Arkitekt install — upgrade the SDK, print versions, dump diagnostics. |
 
 ```bash
-arkitekt-next app init         # scaffold an app
-arkitekt-next app run dev      # run it with hot reloading
-arkitekt-next hubinator init   # stand up an all-in-one server to run it against
+arkitekt-next init         # scaffold an app
+arkitekt-next run dev      # run it with hot reloading
+konstruktor hub create         # stand up a server to run it against (separate tool)
 ```
 
 See the full reference in **[docs/cli.md](docs/cli.md)**.
